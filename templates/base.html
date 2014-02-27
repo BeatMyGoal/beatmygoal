@@ -1,0 +1,47 @@
+{% load staticfiles %}
+
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}BeatMyGoal{% endblock %}</title>
+    <link rel="stylesheet" href="{% static "css/foundation.css" %}" />
+    <script src="{% static "js/vendor/modernizr.js" %}"></script>
+  </head>
+  <body>
+
+    <div class="contain-to-grid">
+      <nav class="top-bar" data-topbar>
+	<ul class="title-area">
+	  <li class="name">
+	    <h1><a href="#">BeatMyGoal</a></h1>
+	  </li>
+	</ul>
+
+	<section class="top-bar-section">
+	  <!-- Right Nav Section -->
+	  <ul class="right">
+	    <li class="active"><a href="#">Login</a></li>
+
+	  </ul>
+
+	  <!-- Left Nav Section -->
+	  <ul class="left">
+	    <li><a href="#">Home</a></li>
+	    <li><a hreft="#">Goals</a></li>
+	  </ul>
+	</section>
+      </nav>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+
+    <script src="{% static "js/vendor/jquery.js" %}"></script>
+    <script src="{% static "js/foundation.min.js" %}"></script>
+    <script>
+      $(document).foundation();
+    </script>
+  </body>
+</html>
