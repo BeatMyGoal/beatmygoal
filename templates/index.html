@@ -23,7 +23,14 @@
   <section class="top-bar-section">
     <!-- Right Nav Section -->
     <ul class="right">
-      <li class="active"><a href="#">Login</a></li>
+      <li class="active">
+        <a href="#" data-dropdown="loginDrop">Login</a>
+        <div id="loginDrop" class="f-dropdown content">
+          <label for="username"></label><input type="text" placeholder='Username' id='username'>
+          <br>
+         <label for="password"></label><input type="password" placeholder='Password' id='password'>
+        </div>
+      </li>
 
     </ul>
 
@@ -189,7 +196,7 @@
     </div>
     
     <script src="{% static "js/vendor/jquery.js" %}"></script>
-    <script src="{% static "js/foundation.min.js" %}></script>
+    <script src="{% static "js/foundation.min.js" %}"></script>
     <script>
       $(document).foundation();
     </script>
