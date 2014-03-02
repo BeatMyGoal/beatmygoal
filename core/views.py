@@ -2,16 +2,26 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from models import Goal, Participant
 
+
+# Create your views here
+
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 import json
 # Create your views here.
 
+
 def test(request):
 
     return render(request, 'index.html', {"foo": "bar"})
 
+
 def edit_user(request):
+	return render()
+
+
+def edit_user(request):
+
     return render(request, 'base.html', {"foo": "bar"})
 
 def logout(request):
@@ -33,7 +43,11 @@ def goal_remove_user(request):
 		user_id = req["user_id"]
 	except:
 		return requeset.send_error(500)
-
-
 	response = Goal().remove_user(goal_id, user_id)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+
+
+
+def logout(request):
+    return None
+
