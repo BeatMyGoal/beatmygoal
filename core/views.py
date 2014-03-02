@@ -7,3 +7,6 @@ def test(request):
 
 def edit_user(request):
 	return render()
+
+def logout(request):
+    return None
