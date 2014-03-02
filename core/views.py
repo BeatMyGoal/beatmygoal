@@ -1,15 +1,24 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+from models import Goal, Participant
+
 
 # Create your views here
 
+from django.shortcuts import render_to_response
+from django.views.decorators.csrf import csrf_exempt
+import json
+# Create your views here.
+
+
 def test(request):
+
     return render(request, 'index.html', {"foo": "bar"})
 
-<<<<<<< HEAD
-def edit_user(request):
-	return render()
-=======
 
+def edit_user(request):
+
+    return render(request, 'base.html', {"foo": "bar"})
 
 
 def goal_delete_goal(request):
@@ -35,6 +44,5 @@ def goal_remove_user(request):
 
 
 
-
-
->>>>>>> kyle
+def logout(request):
+    return None
