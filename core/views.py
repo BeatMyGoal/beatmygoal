@@ -49,5 +49,3 @@ def goal_remove_user(request):
 
 def logout(request):
     return None
-
->>>>>>> e998a153870639fba86293d5b48b1b4a2af4f95e
