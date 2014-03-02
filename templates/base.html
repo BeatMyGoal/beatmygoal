@@ -12,28 +12,35 @@
   <body>
 
     <div class="contain-to-grid">
-      <nav class="top-bar" data-topbar>
-	<ul class="title-area">
-	  <li class="name">
-	    <h1><a href="#">BeatMyGoal</a></h1>
-	  </li>
-	</ul>
+<nav class="top-bar" data-topbar>
+  <ul class="title-area">
+    <li class="name">
+      <h1><a href="#">BeatMyGoal</a></h1>
+    </li>
+  </ul>
 
-	<section class="top-bar-section">
-	  <!-- Right Nav Section -->
-	  <ul class="right">
-	    <li class="active"><a href="#">Login</a></li>
+  <section class="top-bar-section">
+    <!-- Right Nav Section -->
+    <ul class="right">
+      <li class="active">
+        <a href="#" data-dropdown="loginDrop">Login</a>
+        <div id="loginDrop" class="f-dropdown content">
+          <label for="username"></label><input type="text" placeholder='Username' id='username'>
+          <br>
+         <label for="password"></label><input type="password" placeholder='Password' id='password'>
+        </div>
+      </li>
 
-	  </ul>
+    </ul>
 
-	  <!-- Left Nav Section -->
-	  <ul class="left">
-	    <li><a href="#">Home</a></li>
-	    <li><a hreft="#">Goals</a></li>
-	  </ul>
-	</section>
-      </nav>
-    </div>
+    <!-- Left Nav Section -->
+    <ul class="left">
+      <li><a href="#">Home</a></li>
+      <li><a hreft="#">Goals</a></li>
+    </ul>
+  </section>
+</nav>
+</div>
 
     {% block content %}
     {% endblock %}
