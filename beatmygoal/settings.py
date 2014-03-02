@@ -94,7 +94,6 @@ STATICFILES_DIRS = (
 
 
 # Parse database configuration from $DATABASE_URL
-import dj_database_url
 DATABASES['default'] =  dj_database_url.config()
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
@@ -112,7 +111,7 @@ except Exception as e:
 # Static asset configuration
 # import os
 # PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
-# STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = 'staticfiles'
 # STATIC_URL = '/static/'
 
 

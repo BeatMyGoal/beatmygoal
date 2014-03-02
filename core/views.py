@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from models import Goal, Participant
-
+from django.template import RequestContext, loader
 
 # Create your views here
 
