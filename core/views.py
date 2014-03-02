@@ -6,6 +6,7 @@ def test(request):
     return render(request, 'index.html', {"foo": "bar"})
 
 def edit_user(request):
+<<<<<<< HEAD
 	return
 
 def goal_delete_goal(request):
@@ -28,3 +29,5 @@ def goal_remove_user(request):
 
 	response = Goal().remove_user(goal_id, user_id)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+=======
+>>>>>>> 6859659bba1ac1828901bb00c74c05eeb490ffff
