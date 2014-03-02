@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-# Create your views here.
+# Create your views here
 
 def test(request):
     return render(request, 'index.html', {"foo": "bar"})
@@ -28,6 +28,8 @@ def goal_remove_user(request):
 
 	response = Goal().remove_user(goal_id, user_id)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+
+
 
 
 
