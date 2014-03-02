@@ -12,7 +12,6 @@ def test(request):
     return render(request, 'index.html', {"foo": "bar"})
 
 def edit_user(request):
-	
     return render(request, 'base.html', {"foo": "bar"})
 
 
@@ -36,3 +35,6 @@ def goal_remove_user(request):
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 
+
+def logout(request):
+    return None
