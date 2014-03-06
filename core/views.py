@@ -14,11 +14,6 @@ import json
 def test(request):
     return render(request, 'index.html', {"foo": "bar"})
 
-
-def edit_user(request):
-	return render()
-
-
 def edit_user(request):
 
     return render(request, 'base.html', {"foo": "bar"})
@@ -26,6 +21,17 @@ def edit_user(request):
 def logout(request):
     return None
 
+def goal_create_goal(request):
+	data = json.loads(request.body)
+	title = data['title']
+	description = data['description']
+	creator = data['creator']
+	prize = data['prize']
+	private_setting = req["private_setting"]
+	goal_type = req["goal_type"]
+		return request.send_error(500)
+	response = Goal().delete_goal(goal_id)
+	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 def goal_delete_goal(request):
 	try:
 		req = json.loads(request.body)

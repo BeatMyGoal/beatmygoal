@@ -4,14 +4,45 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Goal(models.Model):
+	CODE_SUCCESS = 1
+	CODE_BAD_USERNAME = -2
+	CODE_BAD_TITLE = -3
+	CODE_BAD_DESCRIPTION = -4
+	CODE_USERNAME_DNE = -5
+	CODE_BAD_PRIZE = -6
+
+	MAX_LEN_DESC = 130
+	MAX_LEN_TITLE = 50
+	MAX_LEN_PRIZE = 50
+	MAX_LEN_TYPE = 20
+
     creator = models.ForeignKey(User)
-    title = models.TextField()
-    description = models.TextField()
-    prize = models.TextField()
+    title = models.CharField(max_length=MAX_LEN_TITLE)
+    description = models.CharField(max_length=MAX_LEN_DESC)
+    prize = models.TextField(max_length=MAX_LEN_PRIZE)
     date_created = models.DateTimeField(auto_now_add=True)
     progress_value = models.FloatField()
+    goal_type = models.CharField(max_length=MAX_LEN_TYPE)
+
+    @classmethod
+    def create(title, description, creator, prize, private_setting, goal_type):
+    	if not title or len(title)>MAX_LEN_TITLE:
+    		return self.CODE_BAD_TITLE
+    	if not description or len(description)>MAX_LEN_DESC:
+    		return self.CODE_BAD_DESCRIPTION
+    	if not creator or len(description)>MAX_LEN_DESC:
+    		return self.CODE_BAD_DESCRIPTION
+    	if not prize or len(prize)>MAX_LEN_PRIZE:
+    		return self.CODE_BAD_DESCRIPTION
+    	if not goal_type or len(goal_type)>MAX_LEN_TYPE:
+    		return self.CODE_BAD_DESCRIPTION
+        try:
+            creatorUser = BeatMyGoalUser.objects.get(username=creator)
+           	return CODE_SUCCESS 
+        except:
+
+            return CODE_BAD_USERNAME
     
-class Participant(models.Model):
+class BeatMyGoalUser(models.Model):
     user = models.OneToOneField(User)
     goals = models.ManyToManyField(Goal)
-
