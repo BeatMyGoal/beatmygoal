@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+
+
+
 class Goal(models.Model):
     CODE_SUCCESS = 1
     CODE_BAD_USERNAME = -2
@@ -24,7 +28,7 @@ class Goal(models.Model):
     private_setting = models.IntegerField()
      
     @classmethod
-    def create(title, description, creator, prize, private_setting, goal_type):
+    def create(self, title, description, creator, prize, private_setting, goal_type):
         if not title or len(title)>MAX_LEN_TITLE:
             return self.CODE_BAD_TITLE
         if not description or len(description)>MAX_LEN_DESC:
