@@ -21,7 +21,8 @@ class Goal(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     progress_value = models.FloatField()
     goal_type = models.CharField(max_length=MAX_LEN_TYPE)
-
+    private_setting = models.IntegerField()
+     
     @classmethod
     def create(title, description, creator, prize, private_setting, goal_type):
         if not title or len(title)>MAX_LEN_TITLE:
