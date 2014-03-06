@@ -29,8 +29,8 @@ def goal_create_goal(request):
 	description = data['description']
 	creator = data['creator']
 	prize = data['prize']
-	private_setting = req['private_setting']
-	goal_type = req['goal_type']
+	private_setting = data['private_setting']
+	goal_type = data['goal_type']
 	response = Goal.create(title, description, creator, prize, private_setting, goal_type)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
