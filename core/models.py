@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-
 class Goal(models.Model):
 	CODE_SUCCESS = 1
 	CODE_BAD_USERNAME = -2
@@ -37,10 +35,11 @@ class Goal(models.Model):
     	if not goal_type or len(goal_type)>MAX_LEN_TYPE:
     		return self.CODE_BAD_DESCRIPTION
         try:
-            creatorUser = BeatMyGoalUser.objects.get(username=creator)
+            creator_user = BeatMyGoalUser.objects.get(username=creator)
+            goal = Gaol.create(title=title, description=description, creator=creator, prize=prize, private_setting=private_setting, goal_type=goal_type)
+            goal.save();
            	return CODE_SUCCESS 
         except:
-
             return CODE_BAD_USERNAME
     
 class BeatMyGoalUser(models.Model):
