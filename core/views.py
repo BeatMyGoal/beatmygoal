@@ -21,6 +21,8 @@ def edit_user(request):
 def logout(request):
     return None
 
+
+@csrf_exempt
 def goal_create_goal(request):
 	data = json.loads(request.body)
 	title = data['title']
