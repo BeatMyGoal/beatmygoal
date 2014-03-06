@@ -11,4 +11,5 @@ urlpatterns = patterns('',
                        # url(r'^blog/', include('blog.urls')),
                        url(r'^$', core.views.test),
                        url(r'^admin/', include(admin.site.urls)),
+                       url(r'^goals/create', core.views.goal_create_goal, name='goal_create_goal')
 )

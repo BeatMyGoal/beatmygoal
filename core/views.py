@@ -31,6 +31,8 @@ def goal_create_goal(request):
 	goal_type = req['goal_type']
 	response = Goal.create(title, description, creator, prize, private_setting, goal_type)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+
+	
 def goal_delete_goal(request):
 	try:
 		req = json.loads(request.body)
