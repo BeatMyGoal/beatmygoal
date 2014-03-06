@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import Goal, Participant
+from models import Goal, BeatMyGoalUser
 from django.template import RequestContext, loader
 
 # Create your views here
@@ -32,7 +32,7 @@ def goal_create_goal(request):
 	response = Goal.create(title, description, creator, prize, private_setting, goal_type)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
-	
+
 def goal_delete_goal(request):
 	try:
 		req = json.loads(request.body)
