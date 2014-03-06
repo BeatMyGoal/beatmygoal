@@ -29,23 +29,23 @@ class Goal(models.Model):
      
     @classmethod
     def create(self, title, description, creator, prize, private_setting, goal_type):
-        if not title or len(title)>MAX_LEN_TITLE:
+        if not title or len(title)>self.MAX_LEN_TITLE:
             return self.CODE_BAD_TITLE
-        if not description or len(description)>MAX_LEN_DESC:
+        if not description or len(description)>self.MAX_LEN_DESC:
             return self.CODE_BAD_DESCRIPTION
-        if not creator or len(description)>MAX_LEN_DESC:
+        if not creator or len(description)>self.MAX_LEN_DESC:
             return self.CODE_BAD_DESCRIPTION
-        if not prize or len(prize)>MAX_LEN_PRIZE:
+        if not prize or len(prize)>self.MAX_LEN_PRIZE:
             return self.CODE_BAD_DESCRIPTION
-        if not goal_type or len(goal_type)>MAX_LEN_TYPE:
+        if not goal_type or len(goal_type)>self.MAX_LEN_TYPE:
             return self.CODE_BAD_DESCRIPTION
         try:
-            creator_user = BeatMyGoalUser.objects.get(username=creator)
-            goal = Goal.create(title=title, description=description, creator=creator, prize=prize, private_setting=private_setting, goal_type=goal_type)
+            creator_user = BeatMyGoalUser.objects.get(user=User.objects.get(username=creator))
+            goal = Goal.objects.create(title=title, description=description, creator=User.objects.get(username=creator), prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0 )
             goal.save()
-            return CODE_SUCCESS 
+            return self.CODE_SUCCESS 
         except:
-            return CODE_BAD_USERNAME
+            return self.CODE_BAD_USERNAME
     
 class BeatMyGoalUser(models.Model):
     user = models.OneToOneField(User)
