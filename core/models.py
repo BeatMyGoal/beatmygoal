@@ -36,8 +36,8 @@ class Goal(models.Model):
             return self.CODE_BAD_DESCRIPTION
         try:
             creator_user = BeatMyGoalUser.objects.get(username=creator)
-            goal = Gaol.create(title=title, description=description, creator=creator, prize=prize, private_setting=private_setting, goal_type=goal_type)
-            goal.save();
+            goal = Goal.create(title=title, description=description, creator=creator, prize=prize, private_setting=private_setting, goal_type=goal_type)
+            goal.save()
             return CODE_SUCCESS 
         except:
             return CODE_BAD_USERNAME
