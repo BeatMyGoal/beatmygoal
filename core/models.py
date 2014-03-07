@@ -66,24 +66,33 @@ class BeatMyGoalUser(User):
 
     """
     CODE_SUCCESS = 1
+    CODE_BAD_USERNAME = -2              #too long or no character
+    CODE_BAD_EMAIL = -3                 #too long, no character, invalid email address
+    CODE_BAD_PASSWORD = -4              #too long or no character
+    CODE_FAIL_PASSWORD_CONFIRM = -5     #password does not match
 
     user = models.OneToOneField(User)
     goals = models.ManyToManyField(Goal)
     
     @classmethod
     def create(self, username, email, password):
-        p = self.objects.create_user(username, email, password)
-        p.save()
-        return CODE_SUCCESS
-
+        user = User.objects.create_user(username, email, password)
+        user.save()
+        return self.CODE_SUCCESS
 
     @classmethod
-    def getUserById(self, uid):
+    def delete(self, username, email, password):
+        
+        return self.CODE_SUCCESS
+
+    @classmethod
+    def getUserById(self, userid):
         try:
-            user = User.objects.get(id=uid)
+            user = User.objects.get(id=userid)
             return user
         except:
             return -1 #TODO ERROR CODES
+
     @classmethod
     def getUserByName(self, username):
         try:
@@ -91,3 +100,34 @@ class BeatMyGoalUser(User):
             return user
         except Exception, e:
             return -1;
+
+    @classmethod
+    def editUser(self, user_id, user_name, user_firstName, user_lastName, user_email):
+        user = getUserById(user_id)
+        
+        user.username = user_name
+        user.first_name = user_firstName
+        user.last_name = user_lastName
+        user.email = user_email
+        user.save()
+
+        return self.CODE_SUCCESS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
