@@ -12,6 +12,8 @@ class Goal(models.Model):
     CODE_BAD_DESCRIPTION = -4
     CODE_USERNAME_DNE = -5
     CODE_BAD_PRIZE = -6
+    CODE_GOAL_DNE = -7
+    CODE_BAD_AUTH = -8
 
     MAX_LEN_DESC = 130
     MAX_LEN_TITLE = 50
@@ -40,12 +42,32 @@ class Goal(models.Model):
         if not goal_type or len(goal_type)>self.MAX_LEN_TYPE:
             return self.CODE_BAD_DESCRIPTION
         try:
-            creator_user = BeatMyGoalUser.objects.get(user=User.objects.get(username=creator))
+            creator_user = BeatMyGoalUser.getUserByName(creator)
             goal = Goal.objects.create(title=title, description=description, creator=User.objects.get(username=creator), prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0 )
             goal.save()
             return self.CODE_SUCCESS 
         except:
             return self.CODE_BAD_USERNAME
+
+
+    @classmethod
+    def remove(self, goal_id, user):
+        if not goal_id:
+            return self.CODE_GOAL_DNE
+
+        try:
+            goal = Goal.objects.get(id=goal_id)
+            if not user or user != goal.creator:
+                return CODE_BAD_AUTH
+                
+            goal.delete()
+            return self.CODE_SUCCESS
+        except:
+            return self.CODE_GOAL_DNE
+    #Goal.create(title="test_title", description="test_description", creator="test_usr", prize="test_prize", private_setting = 1.0, goal_type="teest_goaltype")
+
+
+
     
 class BeatMyGoalUser(User):
     """
@@ -66,24 +88,33 @@ class BeatMyGoalUser(User):
 
     """
     CODE_SUCCESS = 1
+    CODE_BAD_USERNAME = -2              #too long or no character
+    CODE_BAD_EMAIL = -3                 #too long, no character, invalid email address
+    CODE_BAD_PASSWORD = -4              #too long or no character
+    CODE_FAIL_PASSWORD_CONFIRM = -5     #password does not match
 
     user = models.OneToOneField(User)
     goals = models.ManyToManyField(Goal)
     
     @classmethod
     def create(self, username, email, password):
-        p = self.objects.create_user(username, email, password)
-        p.save()
-        return CODE_SUCCESS
-
+        user = User.objects.create_user(username, email, password)
+        user.save()
+        return self.CODE_SUCCESS
 
     @classmethod
-    def getUserById(self, uid):
+    def delete(self, username, email, password):
+        
+        return self.CODE_SUCCESS
+
+    @classmethod
+    def getUserById(self, userid):
         try:
-            user = User.objects.get(id=uid)
+            user = User.objects.get(id=userid)
             return user
         except:
             return -1 #TODO ERROR CODES
+
     @classmethod
     def getUserByName(self, username):
         try:
@@ -99,3 +130,14 @@ class BeatMyGoalUser(User):
         user.password = user.password if password is None else password
         user.save()
         return 1
+        
+    def editUser(self, user_id, user_name, user_firstName, user_lastName, user_email):
+        user = getUserById(user_id)
+        
+        user.username = user_name
+        user.first_name = user_firstName
+        user.last_name = user_lastName
+        user.email = user_email
+        user.save()
+
+        return self.CODE_SUCCESS

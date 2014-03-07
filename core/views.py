@@ -14,6 +14,84 @@ import json
 def test(request):
     return render(request, 'index.html', {"foo": "bar"})
 
+def logout(request):
+    return None
+
+
+@csrf_exempt
+def goal_create_goal(request):
+	data = json.loads(request.body)
+	title = data['title']
+	description = data['description']
+	creator = data['creator']
+	prize = data['prize']
+	private_setting = data['private_setting']
+	goal_type = data['goal_type']
+	response = Goal.create(title, description, creator, prize, private_setting, goal_type)
+	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+
+def goal_remove_goal(request):
+	data = json.loads(request.body)
+	goal_id = data["goal_id"]
+	user = data["user"]
+	response = Goal.remove(goal_id, user)
+	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+
+#def goal_remove_user(request):
+#	try:
+#		req = json.loads(request.body)
+#		goal_id = req["goal_id"]
+#		user_id = req["user_id"]
+#	except:
+#		return requeset.send_error(500)
+#	response = Goal().remove_user(goal_id, user_id)
+#	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+
+
+
+def view_user(request):
+	try:
+		data = json.loads(request.body)
+		user_id = data["user_id"]
+	except:
+		return request.send_error(500)
+
+	user = BeatMyGoalUser.getUserById(user_id)
+	user_name = user.username
+	user_firstName = user.first_name
+	user_lastName = user.last_name
+	user_email = user.email
+
+	response = 1 		   #errCode
+	return HttpResponse(json.dumps({"errCode": response, "username" : user_name,"firstName" : user_firstName, 
+									"lastName" : user_lastName, "email" : user_email}), content_type = "application/json")
+
+def edit_user2(request):
+	try:
+		data = json.loads(request.body)
+		user_id = data["user_id"]
+		user_name = data["user_name"]
+		user_firstName = data["user_firstName"]
+		user_lastName = data["user_lastName"]
+		user_email = data["user_email"]
+	except:
+		return request.send_error(500)
+
+
+	response = BeatMyGoalUser.editUser(user_id, user_name, user_firstName, user_lastName, user_email)
+
+	return HttpResponse(json.dumps({"errCode": response, "username" : username,"firstName" : user_firstName, 
+									"lastName" : user_lastName, "email" : email}), content_type = "application/json")
+
+
+def view_user2(request, uid):
+	if request.method == "GET":
+		user = BeatMyGoalUser.getUserById(uid)
+		return render(request, 'viewUser.html', {
+			"user" : user
+		})
+
+
 def edit_user(request, uid):
 	user = BeatMyGoalUser.getUserById(uid)
 	print user.email
@@ -32,71 +110,13 @@ def edit_user(request, uid):
 		}
 		return HttpResponse(json.dumps(res), content_type = 'application/json')
 
-def logout(request):
-    return None
-
-
-@csrf_exempt
-def goal_create_goal(request):
-	data = json.loads(request.body)
-	title = data['title']
-	description = data['description']
-	creator = data['creator']
-	prize = data['prize']
-	private_setting = data['private_setting']
-	goal_type = data['goal_type']
-	response = Goal.create(title, description, creator, prize, private_setting, goal_type)
-	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
-
-
-def goal_delete_goal(request):
-	try:
-		req = json.loads(request.body)
-		goal_id = req["goal_id"]
-	except:
-		return request.send_error(500)
-	response = Goal().delete_goal(goal_id)
-	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
-
-def goal_remove_user(request):
-	try:
-		req = json.loads(request.body)
-		goal_id = req["goal_id"]
-		user_id = req["user_id"]
-	except:
-		return requeset.send_error(500)
-	response = Goal().remove_user(goal_id, user_id)
-	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+	
+def test_user(request):
+	return render(request, 'testUserView.html', {"foo": "bar"})
 
 
 
 
-def view_user(request):
-	try:
-		req = json.loads(request.body)
-		user_id = req["user_id"]
-	except:
-		return request.send_error(500)
-	u = User.objects.get(username__exact='john')	#username, userid
-	username = u.username
-	password = u.password
-	eail = u.email
-	response = 1 		   #errCode
-	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
-
-def edit_user(request):
-	try:
-		req = json.loads(request.body)
-		user_id = req["user_id"]
-		user_password = req["user_password"]
-	except:
-		return request.send_error(500)
-
-	user = authenticate(username='john', password='secret')		#username, userid
-	if user is not None:
-
-
-	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 def delete_user(request):
 	try:
@@ -104,17 +124,8 @@ def delete_user(request):
 		user_id = req["user_id"]
 	except:
 		return request.send_error(500)
-
-	user = authenticate(username='john', password='secret')
-	response = 0
-	if user is not None:
-		user.delete()
-		errCode = 1
-	elif user is None:
-		errCode = -2
-	else:
 		
-	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+		return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 
 def logout(request):
