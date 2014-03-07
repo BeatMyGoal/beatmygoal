@@ -44,10 +44,11 @@ def goal_create_goal(request):
 	response = Goal.create(title, description, creator, prize, private_setting, goal_type)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
-def goal_delete_goal(request):
+def goal_remove_goal(request):
 	data = json.loads(request.body)
 	goal_id = data["goal_id"]
-	response = Goal.delete(goal_id)
+	user = data["user"]
+	response = Goal.remove(goal_id, user)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 #def goal_remove_user(request):
