@@ -14,20 +14,6 @@ import json
 def test(request):
     return render(request, 'index.html', {"foo": "bar"})
 
-def edit_user(request, uid):
-	user = BeatMyGoalUser.getUserById(uid)
-	print user.email
-	if request.method == "GET":
-		return render(request, 'editUser.html', {
-			"username": user.username,
-			"email":	user.email,
-			})
-	elif request.method == "POST":
-		data = json.loads(request.body)
-		user.username = data['username']
-		user.email = data['email']
-		return
-
 def logout(request):
     return None
 
@@ -65,43 +51,65 @@ def goal_remove_user(request):
 
 
 
+
+
 def view_user(request):
 	try:
-		date = json.loads(request.body)
-		user_id = date["user_id"]
+		data = json.loads(request.body)
+		user_id = data["user_id"]
 	except:
 		return request.send_error(500)
 
-	user = getUserById(user_id)
+	user = BeatMyGoalUser.getUserById(user_id)
 	user_name = user.username
-	user_firstName = user_firstName
+	user_firstName = user.first_name
 	user_lastName = user.last_name
-	user_email = user_email
+	user_email = user.email
 
 	response = 1 		   #errCode
-	return HttpResponse(json.dumps({"errCode": response, "username" : username,"firstName" : user_firstName, 
-									"lastName" : user_lastName, "email" : email}), content_type = "application/json")
+	return HttpResponse(json.dumps({"errCode": response, "username" : user_name,"firstName" : user_firstName, 
+									"lastName" : user_lastName, "email" : user_email}), content_type = "application/json")
 
-
-def edit_user(request):
+def edit_user2(request):
 	try:
-		date = json.loads(request.body)
-		user_id = date["user_id"]
-		user_name = date["user_name"]
-		user_firstName = date["user_firstName"]
-		user_lastName = date["user_lastName"]
-		user_email = date["user_email"]
+		data = json.loads(request.body)
+		user_id = data["user_id"]
+		user_name = data["user_name"]
+		user_firstName = data["user_firstName"]
+		user_lastName = data["user_lastName"]
+		user_email = data["user_email"]
 	except:
 		return request.send_error(500)
 
 	response = BeatMyGoalUser.editUser(user_id, user_name, user_firstName, user_lastName, user_email)
-
 	return HttpResponse(json.dumps({"errCode": response, "username" : username,"firstName" : user_firstName, 
 									"lastName" : user_lastName, "email" : email}), content_type = "application/json")
+
+
+def edit_user(request, uid):
+	user = BeatMyGoalUser.getUserById(uid)
+	print user.email
+	if request.method == "GET":
+		return render(request, 'editUser.html', {
+			"username": user.username,
+			"email":	user.email,
+			})
+	elif request.method == "POST":
+		data = json.loads(request.body)
+		user.username = data['username']
+		user.email = data['email']
+		return
 
 	
 def test_user(request):
 	return render(request, 'testUserView.html', {"foo": "bar"})
+
+
+
+
+
+
+
 
 def delete_user(request):
 	try:

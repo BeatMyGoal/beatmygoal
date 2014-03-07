@@ -3,17 +3,9 @@
 {% block title %}Edit Profile{% endblock %}
 
 {% block content %}
-<script>
-function json_request(page, dict) {
-    $.ajax({
-        type: 'POST',
-        url: page,
-        data: JSON.stringify(dict),
-        contentType: "application/json",
-        dataType: "json",
-    });
-}
-</script>
+
+{% csrf_token %}
+
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 
@@ -21,12 +13,12 @@ function json_request(page, dict) {
 
 	<div class="row">
 		<div class="large-6 columns">
-			<label for="fname"> Username
+			<label for="Username"> Username
 				<input id='Username' type="text" value="">
 			</label>
 		</div>
 		<div class="large-6 columns">
-			<label for'lname'> Email
+			<label for = "Email"> Email
 				<input id='Email' type="text" value="">
 			</label>
 		</div>
@@ -35,13 +27,13 @@ function json_request(page, dict) {
 
 	<div class="row">
 		<div class="large-6 columns">
-			<label for="username"> First Name
-				<input id='First Name' type="text" value="">
+			<label for="First Name"> First Name
+				<input id='First_Name' type="text" value="">
 			</label>
 		</div>
 		<div class="large-6 columns">
-			<label for='email'> Last Name
-				<input label='Last Name' type="text" value="">
+			<label for="Last Name"> Last Name
+				<input id='Last_Name' type="text" value="">
 			</label>
 		</div>
 	</div>
@@ -49,22 +41,22 @@ function json_request(page, dict) {
 
 	<div class="row">
 		<div class="large-6 columns">
-			<label for="username"> Error Code
-				<input id='Error Code' type="text" value="">
+			<label for="Error Code"> Error Code
+				<input id='Error_Code' type="text" value="">
 			</label>
 		</div>
 		<div class="large-6 columns">
-			<label for='email'> Userid
-				<input label='Userid' type="text" value="">
+			<label for="Userid"> Userid
+				<input id='Userid' type="text" value="">
 			</label>
 		</div>
 	</div>
 
 	<div class="row">
 		<ul class="button-group right">
-			<li><a id = "reset_button" class="button">Reset</a></li>
-		 	<li><a id = "view_user_button" class="button">View User</a></li>
-		  	<li><a id = "edit_user_button" class="button">Edit User</a></li>
+			<li><a id = "reset_button" type="submit" class="button">Reset</a></li>
+		 	<li><a id = "view_user_button" type="submit" class="button">View User</a></li>
+		  	<li><a id = "edit_user_button" type="submit" class="button">Edit User</a></li>
 			</ul>
 
 	</div>
@@ -74,7 +66,9 @@ function json_request(page, dict) {
 	"Reset" : Reset all input box <BR> 
 	"View User" : load "userid" and show the information of the id <BR> 
 	"Edit User" : load every info above, edit userinfo to our database
-	 <div id="login-message" class="message"></div>
+	 <p><div id="message" class="message"></div>
+
+
 
 	</center>
 
@@ -83,36 +77,65 @@ function json_request(page, dict) {
 <script type="text/javascript">
 
 $(document).ready(function() {
-	
- });
-
-
-
-$('reset_button').click(function() {
-	document.getElementById('Username').value = "fdsfadsf";
-	$('#login-message').html("Please enter your credentials below")
-	$('#login-message').html("Please enter your credentials below")
-	document.getElementById('Username').value = "fdsafdss"
 
 });
 
+
+/* Reset button
+	clean all input boxes */
+$('#reset_button').click(function() {
+	document.getElementById('Username').value = "";
+	document.getElementById('Email').value = "";
+	document.getElementById('First_Name').value = "";
+	document.getElementById('Last_Name').value = "";
+	document.getElementById('Error_Code').value = "";
+	document.getElementById('Userid').value = "";
+
+	$('#message').html("***** Reset button pushed ******")
+
+	return false
+
+});
+
+
+/* View User button
+	Load user info by userid and put them into input boxes */
 $('#view_user_button').click(function() {
-	Username
+	userid = $('#Userid').val()
+	userid = parseInt(userid)
 
-   username = $('#login-username').val()
-   password = $('#login-password').val()
-   data = json_request("/users/login", { user: username, password: password })
+	$.ajax({
+		type: "POST",
+		url: "/users/test/view",
+		data: JSON.stringify({
+		user_id: userid
+		}),
+		success: function(data) {
+			document.getElementById('Username').value = data["username"];
+			document.getElementById('Email').value = data["email"];
+			document.getElementById('First_Name').value = data["firstName"];
+			document.getElementById('Last_Name').value = data["lastName"];
+			document.getElementById('Error_Code').value = data["errCode"];
+	    },
+		contentType: "application/json",
+		dataType: "json",
+	});
 
-   return false;
+	$('#message').html("***** View User button pushed ******")
+   	return false;
+
 });
 
+
+/* View User button
+	Edit all information of the user (userid) with the values of input boxes */
 $('#edit_user_button').click(function() {
-   username = $('#login-username').val()
-   password = $('#login-password').val()
-   json_request("/users/login", { user: username, password: password });
 
-   return false;
+   	$('#message').html("***** Edit User button pushed ******")
+
+   	return false;
 });
+
 </script>
 
 {% endblock %}
