@@ -14,9 +14,19 @@ import json
 def test(request):
     return render(request, 'index.html', {"foo": "bar"})
 
-def edit_user(request):
-
-    return render(request, 'base.html', {"foo": "bar"})
+def edit_user(request, uid):
+	user = BeatMyGoalUser.getUserById(uid)
+	print user.email
+	if request.method == "GET":
+		return render(request, 'editUser.html', {
+			"username": user.username,
+			"email":	user.email,
+			})
+	elif request.method == "POST":
+		data = json.loads(request.body)
+		user.username = data['username']
+		user.email = data['email']
+		return
 
 def logout(request):
     return None

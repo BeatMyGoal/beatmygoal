@@ -6,10 +6,11 @@ admin.autodiscover()
 import core.views
 
 urlpatterns = patterns('',
-                       # Examples:
-                       # url(r'^$', 'beatmygoal.views.home', name='home'),
-                       # url(r'^blog/', include('blog.urls')),
-                       url(r'^$', core.views.test),
-                       url(r'^admin/', include(admin.site.urls)),
-                       url(r'^goals/create', core.views.goal_create_goal, name='goal_create_goal')
+	# Examples:
+	# url(r'^$', 'beatmygoal.views.home', name='home'),
+	# url(r'^blog/', include('blog.urls')),
+	url(r'^$', core.views.test),
+	url(r'^admin/', include(admin.site.urls)),
+	url(r'^goals/create', core.views.goal_create_goal, name='goal_create_goal'),
+	url(r'^users/(\d)/edit', core.views.edit_user, name='edit_user'),
 )

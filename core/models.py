@@ -50,3 +50,18 @@ class Goal(models.Model):
 class BeatMyGoalUser(models.Model):
     user = models.OneToOneField(User)
     goals = models.ManyToManyField(Goal)
+
+    @classmethod
+    def getUserById(self, uid):
+        try:
+            user = User.objects.get(id=uid)
+            return user
+        except:
+            return -1 #TODO ERROR CODES
+    @classmethod
+    def getUserByName(self, username):
+        try:
+            user = User.objects.get(username=username)
+            return user
+        except Exception, e:
+            return -1;
