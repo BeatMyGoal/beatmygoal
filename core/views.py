@@ -44,7 +44,6 @@ def goal_create_goal(request):
 	response = Goal.create(title, description, creator, prize, private_setting, goal_type)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
-
 def goal_delete_goal(request):
 	data = json.loads(request.body)
 	goal_id = data["goal_id"]
@@ -63,33 +62,47 @@ def goal_delete_goal(request):
 
 
 
-
 def view_user(request):
 	try:
-		req = json.loads(request.body)
-		user_id = req["user_id"]
+		date = json.loads(request.body)
+		user_id = date["user_id"]
 	except:
 		return request.send_error(500)
-	u = User.objects.get(username__exact='john')	#username, userid
-	username = u.username
-	password = u.password
-	eail = u.email
+
+	user = getUserById(user_id)
+	user_name = user.username
+	user_firstName = user_firstName
+	user_lastName = user.last_name
+	user_email = user_email
+
 	response = 1 		   #errCode
-	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+	return HttpResponse(json.dumps({"errCode": response, "username" : username,"firstName" : user_firstName, 
+									"lastName" : user_lastName, "email" : email}), content_type = "application/json")
+
 
 def edit_user(request):
 	try:
-		req = json.loads(request.body)
-		user_id = req["user_id"]
-		user_password = req["user_password"]
+		date = json.loads(request.body)
+		user_id = date["user_id"]
+		user_name = date["user_name"]
+		user_firstName = date["user_firstName"]
+		user_lastName = date["user_lastName"]
+		user_email = date["user_email"]
 	except:
 		return request.send_error(500)
 
-	user = authenticate(username='john', password='secret')#username, userid
-	if user is not None:
+
+	response = BeatMyGoalUser.editUser(user_id, user_name, user_firstName, user_lastName, user_email)
 
 
-		return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+	return HttpResponse(json.dumps({"errCode": response, "username" : username,"firstName" : user_firstName, 
+									"lastName" : user_lastName, "email" : email}), content_type = "application/json")
+
+
+	
+def test_user(request):
+	return render(request, 'testUserView.html', {"foo": "bar"})
+
 
 def delete_user(request):
 	try:
@@ -97,15 +110,6 @@ def delete_user(request):
 		user_id = req["user_id"]
 	except:
 		return request.send_error(500)
-
-	user = authenticate(username='john', password='secret')
-	response = 0
-	if user is not None:
-		user.delete()
-		errCode = 1
-	elif user is None:
-		errCode = -2
-	else:
 		
 		return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 

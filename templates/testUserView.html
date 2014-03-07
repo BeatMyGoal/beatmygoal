@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<script>
+function json_request(page, dict) {
+    $.ajax({
+        type: 'POST',
+        url: page,
+        data: JSON.stringify(dict),
+        contentType: "application/json",
+        dataType: "json",
+    });
+}
+</script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+
+<form name = "myform">
+
+	<div class="row">
+		<div class="large-6 columns">
+			<label for="fname"> Username
+				<input id='Username' type="text" value="">
+			</label>
+		</div>
+		<div class="large-6 columns">
+			<label for'lname'> Email
+				<input id='Email' type="text" value="">
+			</label>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="large-6 columns">
+			<label for="username"> First Name
+				<input id='First Name' type="text" value="">
+			</label>
+		</div>
+		<div class="large-6 columns">
+			<label for='email'> Last Name
+				<input label='Last Name' type="text" value="">
+			</label>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="large-6 columns">
+			<label for="username"> Error Code
+				<input id='Error Code' type="text" value="">
+			</label>
+		</div>
+		<div class="large-6 columns">
+			<label for='email'> Userid
+				<input label='Userid' type="text" value="">
+			</label>
+		</div>
+	</div>
+
+	<div class="row">
+		<ul class="button-group right">
+			<li><a id = "reset_button" class="button">Reset</a></li>
+		 	<li><a id = "view_user_button" class="button">View User</a></li>
+		  	<li><a id = "edit_user_button" class="button">Edit User</a></li>
+			</ul>
+
+	</div>
+
+	
+	<center>
+	"Reset" : Reset all input box <BR> 
+	"View User" : load "userid" and show the information of the id <BR> 
+	"Edit User" : load every info above, edit userinfo to our database
+	 <div id="login-message" class="message"></div>
+
+	</center>
+
+</form>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+	
+ });
+
+
+
+$('reset_button').click(function() {
+	document.getElementById('Username').value = "fdsfadsf";
+	$('#login-message').html("Please enter your credentials below")
+	$('#login-message').html("Please enter your credentials below")
+	document.getElementById('Username').value = "fdsafdss"
+
+});
+
+$('#view_user_button').click(function() {
+	Username
+
+   username = $('#login-username').val()
+   password = $('#login-password').val()
+   data = json_request("/users/login", { user: username, password: password })
+
+   return false;
+});
+
+$('#edit_user_button').click(function() {
+   username = $('#login-username').val()
+   password = $('#login-password').val()
+   json_request("/users/login", { user: username, password: password });
+
+   return false;
+});
+</script>
+
+{% endblock %}
