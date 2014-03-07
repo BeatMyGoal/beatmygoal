@@ -47,9 +47,35 @@ class Goal(models.Model):
         except:
             return self.CODE_BAD_USERNAME
     
-class BeatMyGoalUser(models.Model):
+class BeatMyGoalUser(User):
+    """
+    << User field >>
+    * username,
+    * email,
+    * password,
+    first_name,
+    last_name,
+    is_staff,
+    is_active,
+    is_superuser,
+    last_login,
+    date_joined
+
+
+    << User method >>
+
+    """
+    CODE_SUCCESS = 1
+
     user = models.OneToOneField(User)
     goals = models.ManyToManyField(Goal)
+    
+    @classmethod
+    def create(self, username, email, password):
+        p = self.objects.create_user(username, email, password)
+        p.save()
+        return CODE_SUCCESS
+
 
     @classmethod
     def getUserById(self, uid):
