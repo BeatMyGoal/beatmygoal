@@ -30,26 +30,22 @@ def goal_create_goal(request):
 	response = Goal.create(title, description, creator, prize, private_setting, goal_type)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
-def goal_delete_goal(request):
-	try:
-		req = json.loads(request.body)
-		goal_id = req["goal_id"]
-	except:
-		return request.send_error(500)
-	response = Goal().delete_goal(goal_id)
+def goal_remove_goal(request):
+	data = json.loads(request.body)
+	goal_id = data["goal_id"]
+	user = data["user"]
+	response = Goal.remove(goal_id, user)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
-def goal_remove_user(request):
-	try:
-		req = json.loads(request.body)
-		goal_id = req["goal_id"]
-		user_id = req["user_id"]
-	except:
-		return requeset.send_error(500)
-	response = Goal().remove_user(goal_id, user_id)
-	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
-
-
+#def goal_remove_user(request):
+#	try:
+#		req = json.loads(request.body)
+#		goal_id = req["goal_id"]
+#		user_id = req["user_id"]
+#	except:
+#		return requeset.send_error(500)
+#	response = Goal().remove_user(goal_id, user_id)
+#	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 
 
@@ -81,9 +77,12 @@ def edit_user2(request):
 	except:
 		return request.send_error(500)
 
+
 	response = BeatMyGoalUser.editUser(user_id, user_name, user_firstName, user_lastName, user_email)
+
 	return HttpResponse(json.dumps({"errCode": response, "username" : username,"firstName" : user_firstName, 
 									"lastName" : user_lastName, "email" : email}), content_type = "application/json")
+
 
 
 def edit_user(request, uid):
@@ -108,9 +107,6 @@ def test_user(request):
 
 
 
-
-
-
 def delete_user(request):
 	try:
 		req = json.loads(request.body)
@@ -118,7 +114,7 @@ def delete_user(request):
 	except:
 		return request.send_error(500)
 		
-	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+		return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 
 def logout(request):
