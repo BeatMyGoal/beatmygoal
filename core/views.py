@@ -21,12 +21,16 @@ def edit_user(request, uid):
 		return render(request, 'editUser.html', {
 			"username": user.username,
 			"email":	user.email,
-			})
+		})
 	elif request.method == "POST":
 		data = json.loads(request.body)
-		user.username = data['username']
-		user.email = data['email']
-		return
+		username = data['username']
+		email = data['email']
+		response = BeatMyGoalUser.updateUser(user, username, email)
+		res = {
+			"errCode" : response
+		}
+		return HttpResponse(json.dumps(res), content_type = 'application/json')
 
 def logout(request):
     return None

@@ -65,3 +65,11 @@ class BeatMyGoalUser(models.Model):
             return user
         except Exception, e:
             return -1;
+
+    @classmethod
+    def updateUser(self, user, username=None, email=None, password=None):
+        user.username = user.username if username is None else username
+        user.email = user.email is email is None else email
+        user.password = user.password if password is None else password
+        user.save()
+        return 1
