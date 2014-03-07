@@ -12,6 +12,7 @@ class Goal(models.Model):
     CODE_BAD_DESCRIPTION = -4
     CODE_USERNAME_DNE = -5
     CODE_BAD_PRIZE = -6
+    CODE_GOAL_DNE = -7
 
     MAX_LEN_DESC = 130
     MAX_LEN_TITLE = 50
@@ -46,6 +47,22 @@ class Goal(models.Model):
             return self.CODE_SUCCESS 
         except:
             return self.CODE_BAD_USERNAME
+
+
+    @classmethod
+    def delete(self, goal_id):
+        if not goal_id:
+            return self.CODE_GOAL_DNE
+        try:
+            goal = Goal.objects.get(id=goal_id)
+            goal.delete
+            return self.CODE_SUCCESS
+        except:
+            return self.CODE_GOAL_DNE
+    #Goal.create(title="test_title", description="test_description", creator=u, prize="test_prize", private_setting = 1.0, goal_type="teest_goaltype")
+
+
+
     
 class BeatMyGoalUser(User):
     """

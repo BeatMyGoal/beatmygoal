@@ -46,12 +46,9 @@ def goal_create_goal(request):
 
 
 def goal_delete_goal(request):
-	try:
-		data = json.loads(request.body)
-		goal_id = data["goal_id"]
-	except:
-		return request.send_error(500)
-	response = Goal().delete_goal(goal_id)
+	data = json.loads(request.body)
+	goal_id = data["goal_id"]
+	response = Goal.delete(goal_id)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 #def goal_remove_user(request):
