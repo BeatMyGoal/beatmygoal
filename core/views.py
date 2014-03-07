@@ -70,5 +70,52 @@ def goal_remove_user(request):
 
 
 
+
+def view_user(request):
+	try:
+		req = json.loads(request.body)
+		user_id = req["user_id"]
+	except:
+		return request.send_error(500)
+	u = User.objects.get(username__exact='john')	#username, userid
+	username = u.username
+	password = u.password
+	eail = u.email
+	response = 1 		   #errCode
+	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+
+def edit_user(request):
+	try:
+		req = json.loads(request.body)
+		user_id = req["user_id"]
+		user_password = req["user_password"]
+	except:
+		return request.send_error(500)
+
+	user = authenticate(username='john', password='secret')		#username, userid
+	if user is not None:
+
+
+	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+
+def delete_user(request):
+	try:
+		req = json.loads(request.body)
+		user_id = req["user_id"]
+	except:
+		return request.send_error(500)
+
+	user = authenticate(username='john', password='secret')
+	response = 0
+	if user is not None:
+		user.delete()
+		errCode = 1
+	elif user is None:
+		errCode = -2
+	else:
+		
+	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+
+
 def logout(request):
     return None
