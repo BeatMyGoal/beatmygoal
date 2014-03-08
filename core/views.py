@@ -30,6 +30,7 @@ def goal_create_goal(request):
 	response = Goal.create(title, description, creator, prize, private_setting, goal_type)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
+@csrf_exempt
 def goal_remove_goal(request):
 	data = json.loads(request.body)
 	goal_id = data["goal_id"]
@@ -37,6 +38,7 @@ def goal_remove_goal(request):
 	response = Goal.remove(goal_id, user)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
+@csrf_exempt
 def goal_edit_goal(request):
 	data = json.loads(request.body)
 	goal_id = data["goal_id"]
@@ -44,6 +46,21 @@ def goal_edit_goal(request):
 	edits = data["edits"]
 	response = Goal.edit(goal_id, user, edits)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+
+def goal_view_goal(request):
+	data = json.loads(request.body)
+	goal_id = data["goal_id"]
+	goal = Goal.objects.get(id=goal_id)
+	title = goal.title
+	description = goal.description
+	prize = goal.prize
+	date_created = goal.date_created
+	progress_value = goal.progress_value
+	private_setting = goal.private_setting
+	creator = goal.creator
+	return HttpResponse(json.dumps({"errCode": 1, "title":title, "description":description,
+		"prize":prize, "date_created":date_created,"progress_value":progress_value,
+		"private_setting":private_setting,"creator":creator}), content_type = "application/json")
 
 
 #def goal_remove_user(request):
