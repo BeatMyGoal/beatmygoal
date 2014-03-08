@@ -37,6 +37,15 @@ def goal_remove_goal(request):
 	response = Goal.remove(goal_id, user)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
+def goal_edit_goal(request):
+	data = json.loads(request.body)
+	goal_id = data["goal_id"]
+	user = data["user"]
+	edits = data["edits"]
+	response = Goal.edit(goal_id, user, edits)
+	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+
+
 #def goal_remove_user(request):
 #	try:
 #		req = json.loads(request.body)

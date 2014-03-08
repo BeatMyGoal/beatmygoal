@@ -13,6 +13,7 @@ urlpatterns = patterns('',
 	url(r'^admin/', include(admin.site.urls)),
 	url(r'^goals/create', core.views.goal_create_goal, name='goal_create_goal'),
 	url(r'^goals/remove', core.views.goal_remove_goal, name='goal_remove_goal'),
+	url(r'^goals/edit', core.views.goal_edit_goal, name='goal_edit_goal'),
 	url(r'^users/(\d)/edit', core.views.edit_user, name='edit_user'),
 	url(r'^users/(\d)/$', core.views.view_user2, name='view_user2'),
 	

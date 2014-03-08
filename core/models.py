@@ -14,6 +14,7 @@ class Goal(models.Model):
     CODE_BAD_PRIZE = -6
     CODE_GOAL_DNE = -7
     CODE_BAD_AUTH = -8
+    CODE_BAD_EDIT = -9
 
     MAX_LEN_DESC = 130
     MAX_LEN_TITLE = 50
@@ -65,6 +66,31 @@ class Goal(models.Model):
         except:
             return self.CODE_GOAL_DNE
     #Goal.create(title="test_title", description="test_description", creator="test_usr", prize="test_prize", private_setting = 1.0, goal_type="teest_goaltype")
+
+    @classmethod
+    def edit(self, goal_id, user, edits):
+        if not goal_id:
+            return self.CODE_GOAL_DNE
+        try:
+            goal = Goal.objects.get(id=goal_id)
+            if not user or user != goal.creator:
+                return CODE_BAD_AUTH
+        except:
+            return self.CODE_GOAL_DNE
+
+
+        try:
+            if "title" in edits:
+                goal.title = edits["title"]
+            if "description" in edits:
+                goal.description = edits["description"]
+            if "private_setting" in edits:
+                goal.private_setting = edits["private_setting"]
+            goal.save()
+            return self.CODE_SUCCESS
+        except:
+            return self.CODE_BAD_EDIT
+
 
 
 
