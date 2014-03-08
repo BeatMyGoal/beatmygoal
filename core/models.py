@@ -92,15 +92,28 @@ class BeatMyGoalUser(User):
     CODE_BAD_EMAIL = -3                 #too long, no character, invalid email address
     CODE_BAD_PASSWORD = -4              #too long or no character
     CODE_FAIL_PASSWORD_CONFIRM = -5     #password does not match
+    CODE_BAD_CREDENTIAL = -6            #Invalid username and password combination
 
     user = models.OneToOneField(User)
     goals = models.ManyToManyField(Goal)
     
+  
     @classmethod
     def create(self, username, email, password):
         user = User.objects.create_user(username, email, password)
         user.save()
         return self.CODE_SUCCESS
+    
+    @classmethod
+    def login(self, username, password):
+        if ((User.objects.filter(username = username).count()) == 0):
+            return self.CODE_BAD_CREDENTIAL
+        else:
+            userid = User.objects.get(username = username)
+            if (userid.password != password):
+                return self.CODE_BAD_CREDENTIAL
+            else:
+                return self.CODE_SUCCESS
 
     @classmethod
     def delete(self, username, email, password):

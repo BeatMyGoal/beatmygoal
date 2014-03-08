@@ -48,6 +48,17 @@ def goal_remove_goal(request):
 #	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 
+def user_login(request):
+    if request.method == "GET":
+        return render(request, 'base.html')
+    
+    elif request.method == "POST":
+        data = json.loads(request.body)
+        user_id = data["user_id"]
+        user_pw = data["user_pw"]
+        response = BeatMyGoalUser.login(user_id, user_pw)
+        return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+
 
 def view_user(request):
 	try:
