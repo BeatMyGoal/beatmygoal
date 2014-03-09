@@ -1,10 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
-
-
-
 class Goal(models.Model):
     CODE_SUCCESS = 1
     CODE_BAD_USERNAME = -2
@@ -101,8 +97,8 @@ class BeatMyGoalUser(User):
     * username,
     * email,
     * password,
-    first_name,
-    last_name,
+    * first_name,
+    * last_name,
     is_staff,
     is_active,
     is_superuser,
@@ -119,11 +115,16 @@ class BeatMyGoalUser(User):
     CODE_BAD_PASSWORD = -4              #too long or no character
     CODE_FAIL_PASSWORD_CONFIRM = -5     #password does not match
     CODE_BAD_CREDENTIAL = -6            #Invalid username and password combination
+    CODE_BAD_USERID = -7
+
+    MAX_LEN_USERNAME = 30
+    MAX_LEN_LASTNAME = 30
+    MAX_LEN_FIRSTNAME = 30
+    MAX_LEN_EMAIL = 30
 
     user = models.OneToOneField(User)
     goals = models.ManyToManyField(Goal)
     
-  
     @classmethod
     def create(self, username, email, password):
         user = User.objects.create_user(username, email, password)
@@ -152,7 +153,7 @@ class BeatMyGoalUser(User):
             user = User.objects.get(id=userid)
             return user
         except:
-            return -1 #TODO ERROR CODES
+            return User.CODE_BAD_USERID
 
     @classmethod
     def getUserByName(self, username):
@@ -160,7 +161,7 @@ class BeatMyGoalUser(User):
             user = User.objects.get(username=username)
             return user
         except Exception, e:
-            return -1;
+            return User.CODE_BAD_USERNAME
 
     @classmethod
     def updateUser(self, user, username=None, email=None, password=None):
@@ -169,14 +170,16 @@ class BeatMyGoalUser(User):
         user.password = user.password if password is None else password
         user.save()
         return self.CODE_SUCCESS
-        
-    def editUser(self, user_id, user_name, user_firstName, user_lastName, user_email):
-        user = getUserById(user_id)
-        
+    
+    @classmethod
+    def updateUser2(self, user_id, user_name, user_firstName, user_lastName, user_email):
+    	try:
+    		user = self.getUserById(user_id)
+        except:
+        	return self.CODE_BAD_USERID
         user.username = user_name
         user.first_name = user_firstName
         user.last_name = user_lastName
         user.email = user_email
         user.save()
-
-        return self.CODE_SUCCESS
+    	return self.CODE_SUCCESS

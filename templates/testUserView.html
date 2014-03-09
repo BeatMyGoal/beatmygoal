@@ -46,7 +46,7 @@
 			</label>
 		</div>
 		<div class="large-6 columns">
-			<label for="Userid"> Userid
+			<label for="User id"> Userid
 				<input id='Userid' type="text" value="">
 			</label>
 		</div>
@@ -62,11 +62,15 @@
 	</div>
 
 	
+
+	
 	<center>
-	"Reset" : Reset all input box <BR> 
+	<p><div id="message1" class="message"></div>
+	
+	<BR>"Reset" : Reset all input box <BR> 
 	"View User" : load "userid" and show the information of the id <BR> 
 	"Edit User" : load every info above, edit userinfo to our database
-	 <p><div id="message" class="message"></div>
+	 <p><div id="message2" class="message"></div>
 
 
 
@@ -91,8 +95,8 @@ $('#reset_button').click(function() {
 	document.getElementById('Error_Code').value = "";
 	document.getElementById('Userid').value = "";
 
-	$('#message').html("***** Reset button pushed ******")
-
+	$('#message1').html("")
+	$('#message2').html("***** Reset button pushed ******")
 	return false
 
 });
@@ -101,14 +105,14 @@ $('#reset_button').click(function() {
 /* View User button
 	Load user info by userid and put them into input boxes */
 $('#view_user_button').click(function() {
-	userid = $('#Userid').val()
-	userid = parseInt(userid)
+	$('#message1').html("")
+	userid = parseInt($('#Userid').val())
 
 	$.ajax({
 		type: "POST",
 		url: "/users/test/view",
 		data: JSON.stringify({
-		user_id: userid
+			user_id: userid
 		}),
 		success: function(data) {
 			document.getElementById('Username').value = data["username"];
@@ -116,12 +120,13 @@ $('#view_user_button').click(function() {
 			document.getElementById('First_Name').value = data["firstName"];
 			document.getElementById('Last_Name').value = data["lastName"];
 			document.getElementById('Error_Code').value = data["errCode"];
+			$('#message1').html("***** View User loaded successfully ******")
 	    },
 		contentType: "application/json",
 		dataType: "json",
 	});
 
-	$('#message').html("***** View User button pushed ******")
+	$('#message2').html("***** View User button pushed ******")
    	return false;
 
 });
@@ -129,10 +134,29 @@ $('#view_user_button').click(function() {
 
 /* View User button
 	Edit all information of the user (userid) with the values of input boxes */
+
 $('#edit_user_button').click(function() {
+	$('#message1').html("")
 
-   	$('#message').html("***** Edit User button pushed ******")
+	$.ajax({
+		type: "POST",
+		url: "/users/test/edit",
+		data: JSON.stringify({
+			user_id: parseInt($('#Userid').val()),
+			user_name : $('#Username').val(),
+			user_firstName : $('#First_Name').val(),
+			user_lastName : $('#Last_Name').val(),
+			user_email : $('#Email').val()
+		}),
+		success: function(data) {
+			document.getElementById('Error_Code').value = data["errCode"];
+			$('#message1').html("***** User info edited successfully ******")
+	    },
+		contentType: "application/json",
+		dataType: "json",
+	});
 
+   	$('#message2').html("***** Edit User button pushed ******")
    	return false;
 });
 
