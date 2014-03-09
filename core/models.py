@@ -183,3 +183,12 @@ class BeatMyGoalUser(User):
         user.email = user_email
         user.save()
     	return self.CODE_SUCCESS
+
+    @classmethod
+    def deleteUser(self, user_id):
+    	try:
+    		user = self.getUserById(user_id)
+        except:
+        	return self.CODE_BAD_USERID
+        user.delete()
+        return self.CODE_SUCCESS

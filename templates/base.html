@@ -26,8 +26,11 @@
         <a href="#" data-dropdown="loginDrop">Login</a>
         <div id="loginDrop" class="f-dropdown content">
           <label for="username"></label><input type="text" placeholder='Username' id='username'>
-          <br>
-         <label for="password"></label><input type="password" placeholder='Password' id='password'>
+          <label for="password"></label><input type="password" placeholder='Password' id='password'>
+            <div class="row">
+            <a id = "Login" type="submit" class="button tiny">Login</a> 
+            <a id = "Register" type="submit" class="button tiny">Register</a>
+          </div>
         </div>
       </li>
 
@@ -35,8 +38,11 @@
 
     <!-- Left Nav Section -->
     <ul class="left">
-      <li><a href="#">Home</a></li>
+      <li><a href="#">DashBoard</a></li>
+      <li><a hreft="#">My Profile</a></li>
       <li><a hreft="#">Goals</a></li>
+      <li><a hreft="#">User</a></li>
+      <li><a hreft="#">Search Goals</a></li>
     </ul>
   </section>
 </nav>
@@ -44,6 +50,24 @@
 
     {% block content %}
     {% endblock %}
+
+
+
+<footer class="row">
+  <div class="large-12 columns">
+    <hr />
+    <div class="row">
+      <div class="large-8 columns">
+        <p> <font size = "2"> Sol Park, Hyosang (Kyle) Kim, Jay Patel, Arjun Rao, Chang (Tim) Hyon, Hyun (Chris) Ho Kim</font> </p>
+      </div>
+      <div class="large-3 columns">
+        <ul class="inline-list right">
+          <p>&copy; BeatMyGoal </p>
+        </ul>
+      </div>
+    </div>
+  </div> 
+</footer>
 
     <script src="{% static "js/vendor/jquery.js" %}"></script>
     <script src="{% static "js/foundation.min.js" %}"></script>

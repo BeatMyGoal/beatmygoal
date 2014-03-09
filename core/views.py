@@ -111,7 +111,6 @@ def edit_user(request, uid):
 		}
 		return HttpResponse(json.dumps(res), content_type = 'application/json')
 
-
 	
 def test_user(request):
 	return render(request, 'testUserView.html')
@@ -129,9 +128,7 @@ def view_user2(request):
 	user_firstName = user.first_name
 	user_lastName = user.last_name
 	user_email = user.email
-
-	response = 1 		   #errCode
-	return HttpResponse(json.dumps({"errCode": response, "username" : user_name,"firstName" : user_firstName, 
+	return HttpResponse(json.dumps({"errCode": 1, "username" : user_name,"firstName" : user_firstName, 
 									"lastName" : user_lastName, "email" : user_email}), content_type = "application/json")
 
 @csrf_exempt
@@ -150,15 +147,16 @@ def edit_user2(request):
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 
-
+csrf_exempt
 def delete_user(request):
 	try:
 		req = json.loads(request.body)
 		user_id = req["user_id"]
 	except:
 		return request.send_error(500)
-		
-		return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+	
+	response = BeatMyGoalUser.deleteUser(user_id)
+	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 
 def logout(request):
