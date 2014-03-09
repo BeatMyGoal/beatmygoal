@@ -168,7 +168,7 @@ class BeatMyGoalUser(User):
         user.email = user.email if email is None else email
         user.password = user.password if password is None else password
         user.save()
-        return 1
+        return self.CODE_SUCCESS
         
     def editUser(self, user_id, user_name, user_firstName, user_lastName, user_email):
         user = getUserById(user_id)
