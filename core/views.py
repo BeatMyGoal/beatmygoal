@@ -14,10 +14,6 @@ import json
 def test(request):
     return render(request, 'index.html', {"foo": "bar"})
 
-def logout(request):
-    return None
-
-
 @csrf_exempt
 def goal_create_goal(request):
 	data = json.loads(request.body)
@@ -84,6 +80,21 @@ def user_login(request):
         user_pw = data["user_pw"]
         response = BeatMyGoalUser.login(user_id, user_pw)
         return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+
+def create_user(request):
+    if request.method == "GET":
+        return render(request, 'createUser.html')
+    elif request.method == "POST":
+        username = data["username"]
+        email = data["email"]
+        password = data["password"]
+        response = BeatMyGoalUser.create(username, email, password)
+        if response > 0:
+            return None
+        else:
+            return None        
+    else:
+        pass
 
 
 def view_user(request, uid):
