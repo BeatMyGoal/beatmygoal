@@ -11,4 +11,5 @@ urlpatterns = patterns('',
                        # url(r'^blog/', include('blog.urls')),
                        url(r'^$', core.views.test),
                        url(r'^admin/', include(admin.site.urls)),
+                       url(r'^users/login', core.views.user_login, name='user_login'),
 )
