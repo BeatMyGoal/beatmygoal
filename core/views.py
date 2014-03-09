@@ -76,7 +76,7 @@ def goal_view_goal(request):
 
 def user_login(request):
     if request.method == "GET":
-        return render(request, 'base.html')
+        return render(request, 'login.html')
     
     elif request.method == "POST":
         data = json.loads(request.body)
@@ -167,3 +167,4 @@ def delete_user(request):
 
 def logout(request):
     return None
+
