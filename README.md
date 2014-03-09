@@ -6,3 +6,11 @@ To set up and update venv:
 - `source venv/bin/active`
 - Use `pip install --allow-all-external -r requirements.txt` to download site packages
 
+To update to heroku:
+- make sure you have Heroku Toolbelt
+- `heroku login`
+- `heroku git:remote --app beatmygoal`
+- `git push heroku master`
+
+
+
