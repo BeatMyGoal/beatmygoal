@@ -88,8 +88,6 @@ class Goal(models.Model):
             return self.CODE_BAD_EDIT
 
 
-
-
     
 class BeatMyGoalUser(User):
     """
