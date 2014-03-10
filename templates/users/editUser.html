@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 
+{% load staticfiles %}
+
 {% block title %}Edit Profile{% endblock %}
 
 {% block content %}
 
-<form>
+<script src="{% static 'js/users/editUser.js' %}"></script>
+
+<form id="editForm">
 	<div class="row">
 		<div class="large-6 columns">
 			<label for="fname"> First Name
@@ -25,7 +29,7 @@
 		</div>
 		<div class="large-6 columns">
 			<label for='email'>Email
-				<input label='email' type="text" placeholder="Email" value="{{ email|default:'' }}">
+				<input id='email' type="text" placeholder="Email" value="{{ email|default:'' }}">
 			</label>
 		</div>
 	</div>
@@ -40,3 +44,4 @@
 </form>
 
 {% endblock %}
+

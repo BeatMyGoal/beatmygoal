@@ -108,25 +108,29 @@ def view_user(request, uid):
 		return render(request, 'users/viewUser.html', {
 			"user" : user
 		})
-
+@csrf_exempt
 def edit_user(request, uid):
+	#user = request.user
 	user = BeatMyGoalUser.getUserById(uid)
-	print user.email
-	if request.method == "GET":
-		return render(request, 'users/editUser.html', {
-			"username": user.username,
-			"email":	user.email,
-		})
-	elif request.method == "POST":
-		data = json.loads(request.body)
-		username = data['username']
-		email = data['email']
-		response = BeatMyGoalUser.updateUser(user, username, email)
-		res = {
-			"errCode" : response
-		}
-		return HttpResponse(json.dumps(res), content_type = 'application/json')
-
+	if True or (user.is_authenticated() and user.id == uid):
+		if request.method == "GET":
+			return render(request, 'users/editUser.html', {
+				"username": user.username,
+				"email":	user.email,
+			})
+		elif request.method == "POST":
+			data = json.loads(request.body)
+			print data
+			username = data['username']
+			email = data['email']
+			response = BeatMyGoalUser.updateUser(user, username, email)
+			res = {
+				"errCode" : response,
+				"redirect": "/users/" + uid,
+			}
+			return HttpResponse(json.dumps(res), content_type = 'application/json')
+	else:
+		request.send_error(403)
 	
 def test_user(request):
 	return render(request, 'testUserView.html')
@@ -163,7 +167,7 @@ def edit_user2(request):
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 
-csrf_exempt
+@csrf_exempt
 def delete_user(request):
 	try:
 		req = json.loads(request.body)
