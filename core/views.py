@@ -88,19 +88,21 @@ def user_login(request):
             return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 def create_user(request):
+    print request.method
     if request.method == "GET":
         return render(request, 'users/createUser.html')
     elif request.method == "POST":
-        username = data["username"]
-        email = data["email"]
-        password = data["password"]
+        data = json.loads(request.body)
+        username, email, password = data["username"], data["email"], data["password"]
         response = BeatMyGoalUser.create(username, email, password)
-        if response > 0:
-            return None
+        if "errors" in response:
+            return HttpResponse(json.dumps({"errors": response}), 
+                                content_type = "application/json")            
         else:
-            return None        
+            return HttpResponseRedirect('/dashboard/')
+
     else:
-        pass
+        return HttpResponse("Invalid request", status=500)
 
 
 def view_user(request, uid):

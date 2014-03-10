@@ -6,23 +6,27 @@
 
 {% block content %}
 
+<script src="{% static 'js/users/createUser.js' %}"></script>
 
 <div class="row">
 
   <div class="large-6 columns">
     <h1>Register</h1>
     <div class="panel">
+      <form id="register-form">
       <label>Username</label>
-      <input type="text" placeholder="" />
+      <input id="register-username" type="text" placeholder="" />
 
       <label>Email</label>
-      <input type="text" placeholder="" />
+      <input id="register-email" type="text" placeholder="" />
 
       <label>Password</label>
-      <input type="text" placeholder="" />
+      <input id="register-password" type="text" placeholder="" />
 
-      <a id = "Register" type="submit" class="button">Register</a>
-      <br>
+      <button id="register-submit">Register</button>
+      <!--<input id="register-submit" type="submit" class="button" value="Register">Register</input> -->
+      <br>    
+    </form>
     </div>
   </div>
 
@@ -39,9 +43,5 @@
 
 
 </div>
-
-
-
-
 
 {% endblock %}
