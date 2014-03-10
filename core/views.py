@@ -8,11 +8,13 @@ from django.template import RequestContext, loader
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 import json
-# Create your views here.
+from django.contrib.auth import authenticate, login
+
 
 
 def test(request):
     return render(request, 'index.html', {"foo": "bar"})
+
 
 @csrf_exempt
 def goal_create_goal(request):
@@ -69,17 +71,19 @@ def goal_view_goal(request):
 #	response = Goal().remove_user(goal_id, user_id)
 #	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
-
 def user_login(request):
     if request.method == "GET":
         return render(request, 'login.html')
     
     elif request.method == "POST":
-        data = json.loads(request.body)
-        user_id = data["user_id"]
-        user_pw = data["user_pw"]
-        response = BeatMyGoalUser.login(user_id, user_pw)
-        return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+        username= data["username"]
+        password= data["password"]
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+        else:
+            response = -6
+            return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 def create_user(request):
     if request.method == "GET":

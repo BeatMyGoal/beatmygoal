@@ -130,17 +130,6 @@ class BeatMyGoalUser(User):
         user = User.objects.create_user(username, email, password)
         user.save()
         return self.CODE_SUCCESS
-    
-    @classmethod
-    def login(self, username, password):
-        if ((User.objects.filter(username = username).count()) == 0):
-            return self.CODE_BAD_CREDENTIAL
-        else:
-            userid = User.objects.get(username = username)
-            if (userid.password != password):
-                return self.CODE_BAD_CREDENTIAL
-            else:
-                return self.CODE_SUCCESS
 
     @classmethod
     def delete(self, username, email, password):
@@ -184,6 +173,7 @@ class BeatMyGoalUser(User):
         user.save()
     	return self.CODE_SUCCESS
 
+
     @classmethod
     def deleteUser(self, user_id):
     	try:
@@ -192,3 +182,4 @@ class BeatMyGoalUser(User):
         	return self.CODE_BAD_USERID
         user.delete()
         return self.CODE_SUCCESS
+
