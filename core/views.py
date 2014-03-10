@@ -133,7 +133,7 @@ def edit_user(request, uid):
 			}
 			return HttpResponse(json.dumps(res), content_type = 'application/json')
 	else:
-		request.send_error(403)
+		return HttpResponse("Invalid request", status=500)
 	
 def test_user(request):
 	return render(request, 'testUserView.html')
