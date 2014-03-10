@@ -83,7 +83,7 @@ def user_login(request):
 
 def create_user(request):
     if request.method == "GET":
-        return render(request, 'createUser.html')
+        return render(request, 'users/createUser.html')
     elif request.method == "POST":
         username = data["username"]
         email = data["email"]
@@ -100,7 +100,7 @@ def create_user(request):
 def view_user(request, uid):
 	if request.method == "GET":
 		user = BeatMyGoalUser.getUserById(uid)
-		return render(request, 'viewUser.html', {
+		return render(request, 'users/viewUser.html', {
 			"user" : user
 		})
 
@@ -108,7 +108,7 @@ def edit_user(request, uid):
 	user = BeatMyGoalUser.getUserById(uid)
 	print user.email
 	if request.method == "GET":
-		return render(request, 'editUser.html', {
+		return render(request, 'users/editUser.html', {
 			"username": user.username,
 			"email":	user.email,
 		})
