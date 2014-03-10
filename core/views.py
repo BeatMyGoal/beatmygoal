@@ -47,6 +47,7 @@ def goal_edit_goal(request):
 	response = Goal.edit(goal_id, user, edits)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
+@csrf_exempt
 def goal_view_goal(request):
 	data = json.loads(request.body)
 	goal_id = data["goal_id"]
