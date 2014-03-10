@@ -8,14 +8,11 @@ from django.template import RequestContext, loader
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 import json
-# Create your views here.
-
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponseRedirect
 
 def test(request):
     return render(request, 'index.html', {"foo": "bar"})
-
-def logout(request):
-    return None
 
 
 @csrf_exempt
@@ -74,61 +71,44 @@ def goal_view_goal(request):
 #	response = Goal().remove_user(goal_id, user_id)
 #	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
-
 def user_login(request):
     if request.method == "GET":
         return render(request, 'login.html')
     
     elif request.method == "POST":
         data = json.loads(request.body)
-        user_id = data["user_id"]
-        user_pw = data["user_pw"]
-        response = BeatMyGoalUser.login(user_id, user_pw)
-        return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+        username= data["username"]
+        password= data["password"]
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect('/dashboard/')
+        else:
+            response = -6
+            return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+
+def create_user(request):
+    if request.method == "GET":
+        return render(request, 'createUser.html')
+    elif request.method == "POST":
+        username = data["username"]
+        email = data["email"]
+        password = data["password"]
+        response = BeatMyGoalUser.create(username, email, password)
+        if response > 0:
+            return None
+        else:
+            return None        
+    else:
+        pass
 
 
-def view_user(request):
-	try:
-		data = json.loads(request.body)
-		user_id = data["user_id"]
-	except:
-		return request.send_error(500)
-
-	user = BeatMyGoalUser.getUserById(user_id)
-	user_name = user.username
-	user_firstName = user.first_name
-	user_lastName = user.last_name
-	user_email = user.email
-
-	response = 1 		   #errCode
-	return HttpResponse(json.dumps({"errCode": response, "username" : user_name,"firstName" : user_firstName, 
-									"lastName" : user_lastName, "email" : user_email}), content_type = "application/json")
-
-def edit_user2(request):
-	try:
-		data = json.loads(request.body)
-		user_id = data["user_id"]
-		user_name = data["user_name"]
-		user_firstName = data["user_firstName"]
-		user_lastName = data["user_lastName"]
-		user_email = data["user_email"]
-	except:
-		return request.send_error(500)
-
-
-	response = BeatMyGoalUser.editUser(user_id, user_name, user_firstName, user_lastName, user_email)
-
-	return HttpResponse(json.dumps({"errCode": response, "username" : username,"firstName" : user_firstName, 
-									"lastName" : user_lastName, "email" : email}), content_type = "application/json")
-
-
-def view_user2(request, uid):
+def view_user(request, uid):
 	if request.method == "GET":
 		user = BeatMyGoalUser.getUserById(uid)
 		return render(request, 'viewUser.html', {
 			"user" : user
 		})
-
 
 def edit_user(request, uid):
 	user = BeatMyGoalUser.getUserById(uid)
@@ -150,20 +130,50 @@ def edit_user(request, uid):
 
 	
 def test_user(request):
-	return render(request, 'testUserView.html', {"foo": "bar"})
+	return render(request, 'testUserView.html')
+
+@csrf_exempt
+def view_user2(request):
+	try:
+		data = json.loads(request.body)
+		user_id = data["user_id"]
+	except:
+		return request.send_error(500)
+
+	user = BeatMyGoalUser.getUserById(user_id)
+	user_name = user.username
+	user_firstName = user.first_name
+	user_lastName = user.last_name
+	user_email = user.email
+	return HttpResponse(json.dumps({"errCode": 1, "username" : user_name,"firstName" : user_firstName, 
+									"lastName" : user_lastName, "email" : user_email}), content_type = "application/json")
+
+@csrf_exempt
+def edit_user2(request):
+	try:
+		data = json.loads(request.body)
+		user_id = data["user_id"]
+		user_name = data["user_name"]
+		user_firstName = data["user_firstName"]
+		user_lastName = data["user_lastName"]
+		user_email = data["user_email"]
+	except:
+		return request.send_error(500)
+
+	response = BeatMyGoalUser.updateUser2(user_id, user_name, user_firstName, user_lastName, user_email)
+	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 
-
-
-
+csrf_exempt
 def delete_user(request):
 	try:
 		req = json.loads(request.body)
 		user_id = req["user_id"]
 	except:
 		return request.send_error(500)
-		
-		return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+	
+	response = BeatMyGoalUser.deleteUser(user_id)
+	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 
 def logout(request):

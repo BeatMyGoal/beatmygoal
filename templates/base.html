@@ -8,6 +8,7 @@
     <title>{% block title %}BeatMyGoal{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/foundation.css' %}" />
     <script src="{% static 'js/vendor/modernizr.js' %}"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
   </head>
   <body>
 
@@ -15,7 +16,7 @@
 <nav class="top-bar" data-topbar>
   <ul class="title-area">
     <li class="name">
-      <h1><a href="#">BeatMyGoal</a></h1>
+      <h1><a href="/"><i class="fa fa-trophy"></i> BeatMyGoal</a></h1>
     </li>
   </ul>
 
@@ -26,8 +27,12 @@
         <a href="#" data-dropdown="loginDrop">Login</a>
         <div id="loginDrop" class="f-dropdown content">
           <label for="username"></label><input type="text" placeholder='Username' id='username'>
-          <br>
-         <label for="password"></label><input type="password" placeholder='Password' id='password'>
+          <label for="password"></label><input type="password" placeholder='Password' id='password'>
+            <div class="row">
+            <a id = "Login" type="submit" class="button tiny">Login</a> 
+	    <hr>
+            <a href="users/create" id ="Register" type="submit" class="button tiny">New User?</a>
+          </div>
         </div>
       </li>
 
@@ -35,8 +40,11 @@
 
     <!-- Left Nav Section -->
     <ul class="left">
-      <li><a href="#">Home</a></li>
+      <li><a href="#">Dashboard</a></li>
+      <li><a hreft="#">My Profile</a></li>
       <li><a hreft="#">Goals</a></li>
+      <li><a hreft="#">User</a></li>
+      <li><a hreft="#">Search Goals</a></li>
     </ul>
   </section>
 </nav>
@@ -44,6 +52,24 @@
 
     {% block content %}
     {% endblock %}
+
+
+
+<footer class="row">
+  <div class="large-12 columns">
+    <hr />
+    <div class="row">
+      <div class="large-8 columns">
+        <p> <font size = "2"> Sol Park, Hyosang (Kyle) Kim, Jay Patel, Arjun Rao, Chang (Tim) Hyon, Hyun (Chris) Ho Kim</font> </p>
+      </div>
+      <div class="large-3 columns">
+        <ul class="inline-list right">
+          <p>&copy; BeatMyGoal </p>
+        </ul>
+      </div>
+    </div>
+  </div> 
+</footer>
 
     <script src="{% static "js/vendor/jquery.js" %}"></script>
     <script src="{% static "js/foundation.min.js" %}"></script>

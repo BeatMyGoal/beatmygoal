@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}BeatMyGoal | Register{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+
+  <div class="large-6 columns">
+    <h1>Register</h1>
+    <div class="panel">
+      <label>Username</label>
+      <input type="text" placeholder="" />
+
+      <label>Email</label>
+      <input type="text" placeholder="" />
+
+      <label>Password</label>
+      <input type="text" placeholder="" />
+
+      <a id = "Register" type="submit" class="button">Register</a>
+      <br>
+    </div>
+  </div>
+
+  <div class="large-6 columns">
+
+    <div  style="visibility:hidden"><h1>Coming soon!</h1></div>
+    <div class="panel">
+      <h3>Coming soon!</h3>
+
+      <img src="{% static 'img/register-twitter-facebook.png' %}"/>
+      <br>
+    </div>
+  </div>
+
+
+</div>
+
+
+
+
+
+{% endblock %}
