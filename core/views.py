@@ -11,6 +11,7 @@ def user_login(request):
         return render(request, 'login.html')
     
     elif request.method == "POST":
+
         data = json.loads(request.body)
         username= data["username"]
         password= data["password"]
