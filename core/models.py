@@ -142,7 +142,7 @@ class BeatMyGoalUser(User):
             user = User.objects.get(id=userid)
             return user
         except:
-            return User.CODE_BAD_USERID
+            return self.CODE_BAD_USERID
 
     @classmethod
     def getUserByName(self, username):
@@ -150,7 +150,7 @@ class BeatMyGoalUser(User):
             user = User.objects.get(username=username)
             return user
         except Exception, e:
-            return User.CODE_BAD_USERNAME
+            return self.CODE_BAD_USERNAME
 
     @classmethod
     def updateUser(self, user, username=None, email=None, password=None):
