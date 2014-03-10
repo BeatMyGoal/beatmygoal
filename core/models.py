@@ -6,7 +6,7 @@ class Goal(models.Model):
     CODE_BAD_USERNAME = -2
     CODE_BAD_TITLE = -3
     CODE_BAD_DESCRIPTION = -4
-    CODE_USERNAME_DNE = -5
+
     CODE_BAD_PRIZE = -6
     CODE_GOAL_DNE = -7
     CODE_BAD_AUTH = -8
@@ -35,7 +35,7 @@ class Goal(models.Model):
         if not creator or len(description)>self.MAX_LEN_DESC:
             return self.CODE_BAD_DESCRIPTION
         if not prize or len(prize)>self.MAX_LEN_PRIZE:
-            return self.CODE_BAD_DESCRIPTION
+            return self.CODE_BAD_PRIZE
         if not goal_type or len(goal_type)>self.MAX_LEN_TYPE:
             return self.CODE_BAD_DESCRIPTION
         try:
@@ -54,8 +54,8 @@ class Goal(models.Model):
 
         try:
             goal = Goal.objects.get(id=goal_id)
-            if not user or user != goal.creator:
-                return CODE_BAD_AUTH
+            if user != goal.creator:
+                return self.CODE_BAD_AUTH
                 
             goal.delete()
             return self.CODE_SUCCESS
@@ -69,9 +69,9 @@ class Goal(models.Model):
             return self.CODE_GOAL_DNE
         try:
             goal = Goal.objects.get(id=goal_id)
-            if not user or user != goal.creator:
-                return CODE_BAD_AUTH
+            
         except:
+
             return self.CODE_GOAL_DNE
 
 
