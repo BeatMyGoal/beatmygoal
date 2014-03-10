@@ -86,7 +86,7 @@ def user_login(request):
         else:
             response = -6
             return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
-
+@csrf_exempt
 def create_user(request):
     print request.method
     if request.method == "GET":
@@ -99,7 +99,7 @@ def create_user(request):
             return HttpResponse(json.dumps({"errors": response}), 
                                 content_type = "application/json")            
         else:
-            return HttpResponseRedirect('/dashboard/')
+            return HttpResponse(json.dumps({"redirect" : "/dashboard/"}), content_type = "application/json")
 
     else:
         return HttpResponse("Invalid request", status=500)
