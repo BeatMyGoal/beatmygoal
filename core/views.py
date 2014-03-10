@@ -9,8 +9,7 @@ from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.contrib.auth import authenticate, login
-
-
+from django.http import HttpResponseRedirect
 
 def test(request):
     return render(request, 'index.html', {"foo": "bar"})
@@ -82,6 +81,7 @@ def user_login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
+            return HttpResponseRedirect('/dashboard/')
         else:
             response = -6
             return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
