@@ -26,11 +26,19 @@
 
         <!-- Left Nav Section -->
         <ul class="left">
+
+
           <li><a href="/dashboard">Dashboard</a></li>
-          <li><a hreft="#">My Profile</a></li>
-          <li><a href="/goals/create">Goals</a></li>
-          <li><a hreft="#">User</a></li>
-          <li><a hreft="#">Search Goals</a></li>
+
+          <!-- If request.user.is_authenticated(), hide these two buttons -->
+          <li><a href="/users/profile">My Profile</a></li>
+          <li><a href="/goals/create">Create Goal</a></li>
+
+
+          <li><a href="/users/create">Create User</a></li>
+          <li><a href="/users/logout">Logout</a></li>
+
+>>>>>>> 29cc0c931bbd6271efd9dfa5ce82ebf74404fb23
         </ul>
       </section>
     </nav>
