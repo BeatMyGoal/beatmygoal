@@ -16,6 +16,16 @@ def index(request):
 
 
 @csrf_exempt
+def dashboard(request):
+	all_goals = Goal.objects.all()
+	print(all_goals)
+	goals = all_goals[0:10]
+	print(goals)
+	return render(request, 'dashboard/dashboard_main.html', {
+		"goals": goals
+	})
+
+@csrf_exempt
 def goal_create_goal(request):
 	if request.method == "GET":
 		return render(request, 'goals/createGoal.html')
