@@ -22,3 +22,21 @@ class RegistrationTests(TestCase):
     	pass
 
 # Create your tests here
+class EditUserTests(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def postJSON(self, url, data):
+        return self.factory.post(url, content_type="application/json", data=data)
+
+    def testEditUsernamer(self):
+        pass
+
+    def testEditEmail(self):
+        pass
+
+    def testUsernameTaken(self):
+        pass
+
+    def testUserIsAuthenticated(self):
+        pass
