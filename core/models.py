@@ -17,7 +17,7 @@ class Goal(models.Model):
     MAX_LEN_PRIZE = 50
     MAX_LEN_TYPE = 20
 
-    creator = models.ForeignKey(User)
+    creator = models.ForeignKey(BeatMyGoalUser)
     title = models.CharField(max_length=MAX_LEN_TITLE)
     description = models.CharField(max_length=MAX_LEN_DESC)
     prize = models.TextField(max_length=MAX_LEN_PRIZE)
@@ -50,7 +50,7 @@ class Goal(models.Model):
         if errors:
             return { "errors" : errors }
         else:
-            goal = Goal.objects.create(title=title, description=description, creator=User.objects.get(username=creator), prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0 )
+            goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0 )
             goal.save()
             return {"success" : self.CODE_SUCCESS, "goal" : goal }
 
@@ -132,7 +132,7 @@ class BeatMyGoalUser(User):
     EXISTING_EMAIL = "An account with this email address already exists."
 
 
-    user = models.OneToOneField(User)
+    #user = models.OneToOneField(User)
     goals = models.ManyToManyField(Goal)
 
     
@@ -141,16 +141,16 @@ class BeatMyGoalUser(User):
         from django.core.validators import validate_email
         errors = {}
         
-        if User.objects.filter(username=username).exists():
+        if BeatMyGoalUser.objects.filter(username=username).exists():
             errors['username'] = self.EXISTING_USERNAME
 
-        if User.objects.filter(email=email).exists():
+        if BeatMyGoalUser.objects.filter(email=email).exists():
             errors['email'] = self.EXISTING_EMAIL
 
         if errors:
             return { "errors" : errors }
         else:
-            user = User.objects.create_user(username, email, password)
+            user = BeatMyGoalUser(username=username, email=email, password=password)
             user.save()
             return {"success" : self.CODE_SUCCESS, "user" : user }
 
@@ -162,7 +162,7 @@ class BeatMyGoalUser(User):
     @classmethod
     def getUserById(self, userid):
         try:
-            user = User.objects.get(id=userid)
+            user = BeatMyGoalUser.objects.get(id=userid)
             return user
         except:
             return self.CODE_BAD_USERID
@@ -170,7 +170,7 @@ class BeatMyGoalUser(User):
     @classmethod
     def getUserByName(self, username):
         try:
-            user = User.objects.get(username=username)
+            user = BeatMyGoalUser.objects.get(username=username)
             return user
         except Exception, e:
             return self.CODE_BAD_USERNAME
