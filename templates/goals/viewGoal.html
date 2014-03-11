@@ -1,25 +1,119 @@
 {% extends "base.html" %}
 
-{% load staticfiles %}
-
-{% block title %}{% endblock %}
 
 {% block content %}
+<!doctype html>
+  
+<body>
 
-<base href="">
+  <div class="row">        
+    <!-- Main Content Section -->
+    <div class="large-9 push-3 columns">
+    
+    <form data-abide>
+      <fieldset>
+      <legend> <h2> {{goal.title}}</h2></legend>
+      <h7> BeatMyGoal login </h7><br><br>
+      <!--
+      / Facebook login / Tweeter login
+      -->  
 
-<div class="row">
-	<div class="large-6 columns">Title: <strong>{{ goal.title}}</strong></div>
-	<div class="large-6 columns">Description: <strong>{{ goal.description }}</strong></div>
-	<div class="large-6 columns">Creator: <strong>{{ goal.creator.email }}</strong></div>
-	<div class="large-6 columns">prize: <strong>{{ goal.prize}}</strong></div>
-	<div class="large-6 columns">date_created: <strong>{{ goal.date_created }}</strong></div>
-	<div class="large-6 columns">progress_value: <strong>{{ goal.progress_value }}</strong></div>
-	<div class="large-6 columns">goal_type: <strong>{{ goal.goal_type }}</strong></div>
-	<div class="large-6 columns">private_setting: <strong>{{ goal.private_setting }}</strong></div>
-</div>
-<div class="row">
-	<div class="large-12 columns"><a href="edit"><input type="button" value="Edit"></a></div>
-</div>
+      <div class="row">
+        <div class="large-6 columns">
+          <h5> Creator : {{ goal.creator.username }} </5>
+        </div>
+        <div class="large-6 columns">
+          <h5> Creator Email : {{ goal.creator.email }} </h5>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="large-9 columns">
+          <h5> Description : {{ goal.description }} </5>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="large-6 columns">
+          <h5> Created on : {{ goal.date_created }} </5>
+        </div>
+        <div class="large-6 columns">
+          <h5> Prize : {{ goal.prize }} </h5>
+        </div>
+      </div>
+
+
+      </fieldset>
+    </form>
+
+    <!-- buttons -->
+    <div class="row">
+      <ul class="button-group right">
+        <li><a id = "delete_user_button" type="submit" class="button tiny pull-5">Delete User</a></li>
+
+        <li><a id = "edit_user_button" type="submit" class="button tiny pull-3">Edit User</a></li>
+        </ul>
+    </div>
+
+      
+    
+    <!-- tabs -->
+    <dl class="section-container tabs" data-tab>
+        <dd class="active"><a href="#panel2-1">Goal History</a></dd>
+        <dd><a href="#panel2-2">graph</a></dd>
+        <dd><a href="#panel2-3">comments</a></dd>
+      </dl>
+      <div class="tabs-content">
+     
+        <div class="content active" id="panel2-1">
+          <p> List Goal History </p>
+          <p> List Goal History </p>
+          <p> List Goal History </p>
+          <p> List Goal History </p>
+          <p> List Goal History </p>
+
+        </div>
+        <div class="content" id="panel2-2">
+          <p> This feature is not implemented yet </p>
+        </div>
+        <div class="content" id="panel2-3">
+          <p> This feature is not implemented yet </p>
+        </div>
+
+      </div>
+    </div>
+
+        
+
+    <!-- Nav Sidebar (Left)-->
+    <div class="large-3 pull-9 columns">
+      <br> <p> <img src="http://placehold.it/320x300&text=photo" /></p>
+
+      <form data-abide>
+        <fieldset>
+        <legend> <h3> Participants </h3></legend>
+        <ul class="side-nav">
+          
+
+
+          <li><a href="#">Participant #1</a></li>
+          <li><a href="#">Participant #2</a></li>
+          <li><a href="#">Participant #3</a></li>
+          <li><a href="#">Participant #4</a></li>
+
+
+          
+        </ul>
+        </fieldset>
+      </form>
+    </div>
+  
+
+
+
+
+  </body>
+</html>
 
 {% endblock %}
+
