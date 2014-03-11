@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	$("#login").click(function(e) {
+	$("#login-form #login").click(function(e) {
 
 		var data = {
 			username: $("#username").val(),
