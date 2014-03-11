@@ -130,6 +130,7 @@ def view_user(request, uid):
 		return render(request, 'users/viewUser.html', {
 			"user" : user
 		})
+		
 @csrf_exempt
 def edit_user(request, uid):
 	user = request.user
