@@ -12,10 +12,10 @@
 
     <script src="{% static "js/vendor/jquery.js" %}"></script>
     <script src="{% static "js/foundation.min.js" %}"></script>
+    <script src="{% static 'js/foundation/foundation.equalizer.js' %}"></script>
   </head>
-  <body>
-
-    {% include "topbar.html" %} 
+  <body>  
+    {% include "topbar.html" %}
 
     {% block content %}
     {% endblock %}

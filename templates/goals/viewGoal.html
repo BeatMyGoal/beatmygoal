@@ -12,7 +12,7 @@
     
     <form data-abide>
       <fieldset>
-      <legend> <h2> Basic User Information</h2></legend>
+      <legend> <h2> {{goal.title}}</h2></legend>
       <h7> BeatMyGoal login </h7><br><br>
       <!--
       / Facebook login / Tweeter login
@@ -20,41 +20,29 @@
 
       <div class="row">
         <div class="large-6 columns">
-          <h5> Username : {{ user.username }} </5>
+          <h5> Creator : {{ goal.creator.username }} </5>
         </div>
         <div class="large-6 columns">
-          <h5> Email : {{ user.email }} </h5>
+          <h5> Creator Email : {{ goal.creator.email }} </h5>
         </div>
       </div>
 
-<!-- 
       <div class="row">
-        <div class="large-6 columns">
-          <label for="First Name"> First Name
-            <input id='First_Name' type="text" value="">
-          </label>
-        </div>
-        <div class="large-6 columns">
-          <label for="Last Name"> Last Name
-            <input id='Last_Name' type="text" value="">
-          </label>
+        <div class="large-9 columns">
+          <h5> Description : {{ goal.description }} </5>
         </div>
       </div>
 
       <div class="row">
         <div class="large-6 columns">
-          <label for="Error Code"> Error Code
-            <input id='Error_Code' type="text" value="">
-          </label>
+          <h5> Created on : {{ goal.date_created }} </5>
         </div>
         <div class="large-6 columns">
-          <label for="User id"> Userid
-            <input id='Userid' type="text" value="">
-          </label>
+          <h5> Prize : {{ goal.prize }} </h5>
         </div>
       </div>
 
--->
+
       </fieldset>
     </form>
 
@@ -62,9 +50,7 @@
     <div class="row">
       <ul class="button-group right">
         <li><a id = "delete_user_button" type="submit" class="button tiny pull-5">Delete User</a></li>
-        <!--
-        <li><a id = "password_change_button" type="submit" class="button tiny pull-3">Password Change</a></li>
-        -->
+
         <li><a id = "edit_user_button" type="submit" class="button tiny pull-3">Edit User</a></li>
         </ul>
     </div>
@@ -105,15 +91,15 @@
 
       <form data-abide>
         <fieldset>
-        <legend> <h3> Current Goal </h3></legend>
+        <legend> <h3> Participants </h3></legend>
         <ul class="side-nav">
           
 
 
-          <li><a href="#">List current Goals</a></li>
-          <li><a href="#">List current Goals</a></li>
-          <li><a href="#">List current Goals</a></li>
-          <li><a href="#">List current Goals</a></li>
+          <li><a href="#">Participant #1</a></li>
+          <li><a href="#">Participant #2</a></li>
+          <li><a href="#">Participant #3</a></li>
+          <li><a href="#">Participant #4</a></li>
 
 
           

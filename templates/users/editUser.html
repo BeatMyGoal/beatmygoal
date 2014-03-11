@@ -8,7 +8,7 @@
 
 <script src="{% static 'js/users/editUser.js' %}"></script>
 
-<form id="editForm">
+<form id="editForm" data-abide>
 	<div class="row">
 		<div class="large-6 columns">
 			<label for="fname"> First Name
@@ -24,20 +24,23 @@
 	<div class="row">
 		<div class="large-6 columns">
 			<label for="username">Username
-				<input id='username' type="text" placeholder="Username" value="{{ username|default:'' }}">
+				<input id='username' type="text" placeholder="Username" value="{{ username|default:'' }}" required pattern="alpha_numeric">
+				 <small id="username-error" class="error">Usernames can only contains letters or numbers.</small>
 			</label>
 		</div>
 		<div class="large-6 columns">
 			<label for='email'>Email
-				<input id='email' type="text" placeholder="Email" value="{{ email|default:'' }}">
+				<input id='email' type="email" placeholder="Email" value="{{ email|default:'' }}" required>
+				 <small id="email-error" class="error">An email address is required.</small>
 			</label>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="larger-12 columns">
-			<input id="save" type="button" value="Save">
-			<input id="cancel" type="button" value="Cancel">
+			<input id="save" type="button" class="button small radius" value="Save">
+			<input id="cancel" type="button" class="button small radius" value="Cancel">
+			<input type="button" id="delete" class="button small radius alert" value="Delete">
 		</div>
 		
 	</div>
