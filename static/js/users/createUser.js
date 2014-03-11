@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	$("#register-submit").click(function(e) {
-		
+
 		var data = {
 			username: $("#register-username").val(),
 			password: $("#register-password").val(),
@@ -22,15 +22,15 @@ $(document).ready(function() {
 				if ('errors' in data) {
 					var errors = data.errors;
 					if ('username' in errors) {
-						$('#username-error').text(data.errors.username).show();
+						$('#username-error').text(data.errors.username).css("display", "block");
 
 					}
 					if ('email' in errors) {
-						$('#email-error').text(data.errors.email).show();
+						$('#email-error').text(data.errors.email).css("display", "block");
 
 					}
 					if ('password' in errors) {
-						$('#password-error').text(data.errors.password).show();
+						$('#password-error').text(data.errors.password).css("display", "block");
 
 					}
 				}
