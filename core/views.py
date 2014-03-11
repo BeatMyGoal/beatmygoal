@@ -176,41 +176,6 @@ def edit_user(request, uid):
 			return HttpResponse(json.dumps(res), content_type = 'application/json')
 	else:
 		return HttpResponse("Invalid request", status=500)
-	
-def test_user(request):
-	return render(request, 'testUserView.html')
-
-@csrf_exempt
-def view_user2(request):
-	try:
-		data = json.loads(request.body)
-		user_id = data["user_id"]
-	except:
-		return request.send_error(500)
-
-	user = BeatMyGoalUser.getUserById(user_id)
-	user_name = user.username
-	user_firstName = user.first_name
-	user_lastName = user.last_name
-	user_email = user.email
-	return HttpResponse(json.dumps({"errCode": 1, "username" : user_name,"firstName" : user_firstName, 
-									"lastName" : user_lastName, "email" : user_email}), content_type = "application/json")
-
-@csrf_exempt
-def edit_user2(request):
-	try:
-		data = json.loads(request.body)
-		user_id = data["user_id"]
-		user_name = data["user_name"]
-		user_firstName = data["user_firstName"]
-		user_lastName = data["user_lastName"]
-		user_email = data["user_email"]
-	except:
-		return request.send_error(500)
-
-	response = BeatMyGoalUser.updateUser2(user_id, user_name, user_firstName, user_lastName, user_email)
-	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
-
 
 @csrf_exempt
 def delete_user(request, uid):
