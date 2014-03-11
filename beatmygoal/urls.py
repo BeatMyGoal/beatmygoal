@@ -25,6 +25,8 @@ urlpatterns = patterns('',
 	url(r'^users/test/$', core.views.test_user),
 	url(r'^users/test/view', core.views.view_user2),
 	url(r'^users/test/edit', core.views.edit_user2),                       
+
+    url(r'^dashboard', core.views.dashboard, name='dashboard'),                       
     
 
 )
