@@ -26,8 +26,8 @@ class Goal(models.Model):
     goal_type = models.CharField(max_length=MAX_LEN_TYPE)
     private_setting = models.IntegerField()
     
-
-
+    def __str__(self):
+        return str(self.title)
 
 
     @classmethod
@@ -135,7 +135,6 @@ class BeatMyGoalUser(User):
     #user = models.OneToOneField(User)
     goals = models.ManyToManyField(Goal)
 
-    
     @classmethod
     def create(self, username, email, password):
         from django.core.validators import validate_email
