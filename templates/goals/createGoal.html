@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}BeatMyGoal | Register{% endblock %}
+
+{% block content %}
+
+<script src="{% static 'js/goals/createGoal.js' %}"></script>
+
+<div class="row">
+
+  <div class="large-12 columns" data-equalizer>
+    <h1>Create Goal</h1>
+    <div class="panel" data-equalizer-watch>
+      <div data-abide id="register-form" >
+
+       <div>
+        <label>Title</label>
+        <input id="register-title" type="text" required />
+        <small id="title-error" class="error">A title is required</small>
+      </div>
+
+      
+      <div class="description-label">
+        <label>Description</label>
+        <input id="register-description" type="text" required  />
+        <small id="description-error" class="error">A description is required</small>
+      </div>
+
+      <div class="prize-label">
+        <label>Prize</label>
+        <input id="register-prize" type="text" required />
+        <small id="prize-error" class="error">A Prize is required</small>
+      </div>
+
+
+      <div class="row">
+        <div class="large-12 columns">
+          <label>Goal Type
+            <select>
+              <option value="type1">Type1</option>
+              <option value="type2">Type2</option>
+              <option value="type3">Type3</option>
+              <option value="type4">Type4</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+
+
+      <input id="register-submit" type="submit" class="button" value="Register">
+
+      <br>    
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}

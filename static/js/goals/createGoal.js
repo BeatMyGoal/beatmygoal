@@ -3,14 +3,17 @@ $(document).ready(function() {
 	$("#register-submit").click(function(e) {
 
 		var data = {
-			username: $("#register-username").val(),
-			password: $("#register-password").val(),
-			email: $("#register-email").val(),
+			title: $("#register-title").val(),
+			description: $("#register-description").val(),
+			creator: "come back to this",
+			prize: $("#register-prize").val(),
+			private_setting: 1.0,
+			goal_type:"some_type",
 		};
 
 		$.ajax({
 			type: "POST",
-			url: "/users/create",
+			url: "/goals/create",
 			data: JSON.stringify(data),
 			contentType: "application/json",
 			dataType: "json",

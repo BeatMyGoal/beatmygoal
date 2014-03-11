@@ -25,26 +25,34 @@ class Goal(models.Model):
     progress_value = models.FloatField()
     goal_type = models.CharField(max_length=MAX_LEN_TYPE)
     private_setting = models.IntegerField()
-     
+    
+
+
+
+
     @classmethod
     def create(self, title, description, creator, prize, private_setting, goal_type):
+        errors = {}
+
         if not title or len(title)>self.MAX_LEN_TITLE:
-            return self.CODE_BAD_TITLE
-        if not description or len(description)>self.MAX_LEN_DESC:
-            return self.CODE_BAD_DESCRIPTION
-        if not creator or len(description)>self.MAX_LEN_DESC:
-            return self.CODE_BAD_DESCRIPTION
+            errors['title'] = self.CODE_BAD_TITLE
+        if not description or len(description)>self.MAX_LEN_DESC or not goal_type or len(goal_type)>self.MAX_LEN_TYPE:
+            errors['description'] = self.CODE_BAD_DESCRIPTION
         if not prize or len(prize)>self.MAX_LEN_PRIZE:
-            return self.CODE_BAD_PRIZE
-        if not goal_type or len(goal_type)>self.MAX_LEN_TYPE:
-            return self.CODE_BAD_DESCRIPTION
+            errors['prize'] = self.CODE_BAD_PRIZE
+
         try:
             creator_user = BeatMyGoalUser.getUserByName(creator)
+            
+        except:
+            errors['user'] = self.CODE_BAD_USERNAME
+
+        if errors:
+            return { "errors" : errors }
+        else:
             goal = Goal.objects.create(title=title, description=description, creator=User.objects.get(username=creator), prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0 )
             goal.save()
-            return self.CODE_SUCCESS 
-        except:
-            return self.CODE_BAD_USERNAME
+            return {"success" : self.CODE_SUCCESS, "goal" : goal }
 
 
     @classmethod
@@ -120,20 +128,12 @@ class BeatMyGoalUser(User):
     MAX_LEN_FIRSTNAME = 30
     MAX_LEN_EMAIL = 30
 
-    BAD_USERNAME = "Please enter a username between 1 and %s characters." % MAX_LEN_USERNAME
-    BAD_PASSWORD = "Please enter a password between 1 and %s characters." % MAX_LEN_USERNAME
-    BAD_EMAIL = "Please enter a valid email address."
+    EXISTING_USERNAME = "An account with this username already exists."
+    EXISTING_EMAIL = "An account with this email address already exists."
+
 
     user = models.OneToOneField(User)
     goals = models.ManyToManyField(Goal)
-
-    @classmethod
-    def valid_username(self, u):
-        return 0 < len(u) < self.MAX_LEN_USERNAME
-
-    @classmethod
-    def valid_password(self, p):
-        return 0 < len(p) < self.MAX_LEN_USERNAME
 
     
     @classmethod
@@ -141,23 +141,18 @@ class BeatMyGoalUser(User):
         from django.core.validators import validate_email
         errors = {}
         
-        if not self.valid_username(username):
-            errors['username'] = self.BAD_USERNAME
+        if User.objects.filter(username=username).exists():
+            errors['username'] = self.EXISTING_USERNAME
 
-        if not self.valid_password(password):
-            errors['password'] = self.BAD_PASSWORD
-
-        try:
-            validate_email(email)
-        except:
-            errors['email'] = self.BAD_EMAIL
+        if User.objects.filter(email=email).exists():
+            errors['email'] = self.EXISTING_EMAIL
 
         if errors:
             return { "errors" : errors }
         else:
             user = User.objects.create_user(username, email, password)
             user.save()
-            return {"success" : self.CODE_SUCCESS}
+            return {"success" : self.CODE_SUCCESS, "user" : user }
 
     @classmethod
     def delete(self, username, email, password):
