@@ -106,10 +106,21 @@ def user_login(request):
             response = -6
             return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 @csrf_exempt
+def profile(request):
+    if request.user.is_authenticated():
+        user = request.user
+        uid = user.id
+        user_url = "/users/"+str(uid)+"/"
+        return HttpResponseRedirect(user_url)
+    else:
+        return HttpResponseRedirect('/users/create/')
+
+@csrf_exempt
 def create_user(request):
     print request.method
     if request.method == "GET":
-        return HttpResponseRedirect("/users/login")
+            return render(request, 'users/createUser.html', {
+            })
     elif request.method == "POST":
         data = json.loads(request.body)
         username, email, password = data["username"], data["email"], data["password"]
