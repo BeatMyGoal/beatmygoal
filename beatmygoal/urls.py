@@ -23,6 +23,7 @@ urlpatterns = patterns('',
 	url(r'^users/(\d)+/edit', core.views.edit_user, name='edit_user'),
 	url(r'^users/(\d)+/$', core.views.view_user, name='view_user'),
 	url(r'^users/login', core.views.user_login, name='user_login'),
+	url(r'^users/logout', core.views.user_logout, name='user_logout'),
 	
 	url(r'^users/test/$', core.views.test_user),
 	url(r'^users/test/view', core.views.view_user2),

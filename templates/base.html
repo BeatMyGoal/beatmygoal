@@ -28,6 +28,10 @@
         <!-- Right Nav Section -->
         <ul class="right">
           <li class="active">
+
+	    {% if user.is_authenticated %}
+	  <li><a href="/users/logout">Logout</a></li>
+	  {% else %}
             <a href="#" data-dropdown="loginDrop">Login</a>
             <div id="loginDrop" class="f-dropdown content">
               <label for="username"></label><input type="text" placeholder='Username' id='username'>
@@ -39,6 +43,7 @@
               </div>
             </div>
           </li>
+	  {% endif %}
 
         </ul>
 

@@ -8,7 +8,7 @@ from django.template import RequestContext, loader
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 import json
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 
 def index(request):
@@ -192,6 +192,7 @@ def delete_user(request):
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 
-def logout(request):
-    return None
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect('/')
 
