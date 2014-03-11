@@ -1,6 +1,8 @@
 $(document).ready(function() {
 
-	$("#register-submit").click(function(e) {
+	$("#register-form").submit(function(e) {
+		e.preventDefault();
+        e.stopPropagation();
 
 		var data = {
 			username: $("#register-username").val(),
@@ -30,7 +32,6 @@ $(document).ready(function() {
 
 					}
 					if ('password' in errors) {
-						$('#password-error').text(data.errors.password).css("display", "block");
 						$('#password-error').text(data.errors.password).css("display", "block");
 
 					}

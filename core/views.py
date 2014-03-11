@@ -11,8 +11,8 @@ import json
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 
-def test(request):
-    return render(request, 'index.html', {"foo": "bar"})
+def index(request):
+    return render(request, 'index.html')
 
 def test2(request):
     return render(request, 'viewUser.html', {"foo": "bar"})
@@ -98,11 +98,21 @@ def create_user(request):
         data = json.loads(request.body)
         username, email, password = data["username"], data["email"], data["password"]
         response = BeatMyGoalUser.create(username, email, password)
+
         if "errors" in response:
-            return HttpResponse(json.dumps({"errors": response}), 
+            return HttpResponse(json.dumps(response), 
                                 content_type = "application/json")            
         else:
-            return HttpResponse(json.dumps({"redirect" : "/dashboard/"}), content_type = "application/json")
+        	user = response['user']
+
+        	# TODO! - this is a bad hack
+        	user.backend = 'django.contrib.auth.backends.ModelBackend'
+        	# authenticate(username=username, password=password)
+        	login(request, user)
+        	redirect = "/users/%s/" % (user.id)
+        	return HttpResponse(json.dumps({"redirect" : redirect,
+        		"success" : response["success"]
+        		}), content_type = "application/json")
 
     else:
         return HttpResponse("Invalid request", status=500)

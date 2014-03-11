@@ -120,20 +120,12 @@ class BeatMyGoalUser(User):
     MAX_LEN_FIRSTNAME = 30
     MAX_LEN_EMAIL = 30
 
-    BAD_USERNAME = "Please enter a username between 1 and %s characters." % MAX_LEN_USERNAME
-    BAD_PASSWORD = "Please enter a password between 1 and %s characters." % MAX_LEN_USERNAME
-    BAD_EMAIL = "Please enter a valid email address."
+    EXISTING_USERNAME = "An account with this username already exists."
+    EXISTING_EMAIL = "An account with this email address already exists."
+
 
     user = models.OneToOneField(User)
     goals = models.ManyToManyField(Goal)
-
-    @classmethod
-    def valid_username(self, u):
-        return 0 < len(u) < self.MAX_LEN_USERNAME
-
-    @classmethod
-    def valid_password(self, p):
-        return 0 < len(p) < self.MAX_LEN_USERNAME
 
     
     @classmethod
@@ -141,23 +133,18 @@ class BeatMyGoalUser(User):
         from django.core.validators import validate_email
         errors = {}
         
-        if not self.valid_username(username):
-            errors['username'] = self.BAD_USERNAME
+        if User.objects.filter(username=username).exists():
+            errors['username'] = self.EXISTING_USERNAME
 
-        if not self.valid_password(password):
-            errors['password'] = self.BAD_PASSWORD
-
-        try:
-            validate_email(email)
-        except:
-            errors['email'] = self.BAD_EMAIL
+        if User.objects.filter(email=email).exists():
+            errors['email'] = self.EXISTING_EMAIL
 
         if errors:
             return { "errors" : errors }
         else:
             user = User.objects.create_user(username, email, password)
             user.save()
-            return {"success" : self.CODE_SUCCESS}
+            return {"success" : self.CODE_SUCCESS, "user" : user }
 
     @classmethod
     def delete(self, username, email, password):
