@@ -10,27 +10,27 @@
 
 <form>
   <div class="row">
-     <div class="large-6 columns" >
-       <h1>Login</h1>
-     </div>
+    <div class="large-6 columns" >
+      <h1>Login</h1>
+    </div>
   </div>
-   <div class= "row">
-     <div class="large-6 columns" >
-	 <label>Username</label>
-	 <input id = "username" type = "text" required pattern ="alpha_numeric"/>
-      </div>	
-      <div class="password-label">
-	  <label>Password</label>
-	  <input id = "password" type = "password" required pattern="[a-zA-Z0-9]+" />
 
-       </div>
-       <div class= "row">
-        <div class="larger-6 columns">
-		<input id=“register” type="button" value=“Register”>
-		<input id=“login” type="button" value=“Login”>
-	</div>
-
-</div>
+  <div class= "row">
+    <div class="large-6 columns" >
+      <label>Username</label>
+      <input id = "username" type = "text" required pattern ="alpha_numeric"/>
+    </div>	
+    <div class="large-6 columns password-label">
+      <label>Password</label>
+      <input id = "password" type = "password" required pattern="[a-zA-Z0-9]+" />
+    </div>
+  </div>
+  <div class= "row">
+    <div class="large-6 columns">
+      <input id="register" type="button" value="Register" class="button small">
+      <input id="login" type="button" value="Login" class="button small">
+    </div>
+  </div>
 </form>
 
 {% endblock %}

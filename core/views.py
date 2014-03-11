@@ -92,7 +92,7 @@ def goal_view_goal(request, goal_id):
 
 def user_login(request):
     if request.method == "GET":
-        return render(request, 'login.html')
+        return render(request, 'users/login.html')
     
     elif request.method == "POST":
         data = json.loads(request.body)
@@ -156,8 +156,8 @@ def view_user(request, uid):
 def edit_user(request, uid):
 	uid = int(uid)
 	user = request.user
-	user = BeatMyGoalUser.getUserById(uid)
-	if True or (user.is_authenticated() and user.id == uid):
+	#user = BeatMyGoalUser.getUserById(uid)
+	if (user.is_authenticated() and user.id == uid):
 		if request.method == "GET":
 			return render(request, 'users/editUser.html', {
 				"username": user.username,
