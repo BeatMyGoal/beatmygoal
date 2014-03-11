@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}View/Edit Profile{% endblock %}
+
+{% block content %}
+
+{% csrf_token %}
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<center>  
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <b>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Creator</th>
+                <th>Prize</th>
+            </b>
+        </tr>
+    </thead>
+    {% for goal in goals %}
+        <tbody>
+                <tr> 
+                    <td><a href="goals/{{ goal.id }}">{{ goal.title }}</a> </td>
+                    <td>{{ goal.description }}</td>
+                    <td>{{ goal.creator.username }}</td>
+                    <td>{{ goal.prize }}</td>
+                </tr>
+        </tbody>
+    {% endfor %}
+</table>
+</center>
+
+
+<div class="pagination-centered">
+    <ul class="pagination">
+        <li class="arrow unavailable"><a href="">&laquo;</a></li>
+        <li class="current"><a href="">1</a></li>
+        <li><a href="">2</a></li>
+        <li><a href="">3</a></li>
+        <li><a href="">4</a></li>
+        <li class="unavailable"><a href="">&hellip;</a></li>
+        <li><a href="">12</a></li>
+        <li><a href="">13</a></li>
+        <li class="arrow"><a href="">&raquo;</a></li>
+    </ul>
+</div> 
+{% endblock %}
+

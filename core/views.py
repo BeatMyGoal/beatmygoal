@@ -16,17 +16,45 @@ def index(request):
 
 
 @csrf_exempt
-def goal_create_goal(request):
-	data = json.loads(request.body)
-	title = data['title']
-	description = data['description']
-	creator = data['creator']
-	prize = data['prize']
-	private_setting = data['private_setting']
-	goal_type = data['goal_type']
-	response = Goal.create(title, description, creator, prize, private_setting, goal_type)
-	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+def dashboard(request):
+	all_goals = Goal.objects.all()
+	print(all_goals)
+	goals = all_goals[0:10]
+	print(goals)
+	return render(request, 'dashboard/dashboard_main.html', {
+		"goals": goals
+	})
 
+@csrf_exempt
+def goal_create_goal(request):
+    if request.user.is_authenticated():
+    	if request.method == "GET":
+    		return render(request, 'goals/createGoal.html')
+
+    	if request.user.is_authenticated():
+    		print "here"
+    		data = json.loads(request.body)
+    		title = data['title']
+    		description = data['description']
+    		creator = request.user
+    		prize = data['prize']
+    		private_setting = data['private_setting']
+    		goal_type = data['goal_type']
+    		response = Goal.create(title, description, creator, prize, private_setting, goal_type)
+
+    		if response < 0:
+    			return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+    		else:
+    			goal = response['goal']
+    			redirect = "/goals/%s/" % (goal.id)
+    			return HttpResponse(json.dumps({"redirect" : redirect,
+    				"success" : response["success"]}), content_type = "application/json")
+    	else:
+    		return HttpResponse("Invalid request", status=500)
+    else:
+        return render(request, 'users/login.html', {
+            "message": "You must be logged in to create a goal"
+        })
 @csrf_exempt
 def goal_remove_goal(request):
 	data = json.loads(request.body)
@@ -34,6 +62,8 @@ def goal_remove_goal(request):
 	user = data["user"]
 	response = Goal.remove(goal_id, user)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+
+
 
 @csrf_exempt
 def goal_edit_goal(request):
@@ -44,21 +74,14 @@ def goal_edit_goal(request):
 	response = Goal.edit(goal_id, user, edits)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
-@csrf_exempt
-def goal_view_goal(request):
-	data = json.loads(request.body)
-	goal_id = data["goal_id"]
+
+
+
+
+
+def goal_view_goal(request, goal_id):
 	goal = Goal.objects.get(id=goal_id)
-	title = goal.title
-	description = goal.description
-	prize = goal.prize
-	date_created = goal.date_created
-	progress_value = goal.progress_value
-	private_setting = goal.private_setting
-	creator = goal.creator
-	return HttpResponse(json.dumps({"errCode": 1, "title":title, "description":description,
-		"prize":prize, "date_created":date_created,"progress_value":progress_value,
-		"private_setting":private_setting,"creator":creator}), content_type = "application/json")
+	return render(request, 'goals/viewGoal.html', {"goal" : goal})
 
 
 #def goal_remove_user(request):
@@ -73,7 +96,7 @@ def goal_view_goal(request):
 
 def user_login(request):
     if request.method == "GET":
-        return render(request, 'login.html')
+        return render(request, 'users/login.html')
     
     elif request.method == "POST":
         data = json.loads(request.body)
@@ -87,10 +110,21 @@ def user_login(request):
             response = -6
             return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 @csrf_exempt
+def profile(request):
+    if request.user.is_authenticated():
+        user = request.user
+        uid = user.id
+        user_url = "/users/"+str(uid)+"/"
+        return HttpResponseRedirect(user_url)
+    else:
+        return HttpResponseRedirect('/users/create/')
+
+@csrf_exempt
 def create_user(request):
     print request.method
     if request.method == "GET":
-        return render(request, 'users/createUser.html')
+            return render(request, 'users/createUser.html', {
+            })
     elif request.method == "POST":
         data = json.loads(request.body)
         username, email, password = data["username"], data["email"], data["password"]
@@ -121,8 +155,10 @@ def view_user(request, uid):
 		return render(request, 'users/viewUser.html', {
 			"user" : user
 		})
+		
 @csrf_exempt
 def edit_user(request, uid):
+	uid = int(uid)
 	user = request.user
 	#user = BeatMyGoalUser.getUserById(uid)
 	if (user.is_authenticated() and user.id == uid):
@@ -143,54 +179,25 @@ def edit_user(request, uid):
 			}
 			return HttpResponse(json.dumps(res), content_type = 'application/json')
 	else:
-		request.send_error(403)
-	
-def test_user(request):
-	return render(request, 'testUserView.html')
+		return HttpResponse("Invalid request", status=500)
 
 @csrf_exempt
-def view_user2(request):
-	try:
-		data = json.loads(request.body)
-		user_id = data["user_id"]
-	except:
-		return request.send_error(500)
-
-	user = BeatMyGoalUser.getUserById(user_id)
-	user_name = user.username
-	user_firstName = user.first_name
-	user_lastName = user.last_name
-	user_email = user.email
-	return HttpResponse(json.dumps({"errCode": 1, "username" : user_name,"firstName" : user_firstName, 
-									"lastName" : user_lastName, "email" : user_email}), content_type = "application/json")
-
-@csrf_exempt
-def edit_user2(request):
-	try:
-		data = json.loads(request.body)
-		user_id = data["user_id"]
-		user_name = data["user_name"]
-		user_firstName = data["user_firstName"]
-		user_lastName = data["user_lastName"]
-		user_email = data["user_email"]
-	except:
-		return request.send_error(500)
-
-	response = BeatMyGoalUser.updateUser2(user_id, user_name, user_firstName, user_lastName, user_email)
-	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
-
-
-@csrf_exempt
-def delete_user(request):
-	try:
-		req = json.loads(request.body)
-		user_id = req["user_id"]
-	except:
-		return request.send_error(500)
-	
-	response = BeatMyGoalUser.deleteUser(user_id)
-	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
-
+def delete_user(request, uid):
+	# try:
+	# 	req = json.loads(request.body)
+	# 	user_id = req["user_id"]
+	# except:
+	# 	return request.send_error(500)
+	uid = int(uid)
+	if request.method == "POST":
+		user = request.user;
+		if (user.is_authenticated() and user.id == uid):
+			response = BeatMyGoalUser.deleteUser(user_id)
+			return HttpResponse(json.dumps({"errCode": response, "redirect": "/dashboard/"}), content_type = "application/json")
+		else:
+			return HttpResponse("Invalid request", status=500)
+	else:
+		return HttpResponse("Invalid request", status=500)
 
 def user_logout(request):
     logout(request)
