@@ -1,17 +1,133 @@
 {% extends "base.html" %}
 
-{% block title %}{{ user.username }}{% endblock %}
 
 {% block content %}
+<!doctype html>
+  
+<body>
 
-<base href="">
+  <div class="row">        
+    <!-- Main Content Section -->
+    <div class="large-9 push-3 columns">
+    
+    <form data-abide>
+      <fieldset>
+      <legend> <h2> Basic User Information</h2></legend>
+      <h7> BeatMyGoal login </h7><br><br>
+      <!--
+      / Facebook login / Tweeter login
+      -->  
 
-<div class="row">
-	<div class="large-6 columns">Username: <strong>{{ user.username }}</strong></div>
-	<div class="large-6 columns">Email: <strong>{{ user.email }}</strong></div>
-</div>
-<div class="row">
-	<div class="large-12 columns"><a href="edit"><input type="button" value="Edit"></a></div>
-</div>
+      <div class="row">
+        <div class="large-6 columns">
+          <h5> Username : {{ user.username }} </5>
+        </div>
+        <div class="large-6 columns">
+          <h5> Email : {{ user.email }} </h5>
+        </div>
+      </div>
+
+<!-- 
+      <div class="row">
+        <div class="large-6 columns">
+          <label for="First Name"> First Name
+            <input id='First_Name' type="text" value="">
+          </label>
+        </div>
+        <div class="large-6 columns">
+          <label for="Last Name"> Last Name
+            <input id='Last_Name' type="text" value="">
+          </label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="large-6 columns">
+          <label for="Error Code"> Error Code
+            <input id='Error_Code' type="text" value="">
+          </label>
+        </div>
+        <div class="large-6 columns">
+          <label for="User id"> Userid
+            <input id='Userid' type="text" value="">
+          </label>
+        </div>
+      </div>
+
+-->
+      </fieldset>
+    </form>
+
+    <!-- buttons -->
+    <div class="row">
+      <ul class="button-group right">
+        <li><a id = "delete_user_button" type="submit" class="button tiny pull-5">Delete User</a></li>
+        <!--
+        <li><a id = "password_change_button" type="submit" class="button tiny pull-3">Password Change</a></li>
+        -->
+        <li><a id = "edit_user_button" type="submit" class="button tiny pull-3">Edit User</a></li>
+        </ul>
+    </div>
+
+      
+    
+    <!-- tabs -->
+    <dl class="section-container tabs" data-tab>
+        <dd class="active"><a href="#panel2-1">Goal History</a></dd>
+        <dd><a href="#panel2-2">graph</a></dd>
+        <dd><a href="#panel2-3">comments</a></dd>
+      </dl>
+      <div class="tabs-content">
+     
+        <div class="content active" id="panel2-1">
+          <p> List Goal History </p>
+          <p> List Goal History </p>
+          <p> List Goal History </p>
+          <p> List Goal History </p>
+          <p> List Goal History </p>
+
+        </div>
+        <div class="content" id="panel2-2">
+          <p> This feature is not implemented yet </p>
+        </div>
+        <div class="content" id="panel2-3">
+          <p> This feature is not implemented yet </p>
+        </div>
+
+      </div>
+    </div>
+
+        
+
+    <!-- Nav Sidebar (Left)-->
+    <div class="large-3 pull-9 columns">
+      <br> <p> <img src="http://placehold.it/320x300&text=photo" /></p>
+
+      <form data-abide>
+        <fieldset>
+        <legend> <h3> Current Goal </h3></legend>
+        <ul class="side-nav">
+          
+
+
+          <li><a href="#">List current Goals</a></li>
+          <li><a href="#">List current Goals</a></li>
+          <li><a href="#">List current Goals</a></li>
+          <li><a href="#">List current Goals</a></li>
+
+
+          
+        </ul>
+        </fieldset>
+      </form>
+    </div>
+  
+
+
+
+
+  </body>
+</html>
 
 {% endblock %}
+

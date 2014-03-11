@@ -15,11 +15,6 @@ def index(request):
     return render(request, 'index.html')
 
 
-
-
-
-
-
 @csrf_exempt
 def goal_create_goal(request):
 	if request.method == "GET":
