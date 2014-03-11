@@ -14,6 +14,9 @@ from django.http import HttpResponseRedirect
 def test(request):
     return render(request, 'index.html', {"foo": "bar"})
 
+def test2(request):
+    return render(request, 'viewUser.html', {"foo": "bar"})
+
 
 @csrf_exempt
 def goal_create_goal(request):
