@@ -22,6 +22,7 @@ urlpatterns = patterns('',
 	url(r'^users/create', core.views.create_user, name='create_user'),
 
 	url(r'^users/(\d)+/edit', core.views.edit_user, name='edit_user'),
+	url(r'^users/(\d)+/delete', core.views.delete_user, name='delete_user'),
 	url(r'^users/(\d)+/$', core.views.view_user, name='view_user'),
 	url(r'^users/login', core.views.user_login, name='user_login'),
 	

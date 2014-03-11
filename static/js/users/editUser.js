@@ -38,6 +38,21 @@ $(document).ready(function() {
 	});
 
 	$("#cancel").click(function(event) {
-		/* Act on the event */
+		window.location.href = "/users/" + uid;
+	});
+
+	$("#delete").click(function(event) {
+		$.ajax({
+			type: "POST",
+			url: "/users/" + uid + "/delete",
+			contentType: "application/json",
+			dataType: "json"
+		}).done(function(data) {
+			if (data.errCode >= 0) {
+				window.location.href = data.redirect;
+			}
+		}).fail(function(){
+			alert("failed to delete");
+		})
 	});
 });

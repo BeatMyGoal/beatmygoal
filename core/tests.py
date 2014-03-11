@@ -21,4 +21,4 @@ class RegistrationTests(TestCase):
     def testUsernameAndPasswordCorrect(self):
     	pass
 
-# Create your tests here.
+# Create your tests here
