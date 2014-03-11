@@ -27,30 +27,34 @@ def dashboard(request):
 
 @csrf_exempt
 def goal_create_goal(request):
-	if request.method == "GET":
-		return render(request, 'goals/createGoal.html')
+    if request.user.is_authenticated():
+    	if request.method == "GET":
+    		return render(request, 'goals/createGoal.html')
 
-	if request.user.is_authenticated():
-		print "here"
-		data = json.loads(request.body)
-		title = data['title']
-		description = data['description']
-		creator = request.user
-		prize = data['prize']
-		private_setting = data['private_setting']
-		goal_type = data['goal_type']
-		response = Goal.create(title, description, creator, prize, private_setting, goal_type)
+    	if request.user.is_authenticated():
+    		print "here"
+    		data = json.loads(request.body)
+    		title = data['title']
+    		description = data['description']
+    		creator = request.user
+    		prize = data['prize']
+    		private_setting = data['private_setting']
+    		goal_type = data['goal_type']
+    		response = Goal.create(title, description, creator, prize, private_setting, goal_type)
 
-		if response < 0:
-			return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
-		else:
-			goal = response['goal']
-			redirect = "/goals/%s/" % (goal.id)
-			return HttpResponse(json.dumps({"redirect" : redirect,
-				"success" : response["success"]}), content_type = "application/json")
-	else:
-		return HttpResponse("Invalid request", status=500)
-
+    		if response < 0:
+    			return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+    		else:
+    			goal = response['goal']
+    			redirect = "/goals/%s/" % (goal.id)
+    			return HttpResponse(json.dumps({"redirect" : redirect,
+    				"success" : response["success"]}), content_type = "application/json")
+    	else:
+    		return HttpResponse("Invalid request", status=500)
+    else:
+        return render(request, 'users/login.html', {
+            "message": "You must be logged in to create a goal"
+        })
 @csrf_exempt
 def goal_remove_goal(request):
 	data = json.loads(request.body)

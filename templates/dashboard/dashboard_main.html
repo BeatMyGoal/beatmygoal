@@ -23,7 +23,7 @@
     {% for goal in goals %}
         <tbody>
                 <tr> 
-                    <td>{{ goal.title }} </td>
+                    <td><a href="goals/{{ goal.id }}">{{ goal.title }}</a> </td>
                     <td>{{ goal.description }}</td>
                     <td>{{ goal.creator.username }}</td>
                     <td>{{ goal.prize }}</td>
