@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.views.generic import RedirectView
 
 from django.contrib import admin
 admin.autodiscover()
@@ -12,6 +13,7 @@ urlpatterns = patterns('',
 	# url(r'^blog/', include('blog.urls')),
 	url(r'^$', core.views.test),
 	url(r'^admin/', include(admin.site.urls)),
+        url(r'^favicon\.ico$', RedirectView.as_view(url='/static/favicon.ico')),
 	url(r'^goals/create', core.views.goal_create_goal, name='goal_create_goal'),
 	url(r'^goals/remove', core.views.goal_remove_goal, name='goal_remove_goal'),
 	url(r'^goals/edit', core.views.goal_edit_goal, name='goal_edit_goal'),
