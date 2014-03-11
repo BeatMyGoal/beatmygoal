@@ -20,6 +20,7 @@ urlpatterns = patterns('',
 	url(r'^goals/(\d)+/$', core.views.goal_view_goal, name='view_goal'),
 
 	url(r'^users/create', core.views.create_user, name='create_user'),
+    url(r'^users/profile', core.views.profile, name='profile'),
 
 	url(r'^users/(\d)+/edit', core.views.edit_user, name='edit_user'),
 	url(r'^users/(\d)+/delete', core.views.delete_user, name='delete_user'),
