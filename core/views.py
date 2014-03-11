@@ -153,7 +153,7 @@ def view_user(request, uid):
 	if request.method == "GET":
 		user = BeatMyGoalUser.getUserById(uid)
 		return render(request, 'users/viewUser.html', {
-			"user" : user
+			"user_profile" : user
 		})
 		
 @csrf_exempt

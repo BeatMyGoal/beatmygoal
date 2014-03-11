@@ -21,10 +21,10 @@
 
       <div class="row">
         <div class="large-6 columns">
-          <h5> Username : {{ user.username }} </5>
+          <h5> Username : {{ user_profile.username }} </5>
         </div>
         <div class="large-6 columns">
-          <h5> Email : {{ user.email }} </h5>
+          <h5> Email : {{ user_profile.email }} </h5>
         </div>
       </div>
 
@@ -59,18 +59,20 @@
       </fieldset>
     </form>
 
+    {% if user.is_authenticated %}
     <!-- buttons -->
     <div class="row">
       <ul class="button-group right">
 
 
         <!-- If request.user.is_authenticated(), hide these two buttons -->
-
+	
         <li><a id = "delete_user_button" type="submit" class="button tiny pull-5">Delete User</a></li>
         <!-- <li><a id = "password_change_button" type="submit" class="button tiny pull-3">Password Change</a></li> -->
         <li><a id = "edit_user_button" type="submit" class="button tiny pull-3">Edit User</a></li>
         </ul>
     </div>
+    {% endif %}
 
       
     
