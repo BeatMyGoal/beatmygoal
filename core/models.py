@@ -17,7 +17,7 @@ class Goal(models.Model):
     MAX_LEN_PRIZE = 50
     MAX_LEN_TYPE = 20
 
-    creator = models.ForeignKey(BeatMyGoalUser)
+    creator = models.ForeignKey('BeatMyGoalUser')
     title = models.CharField(max_length=MAX_LEN_TITLE)
     description = models.CharField(max_length=MAX_LEN_DESC)
     prize = models.TextField(max_length=MAX_LEN_PRIZE)
