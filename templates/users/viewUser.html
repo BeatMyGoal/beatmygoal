@@ -1,8 +1,9 @@
 {% extends "base.html" %}
-
+{% load staticfiles %}
 
 {% block content %}
 <!doctype html>
+
   
 <body>
 
@@ -125,11 +126,9 @@
     </div>
   
 
-
-
-
   </body>
 </html>
 
-{% endblock %}
+<script src="{% static 'js/users/viewUser.js' %}"></script>
 
+{% endblock %}
