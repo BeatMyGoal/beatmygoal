@@ -11,7 +11,7 @@ urlpatterns = patterns('',
 	# Examples:
 	# url(r'^$', 'beatmygoal.views.home', name='home'),
 	# url(r'^blog/', include('blog.urls')),
-	url(r'^$', core.views.test),
+	url(r'^$', core.views.index),
 	url(r'^admin/', include(admin.site.urls)),
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/favicon.ico')),
 	url(r'^goals/create', core.views.goal_create_goal, name='goal_create_goal'),

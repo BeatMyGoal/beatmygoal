@@ -11,8 +11,8 @@ import json
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 
-def test(request):
-    return render(request, 'index.html', {"foo": "bar"})
+def index(request):
+    return render(request, 'index.html')
 
 
 @csrf_exempt
@@ -106,7 +106,7 @@ def create_user(request):
         	user.backend = 'django.contrib.auth.backends.ModelBackend'
         	# authenticate(username=username, password=password)
         	login(request, user)
-        	redirect = "/users/view/%s/" % (user.id)
+        	redirect = "/users/%s/" % (user.id)
         	return HttpResponse(json.dumps({"redirect" : redirect,
         		"success" : response["success"]
         		}), content_type = "application/json")
