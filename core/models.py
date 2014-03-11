@@ -25,26 +25,34 @@ class Goal(models.Model):
     progress_value = models.FloatField()
     goal_type = models.CharField(max_length=MAX_LEN_TYPE)
     private_setting = models.IntegerField()
-     
+    
+
+
+
+
     @classmethod
     def create(self, title, description, creator, prize, private_setting, goal_type):
+        errors = {}
+
         if not title or len(title)>self.MAX_LEN_TITLE:
-            return self.CODE_BAD_TITLE
-        if not description or len(description)>self.MAX_LEN_DESC:
-            return self.CODE_BAD_DESCRIPTION
-        if not creator or len(description)>self.MAX_LEN_DESC:
-            return self.CODE_BAD_DESCRIPTION
+            errors['title'] = self.CODE_BAD_TITLE
+        if not description or len(description)>self.MAX_LEN_DESC or not goal_type or len(goal_type)>self.MAX_LEN_TYPE:
+            errors['description'] = self.CODE_BAD_DESCRIPTION
         if not prize or len(prize)>self.MAX_LEN_PRIZE:
-            return self.CODE_BAD_PRIZE
-        if not goal_type or len(goal_type)>self.MAX_LEN_TYPE:
-            return self.CODE_BAD_DESCRIPTION
+            errors['prize'] = self.CODE_BAD_PRIZE
+
         try:
             creator_user = BeatMyGoalUser.getUserByName(creator)
+            
+        except:
+            errors['user'] = self.CODE_BAD_USERNAME
+
+        if errors:
+            return { "errors" : errors }
+        else:
             goal = Goal.objects.create(title=title, description=description, creator=User.objects.get(username=creator), prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0 )
             goal.save()
-            return self.CODE_SUCCESS 
-        except:
-            return self.CODE_BAD_USERNAME
+            return {"success" : self.CODE_SUCCESS, "goal" : goal }
 
 
     @classmethod

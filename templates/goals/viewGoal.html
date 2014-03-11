@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+
+<base href="">
+
+<div class="row">
+	<div class="large-6 columns">Title: <strong>{{ goal.title}}</strong></div>
+	<div class="large-6 columns">Description: <strong>{{ goal.description }}</strong></div>
+	<div class="large-6 columns">Creator: <strong>{{ goal.creator.email }}</strong></div>
+	<div class="large-6 columns">prize: <strong>{{ goal.prize}}</strong></div>
+	<div class="large-6 columns">date_created: <strong>{{ goal.date_created }}</strong></div>
+	<div class="large-6 columns">progress_value: <strong>{{ goal.progress_value }}</strong></div>
+	<div class="large-6 columns">goal_type: <strong>{{ goal.goal_type }}</strong></div>
+	<div class="large-6 columns">private_setting: <strong>{{ goal.private_setting }}</strong></div>
+</div>
+<div class="row">
+	<div class="large-12 columns"><a href="edit"><input type="button" value="Edit"></a></div>
+</div>
+
+{% endblock %}
