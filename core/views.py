@@ -16,6 +16,16 @@ def index(request):
 
 
 @csrf_exempt
+def dashboard(request):
+	all_goals = Goal.objects.all()
+	print(all_goals)
+	goals = all_goals[0:10]
+	print(goals)
+	return render(request, 'dashboard/dashboard_main.html', {
+		"goals": goals
+	})
+
+@csrf_exempt
 def goal_create_goal(request):
 	if request.method == "GET":
 		return render(request, 'goals/createGoal.html')
@@ -133,9 +143,10 @@ def view_user(request, uid):
 		
 @csrf_exempt
 def edit_user(request, uid):
+	uid = int(uid)
 	user = request.user
-	#user = BeatMyGoalUser.getUserById(uid)
-	if (user.is_authenticated() and user.id == uid):
+	user = BeatMyGoalUser.getUserById(uid)
+	if True or (user.is_authenticated() and user.id == uid):
 		if request.method == "GET":
 			return render(request, 'users/editUser.html', {
 				"username": user.username,
@@ -153,7 +164,7 @@ def edit_user(request, uid):
 			}
 			return HttpResponse(json.dumps(res), content_type = 'application/json')
 	else:
-		request.send_error(403)
+		return HttpResponse("Invalid request", status=500)
 	
 def test_user(request):
 	return render(request, 'testUserView.html')
@@ -191,16 +202,22 @@ def edit_user2(request):
 
 
 @csrf_exempt
-def delete_user(request):
-	try:
-		req = json.loads(request.body)
-		user_id = req["user_id"]
-	except:
-		return request.send_error(500)
-	
-	response = BeatMyGoalUser.deleteUser(user_id)
-	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
-
+def delete_user(request, uid):
+	# try:
+	# 	req = json.loads(request.body)
+	# 	user_id = req["user_id"]
+	# except:
+	# 	return request.send_error(500)
+	uid = int(uid)
+	if request.method == "POST":
+		user = request.user;
+		if (user.is_authenticated() and user.id == uid):
+			response = BeatMyGoalUser.deleteUser(user_id)
+			return HttpResponse(json.dumps({"errCode": response, "redirect": "/dashboard/"}), content_type = "application/json")
+		else:
+			return HttpResponse("Invalid request", status=500)
+	else:
+		return HttpResponse("Invalid request", status=500)
 
 def logout(request):
     return None
