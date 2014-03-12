@@ -203,17 +203,12 @@ def edit_user(request, uid):
 
 @csrf_exempt
 def delete_user(request, uid):
-	# try:
-	# 	req = json.loads(request.body)
-	# 	user_id = req["user_id"]
-	# except:
-	# 	return request.send_error(500)
 	uid = int(uid)
 	if request.method == "POST":
 		user = request.user;
 		if (user.is_authenticated() and user.id == uid):
-			response = BeatMyGoalUser.deleteUser(user_id)
-			return HttpResponse(json.dumps({"errCode": response, "redirect": "/dashboard/"}), content_type = "application/json")
+			response = BeatMyGoalUser.delete(uid)
+			return HttpResponse(json.dumps({"errCode": response, "redirect": "/"}), content_type = "application/json")
 		else:
 			return HttpResponse("Invalid request", status=500)
 	else:

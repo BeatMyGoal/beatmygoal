@@ -4,7 +4,7 @@ $(document).ready(function() {
 	$username = $("#editForm #username");
 	$email = $("#editForm #email");
 
-	uid = window.location.pathname.split("/")[2];
+	$uid = window.location.pathname.split("/")[2];
 	
 	$("#save").click(function(event) {
 		console.log("test");
@@ -28,17 +28,12 @@ $(document).ready(function() {
 			contentType: "application/json",
 			dataType: "json",
 		}).done(function(data) {
-			console.log(data.redirect);
 			if (data.errCode >= 0) {
 				window.location.href = data.redirect;
 			}
 		}).fail(function(data) {
 			alert("failure");
 		});
-	});
-
-	$("#cancel").click(function(event) {
-		window.location.href = "/users/" + uid;
 	});
 
 	$("#delete").click(function(event) {
