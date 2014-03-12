@@ -27,37 +27,6 @@ def dashboard(request):
 
 
 
-@csrf_exempt
-def create_user(request):
-    print request.method
-    if request.method == "GET":
-            return render(request, 'users/createUser.html', {
-            })
-    elif request.method == "POST":
-        data = json.loads(request.body)
-        username, email, password = data["username"], data["email"], data["password"]
-        response = BeatMyGoalUser.create(username, email, password)
-
-        if "errors" in response:
-            return HttpResponse(json.dumps(response), 
-                                content_type = "application/json")            
-        else:
-            user = response['user']
-
-            # TODO! - this is a bad hack
-            user.backend = 'django.contrib.auth.backends.ModelBackend'
-            # authenticate(username=username, password=password)
-            login(request, user)
-            redirect = "/users/%s/" % (user.id)
-            return HttpResponse(json.dumps({"redirect" : redirect,
-                "success" : response["success"]
-                }), content_type = "application/json")
-
-    else:
-        return HttpResponse("Invalid request", status=500)
-
-
-
 
 @csrf_exempt
 def goal_create_goal(request):
