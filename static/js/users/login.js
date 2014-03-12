@@ -3,8 +3,8 @@ $(document).ready(function() {
 	$("#login-form #login").click(function(e) {
 
 		var data = {
-			username: $("#username").val(),
-			password: $("#password").val(),
+			username: $("#login-form #username").val(),
+			password: $("#login-form #password").val(),
 		};
 
 		$.ajax({

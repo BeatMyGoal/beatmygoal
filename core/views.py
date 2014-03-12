@@ -176,7 +176,7 @@ def view_user(request, uid):
 			"user_profile" : user
 		})
 		
-@csrf_exempt
+#@csrf_exempt
 def edit_user(request, uid):
 	uid = int(uid)
 	user = request.user
@@ -195,9 +195,10 @@ def edit_user(request, uid):
 			response = BeatMyGoalUser.updateUser(user, username, email)
 			res = {
 				"errCode" : response,
-				"redirect": "/users/" + uid,
+				"redirect": "/users/" + str(uid)
 			}
-			return HttpResponse(json.dumps(res), content_type = 'application/json')
+			print "test"
+			return HttpResponse(json.dumps(res), content_type = 'application/json', status=200)
 	else:
 		return HttpResponse("Invalid request", status=500)
 

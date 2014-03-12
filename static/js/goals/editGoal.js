@@ -22,7 +22,7 @@ $(document).ready(function() {
 			dataType: "json",
 		}).done(function(data) {
 			console.log(data.redirect);
-			if (data.errCode >= 0) {
+			if ("errors" in data) {
 				window.location.href = data.redirect;
 			}
 		}).fail(function(data) {
