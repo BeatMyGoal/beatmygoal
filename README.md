@@ -12,5 +12,13 @@ To update to heroku:
 - `heroku git:remote --app beatmygoal`
 - `git push heroku master`
 
-
-
+Heroku and database:
+- The environment variable "ON_HEROKU" is used to determine whether to use PostGres or SQLite 
+  (`settings.py`)
+  - If for some reason this stops working, reset it with `heroku config:set ON_HEROKU=1`
+- To delete the heroku database: `heroku pg:reset DATABASE_URL`
+- Then, to create a new one: `heroku run python manage.py syncdb`
+- Then, populate with data in any way. For example:
+  `heroku run python manage.py shell < scripts/populate_db.py`
+- Alternatively, for "automatic changes" you can migrate using South
+  -  http://south.readthedocs.org/en/latest/tutorial/part1.html
