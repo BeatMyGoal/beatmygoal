@@ -1,4 +1,5 @@
-    <nav class="top-bar" data-topbar>
+<script src = "{% static 'js/users/topbar.js' %}"></script>
+<nav class="top-bar" data-topbar>
       <ul class="title-area">
         <li class="name">
           <h1><a href="/"><i class="fa fa-trophy"></i> BeatMyGoal</a></h1>
@@ -19,7 +20,7 @@
               <label for="username"></label><input type="text" placeholder='Username' id='username'>
               <label for="password"></label><input type="password" placeholder='Password' id='password'>
                 <div class="row">
-                  <a href = "/dashboard" id = "Login" type="submit" class="button tiny">Login</a> 
+                  <a id = "Login" type="submit" class="button tiny">Login</a> 
     	         <hr>
                 <a href="/users/create" id ="Register" type="submit" class="button tiny">New User?</a>
               </div>
