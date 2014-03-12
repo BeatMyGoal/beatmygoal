@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load staticfiles %}
 
 {% block content %}
 <!doctype html>
@@ -49,9 +49,8 @@
     <!-- buttons -->
     <div class="row">
       <ul class="button-group right">
-        <li><a id = "delete_goal_button" type="submit" class="button tiny pull-5">Delete Goal</a></li>
-
-        <li><a id = "edit_goal_button" type="submit" class="button tiny pull-3">Delete User</a></li>
+      <li><a id = "edit_goal_button" type="submit" class="button tiny pull-5">Edit Goal</a></li>
+        <li><a id = "delete_goal_button" type="submit" class="button tiny pull-3">Delete Goal</a></li>
         </ul>
     </div>
 
@@ -114,6 +113,8 @@
 
   </body>
 </html>
+
+<script src="{% static 'js/goals/viewGoal.js' %}"></script>
 
 {% endblock %}
 

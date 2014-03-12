@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+
+<script src="{% static 'js/goals/editGoal.js' %}"></script>
+
+<form id="editForm" data-abide>
+	<div class="row">
+		<div class="large-6 columns">
+			<label for="title"> Title
+				<input id='title' type="text" placeholder="New Title" required />
+				<small id="title-error" class="error">A title is required</small>
+			</label>
+		</div>
+		<div class="large-6 columns">
+			<label for'description'>Description
+				<input id='description' type="text" placeholder="New Description" required />
+				<small id="description-error" class="error">A description is required</small>
+			</label>
+		</div>
+	</div>
+	
+
+	<div class="row">
+		<div class="larger-12 columns">
+			<input id="save" type="button" class="button small radius" value="Save">
+			<input id="cancel" type="button" class="button small radius" value="Cancel">
+			<input type="button" id="delete" class="button small radius alert" value="Delete">
+		</div>
+		
+	</div>
+</form>
+
+
+{% endblock %}
+

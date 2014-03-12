@@ -65,14 +65,31 @@ def goal_remove_goal(request):
 
 
 
+
+
+
+
 @csrf_exempt
-def goal_edit_goal(request):
-	data = json.loads(request.body)
-	goal_id = data["goal_id"]
-	user = data["user"]
-	edits = data["edits"]
-	response = Goal.edit(goal_id, user, edits)
-	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+def goal_edit_goal(request, gid):
+    gid = int(gid)
+    goal = Goal.objects.get(id=gid)
+    user = request.user
+    if ( user.is_authenticated() and goal.creator.id == user.id ):
+        if request.method == "GET":
+            return render(request, 'goals/editGoal.html', {"title": goal.title, "description": goal.description })
+        elif request.method == "POST":
+            data = json.loads(request.body)
+            title = data["title"]
+            description = data["description"]
+
+            response = Goal.edit(goal, title, description)
+            print "wqef"
+            print response
+            print gid
+
+            return HttpResponse(json.dumps({"errCode": response, "redirect":"/goals/" + str(gid)}), content_type = "application/json")
+    else:
+        return HttpResponse("Invalid request", status=500)            
 
 
 

@@ -72,28 +72,20 @@ class Goal(models.Model):
     #Goal.create(title="test_title", description="test_description", creator="test_usr", prize="test_prize", private_setting = 1.0, goal_type="teest_goaltype")
 
     @classmethod
-    def edit(self, goal_id, user, edits):
-        if not goal_id:
-            return self.CODE_GOAL_DNE
-        try:
-            goal = Goal.objects.get(id=goal_id)
-            
-        except:
-
-            return self.CODE_GOAL_DNE
+    def updateUser(self, user, username=None, email=None, password=None):
+        user.username = user.username if username is None else username
+        user.email = user.email if email is None else email
+        user.password = user.password if password is None else password
+        user.save()
+        return self.CODE_SUCCESS
 
 
-        try:
-            if "title" in edits:
-                goal.title = edits["title"]
-            if "description" in edits:
-                goal.description = edits["description"]
-            if "private_setting" in edits:
-                goal.private_setting = edits["private_setting"]
-            goal.save()
-            return self.CODE_SUCCESS
-        except:
-            return self.CODE_BAD_EDIT
+    @classmethod
+    def edit(self, goal, title, description):
+        goal.title = goal.title if title is None else title
+        goal.description = goal.description if description is None else description
+        goal.save()
+        return self.CODE_SUCCESS
 
 
     
