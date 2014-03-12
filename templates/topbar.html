@@ -8,18 +8,18 @@
 
       <section class="top-bar-section">
 
-	
+
         <!-- Right Nav Section -->
         <ul class="right">
 	  {% if not user.is_authenticated %}
           <li class="active">
-	    
+
             <a href="#" data-dropdown="loginDrop">Login</a>
             <div id="loginDrop" class="f-dropdown content">
               <label for="username"></label><input type="text" placeholder='Username' id='username'>
               <label for="password"></label><input type="password" placeholder='Password' id='password'>
                 <div class="row">
-                  <a id = "Login" type="submit" class="button tiny">Login</a> 
+                  <a href = "/login" id = "Login" type="submit" class="button tiny">Login</a> 
     	         <hr>
                 <a href="/users/create" id ="Register" type="submit" class="button tiny">New User?</a>
               </div>
@@ -29,7 +29,7 @@
           <li class="active"><a href="/users/profile">{{ user.username }}</a></li>
 	  <li><a href="/users/logout">Logout</a></li>
 	  {% endif %}
-	  
+
 
         </ul>
 
@@ -37,7 +37,7 @@
         <ul class="left">
 	  
 	  <li><a href="/dashboard">Browse Goals</a></li>
-	  
+
 	  {% if user.is_authenticated %}
           <li><a href="/users/profile">My Profile</a></li>
           <li><a href="/goals/create">Create Goal</a></li>
@@ -49,3 +49,4 @@
         </ul>
       </section>
     </nav>
+
