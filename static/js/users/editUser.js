@@ -6,8 +6,8 @@ $(document).ready(function() {
 
 	uid = window.location.pathname.split("/")[2];
 	
-	$("#save").click(function(event) {
-		event.preventDefault();
+	$("#editForm #save").click(function(e) {
+		e.preventDefault();
 		console.log("test");
 		var fname = $fname.val();
 		var lname = $lname.val();
@@ -38,7 +38,8 @@ $(document).ready(function() {
 		});
 	});
 
-	$("#delete").click(function(event) {
+	$("#editForm #delete").click(function(e) {
+		console.log(uid);
 		$.ajax({
 			type: "POST",
 			url: "/users/" + uid + "/delete",
@@ -53,7 +54,7 @@ $(document).ready(function() {
 		});
 	});
 
-	$("#cancel").click(function(event) {
+	$("#editForm #cancel").click(function(e) {
 		window.location.href = "/users/" + uid;
 	});
 });
