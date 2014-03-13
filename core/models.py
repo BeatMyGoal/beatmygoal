@@ -57,12 +57,12 @@ class Goal(models.Model):
     def remove(self, goal_id, user):
         errors = {}
         if not goal_id:
-            errors['goal'] = self.CODE_GOAL_DNE
+            return self.CODE_GOAL_DNE
         try:
             BMGUser = BeatMyGoalUser.objects.get(username = user)
             goal = Goal.objects.get(id=goal_id)
             if BMGUser != goal.creator:
-                errors['auth'] = self.CODE_BAD_AUTH
+                return self.CODE_BAD_AUTH
             goal.delete()
             return self.CODE_SUCCESS
         except:
