@@ -4,9 +4,10 @@ $(document).ready(function() {
 	$username = $("#editForm #username");
 	$email = $("#editForm #email");
 
-	$uid = window.location.pathname.split("/")[2];
+	uid = window.location.pathname.split("/")[2];
 	
-	$("#save").click(function(event) {
+	$("#editForm #save").click(function(e) {
+		e.preventDefault();
 		console.log("test");
 		var fname = $fname.val();
 		var lname = $lname.val();
@@ -28,7 +29,8 @@ $(document).ready(function() {
 			contentType: "application/json",
 			dataType: "json",
 		}).done(function(data) {
-			if (data.errCode >= 0) {
+			console.log(data);
+			if (data.errCode.length === 0) {
 				window.location.href = data.redirect;
 			}
 		}).fail(function(data) {
@@ -36,7 +38,8 @@ $(document).ready(function() {
 		});
 	});
 
-	$("#delete").click(function(event) {
+	$("#editForm #delete").click(function(e) {
+		console.log(uid);
 		$.ajax({
 			type: "POST",
 			url: "/users/" + uid + "/delete",
@@ -48,6 +51,10 @@ $(document).ready(function() {
 			}
 		}).fail(function(){
 			alert("failed to delete");
-		})
+		});
+	});
+
+	$("#editForm #cancel").click(function(e) {
+		window.location.href = "/users/" + uid;
 	});
 });
