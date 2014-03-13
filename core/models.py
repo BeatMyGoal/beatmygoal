@@ -60,12 +60,11 @@ class Goal(models.Model):
     def remove(self, goal_id, user):
         if not goal_id:
             return self.CODE_GOAL_DNE
-
         try:
+            BMGUser = BeatMyGoalUser.objects.get(username = user)
             goal = Goal.objects.get(id=goal_id)
-            if user != goal.creator:
+            if BMGUser != goal.creator:
                 return self.CODE_BAD_AUTH
-                
             goal.delete()
             return self.CODE_SUCCESS
         except:
@@ -145,6 +144,24 @@ class BeatMyGoalUser(User):
             user = BeatMyGoalUser(username=username, email=email, password=password)
             user.save()
             return {"success" : self.CODE_SUCCESS, "user" : user }
+
+    @classmethod
+    def joinGoal(self, username, goal_id):
+        try:
+            goal = Goal.objects.get(id = goal_id)
+        except:
+            print(ex1)
+            return self.CODE_GOAL_DNE
+        try:
+            user = BeatMyGoalUser.objects.get(username = username)
+        except:
+            print(ex2)
+            return self.CODE_GOAL_DNE
+        print(user.goals.all())
+        user.goals.add(goal)
+        user.save()
+        print(user.goals.all())
+        return self.CODE_SUCCESS
 
     @classmethod
     def delete(self, userid):

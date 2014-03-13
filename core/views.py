@@ -62,15 +62,16 @@ def goal_create_goal(request):
 def goal_remove_goal(request):
 	data = json.loads(request.body)
 	goal_id = data["goal_id"]
-	user = data["user"]
+	user = request.user 
 	response = Goal.remove(goal_id, user)
 	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
-
-
-
-
-
+def goal_join_goal(request):
+    data = json.loads(request.body)
+    goal_id = data["goal_id"]
+    user = request.user 
+    response = BeatMyGoalUser.joinGoal(user, goal_id)
+    return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 @csrf_exempt
 def goal_edit_goal(request, gid):
