@@ -93,11 +93,6 @@ class UserTest(unittest.TestCase):
         self.assertFalse('success' in response)
         self.assertTrue('errors' in response)
 
-	def setUp(self):
-		User.objects.all().delete()
-		Goal.objects.all().delete()
-		BeatMyGoalUser.create('test_user','test_email','test_password')
-
 	def testViewUser1(self):
 		pass
 	def testViewUser1(self):
