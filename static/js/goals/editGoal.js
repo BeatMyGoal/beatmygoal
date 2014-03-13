@@ -26,10 +26,12 @@ $(document).ready(function() {
 				if ('errors' in data) {
 					var errors = data.errors;
 					if ('title' in errors) {
-						$('#title-error').text('Invalid title').css("display", "block");
+						$('#title-error').text('Invalid title');
+						$("label[for='title']").addClass("error");
 					}
 					if ('description' in errors) {
-						$('#description-error').text('Invalid description').css("display", "block")
+						$('#description-error').text('Invalid description');
+						$("label[for='description']").addClass("error");
 					}
 				}
 			}
