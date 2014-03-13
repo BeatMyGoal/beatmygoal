@@ -3,23 +3,27 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 # Create your views here.
 
-def test(request):
-    return render(request, 'index.html', {"foo": "bar"})
-
-
 def user_login(request):
+    errors = {}
     if request.method == "GET":
-        return render(request, 'login.html')
+        return render(request, 'users/login.html')
     
     elif request.method == "POST":
-
         data = json.loads(request.body)
         username= data["username"]
         password= data["password"]
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect('/dashboard/')
+        #user = authenticate(username=username, password=password)
+        users = list(BeatMyGoalUser.objects.filter(username=username))
+        if len(users) > 0:
+            u = users[0]
+            if u.password == password:
+                u.backend = 'django.contrib.auth.backends.ModelBackend'
+                login(request, u)
+                return HttpResponse(json.dumps({"errCode": 1, "redirect" : "/dashboard/"}),
+                                    content_type = "application/json")
+            else:
+                errors['password'] = "Invalid password"
+                return HttpResponse(json.dumps({"errCode": -1}), content_type = "application/json")
         else:
-            response = -6
-            return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+            errors['username'] = "Invalid username"
+            return HttpResponse(json.dumps({"errCode": -1}), content_type = "application/json")

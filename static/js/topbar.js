@@ -17,7 +17,15 @@ $(document).ready(function() {
 			console.log(data);
 			if (data.errCode >= 0) {
 				window.location.href = data.redirect;
-			} 
+			} else {
+			    if ('errors' in data) {
+				var errors = data.errors;
+				if ('username' in errors){
+				    $('#username-error').text(data.errors.username).css("display", "block");
+				}
+				if ('password' in errors){
+				    $('#password-error').text(data.errors.password).css("display", "block");
+
 		}).fail(function(data) {
 			alert("fail to login");
 		});
