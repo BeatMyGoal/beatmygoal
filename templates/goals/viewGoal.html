@@ -49,12 +49,17 @@
       </fieldset>
     </form>
 
+
+
     <!-- buttons -->
     <div class="row">
       <ul class="button-group right">
         <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
+        {% if user.username == goal.creator.username %}
+
         <li><a id = "edit_goal_button" type="submit" class="button tiny pull-3">Edit Goal</a></li>
         <li><a id = "delete_goal_button" type="submit" class="button tiny pull-3">Delete Goal</a></li>
+        {% endif %}
       </ul>
     </div>
 

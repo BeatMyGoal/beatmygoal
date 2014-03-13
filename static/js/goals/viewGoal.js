@@ -19,6 +19,7 @@ $('#delete_goal_button').click(function() {
 			dataType: "json",
 		}).done(function(data) {
 			console.log(data);
+			console.log(data.redirect);
 			if (data.hasOwnProperty("success")) {
 				window.location.href = data.redirect;
 			} 
@@ -31,7 +32,6 @@ $('#delete_goal_button').click(function() {
 });
 $('#join_goal_button').click(function() {
 	var goal_id = window.location.pathname.split("/")[2];
-	console.log(goal_id)
 	var data = {
 		goal_id: goal_id,
 	}
@@ -44,6 +44,7 @@ $('#join_goal_button').click(function() {
 		}).done(function(data) {
 			console.log(data);
 			if (data.hasOwnProperty("success")) {
+				console.log(data);
 				window.location.href = data.redirect;
 			} 
 

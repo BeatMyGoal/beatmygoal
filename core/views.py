@@ -105,7 +105,7 @@ def goal_edit_goal(request, gid):
 
 def goal_view_goal(request, goal_id):
 	goal = Goal.objects.get(id=goal_id)
-	return render(request, 'goals/viewGoal.html', {"goal" : goal})
+	return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user})
 
 
 #def goal_remove_user(request):
