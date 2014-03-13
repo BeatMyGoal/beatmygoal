@@ -205,7 +205,6 @@ def edit_user(request, uid):
 			})
 		elif request.method == "POST":
 			data = json.loads(request.body)
-			print data
 			username = data['username']
 			email = data['email']
 			response = BeatMyGoalUser.updateUser(user, username, email)
@@ -213,7 +212,6 @@ def edit_user(request, uid):
 				"errCode" : response,
 				"redirect": "/users/" + str(uid)
 			}
-			print "test"
 			return HttpResponse(json.dumps(res), content_type = 'application/json', status=200)
 	else:
 		return HttpResponse("Invalid request", status=500)
