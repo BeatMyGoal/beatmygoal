@@ -23,6 +23,34 @@ class RegistrationTests(TestCase):
     	pass
 
 # Create your tests here
+
+class ViewUserTests(TestCase):
+    def setup(self):
+        self.factory = RequestFactory()
+        self.testUser = BeatMyGoalUser(username="test", password="test", email="test@test.com")
+
+    def postJSON(self, url, data):
+        return self.factory.post(url, content_type='application/json', data=data)
+
+    def testViewUsername(self):
+        pass
+
+    def testViewEmail(self):
+        pass
+
+class DeleteUserTests(TestCase):
+    def setup(self):
+        self.factory = RequestFactory()
+        self.testUser = BeatMyGoalUser(username="test", password="test", email="test@test.com")
+
+    def postJSON(self, url, data):
+        return self.factory.post(url, content_type='application/json', data=data)
+
+    def testDeleteUser(self):
+        pass
+
+
+
 class EditUserTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()

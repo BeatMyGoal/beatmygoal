@@ -10,19 +10,34 @@ class UserTest(unittest.TestCase):
 		BeatMyGoalUser.create('test_user','test_email','test_password')
 
 	def testCreateUser1(self):
-	def testCreateUser1(self):
-	def testCreateUser1(self):		
-	def testCreateUser1(self):
-	def testCreateUser1(self):
+		pass
+	def testCreateUser2(self):
+		pass
+	def testCreateUser3(self):		
+		pass
+	def testCreateUser4(self):
+		pass
+	def testCreateUser5(self):
+		pass
 	
-	def testEditGoal(self):
-	def testEditGoal(self):
-	def testEditGoal(self):
-	def testEditGoal(self):
-	def testEditGoal(self):
+	def testEditGoal1(self):
+		pass
+	def testEditGoal2(self):
+		pass
+	def testEditGoal3(self):
+		pass
+	def testEditGoal4(self):
+		pass
+	def testEditGoal5(self):
+		pass
 	
-	def testRemoveGoal(self):
-	def testRemoveGoal(self):
-	def testRemoveGoal(self):
-	def testRemoveGoal(self):
-	def testRemoveGoal(self):
+	def testRemoveGoal1(self):
+		pass
+	def testRemoveGoal2(self):
+		pass
+	def testRemoveGoal3(self):
+		pass
+	def testRemoveGoal4(self):
+		pass
+	def testRemoveGoal5(self):
+		pass
