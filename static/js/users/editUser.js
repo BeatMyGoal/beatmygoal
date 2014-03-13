@@ -7,6 +7,7 @@ $(document).ready(function() {
 	uid = window.location.pathname.split("/")[2];
 	
 	$("#save").click(function(event) {
+		event.preventDefault();
 		console.log("test");
 		var fname = $fname.val();
 		var lname = $lname.val();
@@ -28,8 +29,8 @@ $(document).ready(function() {
 			contentType: "application/json",
 			dataType: "json",
 		}).done(function(data) {
-			console.log(data)
-			if (data.errCode.length == 0) {
+			console.log(data);
+			if (data.errCode.length === 0) {
 				window.location.href = data.redirect;
 			}
 		}).fail(function(data) {
