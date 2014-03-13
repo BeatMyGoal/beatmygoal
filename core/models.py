@@ -40,15 +40,12 @@ class Goal(models.Model):
             errors['description'] = self.CODE_BAD_DESCRIPTION
         if not prize or len(prize)>self.MAX_LEN_PRIZE:
             errors['prize'] = self.CODE_BAD_PRIZE
-
-        try:
-            creator_user = BeatMyGoalUser.getUserByName(creator)
-            
-        except:
+        creator_user = BeatMyGoalUser.getUserByName(creator)
+        if creator_user < 0:
             errors['user'] = self.CODE_BAD_USERNAME
 
+
         if errors:
-            print "errors"
             return { "errors" : errors }
         else:
             goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0 )
@@ -72,21 +69,32 @@ class Goal(models.Model):
             return self.CODE_GOAL_DNE
     #Goal.create(title="test_title", description="test_description", creator="test_usr", prize="test_prize", private_setting = 1.0, goal_type="teest_goaltype")
 
-    @classmethod
-    def updateUser(self, user, username=None, email=None, password=None):
-        user.username = user.username if username is None else username
-        user.email = user.email if email is None else email
-        user.password = user.password if password is None else password
-        user.save()
-        return self.CODE_SUCCESS
+
 
 
     @classmethod
-    def edit(self, goal, title, description):
-        goal.title = goal.title if title is None else title
-        goal.description = goal.description if description is None else description
-        goal.save()
-        return self.CODE_SUCCESS
+    def edit(self, goal, edits = {}):
+
+        if 'title' in edits:
+            goal.title = edits['title']
+
+        if 'description' in edits:
+            goal.description = edits['description']
+
+
+
+
+        errors = {}
+        if not goal.title or len(goal.title)>self.MAX_LEN_TITLE:
+            errors['title'] = self.CODE_BAD_TITLE
+        if not goal.description or len(goal.description)>self.MAX_LEN_DESC:
+            errors['description'] = self.CODE_BAD_DESCRIPTION
+
+        if errors:
+            return {'errors' : errors}
+        else:
+            goal.save()
+            return {"success" : self.CODE_SUCCESS}
 
 
     
