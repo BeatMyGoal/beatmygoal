@@ -218,3 +218,4 @@ class BeatMyGoalUser(User):
         user.email = user_email
         user.save()
     	return self.CODE_SUCCESS
+

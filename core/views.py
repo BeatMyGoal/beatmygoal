@@ -11,6 +11,7 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 
+
 def index(request):
     return render(request, 'index.html')
 
@@ -117,7 +118,9 @@ def goal_view_goal(request, goal_id):
 #	response = Goal().remove_user(goal_id, user_id)
 #	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
+
 def user_login(request):
+    errors = {}
     if request.method == "GET":
         return render(request, 'users/login.html')
     
@@ -133,10 +136,15 @@ def user_login(request):
                 u.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, u)
                 return HttpResponse(json.dumps({"errCode": 1, "redirect" : "/dashboard/"}), 
-                                    content_type = "application/json")               
+                                    content_type = "application/json")
+
+            else:
+                errors['password'] = "Invalid password"
+                return HttpResponse(json.dumps({"errCode": -1}), content_type = "application/json")
         else:
-            response = -6
-            return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+            errors['username'] = "Invalid username"
+            return HttpResponse(json.dumps({"errCode": -1}), content_type = "application/json")
+
 @csrf_exempt
 def profile(request):
     """
