@@ -139,6 +139,9 @@ def user_login(request):
             return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 @csrf_exempt
 def profile(request):
+    """
+    Returns the profile of the authenticated user or else prompts them to login.
+    """
     if request.user.is_authenticated():
         user = request.user
         uid = user.id
@@ -149,6 +152,9 @@ def profile(request):
 
 @csrf_exempt
 def create_user(request):
+    """
+    Creates a user and authenticates them, if credentials are valid.
+    """
     print request.method
     if request.method == "GET":
             return render(request, 'users/createUser.html', {
@@ -177,11 +183,14 @@ def create_user(request):
 
 
 def view_user(request, uid):
-	if request.method == "GET":
-		user = BeatMyGoalUser.getUserById(uid)
-		return render(request, 'users/viewUser.html', {
-			"user_profile" : user
-		})
+    """ 
+    Returns the profile of the user with id, uid. 
+    """
+    if request.method == "GET":
+        user = BeatMyGoalUser.getUserById(uid)
+        return render(request, 'users/viewUser.html', {
+            "user_profile" : user
+        })
 		
 #@csrf_exempt
 def edit_user(request, uid):
