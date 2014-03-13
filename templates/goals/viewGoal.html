@@ -52,9 +52,10 @@
     <!-- buttons -->
     <div class="row">
       <ul class="button-group right">
-      <li><a id = "edit_goal_button" type="submit" class="button tiny pull-5">Edit Goal</a></li>
+        <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
+        <li><a id = "edit_goal_button" type="submit" class="button tiny pull-5">Edit Goal</a></li>
         <li><a id = "delete_goal_button" type="submit" class="button tiny pull-3">Delete Goal</a></li>
-        </ul>
+      </ul>
     </div>
 
       
@@ -95,15 +96,11 @@
         <fieldset>
         <legend> <h3> Participants </h3></legend>
         <ul class="side-nav">
+          {% for participant in goal.beatmygoaluser_set.all %} 
+
+          <li><a href="users/{{ participant.id }}">{{ participant.username }}</a></li>
+          {% endfor %}
           
-
-
-          <li><a href="#">Participant #1</a></li>
-          <li><a href="#">Participant #2</a></li>
-          <li><a href="#">Participant #3</a></li>
-          <li><a href="#">Participant #4</a></li>
-
-
           
         </ul>
         </fieldset>
@@ -111,9 +108,7 @@
     </div>
   
 
-
-
-
+    <div style="hidden" id="username">{{ goal.creator.username }}</div>
   </body>
 </html>
 
