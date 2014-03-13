@@ -85,13 +85,15 @@ def goal_edit_goal(request, gid):
             data = json.loads(request.body)
             title = data["title"]
             description = data["description"]
-
-            response = Goal.edit(goal, title, description)
-            print "wqef"
+            edits = {'title': title, 'description': description}
+            print edits
+            response = Goal.edit(goal, edits)
             print response
-            print gid
-
-            return HttpResponse(json.dumps({"errCode": response, "redirect":"/goals/" + str(gid)}), content_type = "application/json")
+            if 'errors' in response:
+                return HttpResponse(json.dumps(response), content_type = "application/json")
+            else:
+                return HttpResponse(json.dumps({"redirect":"/goals/" + str(gid),
+                    "success" : response["success"]}), content_type = "application/json")
     else:
         return HttpResponse("Invalid request", status=500)            
 
