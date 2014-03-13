@@ -131,10 +131,31 @@ class BeatMyGoalUser(User):
 
     EXISTING_USERNAME = "An account with this username already exists."
     EXISTING_EMAIL = "An account with this email address already exists."
+    INVALID_USERNAME = "Invalid Username"
+    INVALID_PASSWORD = "Invalid Password"
 
 
     #user = models.OneToOneField(User)
     goals = models.ManyToManyField(Goal)
+    
+    @classmethod
+    def login(self, username, password):
+        errors = {}
+        if (BeatMyGoalUser.objects.filter(username=username).count()) == 0:
+            errors['username'] = self.INVALID_USERNAME
+        
+        users = list(BeatMyGoalUser.objects.filter(username=username))
+
+        if len(users) > 0:
+            user = users[0]
+            if user.password != password:
+                errors['password'] = self.INVALID_PASSWORD
+    
+        if errors:
+            return {"errors": errors}
+    
+        else:
+            return {"success" : self.CODE_SUCCESS}
 
     @classmethod
     def create(self, username, email, password):
@@ -153,6 +174,7 @@ class BeatMyGoalUser(User):
             user = BeatMyGoalUser(username=username, email=email, password=password)
             user.save()
             return {"success" : self.CODE_SUCCESS, "user" : user }
+
 
     @classmethod
     def joinGoal(self, username, goal_id):
@@ -228,3 +250,4 @@ class BeatMyGoalUser(User):
         user.email = user_email
         user.save()
     	return self.CODE_SUCCESS
+

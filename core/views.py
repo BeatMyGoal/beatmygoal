@@ -11,6 +11,7 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 
+
 def index(request):
     return render(request, 'index.html')
 
@@ -117,26 +118,33 @@ def goal_view_goal(request, goal_id):
 #	response = Goal().remove_user(goal_id, user_id)
 #	return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
+
 def user_login(request):
-    if request.method == "GET":
-        return render(request, 'users/login.html')
+    """
+    Authenticates the user credential, login if valid 
+    """
+    #if request.method == "GET":
+    #    return render(request, 'users/login.html')
     
-    elif request.method == "POST":
-        data = json.loads(request.body)
-        username= data["username"]
-        password= data["password"]
-        #user = authenticate(username=username, password=password)
-        users = list(BeatMyGoalUser.objects.filter(username=username))
-        if len(users) > 0:
-            u = users[0]
-            if u.password == password:
-                u.backend = 'django.contrib.auth.backends.ModelBackend'
-                login(request, u)
-                return HttpResponse(json.dumps({"errCode": 1, "redirect" : "/dashboard/"}), 
-                                    content_type = "application/json")               
-        else:
-            response = -6
-            return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
+    #elif request.method == "POST":
+    data = json.loads(request.body)
+    username= data["username"]
+    password= data["password"]
+    #user = authenticate(username=username, password=password)
+    response = BeatMyGoalUser.login(username,password)
+    users = list(BeatMyGoalUser.objects.filter(username=username))
+        
+    if "errors" in response:
+        return HttpResponse(json.dumps(response), content_type = "application/json")
+        
+    if len(users) > 0:
+        u = users[0]
+        if u.password == password:
+            u.backend = 'django.contrib.auth.backends.ModelBackend'
+            login(request, u)
+            return HttpResponse(json.dumps({"errCode": 1, "redirect" : "/dashboard/"}),
+                                    content_type = "application/json")
+
 @csrf_exempt
 def profile(request):
     """
@@ -232,4 +240,5 @@ def delete_user(request, uid):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/')
+
 

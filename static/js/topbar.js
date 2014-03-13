@@ -1,10 +1,11 @@
 $(document).ready(function() {
-
+        $('#loginMessage').html("Enter your credentials");
 	$("#Login").click(function(e) {
 
 		var data = {
 			username: $("#username").val(),
 			password: $("#password").val(),
+
 		};
 
 		$.ajax({
@@ -17,7 +18,17 @@ $(document).ready(function() {
 			console.log(data);
 			if (data.errCode >= 0) {
 				window.location.href = data.redirect;
-			} 
+			} else {
+			    if ('errors' in data) {
+				var errors = data.errors;
+				if ('username' in errors){
+				    $('#loginMessage').html("Invalid Username");
+				}
+				if ('password' in errors){
+				   $('#loginMessage').html("Invalid Password");
+				}
+			    }
+			}
 		}).fail(function(data) {
 			alert("fail to login");
 		});
