@@ -21,10 +21,10 @@ $(document).ready(function() {
 			    if ('errors' in data) {
 				var errors = data.errors;
 				if ('username' in errors){
-				    $('#username-error').text(data.errors.username).css("display", "block");
+				    $('#username-login-error').text(data.errors.username).css("display", "block");
 				}
 				if ('password' in errors){
-				    $('#password-error').text(data.errors.password).css("display", "block");
+				    $('#password-login-error').text(data.errors.password).css("display", "block");
 				}
 			    }
 			}
