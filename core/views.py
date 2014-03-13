@@ -4,7 +4,6 @@ from django.http import HttpResponseRedirect
 # Create your views here.
 
 def user_login(request):
-    errors = {}
     if request.method == "GET":
         return render(request, 'users/login.html')
     
@@ -13,7 +12,12 @@ def user_login(request):
         username= data["username"]
         password= data["password"]
         #user = authenticate(username=username, password=password)
+        response = BeatMyGoalUser.login(username,password)
         users = list(BeatMyGoalUser.objects.filter(username=username))
+        
+        if "errors" in response:
+            return HttpResponse(json.dumps(response), content_type = "application/json")
+        
         if len(users) > 0:
             u = users[0]
             if u.password == password:
@@ -21,9 +25,5 @@ def user_login(request):
                 login(request, u)
                 return HttpResponse(json.dumps({"errCode": 1, "redirect" : "/dashboard/"}),
                                     content_type = "application/json")
-            else:
-                errors['password'] = "Invalid password"
-                return HttpResponse(json.dumps({"errCode": -1}), content_type = "application/json")
-        else:
-            errors['username'] = "Invalid username"
-            return HttpResponse(json.dumps({"errCode": -1}), content_type = "application/json")
+
+

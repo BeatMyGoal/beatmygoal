@@ -17,5 +17,22 @@ class Participant(models.Model):
     goals = models.ManyToManyField(Goal)
 
 
+INVALID_USERNAME = "Invalid Username"
+INVALID_PASSWORD = "Invalid Password"
 
+def login(self, username, password):
+    errors = {}
+    if (BeatMyGoalUser.objects.filter(username=username).count()) == 0:
+        errors['username'] = self.INVALID_USERNAME
+    users = list(BeatMyGoalUser.objects.filter(username=username))
+    if len(users) > 0:
+        user = users[0]
+        if user.password != password:
+            errors['password'] = self.INVALID_PASSWORD
+
+    if errors:
+        return {"errors": errors}
+
+    else:
+        return {"success" : self.CODE_SUCCESS}
 
