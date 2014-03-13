@@ -11,24 +11,28 @@
 <form id="editForm" data-abide>
 	<div class="row">
 		<div class="large-6 columns">
-			<label for="fname"> First Name</label>
-			<input id='fname' type="text" placeholder="First Name">
+			<label for="fname"> First Name
+				<input id='fname' type="text" placeholder="First Name">
+			</label>
 		</div>
 		<div class="large-6 columns">
-			<label for'lname'>Last Name</label>
-			<input id='lname' type="text" placeholder="Last Name">
+			<label for'lname'>Last Name
+				<input id='lname' type="text" placeholder="Last Name">
+			</label>
 		</div>
 	</div>
 	<div class="row">
 		<div class="large-6 columns username-fields">
-			<label for="username">Username</label>
-			<input id='username' type="text" placeholder="Username" value="{{ username|default:'' }}" required pattern="alpha_numeric">
-			<small id="username-error" class="error">Usernames can only contains letters or numbers.</small>
+			<label for="username">Username
+				<input id='username' type="text" placeholder="Username" value="{{ username|default:'' }}" required pattern="alpha_numeric">
+				<small id="username-error" class="error">Usernames can only contains letters or numbers.</small>
+			</label>
 		</div>
 		<div class="large-6 columns email-fields">
-			<label for='email'>Email</label>
-			<input id='email' type="email" placeholder="Email" value="{{ email|default:'' }}" required>
-			<small id="email-error" class="error">An email address is required.</small>
+			<label for='email'>Email
+				<input id='email' type="email" placeholder="Email" value="{{ email|default:'' }}" required>
+				<small id="email-error" class="error">An email address is required.</small>
+			</label>
 		</div>
 	</div>
 
