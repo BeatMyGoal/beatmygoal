@@ -125,10 +125,15 @@ def user_login(request):
         data = json.loads(request.body)
         username= data["username"]
         password= data["password"]
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect('/dashboard/')
+        #user = authenticate(username=username, password=password)
+        users = list(BeatMyGoalUser.objects.filter(username=username))
+        if len(users) > 0:
+            u = users[0]
+            if u.password == password:
+                u.backend = 'django.contrib.auth.backends.ModelBackend'
+                login(request, u)
+                return HttpResponse(json.dumps({"errCode": 1, "redirect" : "/dashboard/"}), 
+                                    content_type = "application/json")               
         else:
             response = -6
             return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
@@ -158,9 +163,8 @@ def create_user(request):
                                 content_type = "application/json")            
         else:
         	user = response['user']
-
-        	# TODO! - this is a bad hack
-        	user.backend = 'django.contrib.auth.backends.ModelBackend'
+                #TODO
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
         	# authenticate(username=username, password=password)
         	login(request, user)
         	redirect = "/users/%s/" % (user.id)
