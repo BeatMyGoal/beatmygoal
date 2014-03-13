@@ -110,6 +110,28 @@ class GoalTest(unittest.TestCase):
 		self.assertEqual('title', g.title)
 		self.assertEqual('sample_description', g.description)
 
+	#Delete goal with valid data
+	def testRemoveGoal1(self):
+		Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type')
+		g = Goal.objects.get(id=1)
+		response = Goal.remove(g.id, g.creator.username)
+		self.assertEqual(response,1)
+		lst = Goal.objects.filter(id=1)
+		self.assertFalse(lst)
+
+	#Delete goal with invalid user
+	def testRemoveGoal2(self):
+		Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type')
+		g = Goal.objects.get(id=1)
+		response = Goal.remove(g.id, 'eh')
+		self.assertEqual(response, -7)
+
+	#Delete goal with invalid user
+	def testRemoveGoal3(self):
+		Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type')
+		g = Goal.objects.get(id=1)
+		response = Goal.remove(g.id+23847923, 'eh')
+		self.assertEqual(response, -7)
 	
 
 
