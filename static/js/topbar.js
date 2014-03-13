@@ -25,7 +25,9 @@ $(document).ready(function() {
 				}
 				if ('password' in errors){
 				    $('#password-error').text(data.errors.password).css("display", "block");
-
+				}
+			    }
+			}
 		}).fail(function(data) {
 			alert("fail to login");
 		});
