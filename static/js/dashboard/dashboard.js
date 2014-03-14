@@ -1,4 +1,4 @@
-
+$(document).ready(function() {
 var page = 0;
 var scroll_activated = false;
 
@@ -62,4 +62,5 @@ $(window).scroll(function() {
 		scroll_activated = false;
 		page = page + 1;	
    }
+});
 });
