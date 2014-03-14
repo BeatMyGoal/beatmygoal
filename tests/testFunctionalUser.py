@@ -33,27 +33,18 @@ class RegistrationTests(TestCase):
 class LoginTests(TestCase):
     def setUp(self):
         self.client = Client()
+        BeatMyGoalUser.create("user1","email@example.com","pw")
+
 
     def postJSON(self, url, data):
-        return self.client.post(url, content_type = 'application/json', data=data))
-
-    def testCreateUser(self):
-        """
-            Tests if user is created
-        """
-        data = """
-            { "username" : "user1", "password" : "pw", "email" : "email@example.com" }
-            """
-        response = self.postJSON("/users/create", data)
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('success' in response.content)
+        return self.client.post(url, content_type = 'application/json', data=data)
 
     def testLogin(self):
         """
             Tests if login sucessfully
         """
         data = """
-        { "username" : "user1", "password" : "pw"
+            { "username" : "user1", "password" : "pw"}
         """
         response = self.postJSON("/users/login", data)
         self.assertEqual(response.status_code, 200)
@@ -64,7 +55,7 @@ class LoginTests(TestCase):
             Tests login with invalid username
         """
         data = """
-            { "username" : "user2", "password" : "pw"
+            { "username" : "user2", "password" : "pw"}
         """
         response = self.postJSON("/users/login", data)
         self.assertEqual(response.status_code, 200)
@@ -75,7 +66,7 @@ class LoginTests(TestCase):
             Tests login with invalid password
         """
         data = """
-            { "username" : "user1", "password" : "pw1"
+            { "username" : "user1", "password" : "pw1"}
         """
         response = self.postJSON("/users/login", data)
         self.assertEqual(response.status_code, 200)
@@ -161,6 +152,3 @@ class EditUserTests(TestCase):
         """
         response2 = self.postJSON("/users/1/edit", data2)
         self.assertEqual(response2.status_code, 500)
-=======
-
->>>>>>> solpark
