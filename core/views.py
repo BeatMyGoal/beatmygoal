@@ -228,26 +228,12 @@ def view_user(request, uid):
         return render(request, 'users/viewUser.html', {
             "user_profile" : user
         })
-<<<<<<< HEAD
-		
-@csrf_exempt
+        
+#@csrf_exempt
 def edit_user(request, uid):
     """ 
     Allows users to edit their profile if they are logged in.
     """
-    uid = int(uid)
-    user = request.user
-    #user = BeatMyGoalUser.getUserById(uid)
-    if user.is_authenticated() and user.id == uid:
-        if request.method == "GET":
-            return render(request, 'users/editUser.html', {
-                                "username": user.username,
-                                "email":	user.email,
-                            })
-=======
-        
-#@csrf_exempt
-def edit_user(request, uid):
     uid = int(uid)
     user = request.user
     #user = BeatMyGoalUser.getUserById(uid)
@@ -257,13 +243,11 @@ def edit_user(request, uid):
                 "username": user.username,
                 "email":    user.email,
             })
->>>>>>> c13236210d71ec143c08d8059efb6f52ecb500e6
         elif request.method == "POST":
             data = json.loads(request.body)
             username = data['username']
             email = data['email']
             response = BeatMyGoalUser.updateUser(user, username, email)
-<<<<<<< HEAD
 
             if "errors" in response:
                 return HttpResponse(json.dumps(response), content_type = "application/json")            
@@ -273,13 +257,6 @@ def edit_user(request, uid):
                 "success" : response["success"]
                 }), content_type = "application/json")
         #return HttpResponse(json.dumps(res), content_type = 'application/json', status=200)
-=======
-            res = {
-                "errCode" : response,
-                "redirect": "/users/" + str(uid)
-            }
-            return HttpResponse(json.dumps(res), content_type = 'application/json', status=200)
->>>>>>> c13236210d71ec143c08d8059efb6f52ecb500e6
     else:
         return HttpResponse("Invalid request", status=500)
 
