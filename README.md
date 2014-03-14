@@ -1,10 +1,20 @@
 beatmygoal
 ==========
 
+Local Installation Instructions
+-------------------------------
+- set up the virtualenv and install packages (see below)
+- To run the app: `python manage.py syncdb`, followed by `python manage.py runserver`
+- To run tests: `python manage.py test`
+- To populate the DB with some test data: `python manage.py shell < scripts/populate_db.py`
+
 To set up and update venv:
 - Create your own venv using `virtualenv venv` (venv/* is ignored in the .gitignore file)
 - `source venv/bin/active`
 - Use `pip install --allow-all-external -r requirements.txt` to download site packages
+
+Heroku instructions
+-------------------
 
 To update to heroku:
 - make sure you have Heroku Toolbelt
