@@ -5,7 +5,7 @@ import random, json
 from django.core.handlers.wsgi import *
 from django.test.client import Client
 
-class RegistrationTests(TestCase):
+class GoalPageTests(TestCase):
 
     def setUp(self):
         self.client = Client()
@@ -21,7 +21,7 @@ class RegistrationTests(TestCase):
         response = self.client.get("/goals/create", {})
         self.assertEqual(response.status_code, 200)
 
-    def testValidRegistration(self):
+    def testValidGoalCreate(self):
         data = """
         { "title" : "test_title", "description" : "test_description", "prize" : "test_prize",
         "private_setting" : 1, "goal_type" : "test_goal_type" }
@@ -45,13 +45,9 @@ class ViewGoalTests(TestCase):
     def testGoalPageLoads(self):
         """
         Tests to make sure the view page loads
-        """
-        
+        """        
         response = self.client.get("/goals/1/")
         self.assertEqual(response.status_code, 200)
-
-
-
 
 
 class EditGoalTests(TestCase):
@@ -60,8 +56,6 @@ class EditGoalTests(TestCase):
         self.testUser = BeatMyGoalUser(username="test", password="test", email="test@test.com")
         self.testUser.save()
         Goal.create('title','des','test','test_prize', 1, 'test_type')
-
-
 
 
     def postJSON(self, url, data):
@@ -81,20 +75,17 @@ class EditGoalTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-    #def testEditGoalSucceeds(self):
-    #    data2 = """
-    #    { "username" : "test", "password" : "test" }
-    #    """
-    #    response2 = self.postJSON("/users/login", data2)
+    def testEditGoalSucceeds(self):
+       data2 = """
+       { "username" : "test", "password" : "test" }
+       """
+       response2 = self.postJSON("/users/login", data2)
 
-
-
-    #    data = """
-    #    { "title" : 'title2', "description" : 'des2'}
-    #    """
-    #    response = self.postJSON("/goals/1/edit", data)
-    #    print response
-    #    self.assertEqual(response.status_code, 200)
+       data = """
+       { "title" : "title2", "description" : "des2"}
+       """
+       response = self.postJSON("/goals/1/edit", data)
+       self.assertEqual(response.status_code, 200)
 
 class RemoveGoalTests(TestCase):
     def setUp(self):
@@ -107,17 +98,14 @@ class RemoveGoalTests(TestCase):
     def postJSON(self, url, data):
         return self.client.post(url, content_type='application/json', data=data)
 
-
-
-
-    #def testremoveGoalSucceeds(self):
-    #    data = """
-    #    { "username" : "test", "password" : "test" }
-    #    """
-    #    self.postJSON("/users/login", data)
-    #    data2 = """
-    #    { "goal_id" : self.testGoal.id }
-    #    """
-    #    response2 = self.postJSON("/goals/remove", data2)
-    #    self.assertEqual(response2.status_code, 500)
+    def testremoveGoalSucceeds(self):
+       data = """
+       { "username" : "test", "password" : "test" }
+       """
+       self.postJSON("/users/login", data)
+       data2 = """
+       { "goal_id" : %s }
+       """ % (self.testGoal.id)
+       response2 = self.postJSON("/goals/remove", data2)
+       self.assertEqual(response2.status_code, 200)
 

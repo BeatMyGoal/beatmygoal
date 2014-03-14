@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Goal(models.Model):
+    """
+    Represents any Goal in the BeatMyGoal System.
+    """
     CODE_SUCCESS = 1
     CODE_BAD_USERNAME = -2
     CODE_BAD_TITLE = -3
@@ -104,6 +107,9 @@ class Goal(models.Model):
     
 class BeatMyGoalUser(User):
     """
+    A BeatMyGoal user extends from a django.auth.User and inherits the
+    following properties:
+
     << User field >>
     * username,
     * email,

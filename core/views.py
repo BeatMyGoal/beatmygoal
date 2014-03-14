@@ -14,11 +14,17 @@ from django.core import serializers
 
 
 def index(request):
+    """
+    Returns the homepage of the app.
+    """
     return render(request, 'index.html')
 
 
 @csrf_exempt
 def dashboard(request):
+    """
+    Returns the dashboard which contains all goals.
+    """
     if request.is_ajax():
         data = json.loads(request.body)
         page = data["page"]
@@ -40,6 +46,9 @@ def dashboard(request):
 
 @csrf_exempt
 def goal_create_goal(request):
+    """
+    Creates a goal if the user is authenticated.
+    """
     if request.user.is_authenticated():
         if request.method == "GET":
             return render(request, 'goals/createGoal.html')
@@ -71,6 +80,9 @@ def goal_create_goal(request):
 
 @csrf_exempt
 def goal_remove_goal(request):
+    """
+    Removes the goal if it belongs to the user.
+    """
     data = json.loads(request.body)
     goal_id = data["goal_id"]
 
@@ -84,6 +96,9 @@ def goal_remove_goal(request):
         "success" : response["success"]}), content_type = "application/json")
 
 def goal_join_goal(request):
+    """
+    Adds a user as a participant of a goal.
+    """
     data = json.loads(request.body)
     goal_id = data["goal_id"]
     user = request.user 
@@ -97,6 +112,9 @@ def goal_join_goal(request):
         "redirect" : redirect}), content_type = "application/json")
 
 def goal_leave_goal(request):
+    """
+    Removes a user as a participant of a goal.
+    """
     data = json.loads(request.body)
     goal_id = data["goal_id"]
     user = request.user 
@@ -112,6 +130,9 @@ def goal_leave_goal(request):
 
 @csrf_exempt
 def goal_edit_goal(request, gid):
+    """
+    Edit the attributes of a goal if you are it's creator
+    """
     gid = int(gid)
     goal = Goal.objects.get(id=gid)
     user = request.user
@@ -136,6 +157,9 @@ def goal_edit_goal(request, gid):
 
 
 def goal_view_goal(request, goal_id):
+    """
+    View the profile of a goal.
+    """
     goal = Goal.objects.get(id=goal_id)
 
     isCreator = str(request.user) == str(goal.creator)
@@ -286,6 +310,9 @@ def delete_user(request, uid):
     return HttpResponse("Invalid request", status=500)
 
 def user_logout(request):
+    """
+    De-authenticates the user and redirects to the homepage.
+    """
     logout(request)
     return HttpResponseRedirect('/')
 
