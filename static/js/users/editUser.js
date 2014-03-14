@@ -59,9 +59,7 @@ $(document).ready(function() {
 			contentType: "application/json",
 			dataType: "json"
 		}).done(function(data) {
-			if (data.errCode >= 0) {
-				window.location.href = data.redirect;
-			}
+			window.location.href = data.redirect;
 		}).fail(function(){
 			alert("failed to delete");
 		});
