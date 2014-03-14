@@ -56,3 +56,37 @@ class DeleteUserTests(TestCase):
 
     def testDeleteUser(self):
         pass
+
+
+class EditUserTests(TestCase):
+    def setUp(self):
+        self.cleint = Client()
+        self.testUser = BeatMyGoalUser(username="test", password="test", email="test@test.com")
+        self.testUser.save()
+
+    def postJSON(self, url, data):
+        return self.client.post(url, content_type='application/json', data=data)
+
+    def testEditUser(self):
+        """
+        Tests that a user can be edited if logged in
+        """
+        data = """
+        { "username" : "test", "password" : "test" }
+        """
+        response = self.postJSON("/users/login", data)
+        data2 = """
+        {"username" : "test1", "email" : "newemail@email.com"}
+        """
+        response2 = self.postJSON("/users/1/edit", data2)
+        self.assertEqual(response2.status_code, 200)
+
+    def testEditWrongUser(self):
+        """
+        Tests that a user cannot be edited if not logged in
+        """
+        data2 = """
+        {"username" : "test1", "email" : "newemail@email.com"}
+        """
+        response2 = self.postJSON("/users/1/edit", data2)
+        self.assertEqual(response2.status_code, 500)
