@@ -50,12 +50,16 @@
     </form>
 
 
-
     <!-- buttons -->
     <div class="row">
       <ul class="button-group right">
-        <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
-        <li><a id = "leave_goal_button" type="submit" class="button tiny pull-3">Leave Goal</a></li>
+
+        {% if isParticipant %}
+          <li><a id = "leave_goal_button" type="submit" class="button tiny pull-3">Leave Goal</a></li>
+        {% elif not isCreator %}
+          <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
+        {% endif %}
+       
 
         {% if user.username == goal.creator.username %}
 
@@ -115,7 +119,7 @@
     </div>
   
 
-    <div style="hidden" id="username">{{ goal.creator.username }}</div>
+    <div style="display:hidden" id="username">{{ goal.creator.username }}</div>
   </body>
 </html>
 

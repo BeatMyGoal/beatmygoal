@@ -134,7 +134,11 @@ def goal_edit_goal(request, gid):
 
 def goal_view_goal(request, goal_id):
     goal = Goal.objects.get(id=goal_id)
-    return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user})
+
+    isCreator = str(request.user) == str(goal.creator)
+    isParticipant = len(goal.beatmygoaluser_set.filter(username=request.user)) > 0
+    print isCreator
+    return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, "isParticipant" : isParticipant, "isCreator" : isCreator})
 
 
 #def goal_remove_user(request):
