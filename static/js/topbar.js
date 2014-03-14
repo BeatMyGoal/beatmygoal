@@ -16,7 +16,7 @@ $(document).ready(function() {
 			dataType: "json",
 		}).done(function(data) {
 			console.log(data);
-			if (data.errCode >= 0) {
+			if (data.hasOwnProperty("success")) {
 				window.location.href = data.redirect;
 			} else {
 			    if ('errors' in data) {
