@@ -18,9 +18,9 @@ $.ajax({
 		fields = entry['fields']
 		user = $(".users>#id"+fields['creator'])
 		console.log(user)
-		$("tbody").append('<tr><td><a href="goals/'+entry['pk']+'">'+fields['title']+'</a></td>'+
+		$("tbody").append('<tr><td><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></td>'+
 			'<td>'+fields['description']+'</td>'+
-			'<td><a href="users/'+fields['creator']+'">'+user.text()+'</a></td>'+
+			'<td><a href="/users/'+fields['creator']+'">'+user.text()+'</a></td>'+
 			'<td>'+fields['prize']+'</td></tr>')
 	});
 
@@ -49,9 +49,9 @@ $(window).scroll(function() {
 				fields = entry['fields']
 				user = $(".users>#id"+fields['creator'])
 				console.log(user)
-				$("tbody").append('<tr><td><a href="goals/'+entry['pk']+'">'+fields['title']+'</a></td>'+
+				$("tbody").append('<tr><td><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></td>'+
 					'<td>'+fields['description']+'</td>'+
-					'<td><a href="users/'+fields['creator']+'">'+user.text()+'</a></td>'+
+					'<td><a href="/users/'+fields['creator']+'">'+user.text()+'</a></td>'+
 					'<td>'+fields['prize']+'</td></tr>')
 			});
 
