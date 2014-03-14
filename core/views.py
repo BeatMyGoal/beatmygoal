@@ -17,7 +17,10 @@ def index(request):
     """
     Returns the homepage of the app.
     """
-    return render(request, 'index.html')
+    if request.user.is_authenticated():
+        return HttpResponseRedirect("/dashboard/")
+    else:
+        return render(request, 'index.html')
 
 
 @csrf_exempt
