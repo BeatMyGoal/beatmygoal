@@ -23,17 +23,8 @@
     background-attachment: fixed;
 }
 
-.intro-box {
-    background-color: rgba(0,0,0, 0.35);
-    padding: 15px;
-}
-
-.white-font {
-    color: #FFF;
-}
-
 .border-left {
-    border-left: 1px solid #fff;
+    border-left: 1px solid #000;
 }
 
 .outline {
