@@ -61,7 +61,7 @@ class CreateLoginUserTest(unittest.TestCase):
 
     def testCreateEmptyPassword(self):
         """
-        Tests that creating account with empty email
+        Tests that creating account with empty password
         """
         response = BeatMyGoalUser.create('user1', 'email1@gmail.com', '')
         self.assertFalse('success' in response)

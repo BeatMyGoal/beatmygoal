@@ -8,6 +8,13 @@ $(document).ready(function() {
 	
 	$("#editForm #save").click(function(e) {
 		e.preventDefault();
+
+	    var invalid_fields = $("#editForm").find('[data-invalid]');
+	    console.log(invalid_fields);
+	    if (invalid_fields.length > 0) {
+		return;
+	    }
+
 		console.log("test");
 		var fname = $fname.val();
 		var lname = $lname.val();

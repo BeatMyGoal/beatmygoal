@@ -1,7 +1,14 @@
 $(document).ready(function() {
 
 	$("#register-submit").click(function(e) {
+	    e.preventDefault();
 
+	    var invalid_fields = $("#register-form").find('[data-invalid]');
+	    console.log(invalid_fields);
+	    if (invalid_fields.length > 0) {
+		return;
+	    }
+	    
 		var data = {
 			username: $("#register-username").val(),
 			password: $("#register-password").val(),

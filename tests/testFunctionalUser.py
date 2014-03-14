@@ -30,6 +30,49 @@ class RegistrationTests(TestCase):
         self.assertTrue('success' in response.content)
 
 
+class LoginTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        BeatMyGoalUser.create("user1","email@example.com","pw")
+
+
+    def postJSON(self, url, data):
+        return self.client.post(url, content_type = 'application/json', data=data)
+
+    def testLogin(self):
+        """
+            Tests if login sucessfully
+        """
+        data = """
+            { "username" : "user1", "password" : "pw"}
+        """
+        response = self.postJSON("/users/login", data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.content)
+        
+    def testInvalidLogin1(self):
+        """
+            Tests login with invalid username
+        """
+        data = """
+            { "username" : "user2", "password" : "pw"}
+        """
+        response = self.postJSON("/users/login", data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('username' in response.content)
+        
+    def testInvalidLogin2(self):
+        """
+            Tests login with invalid password
+        """
+        data = """
+            { "username" : "user1", "password" : "pw1"}
+        """
+        response = self.postJSON("/users/login", data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('password' in response.content)
+
+
 class ViewUserTests(TestCase):
     def setUp(self):
         self.cleint = Client()
