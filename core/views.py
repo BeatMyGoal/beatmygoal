@@ -134,7 +134,11 @@ def goal_edit_goal(request, gid):
 
 def goal_view_goal(request, goal_id):
     goal = Goal.objects.get(id=goal_id)
-    return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user})
+
+    isCreator = str(request.user) == str(goal.creator)
+    isParticipant = len(goal.beatmygoaluser_set.filter(username=request.user)) > 0
+    print isCreator
+    return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, "isParticipant" : isParticipant, "isCreator" : isCreator})
 
 
 #def goal_remove_user(request):
@@ -237,6 +241,9 @@ def view_user(request, uid):
 
 #@csrf_exempt
 def edit_user(request, uid):
+    """ 
+    Allows users to edit their profile if they are logged in.
+    """
     uid = int(uid)
     user = request.user
     #user = BeatMyGoalUser.getUserById(uid)
@@ -251,11 +258,15 @@ def edit_user(request, uid):
             username = data['username']
             email = data['email']
             response = BeatMyGoalUser.updateUser(user, username, email)
-            res = {
-                "errCode" : response,
-                "redirect": "/users/" + str(uid)
-            }
-            return HttpResponse(json.dumps(res), content_type = 'application/json', status=200)
+
+            if "errors" in response:
+                return HttpResponse(json.dumps(response), content_type = "application/json")            
+            else:
+                redirect = "/users/" + str(uid)
+                return HttpResponse(json.dumps({"redirect" : redirect,
+                "success" : response["success"]
+                }), content_type = "application/json")
+        #return HttpResponse(json.dumps(res), content_type = 'application/json', status=200)
     else:
         return HttpResponse("Invalid request", status=500)
 

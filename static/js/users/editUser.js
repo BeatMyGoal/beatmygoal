@@ -30,9 +30,22 @@ $(document).ready(function() {
 			dataType: "json",
 		}).done(function(data) {
 			console.log(data);
-			if (data.errCode.length === 0) {
+			if (data.hasOwnProperty("success")) {
 				window.location.href = data.redirect;
-			}
+			} else {
+                if ('errors' in data) {
+                    var errors = data.errors;
+                    if ('username' in errors) {
+                        $("#username-error").text("Invalid/Existing Username");
+                        $('label[for="username"]').addClass("error");
+                    
+                    }
+                    if ('email' in errors) {
+                        $("#email-error").text("Invalid Email");
+                        $('label[for="email"]').addClass('error');
+                    }
+                }
+            }
 		}).fail(function(data) {
 			alert("failure");
 		});
