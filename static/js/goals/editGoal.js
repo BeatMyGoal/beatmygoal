@@ -19,7 +19,8 @@ $(document).ready(function() {
 			contentType: "application/json",
 			dataType: "json",
 		}).done(function(data) {
-			console.log(data)
+			console.log(data);
+			console.log(data['goals']);
 			if (data['success']) {
 				window.location.href = data.redirect;
 			} else {

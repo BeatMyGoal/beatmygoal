@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
+from django.core import serializers
 
 
 def index(request):
@@ -18,13 +19,24 @@ def index(request):
 
 @csrf_exempt
 def dashboard(request):
-    all_goals = Goal.objects.all()
-    print(all_goals)
-    goals = all_goals[0:10]
-    print(goals)
-    return render(request, 'dashboard/dashboard_main.html', {
-        "goals": goals
-    })
+    if request.is_ajax():
+        data = json.loads(request.body)
+        page = data["page"]
+        print("page")
+        print(page)
+        all_goals = Goal.objects.all()
+        if (page*20+19 < len(all_goals)):
+            goals = all_goals[page*20:page*20+19]
+        else:
+            goals = all_goals[page*20:]
+        serialized_goals = serializers.serialize('json', goals)
+        json_data = json.dumps({'goals':serialized_goals})
+        return HttpResponse(json_data, content_type="application/json")
+    else:
+        all_users = BeatMyGoalUser.objects.all()
+        return render(request, 'dashboard/dashboard_main.html', {
+                'users': all_users
+            })
 
 @csrf_exempt
 def goal_create_goal(request):

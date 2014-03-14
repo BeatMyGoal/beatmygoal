@@ -2,10 +2,12 @@
 
 {% block title %}View/Edit Profile{% endblock %}
 
+{% load staticfiles %}
+
 {% block content %}
 
 {% csrf_token %}
-
+<script src="{% static 'js/dashboard/dashboard.js' %}"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 <center>  
@@ -20,32 +22,17 @@
             </b>
         </tr>
     </thead>
-    {% for goal in goals %}
         <tbody>
-                <tr> 
-                    <td><a href="/goals/{{ goal.id }}">{{ goal.title }}</a> </td>
-                    <td>{{ goal.description }}</td>
-                    <td>{{ goal.creator.username }}</td>
-                    <td>{{ goal.prize }}</td>
-                </tr>
+
         </tbody>
-    {% endfor %}
 </table>
 </center>
+<div class="users" style="display:none">
+   {% for user in users %} 
+        <div id="id{{ user.id }}">{{ user.username }}</div>
+   {% endfor %} 
+</div>
 
 
-<div class="pagination-centered">
-    <ul class="pagination">
-        <li class="arrow unavailable"><a href="">&laquo;</a></li>
-        <li class="current"><a href="">1</a></li>
-        <li><a href="">2</a></li>
-        <li><a href="">3</a></li>
-        <li><a href="">4</a></li>
-        <li class="unavailable"><a href="">&hellip;</a></li>
-        <li><a href="">12</a></li>
-        <li><a href="">13</a></li>
-        <li class="arrow"><a href="">&raquo;</a></li>
-    </ul>
-</div> 
 {% endblock %}
 
