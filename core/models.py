@@ -254,8 +254,6 @@ class BeatMyGoalUser(User):
         user.save()
         return { "success" : self.CODE_SUCCESS }
 
-    
-
     @classmethod
     def remove(self, userid):
         errors = {}
@@ -283,7 +281,7 @@ class BeatMyGoalUser(User):
         if not BeatMyGoalUser.objects.filter(username=username).exists():
             errors['username'] = self.INVALID_USERNAME
             return {'errors' : errors}
-        user = BeatMyGoalUser.objects.filter(username=username)
+        user = BeatMyGoalUser.objects.get(username=username)
         returnValue = {"success" : self.CODE_SUCCESS, 'user' : user}
         return returnValue
 

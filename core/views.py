@@ -238,7 +238,6 @@ def view_user(request, uid):
                 'userid' : user.id,
                 })
 
-
 #@csrf_exempt
 def edit_user(request, uid):
     """ 
