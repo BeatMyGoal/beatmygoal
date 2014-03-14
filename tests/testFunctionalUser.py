@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.test.client import RequestFactory
-from models import *
-from views import *
+from core.models import *
+from core.views import *
 import random, json
 
 class RegistrationTests(TestCase):
@@ -13,14 +13,20 @@ class RegistrationTests(TestCase):
     def postJSON(self, url, data):
         return self.factory.post(url, content_type='application/json', data=data)
 
-    def testNoDuplicates(self):
+    def testRegistrationPageLoads(self):
+        """
+        Tests to make sure the registration page loads
+        """
+        request = self.factory.get("/users/create")
+        response = create_user(request)
+        self.assertEqual(response.status_code, 200)
+        #print response
+
+    def testValidRegistration(self):
     	pass
 
-    def testUserGetsCreatedInDatabase(self):
-    	pass
-
-    def testUsernameAndPasswordCorrect(self):
-    	pass
+    def testInvalidRegistration(self):
+        pass
 
 
 class ViewUserTests(TestCase):

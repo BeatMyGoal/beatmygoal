@@ -136,6 +136,7 @@ class BeatMyGoalUser(User):
     EXISTING_USERNAME = "An account with this username already exists."
     EXISTING_EMAIL = "An account with this email address already exists."
     INVALID_USERNAME = "Invalid Username"
+    INVALID_EMAIL = "Invalid Email Address"
     INVALID_PASSWORD = "Invalid Password"
     NOT_A_PARTICIPANT = "You are not a participant of this goal"
 
@@ -143,8 +144,27 @@ class BeatMyGoalUser(User):
     goals = models.ManyToManyField(Goal)
     
     @classmethod
+    def valid_email(self, e):
+        return 0 < len(e)
+
+    @classmethod
+    def valid_password(self, p):
+        return 0 < len(p)
+
+    @classmethod
+    def valid_username(self, u):
+        return 0 < len(u)
+
+    @classmethod
     def login(self, username, password):
         errors = {}
+
+        if not self.valid_username(username):
+            errors['username'] = self.INVALID_USERNAME
+
+        if not self.valid_password(password):
+            errors['password'] = self.INVALID_PASSWORD
+
         if (BeatMyGoalUser.objects.filter(username=username).count()) == 0:
             errors['username'] = self.INVALID_USERNAME
         
@@ -165,6 +185,15 @@ class BeatMyGoalUser(User):
     def create(self, username, email, password):
         from django.core.validators import validate_email
         errors = {}
+
+        if not self.valid_email(email):
+            errors['email'] = self.INVALID_EMAIL
+
+        if not self.valid_username(username):
+            errors['username'] = self.INVALID_USERNAME
+
+        if not self.valid_password(password):
+            errors['password'] = self.INVALID_PASSWORD
         
         if BeatMyGoalUser.objects.filter(username=username).exists():
             errors['username'] = self.EXISTING_USERNAME

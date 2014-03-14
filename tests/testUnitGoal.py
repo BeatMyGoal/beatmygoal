@@ -1,4 +1,3 @@
-
 from core.models import Goal, BeatMyGoalUser
 import unittest
 from django.test import TestCase
@@ -146,7 +145,7 @@ class GoalTest(unittest.TestCase):
 		Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type')
 		g = Goal.objects.get(id=1)
 		response = Goal.remove(g.id, g.creator.username)
-		self.assertEqual(response,1)
+		self.assertEqual(response['success'],1)
 		lst = Goal.objects.filter(id=1)
 		self.assertFalse(lst)
 
@@ -158,7 +157,7 @@ class GoalTest(unittest.TestCase):
 		Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type')
 		g = Goal.objects.get(id=1)
 		response = Goal.remove(g.id, 'eh')
-		self.assertEqual(response, -7)
+		self.assertEqual(response['errors']['goal'], -7)
 
 
 	def testRemoveGoal3(self):
@@ -168,7 +167,7 @@ class GoalTest(unittest.TestCase):
 		Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type')
 		g = Goal.objects.get(id=1)
 		response = Goal.remove(g.id+23847923, 'eh')
-		self.assertEqual(response, -7)
+		self.assertEqual(response['errors']['goal'], -7)
 	
 
 
