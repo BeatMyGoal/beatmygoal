@@ -137,7 +137,7 @@ class BeatMyGoalUser(User):
     EXISTING_EMAIL = "An account with this email address already exists."
     INVALID_USERNAME = "Invalid Username"
     INVALID_PASSWORD = "Invalid Password"
-
+    NOT_A_PARTICIPANT = "You are not a participant of this goal"
 
     #user = models.OneToOneField(User)
     goals = models.ManyToManyField(Goal)
@@ -182,21 +182,49 @@ class BeatMyGoalUser(User):
 
     @classmethod
     def joinGoal(self, username, goal_id):
+        errors = {}
         try:
             goal = Goal.objects.get(id = goal_id)
         except:
-            print(ex1)
-            return self.CODE_GOAL_DNE
+            errors['goal'] = Goal.CODE_GOAL_DNE
         try:
             user = BeatMyGoalUser.objects.get(username = username)
         except:
             print(ex2)
-            return self.CODE_GOAL_DNE
-        print(user.goals.all())
+            errors['user'] = self.INVALID_USERNAME
+
+        if errors:
+            return { "errors" : errors }
+
         user.goals.add(goal)
         user.save()
-        print(user.goals.all())
-        return self.CODE_SUCCESS
+        return { "success" : self.CODE_SUCCESS }
+
+    
+    @classmethod
+    def leaveGoal(self, username, goal_id):
+        errors = {}
+        try:
+            goal = Goal.objects.get(id = goal_id)
+        except:
+            errors['goal'] = Goal.CODE_GOAL_DNE
+        try:
+            user = BeatMyGoalUser.objects.get(username = username)
+        except:
+            print(ex2)
+            errors['user'] = self.INVALID_USERNAME
+        try:
+            user.goals.remove(goal)
+        except:
+            errors['participant'] = self.NOT_A_PARTICIPANT
+
+        if errors:
+            return { "errors" : errors }
+
+        user.save()
+        return { "success" : self.CODE_SUCCESS }
+
+    
 
     @classmethod
     def delete(self, userid):

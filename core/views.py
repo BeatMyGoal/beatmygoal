@@ -82,8 +82,26 @@ def goal_join_goal(request):
     user = request.user 
     response = BeatMyGoalUser.joinGoal(user, goal_id)
     redirect = "/goals/" + str(goal_id)
-    return HttpResponse(json.dumps({"success": response,
+    if "errors" in response:
+            return HttpResponse(json.dumps(response), 
+                                content_type = "application/json")
+
+    return HttpResponse(json.dumps({"success": response["success"],
         "redirect" : redirect}), content_type = "application/json")
+
+def goal_leave_goal(request):
+    data = json.loads(request.body)
+    goal_id = data["goal_id"]
+    user = request.user 
+    response = BeatMyGoalUser.leaveGoal(user, goal_id)
+    redirect = "/goals/" + str(goal_id)
+    if "errors" in response:
+        print response['errors']
+        return HttpResponse(json.dumps(response),content_type = "application/json")
+
+    return HttpResponse(json.dumps({"success": response["success"],
+        "redirect" : redirect}), content_type = "application/json")
+
 
 @csrf_exempt
 def goal_edit_goal(request, gid):
