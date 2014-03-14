@@ -56,13 +56,6 @@ class DeleteUserTests(TestCase):
     def postJSON(self, url, data):
         return self.client.post(url, content_type='application/json', data=data)
 
-    def testDeleteWrong(self):
-        """
-        Tests that a user cannot be delete if not logged in
-        """
-        response = self.postJSON("/users/" + str(self.testUser.id) +"/delete", {})
-        self.assertEqual(response.status_code, 500)
-
     def testDeleteUser(self):
         """
         Tests that a user can be delete User if logged in
@@ -75,6 +68,14 @@ class DeleteUserTests(TestCase):
         self.assertEqual(response2.status_code, 200)
 
 
+    def testDeleteWrong(self):
+        """
+        Tests that a user cannot be delete if not logged in
+        """
+        response = self.postJSON("/users/" + str(self.testUser.id) +"/delete", {})
+        self.assertEqual(response.status_code, 500)
+
+    
 
 class EditUserTests(TestCase):
     def setUp(self):

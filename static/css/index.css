@@ -1,0 +1,50 @@
+#main-content {
+    margin: 0 auto;
+    margin-top: 200px;
+}
+
+
+#background-overlay {
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    overflow:hidden;
+    z-index:-1;
+    background: 
+        linear-gradient(
+          rgba(0, 0, 0, 0.65), 
+          rgba(0, 0, 0, 0.65)
+        ),
+        url("/static/img/index_img.jpg");
+    background-position: 50% 80%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.intro-box {
+    background-color: rgba(0,0,0, 0.35);
+    padding: 15px;
+}
+
+.white-font {
+    color: #FFF;
+}
+
+.border-left {
+    border-left: 1px solid #fff;
+}
+
+.outline {
+    outline: 1px solid #888;
+    outline-offset: 10px;
+}
+
+.float-right {
+    float: right;
+}
+
+footer {
+    color: #FFF;
+}

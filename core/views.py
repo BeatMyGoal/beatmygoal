@@ -26,9 +26,6 @@ def dashboard(request):
         "goals": goals
     })
 
-
-
-
 @csrf_exempt
 def goal_create_goal(request):
     if request.user.is_authenticated():
@@ -58,8 +55,6 @@ def goal_create_goal(request):
         return render(request, 'users/login.html', {
             "message": "You must be logged in to create a goal"
         })
-
-
 
 
 @csrf_exempt
@@ -125,9 +120,6 @@ def goal_edit_goal(request, gid):
                     "success" : response["success"]}), content_type = "application/json")
     else:
         return HttpResponse("Invalid request", status=500)            
-
-
-
 
 
 
@@ -270,6 +262,9 @@ def edit_user(request, uid):
 
 @csrf_exempt
 def delete_user(request, uid):
+    """ 
+    Allows users to delete their Userid if they are logged in.
+    """
     uid = int(uid)
     if request.method == "POST":
         user = request.user;

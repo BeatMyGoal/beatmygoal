@@ -100,7 +100,7 @@ class ViewUserTest(unittest.TestCase):
         Goal.objects.all().delete()
     
 
-    def testGetUserMethods1(self):
+    def testGetUserbyId(self):
         """
         test getUserById method in models
         """
@@ -117,7 +117,7 @@ class ViewUserTest(unittest.TestCase):
         self.assertEqual(test_user_email,user.email)
 
     
-    def testGetUserMethods2(self):
+    def testGetUserbyName(self):
         """
         test getUserByName method in models
         """
@@ -133,21 +133,21 @@ class ViewUserTest(unittest.TestCase):
         self.assertEqual(test_user_username,user.username)
         self.assertEqual(test_user_email,user.email)
 
-    def testGetUserMethods3(self):
+    def testGetUserbyIdWrong(self):
         """
         test getUserByName method in models
         """
         response = BeatMyGoalUser.getUserById(-99)
         self.assertTrue('errors' in response)
 
-    def testGetUserMethods4(self):
+    def testGetUserbyNameWrong(self):
         """
         test getUserByName method in models
         """
         response = BeatMyGoalUser.getUserByName("")
         self.assertTrue('errors' in response)
 
-    def testRemoveUserMethod(self):
+    def testRemoveUser(self):
         """
         test delete method in models
         """
@@ -159,7 +159,7 @@ class ViewUserTest(unittest.TestCase):
         response2 = BeatMyGoalUser.getUserById(test_user_userid)
         self.assertTrue('errors' in response2)
 
-    def testRemoveUserMethod2(self):
+    def testRemoveUserWrong(self):
         """
         test delete method in models
         """
