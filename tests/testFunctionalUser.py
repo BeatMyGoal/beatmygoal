@@ -77,6 +77,3 @@ class EditUserTests(TestCase):
     def testEmailTaken(self):
         BeatMyGoalUser.updateUser(user=self.testUser, email="test1@test1.com")
         self.assertEqual(self.testUser.email, "test@test.com")
-
-    def testUserIsAuthenticated(self):
-        pass
