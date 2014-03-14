@@ -109,7 +109,7 @@
         <ul class="side-nav">
           {% for participant in goal.beatmygoaluser_set.all %} 
 
-          <li><a href="users/{{ participant.id }}">{{ participant.username }}</a></li>
+          <li><a href="/users/{{ participant.id }}">{{ participant.username }}</a></li>
           {% endfor %}
           
           
