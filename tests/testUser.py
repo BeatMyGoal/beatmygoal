@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 
-class UserTest(unittest.TestCase):
+class User_Create_Login_Test(unittest.TestCase):
     def setUp(self):
         BeatMyGoalUser.objects.all().delete()
         Goal.objects.all().delete()
@@ -93,42 +93,71 @@ class UserTest(unittest.TestCase):
         self.assertFalse('success' in response)
         self.assertTrue('errors' in response)
 
-	def testViewUser1(self):
-		pass
-	def testViewUser1(self):
-		pass
-	def testViewUser1(self):		
-		pass
-	def testViewUser1(self):
-		pass
-	def testViewUser1(self):
-		pass
-	
-	def testEditGoal1(self):
-		pass
-	def testEditGoal2(self):
-		pass
-	def testEditGoal3(self):
-		pass
-	def testEditGoal4(self):
-		pass
-	def testEditGoal5(self):
-		pass
-	
-	def testRemoveGoal1(self):
-		pass
-	def testRemoveGoal2(self):
-		pass
-	def testRemoveGoal3(self):
-		pass
-	def testRemoveGoal4(self):
-		pass
-	def testRemoveGoal5(self):
-		pass
 
+class User_View_Edit_Test(unittest.TestCase):
+    def setUp(self):
+        BeatMyGoalUser.objects.all().delete()
+        Goal.objects.all().delete()
+    
+    #test getUserById method in models
+    def testGetUserMethods1(self):
+        responce = BeatMyGoalUser.create('test_user_view','test_email_view','test_password_view')
+        test_user = responce['user']
+        test_user_userid = test_user.id
+        test_user_username = test_user.username
+        test_user_email = test_user.email
+        user = BeatMyGoalUser.getUserById(test_user_userid)
+        self.assertEqual(test_user_userid,user.id)
+        self.assertEqual(test_user_username,user.username)
+        self.assertEqual(test_user_email,user.email)
 
+    #test getUserByName method in models
+    def testGetUserMethods2(self):
+        responce = BeatMyGoalUser.create('test_user_view','test_email_view','test_password_view')
+        test_user = responce['user']
+        test_user_userid = test_user.id
+        test_user_username = test_user.username
+        test_user_email = test_user.email
+        user = BeatMyGoalUser.getUserByName(test_user_username)
+        self.assertEqual(test_user_userid,user.id)
+        self.assertEqual(test_user_username,user.username)
+        self.assertEqual(test_user_email,user.email)
 
+    #test getUserByName method in models
+    def testGetUserMethods3(self):
+        user = BeatMyGoalUser.getUserById(-99)
+        self.assertEqual(-7,user)
 
+    #test getUserByName method in models
+    def testGetUserMethods4(self):
+        user = BeatMyGoalUser.getUserByName("")
+        self.assertEqual(-2,user)
 
+    #test delete method in models
+    def testDeleteUserMethod(self):
+        responce = BeatMyGoalUser.create('test_user_view','test_email_view','test_password_view')
+        test_user = responce['user']
+        test_user_userid = test_user.id
+        response = BeatMyGoalUser.delete(test_user_userid)
+        self.assertEqual(response,1)
+        self.assertEqual(BeatMyGoalUser.getUserById(test_user_userid),-7)
+
+    #test delete method in models
+    def testDeleteUserMethod(self):
+        response = BeatMyGoalUser.delete(-99)
+        self.assertEqual(response,-7)
+
+    def testEditGoal1(self):
+        pass
+    def testEditGoal2(self):
+        pass
+    def testEditGoal3(self):
+        pass
+    def testEditGoal4(self):
+        pass
+    def testEditGoal5(self):
+        pass
+
+    
 
 
