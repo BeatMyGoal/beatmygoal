@@ -202,7 +202,7 @@ def user_login(request):
         if u.password == password:
             u.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, u)
-            return HttpResponse(json.dumps({"errCode": 1, "redirect" : "/dashboard/"}),
+            return HttpResponse(json.dumps({"success": 1, "redirect" : "/dashboard/"}),
                                     content_type = "application/json")
 
 @csrf_exempt
