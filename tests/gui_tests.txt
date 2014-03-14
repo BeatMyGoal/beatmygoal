@@ -1,0 +1,87 @@
+These are GUI tests which can be run to verify the correctness of the frontend interface.
+
+Registration
+Load the home page
+Click the “Login” on the menubar
+A menu should appear. Click “New User?” and you should be redirected to the registration page
+Fill in the registration form with an invalid email, empty username, etc. As you type, red error messages should appear.
+Type in valid credentials and click “Register”.
+Click Submit. The page should redirect to your user profile, and you should appear logged in. This is indicated by your name in the menubar.
+
+
+Login:
+Load the home page
+Click “Login” on the menu bar
+Fill in the login form with unregistered id or wrong password
+Click “Login”. Login message should be changed to invalid username or password.
+Fill in the login form with valid credentials
+Click “Login”. The page should redirect to user profile and “Login” button on the menu bar should be changed to “Logout” button. 
+
+View User:
+1. Load any user’s profile page (while not logged in) ( append “/users/ + number(userid)” to url)
+2. Check that there are not “Delete User” and “Edit User” button.
+
+1. Load the home page
+2. Login and navigate to personal profile
+3. check that there are “Delete User” and “Edit User” button.
+
+1. Load the home page
+2. Login and navigate to personal profile
+3. push “Delete User” button
+4. Check that the login ID has been deleted by logging in with the ID
+
+1. Load the home page
+2. Login and navigate to personal profile
+3. push “Edit User” button
+4. check whether “Edit User” page is loaded.
+
+
+Edit User:
+Load any user’s profile page (while not logged in)
+Append “/edit” to the url
+Ensure that an invalid request is returned
+
+Load the home page
+Login and navigate to personal profile
+Append “/edit” to the url (alternatively, click “edit” button)
+Change username and email
+Click “Save”
+Look at profile page again, ensure changed values have been saved
+
+
+Create Goal:
+Load Goal Create page (/goals/create) while not logged in
+Goal create page should not appear; instead, login page must be displayed with appropriate message: “You must be logged-in to create a goal”
+Load Goal create page(/goals/create) while logged-in
+Goal create page should display with appropriate fields
+Title
+Description
+Prize
+Goal type
+If any of the fields are invalid (left blank or exceeds max length), appropriate error messages should display
+Click “Register”
+Goal view page should be displayed
+
+
+View Goal:
+ Load any user’s profile page (while not logged in) ( append “/goals/ + number(goal_id)” to url)
+If the user is not the creator of the goal “Edit Goal” and “Delete Goal” button should not appear on the view page
+If the user is the creator of the goal “Edit Goal” and “Delete Goal” button should be displayed on the view page
+Goal view page should display all the necessary information about the goal, including:
+Title
+Description
+Creator (owner)
+Creator email (owner)
+Goal type
+Created on (date)
+Prize
+
+Edit Goal:
+Precondition (User must be logged in AND be the owner of the goal its trying to edit)
+Two input fields must be displayed
+Title
+Description
+When any of the input is invalid, appropriate error message should be displayed, informing the user.
+Clicking “Cancell” should take the user back to the goal profile page without changing any of the information
+Clicking “Save” should take the user to the goal profile page with changes made to the goal 
+
