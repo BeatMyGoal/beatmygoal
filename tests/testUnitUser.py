@@ -43,30 +43,6 @@ class User_Create_Login_Test(unittest.TestCase):
         self.assertFalse('username' in response2['errors'])
         self.assertTrue('email' in response2['errors'])
             
-    def testCreateInvalidUsername(self):
-        """
-        Tests that creating account with invalid username
-        """
-        response = BeatMyGoalUser.create('##', 'email1@gmail.com', 'pw')
-        self.assertFalse('success' in response)
-        self.assertTrue('errors' in response)
-
-    def testCreateInvalidEmail(self):
-        """
-        Tests that creating account with invalid email
-        """
-        response = BeatMyGoalUser.create('user1', 'email1', 'pw')
-        self.assertFalse('success' in response)
-        self.assertTrue('errors' in response)
-            
-    def testCreateInvalidPassword(self):
-        """
-        Tests that creating account with invalid password
-        """
-        response = BeatMyGoalUser.create('user1', 'email1@gmail.com', '##')
-        self.assertFalse('success' in response)
-        self.assertTrue('errors' in response)
-
     def testCreateEmptyUsername(self):
         """
         Tests that creating account with empty username
