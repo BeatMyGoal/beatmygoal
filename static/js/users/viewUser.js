@@ -8,12 +8,9 @@ $(document).ready(function() {
 			contentType: "application/json",
 			dataType: "json"
 		}).done(function(data) {
-			if (data.errCode >= 0) {
-				window.location.href = data.redirect;
-				consol.log(url)
-			}
+			window.location.href = data.redirect;
 		}).fail(function(data) {
-			alert("data.errCode");
+			alert("Delete User Fail");
 		})
 	});
 });

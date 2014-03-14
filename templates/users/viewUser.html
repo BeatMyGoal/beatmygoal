@@ -1,8 +1,10 @@
 {% extends "base.html" %}
+
 {% load staticfiles %}
 
+{% block title %}View Profile{% endblock %}
+
 {% block content %}
-<!doctype html>
 
   
 <body>
@@ -14,19 +16,28 @@
     <form data-abide>
       <fieldset>
       <legend> <h2> Basic User Information</h2></legend>
+      
+     
+      {% if not errors %}
+
       <h7> BeatMyGoal login </h7><br><br>
-      <!--
+       <!--
       / Facebook login / Tweeter login
       -->  
 
       <div class="row">
         <div class="large-6 columns">
-          <h5> Username : {{ user_profile.username }} </5>
+          <h5> Username : {{ username | default:'' }} </5>
+
         </div>
         <div class="large-6 columns">
-          <h5> Email : {{ user_profile.email }} </h5>
+          <h5> Email : {{ email | default:'' }} </h5>
         </div>
       </div>
+      {%  else  %}
+      <h5> We coundn't find the User in Our database </5>  
+
+      {% endif %}
 
 <!-- 
       <div class="row">
@@ -59,7 +70,7 @@
       </fieldset>
     </form>
     
-    {% if user_profile.username == user.username %}
+    {% if userid == user.id and username == user.username %}
     <!-- buttons -->
     <div class="row">
       <ul class="button-group right">
@@ -67,7 +78,7 @@
 
         <!-- If request.user.is_authenticated(), hide these two buttons -->
 	
-        <li><a id = "delete_user_button" type="submit" class="button tiny pull-5 radius">Delete User</a></li>
+        <li><a id = "delete_user_button" type="button" class="button tiny pull-5 radius">Delete User</a></li>
         <!-- <li><a id = "password_change_button" type="submit" class="button tiny pull-3">Password Change</a></li> -->
         
         <li><a href = "edit" class="button tiny pull-3 radius">Edit User</a></li>

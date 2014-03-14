@@ -222,17 +222,23 @@ def create_user(request):
     else:
         return HttpResponse("Invalid request", status=500)
 
-
 def view_user(request, uid):
     """ 
     Returns the profile of the user with id, uid. 
     """
     if request.method == "GET":
-        user = BeatMyGoalUser.getUserById(uid)
-        return render(request, 'users/viewUser.html', {
-            "user_profile" : user
-        })
-        
+        response = BeatMyGoalUser.getUserById(uid)
+        if "errors" in response:
+            return render(request, 'users/viewUser.html', { "errors" : response["errors"] })
+        else:
+            user = response['user']
+            return render(request, 'users/viewUser.html', {
+                'username' : user.username,
+                'email' : user.email,
+                'userid' : user.id,
+                })
+
+
 #@csrf_exempt
 def edit_user(request, uid):
     """ 
@@ -270,12 +276,9 @@ def delete_user(request, uid):
     if request.method == "POST":
         user = request.user;
         if (user.is_authenticated() and user.id == uid):
-            response = BeatMyGoalUser.delete(uid)
-            return HttpResponse(json.dumps({"errCode": response, "redirect": "/"}), content_type = "application/json")
-        else:
-            return HttpResponse("Invalid request", status=500)
-    else:
-        return HttpResponse("Invalid request", status=500)
+            response = BeatMyGoalUser.remove(uid)
+            return HttpResponse(json.dumps({"redirect": "/"}), content_type = "application/json")
+    return HttpResponse("Invalid request", status=500)
 
 def user_logout(request):
     logout(request)
