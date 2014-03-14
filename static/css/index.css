@@ -1,6 +1,6 @@
 #main-content {
     margin: 0 auto;
-    margin-top: 150px;
+    margin-top: 200px;
 }
 
 
@@ -21,6 +21,28 @@
     background-position: 50% 80%;
     background-repeat: no-repeat;
     background-attachment: fixed;
+}
+
+.intro-box {
+    background-color: rgba(0,0,0, 0.35);
+    padding: 15px;
+}
+
+.white-font {
+    color: #FFF;
+}
+
+.border-left {
+    border-left: 1px solid #fff;
+}
+
+.outline {
+    outline: 1px solid #888;
+    outline-offset: 10px;
+}
+
+.float-right {
+    float: right;
 }
 
 footer {

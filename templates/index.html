@@ -12,14 +12,14 @@
 <div id="background-overlay">
 </div>
 
-<div class="row" data-equalizer>
+<!-- <div class="row" data-equalizer>
   <div class="large-6 columns" >
-    <div class="panel" data-equalizer-watch>
+    <div class="" data-equalizer-watch>
       <h3>Welcome to Beat My Goal!</h3>
       <hr/>
       <b>How it works:</b>
       <ul class="fa-ul">
-        <li><i class="fa-li fa fa-caret-right"></i> Create your account.</li>
+        <li><i class="fa-li fa fa-caret-right"></i>Create your account.</li>
         <li><i class="fa-li fa fa-caret-right"></i>Set your first goal, for example, "Learn to cook homemade Italian food". Set a time-limit or a goal number you want to reach.</li>
         <li><i class="fa-li fa fa-caret-right"></i>Choose a prize for <em>when</em> (not, if) you reach your goal!</li>
         <li><i class="fa-li fa fa-caret-right"></i>Invite your friends to join in and compete. The highest achiever can win the prize.</li>
@@ -28,7 +28,7 @@
     </div>
   </div>
   <div class="large-6 columns" >
-    <div class="panel"  data-equalizer-watch>
+    <div class=""  data-equalizer-watch>
       <div class="row">
         <div class="large-12 columns">
           <form data-abide id="register-form" >
@@ -64,8 +64,57 @@
         </div>
       </div>
       
-    <!-- todo, trending goals now -->
+    todo, trending goals now
     </div>
+  </div>
+</div> -->
+
+<div class="row outline intro-box">
+  <div class="large-6 columns ">
+    <div class="row">
+      <h2 class='white-font'>Welcome to Beat My Goal!</h2>
+    </div>
+    <div class="row">
+      <div class="large-12 columns">
+        <h5 class='white-font'>How it Works:</h5>
+        <ul class='white-font'>
+          <li>Find goals you want achieve</li>
+          <li>Join in and log your progress</li>
+          <li>Win prizes and brag to your friends</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="large-6 columns border-left">
+    <form data-abide id="register-form" >
+      <div class="row">
+        <div class='large-6 columns'>
+          <label class='white-font'>Username</label>
+          <input id="register-username" type="text" required pattern="alpha_numeric"/>
+          <small id="username-error" class="error">Usernames can only contains letters or numbers.</small>
+        </div>
+
+        <div class="email-label large-6 columns">
+          <label class='white-font'>Email</label>
+          <input id="register-email" type="email" required  />
+          <small id="email-error" class="error">An email address is required.</small>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="password-label large-6 columns">
+          <label class="white-font">Password</label>
+          <input id="register-password" type="password" required pattern="[a-zA-Z0-9]+" />
+          <small id="password-error" class="error">A password is required. Only alpha-numeric characters are allowed.</small>
+        </div>
+        <div class="large-6 columns">
+          <label class='white-font'>Confirm Password</label>
+          <input id="" type="password" required pattern="[a-zA-Z0-9]+" />
+          <small id="" class="error">A password is required. Only alpha-numeric characters are allowed.</small>
+        </div>
+      </div>
+      <input id="register-submit" type="submit" class="float-right button small" value="Get Started">
+    </form>
   </div>
 </div>
 
