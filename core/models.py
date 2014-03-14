@@ -137,6 +137,7 @@ class BeatMyGoalUser(User):
     EXISTING_EMAIL = "An account with this email address already exists."
     INVALID_USERNAME = "Invalid Username"
     INVALID_PASSWORD = "Invalid Password"
+    INVALID_USERID = "Invalid UserID"
     NOT_A_PARTICIPANT = "You are not a participant of this goal"
 
     #user = models.OneToOneField(User)
@@ -227,30 +228,36 @@ class BeatMyGoalUser(User):
     
 
     @classmethod
-    def delete(self, userid):
-        try:
-            user = User.objects.get(id=userid)
-        except:
-            return self.CODE_BAD_USERID
+    def remove(self, userid):
+        errors = {}
+        if not BeatMyGoalUser.objects.filter(id=userid).exists():
+            errors['userid'] = self.INVALID_USERID
+            return {'errors' : errors}
+        user = BeatMyGoalUser.objects.get(id=userid)
         user.delete()
-        
-        return self.CODE_SUCCESS
+        returnValue = {"success" : self.CODE_SUCCESS }
+        return returnValue
 
     @classmethod
     def getUserById(self, userid):
-        try:
-            user = BeatMyGoalUser.objects.get(id=userid)
-            return user
-        except:
-            return self.CODE_BAD_USERID
+        errors = {}
+        if not BeatMyGoalUser.objects.filter(id=userid).exists():
+            errors['userid'] = self.INVALID_USERID
+            return { 'errors' : errors }
+        user = BeatMyGoalUser.objects.get(id=userid)
+        returnValue = {"success" : self.CODE_SUCCESS, 'user' : user}
+        return returnValue
 
     @classmethod
     def getUserByName(self, username):
-        try:
-            user = BeatMyGoalUser.objects.get(username=username)
-            return user
-        except Exception, e:
-            return self.CODE_BAD_USERNAME
+        errors = {}
+        if not BeatMyGoalUser.objects.filter(username=username).exists():
+            errors['username'] = self.INVALID_USERNAME
+            return {'errors' : errors}
+        user = BeatMyGoalUser.objects.filter(username=username)
+        returnValue = {"success" : self.CODE_SUCCESS, 'user' : user}
+        return returnValue
+
 
     @classmethod
     def updateUser(self, user, username=None, email=None, password=None):
