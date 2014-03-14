@@ -33,8 +33,8 @@ class RegistrationTests(TestCase):
 class ViewUserTests(TestCase):
     def setUp(self):
         self.client = Client()
-        self.testUser = BeatMyGoalUser(username="test", password="test", email="test@test.com")
 
+    # Convenience method to create a POST JSON request
     def postJSON(self, url, data):
         return self.client.post(url, content_type='application/json', data=data)
 
@@ -44,6 +44,15 @@ class ViewUserTests(TestCase):
         """
         response = self.client.get("/users/1/")
         self.assertEqual(response.status_code, 200)
+
+    def testLoadUserView(self):
+        data = """
+        { "username" : "kyle", "password" : "123", "email" : "kyleinwa@gmail.com" }
+        """
+        response = self.postJSON("/users/create", data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('success' in response.content)
+
 
 
 class DeleteUserTests(TestCase):
