@@ -254,21 +254,24 @@ class BeatMyGoalUser(User):
 
     @classmethod
     def updateUser(self, user, username=None, email=None, password=None):
-        errors = []
+        errors = {}
 
         if not BeatMyGoalUser.objects.filter(username=username).exists():
             user.username = user.username if username is None else username
         elif username and username != user.username:
-            errors.append(self.CODE_BAD_USERNAME)
+            errors['username'] = self.CODE_BAD_USERNAME
 
         if not BeatMyGoalUser.objects.filter(email=email).exists():
             user.email = user.email if email is None else email
         elif email and email != user.email:
-            errors.append(self.CODE_BAD_EMAIL)
+            errors['email'] = self.CODE_BAD_EMAIL
 
         user.password = user.password if password is None else password
-        user.save()
-        return errors
+        if errors:
+            return {"errors" : errors}
+        else:
+            user.save()
+            return {"success" : self.CODE_SUCCESS, "user" : user }
     
     @classmethod
     def updateUser2(self, user_id, user_name, user_firstName, user_lastName, user_email):
