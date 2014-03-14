@@ -5,10 +5,11 @@ from django.contrib.auth.models import User
 
 class GoalTest(unittest.TestCase):
 	def setUp(self):
+		BeatMyGoalUser.create('test_user','test_email','test_password')
+
+	def tearDown(self):
 		User.objects.all().delete()
 		Goal.objects.all().delete()
-		BeatMyGoalUser.create('test_user','test_email','test_password')
-		
 
 	def testCreateGoal1(self):
 		"""
@@ -68,14 +69,6 @@ class GoalTest(unittest.TestCase):
 		self.assertTrue('prize' in response['errors'])
 
 
-	def testCreateGoal5(self):
-		"""
-		Test with valid data, except user is invalid
-		"""
-		response = Goal.create('title','sample_description','invalid_user','test_prize',2,'test_goal_type')
-		self.assertFalse('success' in response)
-		self.assertTrue('errors' in response)
-		self.assertTrue('user' in response['errors'])
 
 
 	def testEditGoal1(self):

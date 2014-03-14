@@ -36,7 +36,6 @@ def goal_create_goal(request):
             return render(request, 'goals/createGoal.html')
 
         if request.user.is_authenticated():
-            print "here"
             data = json.loads(request.body)
             title = data['title']
             description = data['description']
@@ -67,6 +66,7 @@ def goal_create_goal(request):
 def goal_remove_goal(request):
     data = json.loads(request.body)
     goal_id = data["goal_id"]
+
     user = request.user 
     response = Goal.remove(goal_id, user)
 
@@ -116,7 +116,7 @@ def goal_edit_goal(request, gid):
             title = data["title"]
             description = data["description"]
             edits = {'title': title, 'description': description}
-            print edits
+     
             response = Goal.edit(goal, edits)
             print response
             if 'errors' in response:
