@@ -11,7 +11,7 @@ class GoalTest(unittest.TestCase):
 		User.objects.all().delete()
 		Goal.objects.all().delete()
 
-	def testCreateGoal1(self):
+	def testCreateGoalWithValidData1(self):
 		"""
 		Test witih valid data
 		"""
@@ -27,7 +27,7 @@ class GoalTest(unittest.TestCase):
 
 
 
-	def testCreateGoal2(self):
+	def testCreateGoalWithValidData2(self):
 		"""
 		Test with valid data
 		"""
@@ -43,7 +43,7 @@ class GoalTest(unittest.TestCase):
 
 
 
-	def testCreateGoal3(self):
+	def testCreateGoalWithInvalidData(self):
 		"""
 		Test with invalid title
 		"""
@@ -57,7 +57,7 @@ class GoalTest(unittest.TestCase):
 
 
 
-	def testCreateGoal4(self):
+	def testCreateGoalWithInvalidTitle(self):
 		"""
 		Test with invalid title, description and prize
 		"""
@@ -71,7 +71,7 @@ class GoalTest(unittest.TestCase):
 
 
 
-	def testEditGoal1(self):
+	def testEditGoalWithValidData1(self):
 		"""
 		Test editGoal with valid data
 		"""
@@ -87,7 +87,7 @@ class GoalTest(unittest.TestCase):
 
 
 
-	def testEditGoal2(self):
+	def testEditGoalWithValidData2(self):
 		"""
 		Test editGoal with invalid data
 		"""
@@ -102,7 +102,7 @@ class GoalTest(unittest.TestCase):
 		self.assertTrue('description' in response['errors'])
 
 
-	def testEditGoal3(self):
+	def testEditGoalWithUnmodifiedData(self):
 		"""
 		Test editGoal with unmodified data
 		"""
@@ -117,7 +117,7 @@ class GoalTest(unittest.TestCase):
 		self.assertEqual('sample_description', g.description)
 
 
-	def testEditGoal4(self):
+	def testEditGoalWithNoEdits(self):
 		"""
 		Test editGoal with no edits
 		"""
@@ -131,7 +131,7 @@ class GoalTest(unittest.TestCase):
 		self.assertEqual('sample_description', g.description)
 
 
-	def testRemoveGoal1(self):
+	def testRemoveGoalWithValidData(self):
 		"""
 		Delete goal with valid data
 		"""
@@ -143,7 +143,7 @@ class GoalTest(unittest.TestCase):
 		self.assertFalse(lst)
 
 
-	def testRemoveGoal2(self):
+	def testRemoveGoalWithInvalidData(self):
 		"""
 		Delete goal with invalid user
 		"""
@@ -153,7 +153,7 @@ class GoalTest(unittest.TestCase):
 		self.assertEqual(response['errors']['goal'], -7)
 
 
-	def testRemoveGoal3(self):
+	def testRemoveGoalWithInvalidUser(self):
 		"""
 		Delete goal with invalid user
 		"""

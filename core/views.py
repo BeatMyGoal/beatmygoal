@@ -19,9 +19,9 @@ def index(request):
 @csrf_exempt
 def dashboard(request):
     all_goals = Goal.objects.all()
-    print(all_goals)
+
     goals = all_goals[0:10]
-    print(goals)
+
     return render(request, 'dashboard/dashboard_main.html', {
         "goals": goals
     })
@@ -96,7 +96,7 @@ def goal_leave_goal(request):
     response = BeatMyGoalUser.leaveGoal(user, goal_id)
     redirect = "/goals/" + str(goal_id)
     if "errors" in response:
-        print response['errors']
+
         return HttpResponse(json.dumps(response),content_type = "application/json")
 
     return HttpResponse(json.dumps({"success": response["success"],
@@ -118,7 +118,6 @@ def goal_edit_goal(request, gid):
             edits = {'title': title, 'description': description}
      
             response = Goal.edit(goal, edits)
-            print response
             if 'errors' in response:
                 return HttpResponse(json.dumps(response), content_type = "application/json")
             else:
@@ -137,7 +136,7 @@ def goal_view_goal(request, goal_id):
 
     isCreator = str(request.user) == str(goal.creator)
     isParticipant = len(goal.beatmygoaluser_set.filter(username=request.user)) > 0
-    print isCreator
+
     return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, "isParticipant" : isParticipant, "isCreator" : isCreator})
 
 
@@ -196,7 +195,7 @@ def create_user(request):
     """
     Creates a user and authenticates them, if credentials are valid.
     """
-    print request.method
+
     if request.method == "GET":
             return render(request, 'users/createUser.html', {
             })
