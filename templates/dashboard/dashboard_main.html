@@ -1,15 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Goal Dashboard{% endblock %}
-
 {% load staticfiles %}
+
+{% block title %}BeatMyGoal | Dashboard{% endblock %}
 
 {% block content %}
 
-{% csrf_token %}
 <script src="{% static 'js/dashboard/dashboard.js' %}"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 <center>  
 <table class="table table-striped">
     <thead>
@@ -35,4 +32,3 @@
 
 
 {% endblock %}
-
