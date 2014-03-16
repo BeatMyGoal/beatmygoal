@@ -29,17 +29,18 @@ $(document).ready(function() {
 				if ('errors' in data) {
 					var errors = data.errors;
 					if ('username' in errors) {
-						$('#username-error').text(data.errors.username).css("display", "block");
+						$('#register-form #username-error').text(data.errors.username);
+						$('#register-form label[for="username"]').addClass('error');
 
 					}
 					if ('email' in errors) {
-						$('#email-error').text(data.errors.email).css("display", "block");
+						$('#register-form #email-error').text(data.errors.email);
+						$('#register-form label[for="email"]').addClass('error');
 
 					}
 					if ('password' in errors) {
-						$('#password-error').text(data.errors.password).css("display", "block");
-						$('#password-error').text(data.errors.password).css("display", "block");
-
+						$('#register-form #password-error').text(data.errors.password);
+						$('#register-form label[for="email"]').addClass('error');
 					}
 				}
 			}

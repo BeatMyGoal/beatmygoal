@@ -89,23 +89,26 @@
     <form data-abide id="register-form" >
       <div class="row">
         <div class='small-12 medium-6 columns'>
-          <label >Username</label>
-          <input id="register-username" type="text" required pattern="alpha_numeric"/>
-          <small id="username-error" class="error">Usernames can only contains letters or numbers.</small>
+          <label for='username'>Username
+            <input id="register-username" type="text" required pattern="alpha_numeric"/>
+            <small id="username-error" class="error">Usernames can only contains letters or numbers.</small>
+          </label>
         </div>
 
         <div class="email-label small-12 medium-6 columns">
-          <label >Email</label>
-          <input id="register-email" type="email" required  />
-          <small id="email-error" class="error">An email address is required.</small>
+          <label for='email'>Email
+            <input id="register-email" type="email" required  />
+            <small id="email-error" class="error">An email address is required.</small>
+          </label>
         </div>
       </div>
       
       <div class="row">
         <div class="password-label small-12 medium-6 columns">
-          <label >Password</label>
-          <input id="register-password" type="password" required pattern="[a-zA-Z0-9]+" />
-          <small id="password-error" class="error">A password is required. Only alpha-numeric characters are allowed.</small>
+          <label for='password'>Password
+            <input id="register-password" type="password" required pattern="[a-zA-Z0-9]+" />
+            <small id="password-error" class="error">A password is required. Only alpha-numeric characters are allowed.</small>
+          </label>
         </div>
         <div class="small-12 medium-6 columns">
           <label >Confirm Password</label>
