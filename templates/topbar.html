@@ -33,11 +33,17 @@
             <a href="#">Login</a>
             <ul class='dropdown' style="width: 225px;">
                 <li class='has-form'>
-                  <form id="login-form">
-                    <input type="text" placeholder='Username' id='username'>
-                    <input type="password" placeholder='Password' id='password'>
+                  <form id="login-form" data-abide>
+                    <div class="username-fields">
+                      <input type="text" placeholder='Username' id='username' required pattern="alpha_numeric">
+                      <small id="username-error" class="error">Invalid username or password</small>
+                    </div>
+                    <div class="password-fields">
+                      <input type="password" placeholder='Password' id='password' required pattern="[a-zA-Z0-9]+">
+                      <small id="password-error" class="error">Invalid username or password</small>
+                    </div>
+                    <input type='submit' id="login" type="submit" class="button expand" value='Login'> 
                   </form>
-                  <input type='button' form='login-form' id="Login" type="submit" class="button expand" value='Login'> 
                 </li>
                 <li class='divider'></li>
                 <li class='has-form'>

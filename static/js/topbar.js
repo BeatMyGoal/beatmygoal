@@ -1,11 +1,17 @@
 $(document).ready(function() {
-        $('#loginMessage').html("Enter your credentials");
-	$("#Login").click(function(e) {
+    //$('#loginMessage').html("Enter your credentials");
+	$("#login-form #login").click(function(e) {
+		e.preventDefault();
 
+		var invalid_fields = $("#editForm").find('[data-invalid]');
+		console.log(invalid_fields);
+		if (invalid_fields.length > 0) {
+			return;
+		}
+		
 		var data = {
 			username: $("#username").val(),
 			password: $("#password").val(),
-
 		};
 
 		$.ajax({
@@ -19,15 +25,10 @@ $(document).ready(function() {
 			if (data.hasOwnProperty("success")) {
 				window.location.href = data.redirect;
 			} else {
-			    if ('errors' in data) {
-				var errors = data.errors;
-				if ('username' in errors){
-				    $('#loginMessage').html("Invalid Username");
+				if ('errors' in data) {
+					var errors = data.errors;
+					$('#login-form').addClass("error");
 				}
-				if ('password' in errors){
-				   $('#loginMessage').html("Invalid Password");
-				}
-			    }
 			}
 		}).fail(function(data) {
 			alert("fail to login");
