@@ -263,9 +263,7 @@ def view_user(request, uid):
         else:
             user = response['user']
             return render(request, 'users/viewUser.html', {
-                'username' : user.username,
-                'email' : user.email,
-                'userid' : user.id,
+                    'viewedUser' : user,
                 })
 
 #@csrf_exempt
