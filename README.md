@@ -14,8 +14,7 @@ To set up and update venv:
 - Use `pip install --allow-all-external -r requirements.txt` to download site packages
 
 Heroku instructions
--------------------
-
+-------------------------------
 To update to heroku:
 - make sure you have Heroku Toolbelt
 - `heroku login`
