@@ -15,12 +15,16 @@ urlpatterns = patterns('',
 	url(r'^admin/', include(admin.site.urls)),
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/favicon.ico')),
 	url(r'^goals/create', core.views.goal_create_goal, name='goal_create_goal'),
-	url(r'^goals/remove', core.views.goal_remove_goal, name='goal_remove_goal'),
+	url(r'^goals/remove$', core.views.goal_remove_goal, name='goal_remove_goal'),
 	url(r'^goals/join', core.views.goal_join_goal, name='goal_join_goal'),
 	url(r'^goals/leave', core.views.goal_leave_goal, name='goal_leave_goal'),
 	url(r'^goals/edit', core.views.goal_edit_goal, name='goal_edit_goal'),
 	url(r'^goals/(\d+)/$', core.views.goal_view_goal, name='view_goal'),
 	url(r'^goals/(\d+)/edit$', core.views.goal_edit_goal, name='edit_goal'),
+
+	url(r'^goals/addFavorite$', core.views.goal_add_favorite, name='goal_add_favorite'),
+	url(r'^goals/removeFavorite$', core.views.goal_remove_favorite, name='goal_remove_favorite'),
+
 
 	url(r'^users/create', core.views.create_user, name='create_user'),
     url(r'^users/profile', core.views.profile, name='profile'),

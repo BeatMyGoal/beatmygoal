@@ -28,7 +28,7 @@ class Goal(models.Model):
     progress_value = models.FloatField()
     goal_type = models.CharField(max_length=MAX_LEN_TYPE)
     private_setting = models.IntegerField()
-    
+
     def __str__(self):
         return str(self.title)
 
@@ -149,7 +149,9 @@ class BeatMyGoalUser(User):
 
     #user = models.OneToOneField(User)
     goals = models.ManyToManyField(Goal)
-    
+    favorites = models.ManyToManyField(Goal, blank=True, related_name='favorite_goals')
+
+
     @classmethod
     def valid_email(self, e):
         return 0 < len(e)
@@ -214,6 +216,50 @@ class BeatMyGoalUser(User):
             user = BeatMyGoalUser(username=username, email=email, password=password)
             user.save()
             return {"success" : self.CODE_SUCCESS, "user" : user }
+
+
+    @classmethod
+    def addFavorite(self, username, goal_id):
+        errors = {}
+        try:
+            goal = Goal.objects.get(id = goal_id)
+        except:
+            errors['goal'] = Goal.CODE_GOAL_DNE
+        try:
+            user = BeatMyGoalUser.objects.get(username = username)
+        except:
+            errors['user'] = self.INVALID_USERNAME
+
+        if errors:
+            return { "errors" : errors }
+        user.favorites.add(goal)
+        user.save()
+        return { "success" : self.CODE_SUCCESS }
+
+    @classmethod
+    def removeFavorite(self, username, goal_id):
+        errors = {}
+        try:
+            goal = Goal.objects.get(id = goal_id)
+        except:
+            errors['goal'] = Goal.CODE_GOAL_DNE
+        try:
+            user = BeatMyGoalUser.objects.get(username = username)
+        except:
+            print(ex2)
+            errors['user'] = self.INVALID_USERNAME
+        try:
+            user.favorites.remove(goal)
+        except:
+            errors['participant'] = self.NOT_A_PARTICIPANT
+
+        if errors:
+            print errors
+            return { "errors" : errors }
+
+        user.save()
+        print "HMMMph"
+        return { "success" : self.CODE_SUCCESS }
 
 
     @classmethod

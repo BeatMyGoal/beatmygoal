@@ -118,13 +118,42 @@ def goal_leave_goal(request):
     """
     Removes a user as a participant of a goal.
     """
+    print "LEAVE GOAL"
     data = json.loads(request.body)
     goal_id = data["goal_id"]
     user = request.user 
     response = BeatMyGoalUser.leaveGoal(user, goal_id)
     redirect = "/goals/" + str(goal_id)
     if "errors" in response:
+        print("ERORRED")
+        return HttpResponse(json.dumps(response),content_type = "application/json")
 
+    return HttpResponse(json.dumps({"success": response["success"],
+        "redirect" : redirect}), content_type = "application/json")
+
+def goal_add_favorite(request):
+    print "ADD FAVORITE"
+    data = json.loads(request.body)
+    goal_id = data["goal_id"]
+    user = request.user
+    response = BeatMyGoalUser.addFavorite(user,goal_id)
+    redirect = "/goals/" + str(goal_id)
+    if "errors" in response:
+            return HttpResponse(json.dumps(response), 
+                                content_type = "application/json")
+
+    return HttpResponse(json.dumps({"success": response["success"],
+        "redirect" : redirect}), content_type = "application/json")
+
+def goal_remove_favorite(request):
+
+    print "pwefohqpwoifhwqeiofweqhfopiewqhfpoiweqfhwqepiofhweqpiw"
+    data = json.loads(request.body)
+    goal_id = data["goal_id"]
+    user = request.user 
+    response = BeatMyGoalUser.removeFavorite(user, goal_id)
+    redirect = "/goals/" + str(goal_id)
+    if "errors" in response:
         return HttpResponse(json.dumps(response),content_type = "application/json")
 
     return HttpResponse(json.dumps({"success": response["success"],
@@ -167,8 +196,8 @@ def goal_view_goal(request, goal_id):
 
     isCreator = str(request.user) == str(goal.creator)
     isParticipant = len(goal.beatmygoaluser_set.filter(username=request.user)) > 0
-
-    return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, "isParticipant" : isParticipant, "isCreator" : isCreator})
+    favorited = len(BeatMyGoalUser.getUserById(request.user.id)['user'].favorites.filter(id=goal_id)) != 0
+    return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, "isParticipant" : isParticipant, "isCreator" : isCreator, "favorited" : favorited})
 
 
 #def goal_remove_user(request):

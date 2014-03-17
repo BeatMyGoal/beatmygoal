@@ -57,8 +57,10 @@
     <div class="row">
   
       <ul class="button-group right">
-        {% if isParticipant or isCreator %}
-        <li><a id = "favorite_button" type="submit" class="round button tiny pull-5">Favorite</a></li>
+        {% if favorited and not isCreator %}
+        <li><a id = "unfavorite_button" type="submit" class="round button tiny pull-5">Remove from Favorite</a></li>
+        {% elif not favorited and not isCreator %}
+        <li><a id = "favorite_button" type="submit" class="round button tiny pull-5">Add to Favorite</a></li>
         {% endif %}
         {% if isParticipant %}
           <li><a id = "leave_goal_button" type="submit" class="button tiny pull-3">Leave Goal</a></li>
