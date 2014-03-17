@@ -6,6 +6,11 @@ $('#edit_goal_button').click(function() {
   window.location = window.location.href+"edit"
   return false;
 });
+
+$('#favorite_button').click(function() {
+	console.log('favorite button pushed');
+	$(this).toggleClass('alert');
+})
 $('#delete_goal_button').click(function() {
 	var goal_id = window.location.pathname.split("/")[2];
 	var data = {
