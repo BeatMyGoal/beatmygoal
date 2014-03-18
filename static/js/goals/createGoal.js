@@ -51,6 +51,8 @@ $(document).ready(function() {
 	var sel = document.getElementById('types');
 	if (sel.options[sel.selectedIndex].value == "Value-based") {
 		$('.value-unit-label').fadeIn();
+	} else {
+		$('.value-unit-label').fadeOut();
 	}
 	
 	console.log("type changed");
