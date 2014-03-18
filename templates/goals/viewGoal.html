@@ -62,7 +62,7 @@
         {% endif %}
         {% if isParticipant %}
           <li><a id = "leave_goal_button" type="submit" class="button tiny pull-3">Leave Goal</a></li>
-        {% elif not isCreator %}
+        {% elif not isCreator and user.is_authenticated %}
           <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
         {% endif %}
        
