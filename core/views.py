@@ -76,9 +76,7 @@ def goal_create_goal(request):
         else:
             return HttpResponse("Invalid request", status=500)
     else:
-        return render(request, 'users/login.html', {
-            "message": "You must be logged in to create a goal"
-        })
+        return HttpResponseRedirect('/')
 
 
 @csrf_exempt
