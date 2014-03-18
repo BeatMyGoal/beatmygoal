@@ -8,7 +8,8 @@ $(document).ready(function() {
 			creator: "come back to this",
 			prize: $("#register-prize").val(),
 			private_setting: 1.0,
-			goal_type: sel.options[sel.selectedIndex].value
+			goal_type: sel.options[sel.selectedIndex].value,
+			unit: $("#register-value-unit").val()
 		};
 
 		$.ajax({

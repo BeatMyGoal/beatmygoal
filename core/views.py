@@ -64,7 +64,8 @@ def goal_create_goal(request):
             prize = data['prize']
             private_setting = data['private_setting']
             goal_type = data['goal_type']
-            response = Goal.create(title, description, creator, prize, private_setting, goal_type)
+            unit = data['unit']
+            response = Goal.create(title, description, creator, prize, private_setting, goal_type, unit)
 
             if "errors" in response:
                 return HttpResponse(json.dumps(response), content_type = "application/json")
