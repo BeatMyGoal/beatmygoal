@@ -66,13 +66,13 @@ def goal_create_goal(request):
             goal_type = data['goal_type']
             response = Goal.create(title, description, creator, prize, private_setting, goal_type)
 
-            if "errors" in response:
+            if response['errors']:
                 return HttpResponse(json.dumps(response), content_type = "application/json")
             else:
                 goal = response['goal']
                 redirect = "/goals/%s/" % (goal.id)
                 return HttpResponse(json.dumps({"redirect" : redirect,
-                    "success" : response["success"]}), content_type = "application/json")
+                    "errors" : response["errors"]}), content_type = "application/json")
         else:
             return HttpResponse("Invalid request", status=500)
     else:
@@ -92,11 +92,11 @@ def goal_remove_goal(request):
     user = request.user 
     response = Goal.remove(goal_id, user)
 
-    if "errors" in response:
+    if response['errors']:
             return HttpResponse(json.dumps(response), 
                                 content_type = "application/json")  
     return HttpResponse(json.dumps({"redirect" : "/dashboard",
-        "success" : response["success"]}), content_type = "application/json")
+        "errors" : response["errors"]}), content_type = "application/json")
 
 def goal_join_goal(request):
     """
@@ -107,11 +107,10 @@ def goal_join_goal(request):
     user = request.user 
     response = BeatMyGoalUser.joinGoal(user, goal_id)
     redirect = "/goals/" + str(goal_id)
-    if "errors" in response:
+    if response['errors']:
             return HttpResponse(json.dumps(response), 
                                 content_type = "application/json")
-
-    return HttpResponse(json.dumps({"success": response["success"],
+    return HttpResponse(json.dumps({"errors": response["errors"],
         "redirect" : redirect}), content_type = "application/json")
 
 def goal_leave_goal(request):
@@ -123,11 +122,10 @@ def goal_leave_goal(request):
     user = request.user 
     response = BeatMyGoalUser.leaveGoal(user, goal_id)
     redirect = "/goals/" + str(goal_id)
-    if "errors" in response:
-
+    if response['errors']:
         return HttpResponse(json.dumps(response),content_type = "application/json")
 
-    return HttpResponse(json.dumps({"success": response["success"],
+    return HttpResponse(json.dumps({"errors": response["errors"],
         "redirect" : redirect}), content_type = "application/json")
 
 
@@ -149,11 +147,11 @@ def goal_edit_goal(request, gid):
             edits = {'title': title, 'description': description}
      
             response = Goal.edit(goal, edits)
-            if 'errors' in response:
+            if response['errors']:
                 return HttpResponse(json.dumps(response), content_type = "application/json")
             else:
                 return HttpResponse(json.dumps({"redirect":"/goals/" + str(gid),
-                    "success" : response["success"]}), content_type = "application/json")
+                    "errors" : response["errors"]}), content_type = "application/json")
     else:
         return HttpResponse("Invalid request", status=500)            
 
@@ -186,27 +184,27 @@ def user_login(request):
     """
     Authenticates the user credential, login if valid 
     """
-    #if request.method == "GET":
-    #    return render(request, 'users/login.html')
+    # if request.method == "GET":
+    #     return render(request, 'users/login.html')
     
-    #elif request.method == "POST":
-    data = json.loads(request.body)
-    username= data["username"]
-    password= data["password"]
-    #user = authenticate(username=username, password=password)
-    response = BeatMyGoalUser.login(username,password)
-    users = list(BeatMyGoalUser.objects.filter(username=username))
-        
-    if "errors" in response:
-        return HttpResponse(json.dumps(response), content_type = "application/json")
-        
-    if len(users) > 0:
-        u = users[0]
-        if u.password == password:
-            u.backend = 'django.contrib.auth.backends.ModelBackend'
-            login(request, u)
-            return HttpResponse(json.dumps({"success": 1, "redirect" : "/dashboard/"}),
-                                    content_type = "application/json")
+    if request.method == "POST":
+        data = json.loads(request.body)
+        username= data["username"]
+        password= data["password"]
+        #user = authenticate(username=username, password=password)
+        response = BeatMyGoalUser.login(username,password)
+        users = list(BeatMyGoalUser.objects.filter(username=username))
+            
+        if response['errors']:
+            return HttpResponse(json.dumps(response), content_type = "application/json")
+            
+        if len(users) > 0:
+            u = users[0]
+            if u.password == password:
+                u.backend = 'django.contrib.auth.backends.ModelBackend'
+                login(request, u)
+                return HttpResponse(json.dumps({"errors": response['errors'], "redirect" : "/dashboard/"}),
+                                        content_type = "application/json")
 
 @csrf_exempt
 def profile(request):
@@ -228,14 +226,13 @@ def create_user(request):
     """
 
     if request.method == "GET":
-            return render(request, 'users/createUser.html', {
-            })
+            return render(request, 'index.html')
     elif request.method == "POST":
         data = json.loads(request.body)
         username, email, password = data["username"], data["email"], data["password"]
         response = BeatMyGoalUser.create(username, email, password)
 
-        if "errors" in response:
+        if response['errors']:
             return HttpResponse(json.dumps(response), 
                                 content_type = "application/json")            
         else:
@@ -246,7 +243,7 @@ def create_user(request):
             login(request, user)
             redirect = "/users/%s/" % (user.id)
             return HttpResponse(json.dumps({"redirect" : redirect,
-                "success" : response["success"]
+                "errors" : response["errors"]
                 }), content_type = "application/json")
 
     else:
@@ -258,12 +255,12 @@ def view_user(request, uid):
     """
     if request.method == "GET":
         response = BeatMyGoalUser.getUserById(uid)
-        if "errors" in response:
+        if response['errors']:
             return render(request, 'users/viewUser.html', { "errors" : response["errors"] })
         else:
-            user = response['user']
             return render(request, 'users/viewUser.html', {
-                    'viewedUser' : user,
+                    'viewedUser' : response['user'],
+                    'errors' : response['errors']
                 })
 
 #@csrf_exempt
@@ -286,13 +283,13 @@ def edit_user(request, uid):
             email = data['email']
             response = BeatMyGoalUser.updateUser(user, username, email)
 
-            if "errors" in response:
-                return HttpResponse(json.dumps(response), content_type = "application/json")            
+            if response['errors']:
+                return HttpResponse(json.dumps({'errors': response['errors']}), content_type = "application/json")            
             else:
                 redirect = "/users/" + str(uid)
                 return HttpResponse(json.dumps({"redirect" : redirect,
-                "success" : response["success"]
-                }), content_type = "application/json")
+                    "errors" : response['errors']
+                    }), content_type = "application/json")
         #return HttpResponse(json.dumps(res), content_type = 'application/json', status=200)
     else:
         return HttpResponse("Invalid request", status=500)
@@ -307,7 +304,10 @@ def delete_user(request, uid):
         user = request.user;
         if (user.is_authenticated() and user.id == uid):
             response = BeatMyGoalUser.remove(uid)
-            return HttpResponse(json.dumps({"redirect": "/"}), content_type = "application/json")
+            if len(response['errors']) == 0:
+                return HttpResponse(json.dumps({"redirect": "/"}), content_type = "application/json")
+            else:
+                ttpResponse("Invalid request", status=500)
     return HttpResponse("Invalid request", status=500)
 
 def user_logout(request):

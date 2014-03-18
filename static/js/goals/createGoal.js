@@ -23,17 +23,18 @@ $(document).ready(function() {
 			} else {
 				if ('errors' in data) {
 					var errors = data.errors;
-					if ('title' in errors) {
-						$('#title-error').text("Title is required and can't be too long").css("display", "block");
+					if (errors.indexOf(ERRCODES.CODE_BAD_TITLE) >= 0) {
+						$('#title-error').text("Title is required and can't be too long");
+                        $("label[for='title']").addClass("error");
 
 					}
-					if ('description' in errors) {
-						$('#description-error').text("Description is required and can't be so damn long").css("display", "block");
-
+					if (errors.indexOf(ERRCODES.CODE_BAD_DESCRIPTION) >= 0) {
+						$('#description-error').text("Description is required and can't be too long");
+                        $("label[for='description']").addClass("error");
 					}
-					if ('prize' in errors) {
-						$('#prize-error').text("Prize description must exsit and not so damn long").css("display", "block");
-
+					if (errors.indexOf(ERRCODES.CODE_BAD_PRIZE) >= 0) {
+						$('#prize-error').text("Prize description must exsit and not too long");
+                        $("label[for='prize']").addClass("error");
 					}
 				}
 			}

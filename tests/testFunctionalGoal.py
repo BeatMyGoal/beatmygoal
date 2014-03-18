@@ -1,6 +1,7 @@
 from django.test import TestCase
 from core.models import *
 from core.views import *
+from core.constants import *
 import random, json
 from django.core.handlers.wsgi import *
 from django.test.client import Client

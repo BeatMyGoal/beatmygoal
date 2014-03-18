@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	$title = $('#editForm #title');
-	$description = $('#editForm #description')
+	$description = $('#editForm #description');
 	gid = window.location.pathname.split("/")[2];
 
 	$("#save").click(function(event) {
@@ -20,17 +20,17 @@ $(document).ready(function() {
 			dataType: "json",
 		}).done(function(data) {
 			console.log(data);
-			console.log(data['goals']);
-			if (data['success']) {
+			console.log(data.goals);
+			if (data.errors.length === 0) {
 				window.location.href = data.redirect;
 			} else {
-				if ('errors' in data) {
+				if (data.errors.length >= 0) {
 					var errors = data.errors;
-					if ('title' in errors) {
+					if (errors.indexOf(ERRCODES.CODE_BAD_TITLE) >= 0) {
 						$('#title-error').text('Invalid title');
 						$("label[for='title']").addClass("error");
 					}
-					if ('description' in errors) {
+					if (errors.indexOf(ERRCODES.CODE_BAD_DESCRIPTION) >= 0) {
 						$('#description-error').text('Invalid description');
 						$("label[for='description']").addClass("error");
 					}

@@ -3,19 +3,19 @@ $(document).ready(function() {
 
 
 $('#edit_goal_button').click(function() {
-  window.location = window.location.href+"edit"
+  window.location = window.location.href+"edit";
   return false;
 });
 
 $('#favorite_button').click(function() {
 	console.log('favorite button pushed');
 	$(this).toggleClass('alert');
-})
+});
 $('#delete_goal_button').click(function() {
 	var goal_id = window.location.pathname.split("/")[2];
 	var data = {
 		goal_id: goal_id,
-	}
+	};
 	$.ajax({
 			type: "POST",
 			url: "/goals/remove",
@@ -25,10 +25,9 @@ $('#delete_goal_button').click(function() {
 		}).done(function(data) {
 			console.log(data);
 			console.log(data.redirect);
-			if (data.hasOwnProperty("success")) {
+			if (data.errors.length === 0) {
 				window.location.href = data.redirect;
 			} 
-
 		}).fail(function(data) {
 			console.log(data);
 			alert("failure");
@@ -39,7 +38,7 @@ $('#join_goal_button').click(function() {
 	var goal_id = window.location.pathname.split("/")[2];
 	var data = {
 		goal_id: goal_id,
-	}
+	};
 	$.ajax({
 			type: "POST",
 			url: "/goals/join",
@@ -48,7 +47,7 @@ $('#join_goal_button').click(function() {
 			dataType: "json",
 		}).done(function(data) {
 			console.log(data);
-			if (data.hasOwnProperty("success")) {
+			if (data.errors.length === 0) {
 				console.log(data);
 				window.location.href = data.redirect;
 			} 
@@ -64,7 +63,7 @@ $('#leave_goal_button').click(function() {
 	var goal_id = window.location.pathname.split("/")[2];
 	var data = {
 		goal_id: goal_id,
-	}
+	};
 	console.log(goal_id);
 	$.ajax({
 			type: "POST",
@@ -74,7 +73,7 @@ $('#leave_goal_button').click(function() {
 			dataType: "json",
 		}).done(function(data) {
 			console.log(data);
-			if (data.hasOwnProperty("success")) {
+			if (data.errors.length === 0) {
 				console.log(data);
 				window.location.href = data.redirect;
 			} 

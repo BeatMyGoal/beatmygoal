@@ -1,6 +1,7 @@
 from django.test import TestCase
 from core.models import *
 from core.views import *
+from core.constants import *
 import random, json
 from django.core.handlers.wsgi import *
 from django.test.client import Client
@@ -19,7 +20,7 @@ class RegistrationTests(TestCase):
         Tests to make sure the registration page loads
         """
         response = self.client.get("/users/create", {})
-        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.status_code < 400)
 
     def testValidRegistration(self):
         data = """
@@ -27,7 +28,7 @@ class RegistrationTests(TestCase):
         """
         response = self.postJSON("/users/create", data)
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('success' in response.content)
+        self.assertTrue(not json.loads(response.content)['errors'])
 
 
 class LoginTests(TestCase):
@@ -48,7 +49,7 @@ class LoginTests(TestCase):
         """
         response = self.postJSON("/users/login", data)
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('success' in response.content)
+        self.assertTrue(not json.loads(response.content)['errors'])
         
     def testInvalidLogin1(self):
         """
@@ -59,7 +60,7 @@ class LoginTests(TestCase):
         """
         response = self.postJSON("/users/login", data)
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('username' in response.content)
+        self.assertTrue(CODE_BAD_USERNAME in json.loads(response.content)['errors'])
         
     def testInvalidLogin2(self):
         """
@@ -70,7 +71,7 @@ class LoginTests(TestCase):
         """
         response = self.postJSON("/users/login", data)
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('password' in response.content)
+        self.assertTrue(CODE_BAD_PASSWORD in json.loads(response.content)['errors'])
 
 
 class ViewUserTests(TestCase):
@@ -142,6 +143,7 @@ class EditUserTests(TestCase):
         """
         response2 = self.postJSON("/users/1/edit", data2)
         self.assertEqual(response2.status_code, 200)
+        self.assertTrue(not json.loads(response2.content)['errors'])
 
     def testEditWrongUser(self):
         """

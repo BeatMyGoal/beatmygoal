@@ -11,7 +11,7 @@ $(document).ready(function() {
 			window.location.href = data.redirect;
 		}).fail(function(data) {
 			alert("Delete User Fail");
-		})
+		});
 	});
 });
 

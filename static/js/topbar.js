@@ -22,10 +22,10 @@ $(document).ready(function() {
 			dataType: "json",
 		}).done(function(data) {
 			console.log(data);
-			if (data.hasOwnProperty("success")) {
+			if (data.errors.length === 0) {
 				window.location.href = data.redirect;
 			} else {
-				if ('errors' in data) {
+				if (data.errors.length > 0) {
 					var errors = data.errors;
 					$('#login-form').addClass("error");
 				}

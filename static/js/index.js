@@ -1,14 +1,13 @@
 $(document).ready(function() {
 
 	$("#register-form").submit(function(e) {
-	    var invalid_fields = $("#register-form").find('[data-invalid]');
-	    console.log(invalid_fields);
-	    if (invalid_fields.length > 0) {
-		return;
-	    }
+        var invalid_fields = $("#register-form").find('[data-invalid]');
+        console.log(invalid_fields);
+        if (invalid_fields.length > 0) {
+            return;
+        }
 
-
-	    e.preventDefault();
+        e.preventDefault();
             e.stopPropagation();
 
 		var data = {
@@ -25,23 +24,23 @@ $(document).ready(function() {
 			dataType: "json",
 		}).done(function(data) {
 			console.log(data);
-			if (data.hasOwnProperty("success")) {
+			if (data.errors.length === 0) {
 				window.location.href = data.redirect;
 			} else {
-				if ('errors' in data) {
+				if (data.errors.length > 0) {
 					var errors = data.errors;
-					if ('username' in errors) {
-						$('#register-form #username-error').text(data.errors.username);
+					if (errors.indexOf(ERRCODES.CODE_DUPLICATE_USERNAME) >= 0) {
+						$('#register-form #username-error').text("Sorry, that username has already been used");
 						$('#register-form label[for="username"]').addClass('error');
 
 					}
-					if ('email' in errors) {
-						$('#register-form #email-error').text(data.errors.email);
+					if (errors.indexOf(ERRCODES.CODE_DUPLICATE_EMAIL) >= 0) {
+						$('#register-form #email-error').text("Sorry, that email has already been used");
 						$('#register-form label[for="email"]').addClass('error');
 
 					}
-					if ('password' in errors) {
-						$('#register-form #password-error').text(data.errors.password);
+					if (errors.indexOf(ERRCODES.CODE_BAD_PASSWORD) >= 0) {
+						$('#register-form #password-error').text("Invalid password");
 						$('#register-form label[for="email"]').addClass('error');
 					}
 				}

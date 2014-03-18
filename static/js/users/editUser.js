@@ -37,18 +37,18 @@ $(document).ready(function() {
 			dataType: "json",
 		}).done(function(data) {
 			console.log(data);
-			if (data.hasOwnProperty("success")) {
+			if (data.errors.length === 0) {
 				window.location.href = data.redirect;
 			} else {
-                if ('errors' in data) {
+                if (data.errors.length >= 0) {
                     var errors = data.errors;
-                    if ('username' in errors) {
-                        $("#username-error").text("Invalid/Existing Username");
+                    if (errors.indexOf(ERRCODES.CODE_DUPLICATE_USERNAME) >= 0) {
+                        $("#username-error").text("Sorry, that username has already been used");
                         $('label[for="username"]').addClass("error");
                     
                     }
-                    if ('email' in errors) {
-                        $("#email-error").text("Invalid Email");
+                    if (errors.indexOf(ERRCODES.CODE_DUPLICATE_EMAIL) >= 0) {
+                        $("#email-error").text("Sorry, that email has already been used");
                         $('label[for="email"]').addClass('error');
                     }
                 }
