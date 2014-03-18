@@ -43,4 +43,19 @@ $(document).ready(function() {
 		});
 	});
 
+
+	$('.value-unit-label').hide();
+
+	$('#types').change(function(e) {
+	e.preventDefault();
+	var sel = document.getElementById('types');
+	if (sel.options[sel.selectedIndex].value == "Value-based") {
+		$('.value-unit-label').fadeIn();
+	}
+	
+	console.log("type changed");
+})
+
 });
+
+
