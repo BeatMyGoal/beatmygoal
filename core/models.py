@@ -12,6 +12,7 @@ class Goal(models.Model):
     MAX_LEN_TITLE = 50
     MAX_LEN_PRIZE = 50
     MAX_LEN_TYPE = 20
+    MAX_LEN_UNIT = 20
 
     creator = models.ForeignKey('BeatMyGoalUser')
     title = models.CharField(max_length=MAX_LEN_TITLE)
@@ -21,7 +22,8 @@ class Goal(models.Model):
     progress_value = models.FloatField()
     goal_type = models.CharField(max_length=MAX_LEN_TYPE)
     private_setting = models.IntegerField()
-    
+    unit = models.CharField(max_length=MAX_LEN_UNIT, blank=True)
+
     def __str__(self):
         return str(self.title)
 
@@ -42,7 +44,7 @@ class Goal(models.Model):
             errors.append(CODE_BAD_USERNAME)
 
         if not errors:
-            goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0 )
+            goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0, unit=unit )
             goal.save()
             
         return {"errors" : errors, "goal" : goal }

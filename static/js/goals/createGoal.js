@@ -8,7 +8,8 @@ $(document).ready(function() {
 			creator: "come back to this",
 			prize: $("#register-prize").val(),
 			private_setting: 1.0,
-			goal_type: sel.options[sel.selectedIndex].value
+			goal_type: sel.options[sel.selectedIndex].value,
+			unit: $("#register-value-unit").val()
 		};
 
 		$.ajax({
@@ -44,4 +45,21 @@ $(document).ready(function() {
 		});
 	});
 
+
+	$('.value-unit-label').hide();
+
+	$('#types').change(function(e) {
+	e.preventDefault();
+	var sel = document.getElementById('types');
+	if (sel.options[sel.selectedIndex].value == "Value-based") {
+		$('.value-unit-label').fadeIn();
+	} else {
+		$('.value-unit-label').fadeOut();
+	}
+	
+	console.log("type changed");
+})
+
 });
+
+

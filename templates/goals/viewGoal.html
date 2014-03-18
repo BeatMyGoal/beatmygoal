@@ -9,7 +9,7 @@
   
 <body>
 
-  <div class="row">        
+  <div class="row" >        
     <!-- Main Content Section -->
     <div class="large-9 push-3 columns">
     
@@ -21,21 +21,26 @@
       / Facebook login / Tweeter login
       -->  
 
-      <div class="row">
-        <div class="large-6 columns">
-          <h5> Creator : {{ goal.creator.username }} </5>
+        <div class="row" >
+          <div class="large-6 columns">
+            <h5 > Creator : {{ goal.creator.username }} </5>
+          </div>
+          <div class="large-6 columns">
+            <h5> Creator Email : {{ goal.creator.email }} </h5>
+          </div>
         </div>
-        <div class="large-6 columns">
-          <h5> Creator Email : {{ goal.creator.email }} </h5>
-        </div>
-      </div>
+
 
       <div class="row">
         <div class="large-6 columns">
           <h5> Description : {{ goal.description }} </5>
         </div>
         <div class="large-6 columns">
+          {% if goal.unit %}
+          <h5> Goal Type : {{ goal.goal_type }} (in {{goal.unit}}) </h5>
+          {% else %}
           <h5> Goal Type : {{ goal.goal_type }} </h5>
+          {% endif %}
         </div>
       </div>
 
@@ -47,6 +52,11 @@
           <h5> Prize : {{ goal.prize }} </h5>
         </div>
       </div>
+
+
+
+
+
 
 
       </fieldset>
@@ -62,7 +72,7 @@
         {% endif %}
         {% if isParticipant %}
           <li><a id = "leave_goal_button" type="submit" class="button tiny pull-3">Leave Goal</a></li>
-        {% elif not isCreator %}
+        {% elif not isCreator and user.is_authenticated %}
           <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
         {% endif %}
        

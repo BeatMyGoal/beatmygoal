@@ -64,7 +64,8 @@ def goal_create_goal(request):
             prize = data['prize']
             private_setting = data['private_setting']
             goal_type = data['goal_type']
-            response = Goal.create(title, description, creator, prize, private_setting, goal_type)
+            unit = data['unit']
+            response = Goal.create(title, description, creator, prize, private_setting, goal_type, unit)
 
             if response['errors']:
                 return HttpResponse(json.dumps(response), content_type = "application/json")
@@ -76,9 +77,7 @@ def goal_create_goal(request):
         else:
             return HttpResponse("Invalid request", status=500)
     else:
-        return render(request, 'users/login.html', {
-            "message": "You must be logged in to create a goal"
-        })
+        return HttpResponseRedirect('/')
 
 
 @csrf_exempt
