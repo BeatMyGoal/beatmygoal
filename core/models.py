@@ -271,16 +271,3 @@ class BeatMyGoalUser(User):
             user.save()
 
         return {"errors" : errors, "user" : user }
-    
-    @classmethod
-    def updateUser2(self, user_id, user_name, user_firstName, user_lastName, user_email):
-    	try:
-    		user = self.getUserById(user_id)
-        except:
-        	return self.CODE_BAD_USERID
-        user.username = user_name
-        user.first_name = user_firstName
-        user.last_name = user_lastName
-        user.email = user_email
-        user.save()
-    	return self.CODE_SUCCESS
