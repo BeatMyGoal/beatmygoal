@@ -72,7 +72,7 @@
         {% if isParticipant or isCreator %}
         <li><a id = "favorite_button" type="submit" class="round button tiny pull-5">Favorite</a></li>
         {% endif %}
-        {% if isParticipant %}
+        {% if isParticipant and not isCreator %}
           <li><a id = "leave_goal_button" type="submit" class="button tiny pull-3">Leave Goal</a></li>
         {% elif not isCreator and user.is_authenticated %}
           <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
