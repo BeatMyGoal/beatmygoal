@@ -15,3 +15,7 @@ $(document).ready(function() {
 	});
 });
 
+$("#firstModal #No_button").click(function(e) {
+	$('#firstModal').foundation('reveal', 'close');
+});
+
