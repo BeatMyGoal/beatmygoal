@@ -29,7 +29,7 @@ class Goal(models.Model):
 
 
     @classmethod
-    def create(self, title, description, creator, prize, private_setting, goal_type):
+    def create(self, title, description, creator, prize, private_setting, goal_type, unit=""):
         errors = []
         goal = None
 
