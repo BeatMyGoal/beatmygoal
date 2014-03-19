@@ -11,11 +11,11 @@
   <div class="large-9 push-3 columns">
     <form data-abide>
        <fieldset>
-       <legend> <h2> Basic User Information</h2></legend>
+       <legend> <h2>User Information</h2></legend>
        
       
        {% if not errors %}
-       <h7> BeatMyGoal login </h7><br><br>
+       <!-- <h7> BeatMyGoal login </h7><br><br> -->
       <!--
       / Facebook login / Tweeter login
       -->   
@@ -31,7 +31,7 @@
        </div>
 
        {%  else  %}
-       <h5> We coundn't find the User in Our database </h5>  
+       <h5> We couldn't find that user </h5>  
    
        {% endif %}
         <!--
@@ -92,8 +92,8 @@
     <!-- tabs -->
     <dl class="section-container tabs" data-tab>
       <dd class="active"><a href="#panel2-1">{{ viewedUser.username }}'s Goals</a></dd>
-      <dd><a href="#panel2-2">graph</a></dd>
-      <dd><a href="#panel2-3">comments</a></dd>
+      <dd><a href="#panel2-2">Graph</a></dd>
+      <dd><a href="#panel2-3">Comments</a></dd>
     </dl>
       
     <div class="tabs-content">
@@ -112,11 +112,13 @@
       </div>
 
       <div class="content" id="panel2-2">
-        <p> This feature is not implemented yet </p>
+	  <p>Coming soon! </p>
+          <!-- <p> This feature is not implemented yet </p> -->
       </div>
       
       <div class="content" id="panel2-3">
-        <p> This feature is not implemented yet </p>
+	  <p>Coming soon! </p>
+          <!-- <p> This feature is not implemented yet </p> -->
       </div>
     </div>
   </div>
@@ -130,7 +132,8 @@
       <fieldset>
         <legend> <h3> Friends </h3></legend>
         <ul class="side-nav">
-          <p>This feature is not implemented yet</p>
+	  <p>Coming soon! </p>
+          <!-- <p>This feature is not implemented yet</p> -->
         </ul>
       </fieldset>
     </form>
@@ -145,7 +148,7 @@
 <div id="firstModal" class="reveal-modal medium" style="display: none" data-reveal>
   <h2> Are you sure you want to delete BeatMyGoal user account?</h2>
   <br>
-  <p>If you select "Yes", your account would be <code>Permernently deleted</code>. </p>
+  <p>If you select "Yes", your account would be <code>permanently deleted</code>. </p>
   <p>Click "No", If you don't want to delete your BeatMyGoal account.</p>
   <ul class="button-group right">
     <li><a id = "delete_user_button" class="button large pull-2 radius alert"> YES </a></li>
