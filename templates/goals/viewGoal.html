@@ -130,6 +130,7 @@
         <fieldset>
         <legend> <h3> Participants </h3></legend>
         <ul class="side-nav">
+          <li><a href="/users/{{ participant.id }}">{{ goal.creator }}</a></li>
           {% for participant in goal.beatmygoaluser_set.all %} 
 
           <li><a href="/users/{{ participant.id }}">{{ participant.username }}</a></li>
