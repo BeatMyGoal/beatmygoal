@@ -64,7 +64,10 @@ def goal_create_goal(request):
             prize = data['prize']
             private_setting = data['private_setting']
             goal_type = data['goal_type']
-            unit = data['unit']
+            if 'unit' in data: 
+                unit = data['unit']
+            else:
+                unit = ""
             response = Goal.create(title, description, creator, prize, private_setting, goal_type, unit)
 
             if response['errors']:

@@ -32,10 +32,14 @@
 
 
       <div class="row">
-        <div class="large-6 columns">
+        <div class="large columns">
           <h5> Description : {{ goal.description }} </5>
         </div>
-        <div class="large-6 columns">
+
+      </div>
+
+      <div class="row">
+          <div class="large-6 columns">
           {% if goal.unit %}
           <h5> Goal Type : {{ goal.goal_type }} (in {{goal.unit}}) </h5>
           {% else %}
@@ -45,9 +49,7 @@
       </div>
 
       <div class="row">
-        <div class="large-6 columns">
-          <h5> Created on : {{ goal.date_created }} </5>
-        </div>
+
         <div class="large-6 columns">
           <h5> Prize : {{ goal.prize }} </h5>
         </div>

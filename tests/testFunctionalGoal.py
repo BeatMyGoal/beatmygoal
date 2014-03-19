@@ -9,26 +9,56 @@ from django.test.client import Client
 class GoalPageTests(TestCase):
 
     def setUp(self):
+        self.testUser = BeatMyGoalUser(username="test", password="test", email="test@test.com")
+        self.testUser.save()
         self.client = Client()
 
     # Convenience method to create a POST JSON request
     def postJSON(self, url, data):
         return self.client.post(url, content_type='application/json', data=data)
 
-    def testCreateGoalPageLoads(self):
+    def testCreateGoalPageDoesNotLoadWithoutLoggingIn(self):
         """
         Tests to make sure the create goal page loads
         """
-        response = self.client.get("/goals/create", {})
-        self.assertEqual(response.status_code, 200)
 
-    def testValidGoalCreate(self):
+        response = self.client.get("/goals/create", {})
+        self.assertEqual(response.status_code, 302) #Must redirect to the index page
+
+    def testValidGoalCreateWithoutLoggingIn(self):
         data = """
         { "title" : "test_title", "description" : "test_description", "prize" : "test_prize",
         "private_setting" : 1, "goal_type" : "test_goal_type" }
         """
         response = self.postJSON("/goals/create", data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302) #Must redirect to the index page
+
+
+
+    def testCreateGoalPageLoadWhileLoggingIn(self):
+        """
+        Tests to make sure the create goal page loads
+        """
+        data2 = """
+        { "username" : "test", "password" : "test" }
+        """
+        response2 = self.postJSON("/users/login", data2)
+
+        response = self.client.get("/goals/create", {})
+        self.assertEqual(response.status_code, 200) #Must redirect to the index page
+
+    def testValidGoalCreateWhileLoggedIn(self):
+        data = """
+        { "title" : "test_title", "description" : "test_description", "prize" : "test_prize",
+        "private_setting" : 1, "goal_type" : "test_goal_type" }
+        """
+        data2 = """
+        { "username" : "test", "password" : "test" }
+        """
+        response2 = self.postJSON("/users/login", data2)
+
+        response = self.postJSON("/goals/create", data)
+        self.assertEqual(response.status_code, 200) #Must redirect to the index page
 
 
 
