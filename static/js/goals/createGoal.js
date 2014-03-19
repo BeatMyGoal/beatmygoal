@@ -19,7 +19,7 @@ $(document).ready(function() {
 			contentType: "application/json",
 			dataType: "json",
 		}).done(function(data) {
-			if (data.hasOwnProperty("success")) {
+			if (data.errors.length === 0) {
 				window.location.href = data.redirect;
 			} else {
 				if ('errors' in data) {
