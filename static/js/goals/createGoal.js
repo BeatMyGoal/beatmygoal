@@ -47,22 +47,22 @@ $(document).ready(function() {
 
 
 	$('.value-unit-label').hide();
-
+	$('.end-value-label').hide();
 	$('#types').change(function(e) {
 	e.preventDefault();
 	var sel = document.getElementById('types');
 	if (sel.options[sel.selectedIndex].value == "Value-based") {
 		$('.Time-unit-label').hide();
+		$('.end-time-label').hide();
 		$('.value-unit-label').fadeIn();
+		$('.end-value-label').fadeIn();
 		
 	} else if (sel.options[sel.selectedIndex].value == "Time-based") {
 		$('.value-unit-label').hide();
-		$('.Time-unit-label').fadeIn();
-	} else {
-		
+		$('.end-value-label').hide();
+		$('.end-time-label').fadeIn();
 	}
 	
-	console.log("type changed");
 })
 
 });

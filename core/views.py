@@ -140,6 +140,7 @@ def goal_edit_goal(request, gid):
     gid = int(gid)
     goal = Goal.objects.get(id=gid)
     user = request.user
+
     if ( user.is_authenticated() and goal.creator.id == user.id ):
         if request.method == "GET":
             return render(request, 'goals/editGoal.html', {"title": goal.title, "description": goal.description })
@@ -147,8 +148,17 @@ def goal_edit_goal(request, gid):
             data = json.loads(request.body)
             title = data["title"]
             description = data["description"]
+            password = data["password"]
+
+            loginResponse = BeatMyGoalUser.login(user.username, password)
+
+            if loginResponse['errors']:
+                print "login error"
+                return HttpResponse(json.dumps({"errors" : loginResponse["errors"]}), content_type = "application/json")
+
+
             edits = {'title': title, 'description': description}
-     
+        
             response = Goal.edit(goal, edits)
             if response['errors']:
                 return HttpResponse(json.dumps(response), content_type = "application/json")
@@ -284,7 +294,18 @@ def edit_user(request, uid):
             data = json.loads(request.body)
             username = data['username']
             email = data['email']
+            password = data['password']
+
+            loginResponse = BeatMyGoalUser.login(user.username, password)
+            print "here"
+            print loginResponse
+            if loginResponse['errors']:
+                return HttpResponse(json.dumps({"errors" : loginResponse["errors"]}), content_type = "application/json")
+
+
             response = BeatMyGoalUser.updateUser(user, username, email)
+
+
 
             if response['errors']:
                 return HttpResponse(json.dumps({'errors': response['errors']}), content_type = "application/json")            

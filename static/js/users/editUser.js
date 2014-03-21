@@ -3,6 +3,7 @@ $(document).ready(function() {
 	$lname = $("#editForm #lname");
 	$username = $("#editForm #username");
 	$email = $("#editForm #email");
+	$password = $("#editForm #password");
 
 	uid = window.location.pathname.split("/")[2];
 	
@@ -20,12 +21,14 @@ $(document).ready(function() {
 		var lname = $lname.val();
 		var username = $username.val();
 		var email = $email.val();
+		var password = $password.val();
 
 		var data = {
 			username: username,
 			email: email,
 			fname: fname,
 			lname: lname,
+			password: password
 		};
 		console.log(data);
 
@@ -51,6 +54,11 @@ $(document).ready(function() {
                         $("#email-error").text("Sorry, that email has already been used");
                         $('label[for="email"]').addClass('error');
                     }
+
+                    if (errors.indexOf(ERRCODES.CODE_BAD_PASSWORD) >= 0) {
+						$("#password-error").text("Validation failed");
+                        $('label[for="password"]').addClass('error');
+					}
                 }
             }
 		}).fail(function(data) {
