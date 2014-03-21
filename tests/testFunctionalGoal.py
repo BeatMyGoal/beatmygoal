@@ -113,7 +113,7 @@ class EditGoalTests(TestCase):
        response2 = self.postJSON("/users/login", data2)
 
        data = """
-       { "title" : "title2", "description" : "des2"}
+       { "title" : "title2", "description" : "des2", "password" : "test"}
        """
        response = self.postJSON("/goals/1/edit", data)
        self.assertEqual(response.status_code, 200)

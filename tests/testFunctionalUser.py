@@ -139,7 +139,7 @@ class EditUserTests(TestCase):
         """
         response = self.postJSON("/users/login", data)
         data2 = """
-        {"username" : "test1", "email" : "newemail@email.com"}
+        {"username" : "test1", "email" : "newemail@email.com", "password" : "test"}
         """
         response2 = self.postJSON("/users/1/edit", data2)
         self.assertEqual(response2.status_code, 200)
