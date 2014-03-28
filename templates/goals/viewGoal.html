@@ -8,7 +8,7 @@
 <!doctype html>
   
 <body>
-
+    {% include "goals/logGoal.html" %}
   <div class="row" >        
     <!-- Main Content Section -->
     <div class="large-9 push-3 columns">
@@ -56,26 +56,21 @@
       </div>
 
 
-
-
-
-
-
       </fieldset>
     </form>
-
 
     <!-- buttons -->
     <div class="row">
   
       <ul class="button-group right">
         {% if isParticipant or isCreator %}
-        <li><a id = "favorite_button" type="submit" class="round button tiny pull-5">Favorite</a></li>
+            <li><a id = "favorite_button" type="submit" class="round button tiny pull-5">Favorite</a></li>
         {% endif %}
         {% if isParticipant and not isCreator %}
-          <li><a id = "leave_goal_button" type="submit" class="button tiny pull-3">Leave Goal</a></li>
+            <li><a id = "leave_goal_button" type="submit" class="button tiny pull-3">Leave Goal</a></li>
+            <li><a id = "log_button" data-reveal-id="myModal" data-reveal class="button tiny pull-3">Log Progress</a></li>
         {% elif not isCreator and user.is_authenticated %}
-          <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
+            <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
         {% endif %}
        
 

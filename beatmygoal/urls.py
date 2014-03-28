@@ -19,6 +19,7 @@ urlpatterns = patterns('',
 	url(r'^goals/join', core.views.goal_join_goal, name='goal_join_goal'),
 	url(r'^goals/leave', core.views.goal_leave_goal, name='goal_leave_goal'),
 	url(r'^goals/edit', core.views.goal_edit_goal, name='goal_edit_goal'),
+	url(r'^goals/log', core.views.goal_edit_goal, name='goal_edit_goal'),
 	url(r'^goals/(\d+)/$', core.views.goal_view_goal, name='view_goal'),
 	url(r'^goals/(\d+)/edit$', core.views.goal_edit_goal, name='edit_goal'),
 
