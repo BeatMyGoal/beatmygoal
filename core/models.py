@@ -9,7 +9,7 @@ class Log(models.Model):
 
 class Entry(models.Model):
     log = models.ForeignKey('Log')
-    entry_amount = models.IntegerField
+    entry_amount = models.IntegerField()
     entry_date = models.DateTimeField(auto_now_add=True)
     comment = models.CharField(max_length=130)
 

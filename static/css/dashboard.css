@@ -1,0 +1,21 @@
+.dashcard{
+	height: 185px;
+	width: 300px;
+	padding: 20px;
+	margin: 20px;
+	background: #eee;
+}
+.dashcard-title{
+	font-size: 150%;
+	font-weight: bold;
+}
+.dashcard-description{
+	font-size: 80%;
+	color: #555;
+}
+.dashcard-creator{
+	
+}
+.dashcard-prize{
+
+}
