@@ -3,6 +3,16 @@ from django.contrib.auth.models import User
 from django.core.validators import validate_email
 from constants import *
 
+class Log(models.Model):
+    participant = models.ForeignKey('Goal')
+    goal = models.ForeignKey('BeatMyGoalUser')
+
+class Entry(models.Model):
+    log = models.ForeignKey('Log')
+    entry_amount = models.IntegerField
+    entry_date = models.DateTimeField(auto_now_add=True)
+    comment = models.CharField(max_length=130)
+
 class Goal(models.Model):
     """
     Represents any Goal in the BeatMyGoal System.
