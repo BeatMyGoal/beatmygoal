@@ -17,11 +17,16 @@ $.ajax({
 		console.log(entry);
 		fields = entry['fields'];
 		user = $(".users>#id"+fields['creator']);
-		console.log(user);
-		$("tbody").append('<tr><td><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></td>'+
-			'<td>'+fields['description']+'</td>'+
-			'<td><a href="/users/'+fields['creator']+'">'+user.text()+'</a></td>'+
-			'<td>'+fields['prize']+'</td></tr>')
+		console.log(fields);
+		$(".dashcard-container").append('<div class="dashcard" id="'+entry['pk']+'"></div>');
+		$(".dashcard#"+entry['pk']).append('<div class=dashcard-title><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></div>');
+		$(".dashcard#"+entry['pk']).append('<div class=dashcard-creator>Creator: <a href="/users/'+fields['creator']+'">'+user.text()+'</a></div>');
+		$(".dashcard#"+entry['pk']).append('<div class=dashcard-prize>Prize: '+fields['prize']+'</div>');
+		$(".dashcard#"+entry['pk']).append('<div class=dashcard-description>'+fields['description']+'</div>');
+		// $("tbody").append('<tr><td><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></td>'+
+		// 	'<td>'+fields['description']+'</td>'+
+		// 	'<td><a href="/users/'+fields['creator']+'">'+user.text()+'</a></td>'+
+		// 	'<td>'+fields['prize']+'</td></tr>')
 	});
 
 }).fail(function(data) {
@@ -49,10 +54,15 @@ $(window).scroll(function() {
 				fields = entry['fields'];
 				user = $(".users>#id"+fields['creator']);
 				console.log(user);
-				$("tbody").append('<tr><td><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></td>'+
-					'<td>'+fields['description']+'</td>'+
-					'<td><a href="/users/'+fields['creator']+'">'+user.text()+'</a></td>'+
-					'<td>'+fields['prize']+'</td></tr>');
+				$(".dashcard-container").append("<div class=dashcard></div>");
+				$(".dashcard#"+entry['pk']).append('<div class=dashcard-title><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></div>');
+				$(".dashcard#"+entry['pk']).append('<div class=dashcard-creator>Creator: <a href="/users/'+fields['creator']+'">'+user.text()+'</a></div>');
+				$(".dashcard#"+entry['pk']).append('<div class=dashcard-prize>Prize: '+fields['prize']+'</div>');
+				$(".dashcard#"+entry['pk']).append('<div class=dashcard-description>'+fields['description']+'</div>');
+				// $("tbody").append('<tr><td><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></td>'+
+				// 	'<td>'+fields['description']+'</td>'+
+				// 	'<td><a href="/users/'+fields['creator']+'">'+user.text()+'</a></td>'+
+				// 	'<td>'+fields['prize']+'</td></tr>');
 			});
 
 		}).fail(function(data) {

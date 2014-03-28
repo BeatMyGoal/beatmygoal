@@ -7,8 +7,10 @@
 {% block content %}
 
 <script src="{% static 'js/dashboard/dashboard.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
 <center>  
-<table class="table table-striped">
+    <div class="dashcard-container"></div>
+<!-- <table class="table table-striped">
     <thead>
         <tr>
             <b>
@@ -23,6 +25,7 @@
 
         </tbody>
 </table>
+ -->
 </center>
 <div class="users" style="display:none">
    {% for user in users %} 

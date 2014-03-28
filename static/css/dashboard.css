@@ -1,12 +1,21 @@
+.dashcard-container{
+	width: 1200px;
+}
 .dashcard{
+	text-align: left;
+	vertical-align: top;
+	display: inline-block;
 	height: 185px;
 	width: 300px;
 	padding: 20px;
 	margin: 20px;
 	background: #eee;
+	box-shadow: 5px 5px 10px #0078A0;	
+	color: #555;
 }
 .dashcard-title{
-	font-size: 150%;
+	margin-bottom: 10px;
+	font-size: 130%;
 	font-weight: bold;
 }
 .dashcard-description{
@@ -17,5 +26,6 @@
 	
 }
 .dashcard-prize{
+	margin-bottom: 10px;
 
 }
