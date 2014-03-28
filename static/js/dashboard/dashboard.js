@@ -4,7 +4,6 @@ var scroll_activated = false;
 
 var data = {
 	page: page,
-};
 $.ajax({
 	type: "POST",
 	url: "/dashboard",
@@ -34,6 +33,8 @@ $.ajax({
 	alert("failure");
 });
 page = 1;
+};
+
 
 $(window).scroll(function() {
    if($(window).scrollTop() + $(window).height() == $(document).height() && !scroll_activated) {
