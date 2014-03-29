@@ -18,7 +18,7 @@ $(document).ready(function() {
 			fields = entry['fields'];
 			user = $(".users>#id"+fields['creator']);
 			console.log(fields);
-			$(".dashcard-container").append('<div class="dashcard" id="'+entry['pk']+'"></div>');
+			$(".dashcard-container").append('<li><div class="dashcard" id="'+entry['pk']+'"></div></li>');
 			$(".dashcard#"+entry['pk']).append('<div class=dashcard-title><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></div>');
 			$(".dashcard#"+entry['pk']).append('<div class=dashcard-creator>Creator: <a href="/users/'+fields['creator']+'">'+user.text()+'</a></div>');
 			$(".dashcard#"+entry['pk']).append('<div class=dashcard-prize>Prize: '+fields['prize']+'</div>');
@@ -54,7 +54,7 @@ $(document).ready(function() {
 					fields = entry['fields'];
 					user = $(".users>#id"+fields['creator']);
 					console.log(user);
-					$(".dashcard-container").append('<div class=dashcard id="'+entry['pk']+'"></div>');
+					$(".dashcard-container").append('<li><div class="dashcard" id="'+entry['pk']+'"></div></li>');
 					$(".dashcard#"+entry['pk']).append('<div class=dashcard-title><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></div>');
 					$(".dashcard#"+entry['pk']).append('<div class=dashcard-creator>Creator: <a href="/users/'+fields['creator']+'">'+user.text()+'</a></div>');
 					$(".dashcard#"+entry['pk']).append('<div class=dashcard-prize>Prize: '+fields['prize']+'</div>');
