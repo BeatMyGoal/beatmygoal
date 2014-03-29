@@ -20,8 +20,8 @@ $(document).ready(function() {
 			console.log(fields);
 			$(".dashcard-container").append('<li><div class="dashcard" id="'+entry['pk']+'"></div></li>');
 			$(".dashcard#"+entry['pk']).append('<div class=dashcard-title><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></div>');
-			$(".dashcard#"+entry['pk']).append('<div class=dashcard-creator>Creator: <a href="/users/'+fields['creator']+'">'+user.text()+'</a></div>');
-			$(".dashcard#"+entry['pk']).append('<div class=dashcard-prize>Prize: '+fields['prize']+'</div>');
+			$(".dashcard#"+entry['pk']).append('<div class=dashcard-creator><b>Creator:</b> <a href="/users/'+fields['creator']+'">'+user.text()+'</a></div>');
+			$(".dashcard#"+entry['pk']).append('<div class=dashcard-prize><b>Prize:</b> '+fields['prize']+'</div>');
 			$(".dashcard#"+entry['pk']).append('<div class=dashcard-description>'+fields['description']+'</div>');
 			// $("tbody").append('<tr><td><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></td>'+
 			// 	'<td>'+fields['description']+'</td>'+
@@ -56,8 +56,8 @@ $(document).ready(function() {
 					console.log(user);
 					$(".dashcard-container").append('<li><div class="dashcard" id="'+entry['pk']+'"></div></li>');
 					$(".dashcard#"+entry['pk']).append('<div class=dashcard-title><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></div>');
-					$(".dashcard#"+entry['pk']).append('<div class=dashcard-creator>Creator: <a href="/users/'+fields['creator']+'">'+user.text()+'</a></div>');
-					$(".dashcard#"+entry['pk']).append('<div class=dashcard-prize>Prize: '+fields['prize']+'</div>');
+					$(".dashcard#"+entry['pk']).append('<div class=dashcard-creator><b>Creator:</b> <a href="/users/'+fields['creator']+'">'+user.text()+'</a></div>');
+					$(".dashcard#"+entry['pk']).append('<div class=dashcard-prize><b>Prize:</b> '+fields['prize']+'</div>');
 					$(".dashcard#"+entry['pk']).append('<div class=dashcard-description>'+fields['description']+'</div>');
 					// $("tbody").append('<tr><td><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></td>'+
 					// 	'<td>'+fields['description']+'</td>'+

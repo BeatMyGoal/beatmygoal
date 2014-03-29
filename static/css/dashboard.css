@@ -13,18 +13,21 @@
 	color: #555;
 }
 .dashcard-title{
-	margin-bottom: 10px;
-	font-size: 130%;
+	font-size: 120%;
+	/*margin-bottom: 10px;*/
 	font-weight: bold;
 }
 .dashcard-description{
+	font-style: italic;
 	font-size: 80%;
 	color: #555;
 }
 .dashcard-creator{
+	font-size: 80%;
 	
 }
 .dashcard-prize{
-	margin-bottom: 10px;
+	font-size: 80%;
+	/*margin-bottom: 10px;*/
 
 }
