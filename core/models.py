@@ -66,9 +66,9 @@ class Goal(models.Model):
 
         if not errors:
             goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0, unit=unit )
+            goal.save()
             newLog = Log(goal=goal)
             newLog.save()
-            goal.save()
             
         return {"errors" : errors, "goal" : goal }
 

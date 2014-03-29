@@ -65,6 +65,8 @@ for g in dummy_goals:
              description=t, prize=t, progress_value=1.0, goal_type=t, private_setting=1)
     g.save()
     #print "Creating goal: %s, %s, %s" % creator, title, prize
+    l = Log(goal=g)
+    l.save()
     goals.append(g)
 
 # Add random users to random goals
