@@ -1,27 +1,31 @@
 <div id="myModal" class="reveal-modal small" data-reveal>
     <h2>Log Your Progress For the Day!</h2>
     <br>
-    <div class="row">
-        <div class="large-8 columns"> 
-            <div class="row collapse">
+    <form id='log_progress_form' data-abide>
+        <div class="row collapse">
                 <div class="small-9 columns">
-                    <input type="text" placeholder="1" />
+                    <label for="log_amount">
+                        <input type="text" id='log_amount' placeholder="1" required pattern='integer'/>
+                        <small id="log-amount-error" class="error">Amount must be a numerical value</small>
+                    </label>
                 </div>
                 <div class="small-3 columns">
                     <span class="postfix">{{ goal.unit }}</span>
                 </div>
+        </div>
+        <div class="row">
+            <div class="large-12 columns">
+                <label for="log_comment">  
+                    <input type="text" id='log_comment' placeholder='Comment'>
+                    <small id="log-comment-error" class="error">This comment is too long</small>
+                </label>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="large-8 columns"> 
-            <div class="row collapse">
-                <div class="small-12 columns">
-                    <a id = "submit_log_button" type="submit" class="button tiny">Submit</a>
-                </div>
+        <div class="row">
+            <div class="large-12 columns"> 
+                <a id = "submit_log_button" type="submit" class="button tiny">Submit</a>
             </div>
         </div>
-    </div>
-        
+    </form>
     <a class="close-reveal-modal">&#215;</a>
 </div>

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import Goal, BeatMyGoalUser
+from models import Goal, BeatMyGoalUser, Log, LogEntry
 from django.template import RequestContext, loader
 
 # Create your views here
@@ -181,7 +181,25 @@ def goal_view_goal(request, goal_id):
 
     return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, "isParticipant" : isParticipant, "isCreator" : isCreator})
 
-
+def goal_log_progress(request, gid):
+    goal = Goal.objects.get(id=gid)
+    
+    if request.method == "GET":
+        return render(request, 'goals/logGoal.html', {'goal' : goal})
+    elif request.method == "POST":
+        if request.user.is_authenticated() and len(goal.beatmygoaluser_set.filter(username=request.user)) > 0:
+            data = json.loads(request.body)
+            response = LogEntry.create(log=goal.log, participant=request.user, amount=int(data['amount']), comment=data['comment'])
+            print(response)
+            if response['errors']:
+                return HttpResponse(json.dumps(response), content_type='application/json')
+            else:
+                return HttpResponse(json.dumps({
+                        "redirect":"/goals/" + str(gid), 
+                        "errors" : response['errors']
+                    }), content_type='application/json')
+        else:
+            return HttpResponse("Invalid request", status=500)
 #def goal_remove_user(request):
 #    try:
 #        req = json.loads(request.body)

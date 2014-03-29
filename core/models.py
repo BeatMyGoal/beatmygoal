@@ -4,14 +4,25 @@ from django.core.validators import validate_email
 from constants import *
 
 class Log(models.Model):
-    participant = models.ForeignKey('Goal')
-    goal = models.ForeignKey('BeatMyGoalUser')
+    goal = models.OneToOneField('Goal')
 
-class Entry(models.Model):
+class LogEntry(models.Model):
     log = models.ForeignKey('Log')
+    participant = models.ForeignKey('BeatMyGoalUser', related_name="log_participant")
     entry_amount = models.IntegerField()
     entry_date = models.DateTimeField(auto_now_add=True)
     comment = models.CharField(max_length=130)
+
+    @classmethod
+    def create(self, log, participant, amount, comment):
+        errors = []
+        logEntry = None
+
+        if not errors:
+            logEntry = LogEntry(log=log, participant=BeatMyGoalUser.objects.get(username=participant), entry_amount=amount, comment=comment)
+            logEntry.save()
+
+        return {'errors':errors, 'logEntry' : logEntry}
 
 class Goal(models.Model):
     """
@@ -55,6 +66,8 @@ class Goal(models.Model):
 
         if not errors:
             goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0, unit=unit )
+            newLog = Log(goal=goal)
+            newLog.save()
             goal.save()
             
         return {"errors" : errors, "goal" : goal }

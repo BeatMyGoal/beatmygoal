@@ -68,6 +68,8 @@
         {% endif %}
         {% if isParticipant and not isCreator %}
             <li><a id = "leave_goal_button" type="submit" class="button tiny pull-3">Leave Goal</a></li>
+        {% endif %}
+        {% if isParticipant %}
             <li><a id = "log_button" data-reveal-id="myModal" data-reveal class="button tiny pull-3">Log Progress</a></li>
         {% elif not isCreator and user.is_authenticated %}
             <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
@@ -96,7 +98,13 @@
       <div class="tabs-content">
      
         <div class="content active" id="panel2-1">
-	  <p>Coming soon! </p>
+            <ul>
+                {% for entry in goal.log.logentry_set.all %}
+
+                <li>{{ entry.participant }} : {{ entry.entry_amount }}, {{ entry.comment }}</li>
+
+                {% endfor %}
+            </ul>
 	  <!--
           <p> List Goal History </p>
           <p> List Goal History </p>
