@@ -39,7 +39,7 @@ urlpatterns = patterns('',
 	#url(r'^users/test/edit', core.views.edit_user2),                       
 	               
     url(r'^dashboard', core.views.dashboard, name='dashboard'),                       
-
+    url(r'^confirm', core.views.confirm, name='confirm'),
     
 
 )

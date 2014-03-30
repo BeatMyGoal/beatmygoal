@@ -148,14 +148,8 @@ def goal_edit_goal(request, gid):
             data = json.loads(request.body)
             title = data["title"]
             description = data["description"]
-            password = data["password"]
 
-            loginResponse = BeatMyGoalUser.login(user.username, password)
-
-            if loginResponse['errors']:
-                print "login error"
-                return HttpResponse(json.dumps({"errors" : loginResponse["errors"]}), content_type = "application/json")
-
+            
 
             edits = {'title': title, 'description': description}
         
@@ -168,6 +162,14 @@ def goal_edit_goal(request, gid):
     else:
         return HttpResponse("Invalid request", status=500)            
 
+
+def confirm(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user = request.user;
+        password = data["password"]
+        response = BeatMyGoalUser.login(user.username, password)
+        return HttpResponse(json.dumps(response), content_type = "application/json")
 
 
 def goal_view_goal(request, goal_id):
@@ -358,5 +360,7 @@ def user_logout(request):
     """
     logout(request)
     return HttpResponseRedirect('/')
+
+
 
 
