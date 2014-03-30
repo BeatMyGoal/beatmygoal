@@ -76,5 +76,11 @@ $(document).ready(function() {
 		window.location.href = "/goals/" + gid;
 	});
 
-
+	$("#firstModal #No_button").click(function(e) {
+	$('#firstModal').foundation('reveal', 'close');
 });
+});
+
+
+
+
