@@ -114,7 +114,7 @@ $("#reveal_edit #Confirm_button").click(function(e) {
         contentType: "application/json",
         dataType: "json",
     }).done(function(data) {
-        if (data.errors.length === 0) {
+        if (data.errors.length == 0) {
             window.location = window.location.href+"edit";
         } else {
             if (data.errors.length >= 0) {
@@ -130,3 +130,4 @@ $("#reveal_edit #Confirm_button").click(function(e) {
         alert("failure");
     });
 });
+
