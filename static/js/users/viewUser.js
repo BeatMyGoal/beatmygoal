@@ -36,7 +36,7 @@ $("#reveal_edit #Confirm_button").click(function(e) {
     }).done(function(data) {
 
 
-        if (data.errors.length == 0) {
+        if (data.errors.length === 0) {
             window.location = window.location.href+"edit";
         } else {
             if (data.errors.length >= 0) {
@@ -44,7 +44,6 @@ $("#reveal_edit #Confirm_button").click(function(e) {
                 if (errors.indexOf(ERRCODES.CODE_BAD_PASSWORD) >= 0) {
                         $('#password-error').text('Validation failed');
                         $("label[for='password']").addClass("error");
-
                     }
             }
         }
