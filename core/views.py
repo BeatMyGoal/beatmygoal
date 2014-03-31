@@ -140,7 +140,7 @@ def goal_edit_goal(request, gid):
     gid = int(gid)
     goal = Goal.objects.get(id=gid)
     user = request.user
-
+    
     if ( user.is_authenticated() and goal.creator.id == user.id ):
         if request.method == "GET":
             return render(request, 'goals/editGoal.html', {"title": goal.title, "description": goal.description })
@@ -224,20 +224,16 @@ def user_login(request):
         data = json.loads(request.body)
         username= data["username"]
         password= data["password"]
-        #user = authenticate(username=username, password=password)
         response = BeatMyGoalUser.login(username,password)
-        users = list(BeatMyGoalUser.objects.filter(username=username))
             
         if response['errors']:
             return HttpResponse(json.dumps(response), content_type = "application/json")
-            
-        if len(users) > 0:
-            u = users[0]
-            if u.password == password:
-                u.backend = 'django.contrib.auth.backends.ModelBackend'
-                login(request, u)
-                return HttpResponse(json.dumps({"errors": response['errors'], "redirect" : "/dashboard/"}),
-                                        content_type = "application/json")
+        else:
+            user = response['user']
+            login(request, user)
+            return HttpResponse(json.dumps({"errors": response['errors'], 
+                                            "redirect" : "/dashboard/"}),
+                                content_type = "application/json")
 
 @csrf_exempt
 def profile(request):
@@ -269,10 +265,8 @@ def create_user(request):
             return HttpResponse(json.dumps(response), 
                                 content_type = "application/json")            
         else:
-            user = response['user']
-            #TODO
-            user.backend = 'django.contrib.auth.backends.ModelBackend'
-            # authenticate(username=username, password=password)
+            # user = response['user']
+            user =  authenticate(username=username, password=password)
             login(request, user)
             redirect = "/users/%s/" % (user.id)
             return HttpResponse(json.dumps({"redirect" : redirect,

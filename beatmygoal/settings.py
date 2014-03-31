@@ -120,3 +120,5 @@ STATIC_ROOT = 'staticfiles'
 # STATICFILES_DIRS = (
 #     os.path.join(PROJECT_PATH, '../static'),
 # )
+
+AUTH_USER_MODEL = 'core.BeatMyGoalUser'
