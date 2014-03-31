@@ -47,7 +47,7 @@ def dashboard(request):
                 'users': all_users
             })
 
-@csrf_exempt
+
 def goal_create_goal(request):
     """
     Creates a goal if the user is authenticated.
@@ -84,7 +84,7 @@ def goal_create_goal(request):
         return HttpResponseRedirect('/')
 
 
-@csrf_exempt
+
 def goal_remove_goal(request):
     """
     Removes the goal if it belongs to the user.
@@ -132,7 +132,7 @@ def goal_leave_goal(request):
         "redirect" : redirect}), content_type = "application/json")
 
 
-@csrf_exempt
+
 def goal_edit_goal(request, gid):
     """
     Edit the attributes of a goal if you are it's creator
@@ -235,7 +235,7 @@ def user_login(request):
                                             "redirect" : "/dashboard/"}),
                                 content_type = "application/json")
 
-@csrf_exempt
+
 def profile(request):
     """
     Returns the profile of the authenticated user or else prompts them to login.
@@ -248,7 +248,7 @@ def profile(request):
     else:
         return HttpResponseRedirect('/users/create/')
 
-@csrf_exempt
+
 def create_user(request):
     """
     Creates a user and authenticates them, if credentials are valid.
@@ -290,7 +290,7 @@ def view_user(request, uid):
                     'errors' : response['errors']
                 })
 
-#@csrf_exempt
+#
 def edit_user(request, uid):
     """ 
     Allows users to edit their profile if they are logged in.
@@ -332,7 +332,7 @@ def edit_user(request, uid):
     else:
         return HttpResponse("Invalid request", status=500)
 
-@csrf_exempt
+
 def delete_user(request, uid):
     """ 
     Allows users to delete their Userid if they are logged in.
