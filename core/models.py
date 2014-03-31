@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import validate_email
 from constants import *
 
@@ -115,7 +116,7 @@ class Goal(models.Model):
 
 
     
-class BeatMyGoalUser(User):
+class BeatMyGoalUser(AbstractUser):
     """
     A BeatMyGoal user extends from a django.auth.User and inherits the
     following properties:
@@ -124,8 +125,8 @@ class BeatMyGoalUser(User):
     * username,
     * email,
     * password,
-    * first_name,
-    * last_name,
+    first_name,
+    last_name,
     is_staff,
     is_active,
     is_superuser,
@@ -159,6 +160,8 @@ class BeatMyGoalUser(User):
 
     @classmethod
     def login(self, username, password):
+        from django.contrib.auth import login, authenticate
+
         errors = []
 
         if not self.valid_username(username):
@@ -170,14 +173,11 @@ class BeatMyGoalUser(User):
         if (BeatMyGoalUser.objects.filter(username=username).count()) == 0:
             errors.append(CODE_BAD_USERNAME)
         
-        users = list(BeatMyGoalUser.objects.filter(username=username))
-
-        if len(users) > 0:
-            user = users[0]
-            if user.password != password:
-                errors.append(CODE_BAD_PASSWORD)
+        user = authenticate(username=username, password=password)
+        if user is None:
+            errors.append(CODE_BAD_PASSWORD)
     
-        return {"errors": errors}
+        return {"errors": errors, 'user' : user}
 
     @classmethod
     def create(self, username, email, password):
@@ -200,7 +200,8 @@ class BeatMyGoalUser(User):
             errors.append(CODE_DUPLICATE_EMAIL)
 
         if not errors:
-            user = BeatMyGoalUser(username=username, email=email, password=password)
+            user = BeatMyGoalUser(username=username, email=email)
+            user.set_password(password)
             user.save()
 
         return {"errors" : errors, "user" : user }

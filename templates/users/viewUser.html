@@ -78,13 +78,15 @@
       <!--
       If request.user.is_authenticated(), hide these two buttons
       -->  
-      <li><a href="#" data-reveal-id="firstModal" class="button tiny pull-5 radius alert">Delete User</a> </li>
+      <li><a href="#" data-reveal-id="reconfirom_delete_user" class="button tiny pull-5 radius alert">Delete User</a> </li>
       <!--
       <li><a id = "delete_user_button" type="button" class="button tiny pull-5 radius alert">Delete User</a></li>
       <li><a id = "password_change_button" type="submit" class="button tiny pull-3">Password Change</a></li>
-      -->
       <li><a href = "edit" class="button tiny pull-3 radius">Edit User</a></li>
-      
+      -->
+
+      <li><a href="#" data-reveal-id="reveal_edit" class="button tiny pull-3 radius">Edit User</a> </li>
+
       </ul>
     </div>
     {% endif %}
@@ -143,19 +145,37 @@
 
 
 
-
-<!-- Reveal Modals begin -->
-<div id="firstModal" class="reveal-modal medium" style="display: none" data-reveal>
+<!-- < Delete User > Reveal Modals begin -->
+<div id="reconfirom_delete_user" class="reveal-modal medium" style="display: none" data-reveal>
   <h2> Are you sure you want to delete BeatMyGoal user account?</h2>
   <br>
-  <p>If you select "Yes", your account would be <code>permanently deleted</code>. </p>
+  <p>If you select "Yes", your account will be <code>permanently deleted</code>. </p>
   <p>Click "No", If you don't want to delete your BeatMyGoal account.</p>
   <ul class="button-group right">
-    <li><a id = "delete_user_button" class="button large pull-2 radius alert"> YES </a></li>
+    <li><a id = "Yes_button" class="button large pull-2 radius alert"> YES </a></li>
     <li><a id = "No_button" class="button large  radius"> NO </a></li>
   </ul>
   <a class="close-reveal-modal">&#215;</a>
 </div>
+
+
+ <!-- < Edit User > Reveal Modals begin -->
+<div id="reveal_edit" class="reveal-modal medium" style="display: none" data-reveal>
+  <h2> Please Re-authenticate </h2>
+  <br>
+  <label for='password'>Confirm Password
+
+    <input id='password' type="password" required/>
+    <small id="password-error" style="display:None" class="error">A password is required</small>
+  </label>
+
+  <ul class="button-group right">
+    <li><a id = "Confirm_button" class="button large pull-2 radius alert"> Confirm </a></li>
+    <li><a id = "Back_button" class="button large  radius"> Back </a></li>
+  </ul>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
 
 
 

@@ -94,8 +94,8 @@ class ViewUserTests(TestCase):
 class DeleteUserTests(TestCase):
     def setUp(self):
         self.client = Client()
-        self.testUser = BeatMyGoalUser(username="kyle", password="123", email="kyle@test.com")
-        self.testUser.save()
+        BeatMyGoalUser.create("kyle", "kyle@test.com", "123")
+        self.testUser = BeatMyGoalUser.objects.get(username="kyle")
 
     def postJSON(self, url, data):
         return self.client.post(url, content_type='application/json', data=data)
@@ -123,9 +123,9 @@ class DeleteUserTests(TestCase):
 
 class EditUserTests(TestCase):
     def setUp(self):
-        self.cleint = Client()
-        self.testUser = BeatMyGoalUser(username="test", password="test", email="test@test.com")
-        self.testUser.save()
+        self.client = Client()
+        BeatMyGoalUser.create("test", "test@test.com", "test")
+        self.testUser = BeatMyGoalUser.objects.get(username="test")
 
     def postJSON(self, url, data):
         return self.client.post(url, content_type='application/json', data=data)

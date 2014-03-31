@@ -18,7 +18,10 @@ class CreateLoginUserTest(unittest.TestCase):
         self.assertTrue(not response['errors'])
         userid = BeatMyGoalUser.objects.get(username = 'user1')
         self.assertEqual('email1@gmail.com', userid.email)
-        self.assertEqual('pw', userid.password)
+
+        # We are storing passwords as hashs now.
+        # self.assertEqual('pw', userid.password)
+
 
     def testCreateDuplicateUser(self):
         """

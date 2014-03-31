@@ -9,7 +9,7 @@ class GoalTest(unittest.TestCase):
         BeatMyGoalUser.create('test_user','test_email','test_password')
 
     def tearDown(self):
-        User.objects.all().delete()
+        BeatMyGoalUser.objects.all().delete()
         Goal.objects.all().delete()
 
     def testCreateGoalWithValidData1(self):

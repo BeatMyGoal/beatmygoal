@@ -140,7 +140,7 @@ def goal_edit_goal(request, gid):
     gid = int(gid)
     goal = Goal.objects.get(id=gid)
     user = request.user
-
+    
     if ( user.is_authenticated() and goal.creator.id == user.id ):
         if request.method == "GET":
             return render(request, 'goals/editGoal.html', {"title": goal.title, "description": goal.description })
@@ -148,14 +148,8 @@ def goal_edit_goal(request, gid):
             data = json.loads(request.body)
             title = data["title"]
             description = data["description"]
-            password = data["password"]
 
-            loginResponse = BeatMyGoalUser.login(user.username, password)
-
-            if loginResponse['errors']:
-                print "login error"
-                return HttpResponse(json.dumps({"errors" : loginResponse["errors"]}), content_type = "application/json")
-
+            
 
             edits = {'title': title, 'description': description}
         
@@ -168,6 +162,15 @@ def goal_edit_goal(request, gid):
     else:
         return HttpResponse("Invalid request", status=500)            
 
+
+
+def confirm(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user = request.user;
+        password = data["password"]
+        response = BeatMyGoalUser.login(user.username, password)
+        return HttpResponse(json.dumps({'errors':response['errors']}), content_type = "application/json")
 
 
 def goal_view_goal(request, goal_id):
@@ -222,22 +225,18 @@ def user_login(request):
 
     if request.method == "POST":
         data = json.loads(request.body)
-        username = data["username"]
-        password = data["password"]
-        #user = authenticate(username=username, password=password)
-        response = BeatMyGoalUser.login(username, password)
-        users = list(BeatMyGoalUser.objects.filter(username=username))
-
+        username= data["username"]
+        password= data["password"]
+        response = BeatMyGoalUser.login(username,password)
+            
         if response['errors']:
-            return HttpResponse(json.dumps(response), content_type="application/json")
-
-        if len(users) > 0:
-            u = users[0]
-            if u.password == password:
-                u.backend = 'django.contrib.auth.backends.ModelBackend'
-                login(request, u)
-                return HttpResponse(json.dumps({"errors": response['errors'], "redirect" : "/dashboard/"}),
-                                        content_type="application/json")
+            return HttpResponse(json.dumps(response), content_type = "application/json")
+        else:
+            user = response['user']
+            login(request, user)
+            return HttpResponse(json.dumps({"errors": response['errors'], 
+                                            "redirect" : "/dashboard/"}),
+                                content_type = "application/json")
 
 @csrf_exempt
 def profile(request):
@@ -269,10 +268,8 @@ def create_user(request):
             return HttpResponse(json.dumps(response), 
                                 content_type = "application/json")            
         else:
-            user = response['user']
-            #TODO
-            user.backend = 'django.contrib.auth.backends.ModelBackend'
-            # authenticate(username=username, password=password)
+            # user = response['user']
+            user =  authenticate(username=username, password=password)
             login(request, user)
             redirect = "/users/%s/" % (user.id)
             return HttpResponse(json.dumps({"redirect" : redirect,
@@ -360,5 +357,7 @@ def user_logout(request):
     """
     logout(request)
     return HttpResponseRedirect('/')
+
+
 
 
