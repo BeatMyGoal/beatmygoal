@@ -100,8 +100,7 @@ $("#reveal_edit #Back_button").click(function(e) {
 });
 
 $("#reveal_edit #Confirm_button").click(function(e) {
-    //window.location = window.location.href+"edit";
-    //return false;
+
     var password = $('#reveal_edit #password').val();
     var data = {
         password: password
@@ -109,11 +108,12 @@ $("#reveal_edit #Confirm_button").click(function(e) {
 
     $.ajax({
         type: "POST",
-        url: "/confirm",
+        url: "/confirm/",
         data: JSON.stringify(data),
         contentType: "application/json",
         dataType: "json",
     }).done(function(data) {
+        console.log(data);
         if (data.errors.length === 0) {
             window.location = window.location.href+"edit";
         } else {

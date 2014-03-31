@@ -163,13 +163,14 @@ def goal_edit_goal(request, gid):
         return HttpResponse("Invalid request", status=500)            
 
 
+
 def confirm(request):
     if request.method == "POST":
         data = json.loads(request.body)
         user = request.user;
         password = data["password"]
         response = BeatMyGoalUser.login(user.username, password)
-        return HttpResponse(json.dumps(response), content_type = "application/json")
+        return HttpResponse(json.dumps({'errors':response['errors']}), content_type = "application/json")
 
 
 def goal_view_goal(request, goal_id):
