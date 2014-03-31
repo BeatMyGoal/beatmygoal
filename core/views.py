@@ -182,20 +182,22 @@ def goal_view_goal(request, goal_id):
     return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, "isParticipant" : isParticipant, "isCreator" : isCreator})
 
 def goal_log_progress(request, gid):
+    """
+    Allows users to log their progress for a goal
+    """
     goal = Goal.objects.get(id=gid)
-    
     if request.method == "GET":
         return render(request, 'goals/logGoal.html', {'goal' : goal})
     elif request.method == "POST":
         if request.user.is_authenticated() and len(goal.beatmygoaluser_set.filter(username=request.user)) > 0:
             data = json.loads(request.body)
             response = LogEntry.create(log=goal.log, participant=request.user, amount=int(data['amount']), comment=data['comment'])
-            print(response)
+            print response
             if response['errors']:
                 return HttpResponse(json.dumps(response), content_type='application/json')
             else:
                 return HttpResponse(json.dumps({
-                        "redirect":"/goals/" + str(gid), 
+                        "redirect":"/goals/" + str(gid),
                         "errors" : response['errors']
                     }), content_type='application/json')
         else:
@@ -213,29 +215,29 @@ def goal_log_progress(request, gid):
 
 def user_login(request):
     """
-    Authenticates the user credential, login if valid 
+    Authenticates the user credential, login if valid
     """
     # if request.method == "GET":
     #     return render(request, 'users/login.html')
-    
+
     if request.method == "POST":
         data = json.loads(request.body)
-        username= data["username"]
-        password= data["password"]
+        username = data["username"]
+        password = data["password"]
         #user = authenticate(username=username, password=password)
-        response = BeatMyGoalUser.login(username,password)
+        response = BeatMyGoalUser.login(username, password)
         users = list(BeatMyGoalUser.objects.filter(username=username))
-            
+
         if response['errors']:
-            return HttpResponse(json.dumps(response), content_type = "application/json")
-            
+            return HttpResponse(json.dumps(response), content_type="application/json")
+
         if len(users) > 0:
             u = users[0]
             if u.password == password:
                 u.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, u)
                 return HttpResponse(json.dumps({"errors": response['errors'], "redirect" : "/dashboard/"}),
-                                        content_type = "application/json")
+                                        content_type="application/json")
 
 @csrf_exempt
 def profile(request):

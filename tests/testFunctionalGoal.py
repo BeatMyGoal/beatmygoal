@@ -124,6 +124,7 @@ class RemoveGoalTests(TestCase):
         self.testUser.save()
         Goal.create('title','des','test','test_prize', 1, 'test_type')
         self.testGoal = Goal.objects.get(title='title')
+        self.client = Client()
 
 
     def postJSON(self, url, data):
@@ -140,3 +141,14 @@ class RemoveGoalTests(TestCase):
        response2 = self.postJSON("/goals/remove", data2)
        self.assertEqual(response2.status_code, 200)
 
+
+class LogProgressTests(TestCase):
+    def setUp(self):
+        self.testUser = BeatMyGoalUser(username="test", password="test", email="test@test.com")
+        self.testUser.save()
+        Goal.create('title','des','test','test_prize', 1, 'test_type')
+        self.testGoal = Goal.objects.get(title='title')
+        self.client = Client()
+
+    def postJSON(self, url, data):
+        return self.client.post(url, content_type='application/json', data=data)
