@@ -3,6 +3,12 @@ from django.http import HttpResponse
 from models import Goal, BeatMyGoalUser, Log, LogEntry
 from django.template import RequestContext, loader
 
+from authomatic import Authomatic
+from authomatic.adapters import DjangoAdapter
+from config import CONFIG
+
+authomatic = Authomatic(CONFIG, 'CSRF_TOKEN')
+
 # Create your views here
 
 from django.shortcuts import render_to_response
@@ -15,6 +21,41 @@ from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.views.generic import FormView,DetailView
 from .forms import ImageForm
+
+
+def user_login_fb(request):
+    """
+    Handles the login of a user from Facebook.
+    If there is no BMG account for the user, one is created.
+    """
+    #response = HttpResponse()
+    response = HttpResponseRedirect("/dashboard/")
+    result = authomatic.login(DjangoAdapter(request, response), "fb")
+     
+
+    if result:
+        if result.error:
+            #TODO - right now this is redirecting anyway
+            pass
+        elif result.user:
+            # Get the info from the user
+            if not (result.user.name and result.user.id):
+                result.user.update()
+
+            username, email= result.user.name, result.user.email
+
+            if (BeatMyGoalUser.objects.filter(username=username).exists()):
+                user = BeatMyGoalUser.objects.get(username=username)
+                user.backend='django.contrib.auth.backends.ModelBackend'
+                login(request, user)
+            else:
+                password = BeatMyGoalUser.objects.make_random_password(8)
+                user = BeatMyGoalUser.create(username, email, password)['user']
+                user =  authenticate(username=username, password=password)
+                login(request, user)
+                response['Location'] = '/users/profile'
+
+    return response
 
 
 def index(request):
@@ -35,8 +76,6 @@ def dashboard(request):
     if request.is_ajax():
         data = json.loads(request.body)
         page = data["page"]
-        print("page")
-        print(page)
         all_goals = Goal.objects.all()
         if (page*20+19 < len(all_goals)):
             goals = all_goals[page*20:page*20+19]
@@ -60,7 +99,10 @@ def goal_create_goal(request):
         if request.method == "GET":
             return render(request, 'goals/createGoal.html')
 
+        
+
         if request.user.is_authenticated():
+
             data = json.loads(request.body)
             title = data['title']
             description = data['description']
@@ -68,11 +110,11 @@ def goal_create_goal(request):
             prize = data['prize']
             private_setting = data['private_setting']
             goal_type = data['goal_type']
-            if 'unit' in data: 
-                unit = data['unit']
-            else:
-                unit = ""
-            response = Goal.create(title, description, creator, prize, private_setting, goal_type, unit)
+            unit = data['unit']
+            ending_value = data['ending_value']
+            ending_date = data['ending_date']
+
+            response = Goal.create(title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date)
 
             if response['errors']:
                 return HttpResponse(json.dumps(response), content_type = "application/json")
@@ -144,7 +186,7 @@ def goal_edit_goal(request, gid):
     gid = int(gid)
     goal = Goal.objects.get(id=gid)
     user = request.user
-
+    
     if ( user.is_authenticated() and goal.creator.id == user.id ):
         if request.method == "GET":
             return render(request, 'goals/editGoal.html', {"title": goal.title, "description": goal.description })
@@ -152,14 +194,8 @@ def goal_edit_goal(request, gid):
             data = json.loads(request.body)
             title = data["title"]
             description = data["description"]
-            password = data["password"]
 
-            loginResponse = BeatMyGoalUser.login(user.username, password)
-
-            if loginResponse['errors']:
-                print "login error"
-                return HttpResponse(json.dumps({"errors" : loginResponse["errors"]}), content_type = "application/json")
-
+            
 
             edits = {'title': title, 'description': description}
         
@@ -174,6 +210,15 @@ def goal_edit_goal(request, gid):
 
 
 
+def confirm(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user = request.user;
+        password = data["password"]
+        response = BeatMyGoalUser.login(user.username, password)
+        return HttpResponse(json.dumps({'errors':response['errors']}), content_type = "application/json")
+
+
 def goal_view_goal(request, goal_id):
     """
     View the profile of a goal.
@@ -186,20 +231,21 @@ def goal_view_goal(request, goal_id):
     return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, "isParticipant" : isParticipant, "isCreator" : isCreator, "image" :image, "goal_id" : goal_id})
 
 def goal_log_progress(request, gid):
+    """
+    Allows users to log their progress for a goal
+    """
     goal = Goal.objects.get(id=gid)
-    
     if request.method == "GET":
         return render(request, 'goals/logGoal.html', {'goal' : goal})
     elif request.method == "POST":
         if request.user.is_authenticated() and len(goal.beatmygoaluser_set.filter(username=request.user)) > 0:
             data = json.loads(request.body)
             response = LogEntry.create(log=goal.log, participant=request.user, amount=int(data['amount']), comment=data['comment'])
-            print(response)
             if response['errors']:
                 return HttpResponse(json.dumps(response), content_type='application/json')
             else:
                 return HttpResponse(json.dumps({
-                        "redirect":"/goals/" + str(gid), 
+                        "redirect":"/goals/" + str(gid),
                         "errors" : response['errors']
                     }), content_type='application/json')
         else:
@@ -217,29 +263,25 @@ def goal_log_progress(request, gid):
 
 def user_login(request):
     """
-    Authenticates the user credential, login if valid 
+    Authenticates the user credential, login if valid
     """
     # if request.method == "GET":
     #     return render(request, 'users/login.html')
-    
+
     if request.method == "POST":
         data = json.loads(request.body)
         username= data["username"]
         password= data["password"]
-        #user = authenticate(username=username, password=password)
         response = BeatMyGoalUser.login(username,password)
-        users = list(BeatMyGoalUser.objects.filter(username=username))
             
         if response['errors']:
             return HttpResponse(json.dumps(response), content_type = "application/json")
-            
-        if len(users) > 0:
-            u = users[0]
-            if u.password == password:
-                u.backend = 'django.contrib.auth.backends.ModelBackend'
-                login(request, u)
-                return HttpResponse(json.dumps({"errors": response['errors'], "redirect" : "/dashboard/"}),
-                                        content_type = "application/json")
+        else:
+            user = response['user']
+            login(request, user)
+            return HttpResponse(json.dumps({"errors": response['errors'], 
+                                            "redirect" : "/dashboard/"}),
+                                content_type = "application/json")
 
 @csrf_exempt
 def profile(request):
@@ -271,10 +313,8 @@ def create_user(request):
             return HttpResponse(json.dumps(response), 
                                 content_type = "application/json")            
         else:
-            user = response['user']
-            #TODO
-            user.backend = 'django.contrib.auth.backends.ModelBackend'
-            # authenticate(username=username, password=password)
+            # user = response['user']
+            user =  authenticate(username=username, password=password)
             login(request, user)
             redirect = "/users/%s/" % (user.id)
             return HttpResponse(json.dumps({"redirect" : redirect,
@@ -320,8 +360,6 @@ def edit_user(request, uid):
             password = data['password']
 
             loginResponse = BeatMyGoalUser.login(user.username, password)
-            print "here"
-            print loginResponse
             if loginResponse['errors']:
                 return HttpResponse(json.dumps({"errors" : loginResponse["errors"]}), content_type = "application/json")
 
@@ -365,6 +403,7 @@ def user_logout(request):
     return HttpResponseRedirect('/')
 
 
+
 def image_upload(request,goal_id):
     goal = Goal.objects.get(id=goal_id)
     isCreator = str(request.user) == str(goal.creator)
@@ -380,4 +419,5 @@ def image_upload(request,goal_id):
         image = ImageForm() #empty
 
     return render(request, 'goals/viewGoal.html', {'image': image, 'goal_id': goal_id, 'goal' : goal, 'user' : request.user, 'isParticipant' : isParticipant, 'isCreator' : isCreator})
+
 

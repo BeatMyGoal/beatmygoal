@@ -33,6 +33,7 @@ urlpatterns = patterns('',
 	url(r'^users/(\d+)/edit', core.views.edit_user, name='edit_user'),
 	url(r'^users/(\d+)/delete', core.views.delete_user, name='delete_user'),
 	url(r'^users/(\d+)/$', core.views.view_user, name='view_user'),
+	url(r'^users/login/fb', core.views.user_login_fb, name='user_login_fb'),
 	url(r'^users/login', core.views.user_login, name='user_login'),
 
 	url(r'^users/logout', core.views.user_logout, name='user_logout'),
@@ -40,10 +41,11 @@ urlpatterns = patterns('',
 	#url(r'^users/test/$', core.views.test_user),
 	#url(r'^users/test/view', core.views.view_user2),
 	#url(r'^users/test/edit', core.views.edit_user2),                       
-	url(r'^goals/(\d+)/imageload/$', core.views.image_upload, name ='image_upload'),
-    url(r'^dashboard', core.views.dashboard, name='dashboard'),
- 
 
+	url(r'^goals/(\d+)/imageload/$', core.views.image_upload, name ='image_upload'),
+         
+    url(r'^dashboard', core.views.dashboard, name='dashboard'),                       
+    url(r'^confirm', core.views.confirm, name='confirm'),
 
     
 

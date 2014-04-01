@@ -6,14 +6,39 @@ $(document).ready(function() {
 
 	gid = window.location.pathname.split("/")[2];
 
+
+	$('#delete_goal_button').click(function() {
+        var goal_id = window.location.pathname.split("/")[2];
+        var data = {
+           goal_id: goal_id,
+        };
+        $.ajax({
+                type: "POST",
+                url: "/goals/remove",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                dataType: "json",
+            }).done(function(data) {
+                console.log(data);
+                console.log(data.redirect);
+                if (data.errors.length === 0) {
+                    window.location.href = data.redirect;
+                } 
+            }).fail(function(data) {
+                console.log(data);
+                alert("failure");
+        });
+
+    });
+
+
+
 	$("#save").click(function(event) {
 		var title = $title.val();
 		var description = $description.val();
-		var password = $password.val();
 		var data = {
 			title: title,
 			description: description,
-			password: password
 		};
 
 
@@ -39,11 +64,7 @@ $(document).ready(function() {
 						$('#description-error').text('Invalid description');
 						$("label[for='description']").addClass("error");
 					}
-					if (errors.indexOf(ERRCODES.CODE_BAD_PASSWORD) >= 0) {
-						$('#password-error').text('Validation failed');
-						$("label[for='password']").addClass("error");
 
-					}
 				}
 			}
 		}).fail(function(data) {
@@ -55,5 +76,11 @@ $(document).ready(function() {
 		window.location.href = "/goals/" + gid;
 	});
 
-
+	$("#firstModal #No_button").click(function(e) {
+	$('#firstModal').foundation('reveal', 'close');
 });
+});
+
+
+
+

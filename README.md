@@ -12,6 +12,7 @@ To set up and update venv:
 - Create your own venv using `virtualenv venv` (venv/* is ignored in the .gitignore file)
 - `source venv/bin/activate`
 - Use `pip install --allow-all-external -r requirements.txt` to download site packages
+  - JP: I had to add ARCHFLAGS based on this post [http://stackoverflow.com/questions/22312583/cant-install-mysql-gem-on-os-x]
 
 Heroku instructions
 -------------------------------
@@ -31,3 +32,16 @@ Heroku and database:
   `heroku run python manage.py shell < scripts/populate_db.py`
 - Alternatively, for "automatic changes" you can migrate using South
   -  http://south.readthedocs.org/en/latest/tutorial/part1.html
+
+
+Coverage.py instructions
+-------------------------------
+
+- Install coverage.py by typing `pip install coverage`
+- To confirm that the coverage is installed correctly, command `coverage --version`
+- Run the test with the coverage command, `coverage run --source='core','beatmygoal' manage.py test`
+	- (Since we are using unit-test and functional-test, we only need to check the files in ‘core’ and ‘beatmygoal’, which contain url, models, and views.)
+- Then, call the report, `coverage report -m`
+	- (‘-m flag’ shows the line numbers of missing statements)
+- The missing columns tell us which lines are not covered by our unit-test and functional-test
+- To delete the previous report, type `coverage erase`

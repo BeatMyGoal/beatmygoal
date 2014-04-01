@@ -1,15 +1,27 @@
 $(document).ready(function() {
 
 	$("#register-submit").click(function(e) {
-		var sel = document.getElementById('types');
+		var goal_type;
+		var ending_date;
+
+		if ($('#deadline').is(":checked")) {
+			goal_type = "Time-based";
+			ending_date = $('#datepicker').val();
+		} else {
+			goal_type = "Value-based";
+			ending_date = null;
+		}
+		
 		var data = {
 			title: $("#register-title").val(),
 			description: $("#register-description").val(),
 			creator: "come back to this",
 			prize: $("#register-prize").val(),
 			private_setting: 1.0,
-			goal_type: sel.options[sel.selectedIndex].value,
-			unit: $("#register-value-unit").val()
+			goal_type: goal_type,
+			ending_value: $("#register-end-value").val(),
+			unit: $("#register-value-unit").val(),
+			ending_date : ending_date
 		};
 
 		$.ajax({
@@ -45,25 +57,17 @@ $(document).ready(function() {
 		});
 	});
 
+	$('.end-time-label').hide();
 
-	$('.value-unit-label').hide();
-	$('.end-value-label').hide();
-	$('#types').change(function(e) {
-	e.preventDefault();
-	var sel = document.getElementById('types');
-	if (sel.options[sel.selectedIndex].value == "Value-based") {
-		$('.Time-unit-label').hide();
-		$('.end-time-label').hide();
-		$('.value-unit-label').fadeIn();
-		$('.end-value-label').fadeIn();
-		
-	} else if (sel.options[sel.selectedIndex].value == "Time-based") {
-		$('.value-unit-label').hide();
-		$('.end-value-label').hide();
-		$('.end-time-label').fadeIn();
-	}
 	
-})
+	$('#deadline').change(function() {
+		$('.end-time-label').hide();
+
+        if($(this).is(":checked")) {
+        	$('.end-time-label').fadeIn();
+        }
+
+    });
 
 });
 

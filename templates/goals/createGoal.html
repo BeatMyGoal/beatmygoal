@@ -17,7 +17,7 @@
 
        <div>
         <label for='title'>Title
-            <input id="register-title" type="text" required />
+            <input id="register-title" type="text" placeholder = "example : Raise $500 for 'American Heart Association'" prequired />
             <small id="title-error" class="error">A title is required</small>
         </label>
       </div>
@@ -30,58 +30,47 @@
         </label>
       </div>
 
+
       <div class="prize-label">
         <label for='prize'>Prize
-            <input id="register-prize" type="text" required />
+            <input id="register-prize" type="text" placeholder="example : Pleasure of charity" required />
             <small id="prize-error" class="error">A Prize is required</small>
         </label>
       </div>
 
 
+
       <div class="row">
-        <div class="large-12 columns">
-          <label>Goal Type
-            <select id="types">
-              <option value="Time-based">Time-based</option>
-              <option value="Value-based">Value-based</option>
-            </select>
-          </label>
+        <div class="large-6 columns">
+          <label>Ending Value</label>
+          <input id="register-end-value" type="text" placeholder="example : 500" required />
+          <small id="end-value-error" class="error">End-Value must be specified</small>
+        </div>
+        <div class="large-6 columns">
+          <label>Value Unit</label>
+            <input id="register-value-unit" type="text" placeholder="example : dollar" required />
+            <small id="unit-error" class="error">Unit must be specified</small>
         </div>
       </div>
 
-      <div class="value-unit-label">
-        <label>Value Unit</label>
-        <input id="register-value-unit" type="text" required />
-        <small id="unit-error" class="error">Unit must be specified</small>
+
+
+      <div class="dead-line-label">
+        <input id="deadline" type="checkbox"><label for="checkbox1">Deadline</label>
       </div>
-      
+
 
       <div class="end-time-label">
-        <label>Ending</label>
-
+        <label>Ending Date</label>
         <meta charset="utf-8">
         <title>jQuery UI Datepicker - Default functionality</title>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
         <script src="//code.jquery.com/jquery-1.9.1.js"></script>
         <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-        <script>
-        $(function() {
-          $( "#datepicker" ).datepicker();
-        });
-        </script>
-
+        <script> $(function() { $( "#datepicker" ).datepicker(); }); </script>
         <input type="text" id="datepicker">
 
       </div>
-
-      <div class="end-value-label">
-        <label>Ending</label>
-        <input id="register-end-value" type="text" required />
-        <small id="end-value-error" class="error">End-Value must be specified</small>
-      </div>
-
-
-
 
       <input id="register-submit" type="submit" class="button" value="Create">
 

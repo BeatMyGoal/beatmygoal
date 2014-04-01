@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import validate_email
 from constants import *
+from datetime import *
 
 class Log(models.Model):
     goal = models.OneToOneField('Goal')
@@ -43,18 +45,20 @@ class Goal(models.Model):
     progress_value = models.FloatField()
     goal_type = models.CharField(max_length=MAX_LEN_TYPE)
     private_setting = models.IntegerField()
+    ending_value = models.CharField(max_length=MAX_LEN_UNIT, blank=True)
     unit = models.CharField(max_length=MAX_LEN_UNIT, blank=True)
     image = models.FileField(upload_to='image/')
-    
+    ending_date = models.DateTimeField(blank=True, null=True);
 
     def __str__(self):
         return str(self.title)
 
 
     @classmethod
-    def create(self, title, description, creator, prize, private_setting, goal_type, unit=""):
+    def create(self, title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date):
         errors = []
         goal = None
+
 
         if not title or len(title)>self.MAX_LEN_TITLE:
             errors.append(CODE_BAD_TITLE)
@@ -66,8 +70,15 @@ class Goal(models.Model):
         if creator_user < 0:
             errors.append(CODE_BAD_USERNAME)
 
+        if ending_date:
+            ending_date = datetime.strptime(ending_date,'%m/%d/%Y')
+
+        print ending_date;
+
         if not errors:
-            goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0, unit=unit )
+            goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), 
+                prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0, ending_value=ending_value, 
+                unit=unit, ending_date=ending_date)
             goal.save()
             newLog = Log(goal=goal)
             newLog.save()
@@ -117,7 +128,7 @@ class Goal(models.Model):
 
 
     
-class BeatMyGoalUser(User):
+class BeatMyGoalUser(AbstractUser):
     """
     A BeatMyGoal user extends from a django.auth.User and inherits the
     following properties:
@@ -126,8 +137,8 @@ class BeatMyGoalUser(User):
     * username,
     * email,
     * password,
-    * first_name,
-    * last_name,
+    first_name,
+    last_name,
     is_staff,
     is_active,
     is_superuser,
@@ -162,6 +173,8 @@ class BeatMyGoalUser(User):
 
     @classmethod
     def login(self, username, password):
+        from django.contrib.auth import login, authenticate
+
         errors = []
 
         if not self.valid_username(username):
@@ -173,14 +186,11 @@ class BeatMyGoalUser(User):
         if (BeatMyGoalUser.objects.filter(username=username).count()) == 0:
             errors.append(CODE_BAD_USERNAME)
         
-        users = list(BeatMyGoalUser.objects.filter(username=username))
-
-        if len(users) > 0:
-            user = users[0]
-            if user.password != password:
-                errors.append(CODE_BAD_PASSWORD)
+        user = authenticate(username=username, password=password)
+        if user is None:
+            errors.append(CODE_BAD_PASSWORD)
     
-        return {"errors": errors}
+        return {"errors": errors, 'user' : user}
 
     @classmethod
     def create(self, username, email, password):
@@ -203,7 +213,8 @@ class BeatMyGoalUser(User):
             errors.append(CODE_DUPLICATE_EMAIL)
 
         if not errors:
-            user = BeatMyGoalUser(username=username, email=email, password=password)
+            user = BeatMyGoalUser(username=username, email=email)
+            user.set_password(password)
             user.save()
 
         return {"errors" : errors, "user" : user }

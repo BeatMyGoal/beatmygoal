@@ -9,8 +9,8 @@ from django.test.client import Client
 class GoalPageTests(TestCase):
 
     def setUp(self):
-        self.testUser = BeatMyGoalUser(username="test", password="test", email="test@test.com")
-        self.testUser.save()
+        BeatMyGoalUser.create("test", "test@test.com", "test")
+        self.testUser = BeatMyGoalUser.objects.get(username="test")
         self.client = Client()
 
     # Convenience method to create a POST JSON request
@@ -84,8 +84,8 @@ class ViewGoalTests(TestCase):
 class EditGoalTests(TestCase):
     def setUp(self):
         self.client = Client()
-        self.testUser = BeatMyGoalUser(username="test", password="test", email="test@test.com")
-        self.testUser.save()
+        BeatMyGoalUser.create("test", "test@test.com", "test")
+        self.testUser = BeatMyGoalUser.objects.get(username="test")
         Goal.create('title','des','test','test_prize', 1, 'test_type')
 
 
@@ -100,8 +100,6 @@ class EditGoalTests(TestCase):
         { "username" : "test", "password" : "test" }
         """
         response2 = self.postJSON("/users/login", data2)
-
-
         response = self.client.get("/goals/1/edit", {})
         self.assertEqual(response.status_code, 200)
 
@@ -124,6 +122,7 @@ class RemoveGoalTests(TestCase):
         self.testUser.save()
         Goal.create('title','des','test','test_prize', 1, 'test_type')
         self.testGoal = Goal.objects.get(title='title')
+        self.client = Client()
 
 
     def postJSON(self, url, data):
@@ -140,3 +139,14 @@ class RemoveGoalTests(TestCase):
        response2 = self.postJSON("/goals/remove", data2)
        self.assertEqual(response2.status_code, 200)
 
+
+class LogProgressTests(TestCase):
+    def setUp(self):
+        self.testUser = BeatMyGoalUser(username="test", password="test", email="test@test.com")
+        self.testUser.save()
+        Goal.create('title','des','test','test_prize', 1, 'test_type')
+        self.testGoal = Goal.objects.get(title='title')
+        self.client = Client()
+
+    def postJSON(self, url, data):
+        return self.client.post(url, content_type='application/json', data=data)
