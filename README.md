@@ -12,6 +12,7 @@ To set up and update venv:
 - Create your own venv using `virtualenv venv` (venv/* is ignored in the .gitignore file)
 - `source venv/bin/activate`
 - Use `pip install --allow-all-external -r requirements.txt` to download site packages
+  - JP: I had to add ARCHFLAGS based on this post [http://stackoverflow.com/questions/22312583/cant-install-mysql-gem-on-os-x]
 
 Heroku instructions
 -------------------------------

@@ -3,6 +3,12 @@ from django.http import HttpResponse
 from models import Goal, BeatMyGoalUser, Log, LogEntry
 from django.template import RequestContext, loader
 
+from authomatic import Authomatic
+from authomatic.adapters import DjangoAdapter
+from config import CONFIG
+
+authomatic = Authomatic(CONFIG, 'CSRF_TOKEN')
+
 # Create your views here
 
 from django.shortcuts import render_to_response
@@ -12,6 +18,39 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.core import serializers
 
+def user_login_fb(request):
+    """
+    Handles the login of a user from Facebook.
+    If there is no BMG account for the user, one is created.
+    """
+    #response = HttpResponse()
+    response = HttpResponseRedirect("/dashboard/")
+    result = authomatic.login(DjangoAdapter(request, response), "fb")
+     
+
+    if result:
+        if result.error:
+            #TODO - right now this is redirecting anyway
+            pass
+        elif result.user:
+            # Get the info from the user
+            if not (result.user.name and result.user.id):
+                result.user.update()
+
+            username, email= result.user.name, result.user.email
+
+            if (BeatMyGoalUser.objects.filter(username=username).exists()):
+                user = BeatMyGoalUser.objects.get(username=username)
+                user.backend='django.contrib.auth.backends.ModelBackend'
+                login(request, user)
+            else:
+                password = BeatMyGoalUser.objects.make_random_password(8)
+                user = BeatMyGoalUser.create(username, email, password)['user']
+                user =  authenticate(username=username, password=password)
+                login(request, user)
+                response['Location'] = '/users/profile'
+
+    return response
 
 def index(request):
     """
@@ -31,8 +70,6 @@ def dashboard(request):
     if request.is_ajax():
         data = json.loads(request.body)
         page = data["page"]
-        print("page")
-        print(page)
         all_goals = Goal.objects.all()
         if (page*20+19 < len(all_goals)):
             goals = all_goals[page*20:page*20+19]
@@ -195,7 +232,6 @@ def goal_log_progress(request, gid):
         if request.user.is_authenticated() and len(goal.beatmygoaluser_set.filter(username=request.user)) > 0:
             data = json.loads(request.body)
             response = LogEntry.create(log=goal.log, participant=request.user, amount=int(data['amount']), comment=data['comment'])
-            print response
             if response['errors']:
                 return HttpResponse(json.dumps(response), content_type='application/json')
             else:
@@ -314,8 +350,6 @@ def edit_user(request, uid):
             password = data['password']
 
             loginResponse = BeatMyGoalUser.login(user.username, password)
-            print "here"
-            print loginResponse
             if loginResponse['errors']:
                 return HttpResponse(json.dumps({"errors" : loginResponse["errors"]}), content_type = "application/json")
 

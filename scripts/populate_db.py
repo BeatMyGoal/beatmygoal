@@ -36,6 +36,14 @@ dummy_goals = [
     ("Program a web app in Erlang",),
     ("Start writing poetry",),
     ("Spend at least 2 hours outside everyday",)
+    ("Complete the Fenton's Icecream challenge"),
+    ("30 mile challenge"),
+    ("Commit the most lines of code"),
+    ("Meet one new person in all of my classes"),
+    ("Keep my apartment clean for one month"),
+    ("Go to the RSF everyday!"),
+    ("Play soccer every day for a week"),
+    ("Get the most likes on a profile picture"),
 ]
 
 users = []
@@ -60,9 +68,9 @@ for g in dummy_goals:
     creator = random.choice(users)
     title = g[0]
     #print title
-    t = "test"
+    t = "Value-based"
     g = Goal(creator=creator, title=title, 
-             description=t, prize=t, progress_value=1.0, goal_type=t, private_setting=1)
+             description=t, prize=t, progress_value=1.0, goal_type=t, private_setting=1, unit = "unit")
     g.save()
     #print "Creating goal: %s, %s, %s" % creator, title, prize
     l = Log(goal=g)
