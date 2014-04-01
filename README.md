@@ -34,7 +34,7 @@ Heroku and database:
   -  http://south.readthedocs.org/en/latest/tutorial/part1.html
 
 
-Instruction to Use Coverage.py 
+Coverage.py instructions
 -------------------------------
 
 - Install coverage.py by typing `pip install coverage`
