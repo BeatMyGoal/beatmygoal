@@ -35,15 +35,15 @@ dummy_goals = [
     ("Learn how to play Chopticks on the piano",),
     ("Program a web app in Erlang",),
     ("Start writing poetry",),
-    ("Spend at least 2 hours outside everyday",)
-    ("Complete the Fenton's Icecream challenge"),
-    ("30 mile challenge"),
-    ("Commit the most lines of code"),
-    ("Meet one new person in all of my classes"),
-    ("Keep my apartment clean for one month"),
-    ("Go to the RSF everyday!"),
-    ("Play soccer every day for a week"),
-    ("Get the most likes on a profile picture"),
+    ("Spend at least 2 hours outside everyday",),
+    ("Complete the Fenton's Icecream challenge",),
+    ("30 mile challenge",),
+    ("Commit the most lines of code",),
+    ("Meet one new person in all of my classes",),
+    ("Keep my apartment clean for one month",),
+    ("Go to the RSF everyday!",),
+    ("Play soccer every day for a week",),
+    ("Get the most likes on a profile picture",),
 ]
 
 users = []
