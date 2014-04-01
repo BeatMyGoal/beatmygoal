@@ -12,6 +12,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.core import serializers
 
+from django.core.urlresolvers import reverse
+from django.views.generic import FormView,DetailView
+from .forms import ImageForm
+
 
 def index(request):
     """
@@ -175,11 +179,11 @@ def goal_view_goal(request, goal_id):
     View the profile of a goal.
     """
     goal = Goal.objects.get(id=goal_id)
-
+    image = str(goal.image)
     isCreator = str(request.user) == str(goal.creator)
     isParticipant = len(goal.beatmygoaluser_set.filter(username=request.user)) > 0
 
-    return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, "isParticipant" : isParticipant, "isCreator" : isCreator})
+    return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, "isParticipant" : isParticipant, "isCreator" : isCreator, "image" :image, "goal_id" : goal_id})
 
 def goal_log_progress(request, gid):
     goal = Goal.objects.get(id=gid)
@@ -280,6 +284,7 @@ def create_user(request):
     else:
         return HttpResponse("Invalid request", status=500)
 
+
 def view_user(request, uid):
     """ 
     Returns the profile of the user with id, uid. 
@@ -359,4 +364,20 @@ def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/')
 
+
+def image_upload(request,goal_id):
+    goal = Goal.objects.get(id=goal_id)
+    isCreator = str(request.user) == str(goal.creator)
+    isParticipant = len(goal.beatmygoaluser_set.filter(username=request.user)) > 0
+    # Handle file upload
+    if request.method == "POST":
+        image = ImageForm(request.POST, request.FILES)
+        if image.is_valid():
+            goal.image = request.FILES['image']
+
+            return HttpResponseRedirect(reverse('image_upload', args=(goal_id,)))
+    else:
+        image = ImageForm() #empty
+
+    return render(request, 'goals/viewGoal.html', {'image': image, 'goal_id': goal_id, 'goal' : goal, 'user' : request.user, 'isParticipant' : isParticipant, 'isCreator' : isCreator})
 

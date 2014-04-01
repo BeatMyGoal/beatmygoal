@@ -13,6 +13,7 @@ $(document).ready(function() {
 			alert("Delete User Fail");
 		});
 	});
+
 });
 
 $("#firstModal #No_button").click(function(e) {
