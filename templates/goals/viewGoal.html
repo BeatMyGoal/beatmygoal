@@ -38,22 +38,40 @@
 
       </div>
 
-      <div class="row">
-          <div class="large-6 columns">
-          {% if goal.unit %}
-          <h5> Goal Type : {{ goal.goal_type }} (in {{goal.unit}}) </h5>
-          {% else %}
-          <h5> Goal Type : {{ goal.goal_type }} </h5>
-          {% endif %}
-        </div>
-      </div>
-
-      <div class="row">
-
+       <div class="row">
         <div class="large-6 columns">
           <h5> Prize : {{ goal.prize }} </h5>
         </div>
       </div>
+
+
+      <div class="row">
+          <div class="large-6 columns">
+          <h5> Goal Type : {{ goal.goal_type }} </h5>
+        </div>
+      </div>
+
+      <div class="row">
+          <div class="large-6 columns">
+          <h5> Ending Value : {{ goal.ending_value }} [ {{ goal.unit }} ]</h5>
+        </div>
+      </div>
+
+
+      {% if goal.goal_type == "Time-based" %}
+
+      <div class="row">
+          <div class="large-6 columns">
+          <h5> Deadline : {{ goal.ending_date.date }}  </h5>
+        </div>
+      </div>
+
+      {% endif %}
+
+
+
+
+     
 
 
       </fieldset>

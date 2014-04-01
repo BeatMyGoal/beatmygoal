@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import validate_email
 from constants import *
+from datetime import *
 
 class Log(models.Model):
     goal = models.OneToOneField('Goal')
@@ -44,16 +45,19 @@ class Goal(models.Model):
     progress_value = models.FloatField()
     goal_type = models.CharField(max_length=MAX_LEN_TYPE)
     private_setting = models.IntegerField()
+    ending_value = models.CharField(max_length=MAX_LEN_UNIT, blank=True)
     unit = models.CharField(max_length=MAX_LEN_UNIT, blank=True)
+    ending_date = models.DateTimeField(blank=True, null=True);
 
     def __str__(self):
         return str(self.title)
 
 
     @classmethod
-    def create(self, title, description, creator, prize, private_setting, goal_type, unit=""):
+    def create(self, title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date):
         errors = []
         goal = None
+
 
         if not title or len(title)>self.MAX_LEN_TITLE:
             errors.append(CODE_BAD_TITLE)
@@ -65,8 +69,15 @@ class Goal(models.Model):
         if creator_user < 0:
             errors.append(CODE_BAD_USERNAME)
 
+        if ending_date:
+            ending_date = datetime.strptime(ending_date,'%m/%d/%Y')
+
+        print ending_date;
+
         if not errors:
-            goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0, unit=unit )
+            goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), 
+                prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0, ending_value=ending_value, 
+                unit=unit, ending_date=ending_date)
             goal.save()
             newLog = Log(goal=goal)
             newLog.save()

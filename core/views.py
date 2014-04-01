@@ -93,7 +93,10 @@ def goal_create_goal(request):
         if request.method == "GET":
             return render(request, 'goals/createGoal.html')
 
+        
+
         if request.user.is_authenticated():
+
             data = json.loads(request.body)
             title = data['title']
             description = data['description']
@@ -101,11 +104,11 @@ def goal_create_goal(request):
             prize = data['prize']
             private_setting = data['private_setting']
             goal_type = data['goal_type']
-            if 'unit' in data: 
-                unit = data['unit']
-            else:
-                unit = ""
-            response = Goal.create(title, description, creator, prize, private_setting, goal_type, unit)
+            unit = data['unit']
+            ending_value = data['ending_value']
+            ending_date = data['ending_date']
+
+            response = Goal.create(title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date)
 
             if response['errors']:
                 return HttpResponse(json.dumps(response), content_type = "application/json")
