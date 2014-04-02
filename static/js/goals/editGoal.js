@@ -3,6 +3,9 @@ $(document).ready(function() {
 	$title = $('#editForm #title');
 	$description = $('#editForm #description');
 	$password = $('#editForm #password');
+	$prize = $('#editForm #prize');
+	$ending_value = $('#editForm #ending_value');
+	$unit = $('#editForm #unit');
 
 	gid = window.location.pathname.split("/")[2];
 
@@ -36,13 +39,17 @@ $(document).ready(function() {
 	$("#save").click(function(event) {
 		var title = $title.val();
 		var description = $description.val();
+		var prize = $prize.val();
+		var ending_value = $ending_value.val();
+		var unit = $unit.val();
+
 		var data = {
 			title: title,
 			description: description,
+			prize: prize,
+			ending_value: ending_value,
+			unit: unit
 		};
-
-
-
 
 		$.ajax({
 			type: "POST",
