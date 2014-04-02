@@ -14,6 +14,7 @@ $("#reconfirom_delete_user #Yes_button").click(function(event) {
 	}).fail(function(data) {
 		alert("Delete User Fail");
 	});
+
 });
 
 $("#reconfirom_delete_user #No_button").click(function(e) {

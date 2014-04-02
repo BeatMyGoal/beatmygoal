@@ -47,6 +47,7 @@ class Goal(models.Model):
     private_setting = models.IntegerField()
     ending_value = models.CharField(max_length=MAX_LEN_UNIT, blank=True)
     unit = models.CharField(max_length=MAX_LEN_UNIT, blank=True)
+    image = models.FileField(upload_to='image/')
     ending_date = models.DateTimeField(blank=True, null=True);
 
     def __str__(self):
@@ -154,8 +155,9 @@ class BeatMyGoalUser(AbstractUser):
     MAX_LEN_FIRSTNAME = 30
     MAX_LEN_EMAIL = 30
 
-    #user = models.OneToOneField(User)
+
     goals = models.ManyToManyField(Goal)
+    
     
     @classmethod
     def valid_email(self, e):

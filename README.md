@@ -45,3 +45,17 @@ Coverage.py instructions
 	- (‘-m flag’ shows the line numbers of missing statements)
 - The missing columns tell us which lines are not covered by our unit-test and functional-test
 - To delete the previous report, type `coverage erase`
+
+
+
+Testing instruction (via django-nose)
+---------------------------------------------
+
+- Django's test runner won't allow you to run a specific test case
+- Using django-nose, you can now test specific test suite, or even specific test method
+- Install django-nose by typing 'pip install django-nose'
+- Example usage: 
+	- Say you want to test 'testUnitGoal.py' only
+	- On command line, run 'python manage.py test tests.testUnitGoal'
+	- If you want to test specific method in 'testUnitGoal.py', say 'testCreateGoalWithValidData1',
+	- run 'python manage.py test tests.testUnitGoal:GoalTest.testCreateGoalWithValidData1'

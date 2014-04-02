@@ -172,8 +172,21 @@
 
     <!-- Nav Sidebar (Left)-->
     <div class="large-3 pull-9 columns">
-      <br> <p> <img src="http://placehold.it/320x300&text=photo" /></p>
-
+      
+      <!-- List of uploaded documents -->
+       <div style="width: 320px; height: 300px;">
+	{% if image %}
+	      <img src="{{goal_id.image.url}}" />
+	      </div>
+        {% else %}
+	      <p>Select your profile photo.</p>
+	      </div>
+	{% endif %}			
+      <!-- Upload form. Note enctype attribute! -->
+		<form action={% url 'image_upload' goal_id  %} method="post" enctype="multipart/form-data">
+			<p><input type="file" name="image" /></p>
+			<p><input type="submit" value="Upload" /></p>
+		</form>
       <form data-abide>
         <fieldset>
         <legend> <h3> Participants </h3></legend>

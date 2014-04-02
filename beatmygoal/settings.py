@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'core',
     'south',
+    'django_nose',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -121,4 +122,13 @@ STATIC_ROOT = 'staticfiles'
 #     os.path.join(PROJECT_PATH, '../static'),
 # )
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+
 AUTH_USER_MODEL = 'core.BeatMyGoalUser'
+
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+
