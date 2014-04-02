@@ -62,16 +62,23 @@ class Goal(models.Model):
 
         if not title or len(title)>self.MAX_LEN_TITLE:
             errors.append(CODE_BAD_TITLE)
-        if not description or len(description)>self.MAX_LEN_DESC or not goal_type or len(goal_type)>self.MAX_LEN_TYPE:
+        if not description or len(description)>self.MAX_LEN_DESC:
             errors.append(CODE_BAD_DESCRIPTION)
+        if not goal_type or len(goal_type)>self.MAX_LEN_TYPE:
+            errors.append(CODE_BAD_TYPE)
         if not prize or len(prize)>self.MAX_LEN_PRIZE:
             errors.append(CODE_BAD_PRIZE)
         creator_user = BeatMyGoalUser.getUserByName(creator)
         if creator_user < 0:
             errors.append(CODE_BAD_USERNAME)
-
+            
         if ending_date:
-            ending_date = datetime.strptime(ending_date,'%m/%d/%Y')
+            try:
+                ending_date = datetime.strptime(ending_date,'%m/%d/%Y')
+            except:
+                errors.append(CODE_BAD_DEADLINE)
+            if type(ending_date) != datetime or ending_date < datetime.now():
+                errors.append(CODE_BAD_DEADLINE)
 
         print ending_date;
 

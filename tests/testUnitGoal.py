@@ -3,8 +3,9 @@ from core.constants import *
 import unittest
 from django.test import TestCase
 from django.contrib.auth.models import User
+from datetime import *
 
-class GoalTest(unittest.TestCase):
+class GoalTestIteration1(unittest.TestCase):
     def setUp(self):
         BeatMyGoalUser.create('test_user','test_email','test_password')
 
@@ -16,7 +17,7 @@ class GoalTest(unittest.TestCase):
         """
         Test witih valid data
         """
-        response = Goal.create('test_title','test_description','test_user','test_prize',1,'test_goal_type')
+        response = Goal.create('test_title','test_description','test_user','test_prize',1,'test_goal_type', '500','dollars', '4/23/2015')
         self.assertTrue(not response['errors'])
         g = Goal.objects.get(title='test_title')
         self.assertEqual('test_description', g.description)
@@ -24,7 +25,7 @@ class GoalTest(unittest.TestCase):
         self.assertEqual('test_prize', g.prize)
         self.assertEqual(1.0, g.private_setting)
         self.assertEqual('test_goal_type',g.goal_type)
-        g.delete()
+        
 
 
 
@@ -32,7 +33,7 @@ class GoalTest(unittest.TestCase):
         """
         Test with valid data
         """
-        response = Goal.create('sample_title','sample_description','test_user','test_prize',2,'test_goal_type')
+        response = Goal.create('sample_title','sample_description','test_user','test_prize',2,'test_goal_type', '500','dollars','4/23/2015')
         self.assertTrue(not response['errors'])
         g = Goal.objects.get(title='sample_title')
         self.assertEqual('sample_description', g.description)
@@ -40,7 +41,7 @@ class GoalTest(unittest.TestCase):
         self.assertEqual('test_prize', g.prize)
         self.assertEqual(2, g.private_setting)
         self.assertEqual('test_goal_type',g.goal_type)
-        g.delete()
+        
 
 
 
@@ -48,7 +49,7 @@ class GoalTest(unittest.TestCase):
         """
         Test with invalid title
         """
-        response = Goal.create('','sample_description','test_user','test_prize',2,'test_goal_type')
+        response = Goal.create('','sample_description','test_user','test_prize',2,'test_goal_type','500','dollars','4/23/2015')
         self.assertFalse(not response['errors'])
         self.assertTrue(response['errors'])
         self.assertTrue(CODE_BAD_TITLE in response['errors'])
@@ -62,7 +63,7 @@ class GoalTest(unittest.TestCase):
         """
         Test with invalid title, description and prize
         """
-        response = Goal.create('','','test_user','',2,'test_goal_type')
+        response = Goal.create('','','test_user','',2,'test_goal_type','500','dollars','4/23/2015')
         self.assertFalse(not response['errors'])
         self.assertTrue(response['errors'])
         self.assertTrue(CODE_BAD_TITLE in response['errors'])
@@ -76,7 +77,7 @@ class GoalTest(unittest.TestCase):
         """
         Test editGoal with valid data
         """
-        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type')
+        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type','500','dollars','4/23/2015')
         g = Goal.objects.get(id=1)
         edits = {'title':'newTitle','description':'newDescription'}
         response = Goal.edit(g,edits)
@@ -92,7 +93,7 @@ class GoalTest(unittest.TestCase):
         """
         Test editGoal with invalid data
         """
-        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type')
+        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type','500','dollars','4/23/2015')
         edits = {'title':'','description':''}
         g = Goal.objects.get(id=1)
         response = Goal.edit(g, edits)
@@ -107,7 +108,7 @@ class GoalTest(unittest.TestCase):
         """
         Test editGoal with unmodified data
         """
-        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type')
+        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type','500','dollars','4/23/2015')
         edits = {'title':'title','sample_description':''}
         g = Goal.objects.get(id=1)
         response = Goal.edit(g, edits)
@@ -122,7 +123,7 @@ class GoalTest(unittest.TestCase):
         """
         Test editGoal with no edits
         """
-        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type')
+        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type','500','dollars','4/23/2015')
         edits = {}
         g = Goal.objects.get(id=1)
         response = Goal.edit(g, edits)
@@ -136,7 +137,7 @@ class GoalTest(unittest.TestCase):
         """
         Delete goal with valid data
         """
-        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type')
+        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type','500','dollars','4/23/2015')
         g = Goal.objects.get(id=1)
         response = Goal.remove(g.id, g.creator.username)
         self.assertEqual(len(response['errors']), 0)
@@ -148,7 +149,7 @@ class GoalTest(unittest.TestCase):
         """
         Delete goal with invalid user
         """
-        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type')
+        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type', '500','dollars','4/23/2015')
         g = Goal.objects.get(id=1)
         response = Goal.remove(g.id, 'eh')
         self.assertTrue(CODE_GOAL_DNE in response['errors'])
@@ -158,16 +159,28 @@ class GoalTest(unittest.TestCase):
         """
         Delete goal with invalid user
         """
-        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type')
+        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type', '500','dollars','4/23/2015')
         g = Goal.objects.get(id=1)
         response = Goal.remove(g.id, 'eh')
         self.assertTrue(CODE_GOAL_DNE in response['errors'])
+
+    
+
+
+
+class GoalTestIteration2(unittest.TestCase):
+    def setUp(self):
+        BeatMyGoalUser.create('test_user','test_email','test_password')
+
+    def tearDown(self):
+        BeatMyGoalUser.objects.all().delete()
+        Goal.objects.all().delete()
 
     def testGoalCreatedWithLog(self):
         """
         Goal created with a log to create log entries
         """
-        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type')
+        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type', '500','dollars','4/23/2015')
         g = Goal.objects.get(id=1)
         self.assertTrue(g.log is not None)
 
@@ -175,7 +188,7 @@ class GoalTest(unittest.TestCase):
         """
         Create a log entry for a goal
         """
-        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type')
+        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type', '500','dollars','4/23/2015')
         g = Goal.objects.get(id=1)
         res = LogEntry.create(g.log, 'test_user', 100, 'test_comment')
         le = g.log.logentry_set.get(comment='test_comment')
@@ -184,3 +197,59 @@ class GoalTest(unittest.TestCase):
         self.assertEqual(le.participant.username, 'test_user')
         self.assertEqual(le.entry_amount, 100)
         self.assertEqual(le.comment, 'test_comment')
+
+
+
+    def testCreateGoalWithValidType(self):
+        """
+        Test witih valid data
+        """
+        response = Goal.create('test_title','test_description','test_user','test_prize',1,'test_goal_type', '500','dollars', '4/23/2015')
+        self.assertTrue(not response['errors'])
+        g = Goal.objects.get(title='test_title')
+        self.assertEqual('test_goal_type',g.goal_type)
+
+    def testCreateGoalWithValidType2(self):
+        """
+        Test witih valid data
+        """
+        response = Goal.create('test_title','test_description','test_user','test_prize',1,'time_based', '500','dollars', '4/23/2015')
+        self.assertTrue(not response['errors'])
+        g = Goal.objects.get(title='test_title')
+        self.assertEqual('time_based',g.goal_type)
+
+    def testCreateGoalWithInValidType(self):
+        """
+        Test witih valid data
+        """
+        response = Goal.create('test_title','test_description','test_user','test_prize',1,'', '500','dollars', '4/23/2015')
+        self.assertFalse(not response['errors'])
+        self.assertTrue(CODE_BAD_TYPE in response['errors'])
+
+    def testCreateGoalWithValidDate(self):
+        """
+        Test witih valid data
+        """
+        response = Goal.create('test_title','test_description','test_user','test_prize',1,'test_goal_type', '500','dollars', '4/23/2015')
+        self.assertTrue(not response['errors'])
+
+    def testCreateGoalWithValidDate2(self):
+        """
+        Test witih valid data
+        """
+        response = Goal.create('test_title','test_description','test_user','test_prize',1,'test_goal_type', '100','dollars', '4/23/2020')
+        self.assertTrue(not response['errors'])
+
+    def testCreateGoalWithInValidDate(self):
+        """
+        Test witih valid data
+        """
+        response = Goal.create('test_title','test_description','test_user','test_prize',1,'test_goal_type', '500','dollars', '4/23/2005')
+        self.assertFalse(not response['errors'])
+
+    def testCreateGoalWithInValidDate2(self):
+        """
+        Test witih valid data
+        """
+        response = Goal.create('test_title','test_description','test_user','test_prize',1,'test_goal_type', '500','dollars', '23/23/2020')
+        self.assertFalse(not response['errors'])
