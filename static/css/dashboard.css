@@ -4,13 +4,32 @@
 	text-align: left;
 	vertical-align: top;
 	display: inline-block;
-	height: 185px;
+	/*height: 185px;*/
+	height: 200px;
 	width: 300px;
 	padding: 20px;
 	margin: 20px;
-	background: #eee;
-	box-shadow: 5px 5px 10px #0078A0;	
-	color: #555;
+	/*background: #333;*/
+	box-shadow: 1px 3px 2px #aaa;	
+	/*box-shadow: 1px 3px 2px #0078A0;	*/
+	color: #333;
+}
+.dashcard-img{
+	height: 50%;
+	width: 300px;
+	margin: -20px 0px 0px -20px;
+	background-image: url('../img/trophy.gif') ;
+	background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../img/trophy.gif');
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../img/trophy.gif');
+    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../img/trophy.gif');
+    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../img/trophy.gif');
+    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.2)), to(rgba(0, 0, 0, 0.2))), url('../img/trophy.gif');
+    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../img/trophy.gif');
+  	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;
+
 }
 .dashcard-title{
 	font-size: 120%;
@@ -20,7 +39,7 @@
 .dashcard-description{
 	font-style: italic;
 	font-size: 80%;
-	color: #555;
+	color: #333;
 }
 .dashcard-creator{
 	font-size: 80%;
