@@ -11,7 +11,7 @@ class Log(models.Model):
 
 class LogEntry(models.Model):
     log = models.ForeignKey('Log')
-    participant = models.ForeignKey('BeatMyGoalUser', related_name="log_participant")
+    participant = models.ForeignKey('BeatMyGoalUser', related_name="logentries")
     entry_amount = models.IntegerField()
     entry_date = models.DateTimeField(auto_now_add=True)
     comment = models.CharField(max_length=130)
