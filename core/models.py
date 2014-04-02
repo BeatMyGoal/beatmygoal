@@ -87,15 +87,12 @@ class Goal(models.Model):
             if type(ending_date) != datetime or ending_date < datetime.now():
                 errors.append(CODE_BAD_DEADLINE)
 
-        print ending_date;
 
         if not errors:
             goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), 
                 prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0, ending_value=ending_value, 
                 unit=unit, ending_date=ending_date)
             goal.save()
-            print(goal.creator.username)
-            print(goal.title)
             BeatMyGoalUser.joinGoal(goal.creator.username, goal.id)
             newLog = Log(goal=goal)
             newLog.save()
