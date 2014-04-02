@@ -35,7 +35,7 @@ class CreateGoalTestWithInvalidInput(LiveServerTestCase):
 
     def test_create_goal_test_with_invalid_input(self):
         """
-        Try creating a goal with invalid inputs
+        Test creating a goal with invalid inputs
         """
         driver = self.driver
         self.driver.get(self.live_server_url)
@@ -45,18 +45,21 @@ class CreateGoalTestWithInvalidInput(LiveServerTestCase):
         driver.find_element_by_id("register-title").clear()
         driver.find_element_by_id("register-title").send_keys("Test With Invalid Input")
         driver.find_element_by_id("register-submit").click()
-        time.sleep(1)
+        time.sleep(2)
 
-        self.assertTrue('Create' in driver.title, "Goal was created with invalid input")
+        self.assertTrue('Create' in driver.title, "Error : Creating Goal with invalid input")
     
     def test_create_timebased_goal(self):
+        """
+        Test creating a Time-based goal
+        """
         driver = self.driver
         self.driver.get(self.live_server_url)
         self.login("kyle", "kyle")
 
         driver.find_element_by_link_text("Create Goal").click()
         driver.find_element_by_id("register-title").clear()
-        driver.find_element_by_id("register-title").send_keys("This is Test Case for Creating Value-based Goal")
+        driver.find_element_by_id("register-title").send_keys("This is Test Case for Creating Time-based Goal")
         driver.find_element_by_id("register-description").clear()
         driver.find_element_by_id("register-description").send_keys("test Description")
         driver.find_element_by_id("register-prize").clear()
@@ -71,10 +74,13 @@ class CreateGoalTestWithInvalidInput(LiveServerTestCase):
         driver.find_element_by_link_text("16").click()
         driver.find_element_by_id("register-submit").click()
         
-        self.assertTrue('This is Test Case for Creating Value-based Goal' in driver.title, "Goal was created with invalid input")
-        time.sleep(1)
+        self.assertTrue("This is Test Case for Creating Time-based Goal" in driver.title, "Error : Not creating Time-based Goal")
+        time.sleep(2)
 
     def test_create_valuebased_goal(self):
+        """
+        Test creating a Value-based goal
+        """
         driver = self.driver
         self.driver.get(self.live_server_url)
         self.login("kyle", "kyle")
@@ -92,5 +98,5 @@ class CreateGoalTestWithInvalidInput(LiveServerTestCase):
         driver.find_element_by_id("register-value-unit").send_keys("dollar")
         driver.find_element_by_id("register-submit").click()
         
-        self.assertTrue('This is Test Case for Creating Value-based Goal' in driver.title, "Goal was created with invalid input")
-        time.sleep(1)
+        self.assertTrue("This is Test Case for Creating Value-based Goal" in driver.title, "Error : Not Creating Value-based Goal")
+        time.sleep(2)
