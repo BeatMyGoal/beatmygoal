@@ -247,7 +247,7 @@ class BeatMyGoalUser(AbstractUser):
 
     
     @classmethod
-    def leaveGoal(self, username, goal_id):
+    def leaveGoal(self, username, goal_id):     #add unit test here
         errors = []
         try:
             goal = Goal.objects.get(id = goal_id)

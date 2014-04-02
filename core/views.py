@@ -98,9 +98,6 @@ def goal_create_goal(request):
     if request.user.is_authenticated():
         if request.method == "GET":
             return render(request, 'goals/createGoal.html')
-
-        
-
         if request.user.is_authenticated():
 
             data = json.loads(request.body)
@@ -147,7 +144,8 @@ def goal_remove_goal(request):
     return HttpResponse(json.dumps({"redirect" : "/dashboard",
         "errors" : response["errors"]}), content_type = "application/json")
 
-def goal_join_goal(request):
+
+def goal_join_goal(request):        #add Functional test here
     """
     Adds a user as a participant of a goal.
     """
@@ -162,7 +160,7 @@ def goal_join_goal(request):
     return HttpResponse(json.dumps({"errors": response["errors"],
         "redirect" : redirect}), content_type = "application/json")
 
-def goal_leave_goal(request):
+def goal_leave_goal(request):       #add Functional test here
     """
     Removes a user as a participant of a goal.
     """
@@ -210,7 +208,7 @@ def goal_edit_goal(request, gid):
 
 
 
-def confirm(request):
+def confirm(request):           #add Functional test here
     if request.method == "POST":
         data = json.loads(request.body)
         user = request.user;
@@ -230,7 +228,8 @@ def goal_view_goal(request, goal_id):
 
     return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, "isParticipant" : isParticipant, "isCreator" : isCreator, "image" :image, "goal_id" : goal_id})
 
-def goal_log_progress(request, gid):
+
+def goal_log_progress(request, gid):       #add Functional test here
     """
     Allows users to log their progress for a goal
     """
@@ -250,15 +249,6 @@ def goal_log_progress(request, gid):
                     }), content_type='application/json')
         else:
             return HttpResponse("Invalid request", status=500)
-#def goal_remove_user(request):
-#    try:
-#        req = json.loads(request.body)
-#        goal_id = req["goal_id"]
-#        user_id = req["user_id"]
-#    except:
-#        return requeset.send_error(500)
-#    response = Goal().remove_user(goal_id, user_id)
-#    return HttpResponse(json.dumps({"errCode": response}), content_type = "application/json")
 
 
 def user_login(request):
@@ -284,7 +274,7 @@ def user_login(request):
                                 content_type = "application/json")
 
 @csrf_exempt
-def profile(request):
+def profile(request):       #add Functional test here
     """
     Returns the profile of the authenticated user or else prompts them to login.
     """
@@ -334,10 +324,7 @@ def view_user(request, uid):
         if response['errors']:
             return render(request, 'users/viewUser.html', { "errors" : response["errors"] })
         else:
-            return render(request, 'users/viewUser.html', {
-                    'viewedUser' : response['user'],
-                    'errors' : response['errors']
-                })
+            return render(request, 'users/viewUser.html', {'viewedUser' : response['user'], 'errors' : response['errors']} )
 
 #@csrf_exempt
 def edit_user(request, uid):
@@ -395,7 +382,7 @@ def delete_user(request, uid):
                 ttpResponse("Invalid request", status=500)
     return HttpResponse("Invalid request", status=500)
 
-def user_logout(request):
+def user_logout(request):       #add Functional test here
     """
     De-authenticates the user and redirects to the homepage.
     """
@@ -404,7 +391,7 @@ def user_logout(request):
 
 
 
-def image_upload(request,goal_id):
+def image_upload(request,goal_id):          #add Functional test here
     goal = Goal.objects.get(id=goal_id)
     isCreator = str(request.user) == str(goal.creator)
     isParticipant = len(goal.beatmygoaluser_set.filter(username=request.user)) > 0
