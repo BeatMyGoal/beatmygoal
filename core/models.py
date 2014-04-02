@@ -122,6 +122,17 @@ class Goal(models.Model):
         if 'description' in edits:
             goal.description = edits['description']
 
+        if 'prize' in edits:
+            goal.prize = edits['prize']
+
+        if 'ending_value' in edits:
+            goal.ending_value = edits['ending_value']
+
+        if 'unit' in edits:
+            goal.unit = edits['unit']
+
+
+
         errors = []
         if not goal.title or len(goal.title)>self.MAX_LEN_TITLE:
             errors.append(CODE_BAD_TITLE)

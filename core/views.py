@@ -187,15 +187,20 @@ def goal_edit_goal(request, gid):
     
     if ( user.is_authenticated() and goal.creator.id == user.id ):
         if request.method == "GET":
-            return render(request, 'goals/editGoal.html', {"title": goal.title, "description": goal.description })
+            return render(request, 'goals/editGoal.html', {"goal": goal })
         elif request.method == "POST":
             data = json.loads(request.body)
+            
             title = data["title"]
             description = data["description"]
+            prize = data["prize"]
+            ending_value = data["ending_value"]
+            unit =  data["unit"]
 
             
 
-            edits = {'title': title, 'description': description}
+            edits = {'title': title, 'description': description, 'prize' : prize, 
+                    'ending_value' : ending_value, 'unit' : unit}
         
             response = Goal.edit(goal, edits)
             if response['errors']:
