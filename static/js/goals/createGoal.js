@@ -36,6 +36,7 @@ $(document).ready(function() {
 			} else {
 				if ('errors' in data) {
 					var errors = data.errors;
+					console.log(errors);
 					if (errors.indexOf(ERRCODES.CODE_BAD_TITLE) >= 0) {
 						$('#title-error').text("Title is required and can't be too long");
                         $("label[for='title']").addClass("error");
@@ -48,6 +49,11 @@ $(document).ready(function() {
 					if (errors.indexOf(ERRCODES.CODE_BAD_PRIZE) >= 0) {
 						$('#prize-error').text("Prize description must exsit and not too long");
                         $("label[for='prize']").addClass("error");
+					}
+					if (errors.indexOf(ERRCODES.CODE_BAD_DEADLINE) >= 0) {
+						console.log('deadline-error');
+						$('#deadline-error').text("Date must be a future value");
+                        $("label[for='deadline']").addClass("error");
 					}
 				}
 			}
