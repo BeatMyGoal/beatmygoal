@@ -39,7 +39,7 @@ Coverage.py instructions
 
 - Install coverage.py by typing `pip install coverage`
 - To confirm that the coverage is installed correctly, command `coverage --version`
-- Run the test with the coverage command, `coverage run --source='core','beatmygoal' manage.py test`
+- Run the test with the coverage command, `coverage run --branch --source='core','beatmygoal' manage.py test`
 	- (Since we are using unit-test and functional-test, we only need to check the files in ‘core’ and ‘beatmygoal’, which contain url, models, and views.)
 - Then, call the report, `coverage report -m`
 	- (‘-m flag’ shows the line numbers of missing statements)
