@@ -275,7 +275,9 @@ class BeatMyGoalUser(AbstractUser):
             user = BeatMyGoalUser.objects.get(username = username)
         except:
             errors.append(CODE_BAD_USERNAME)
+            
         try:
+            user.goals.get(id=goal_id)
             user.goals.remove(goal)
         except:
             errors.append(CODE_NOT_PARTICIPANT)
