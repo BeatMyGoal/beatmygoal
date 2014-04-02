@@ -131,18 +131,22 @@
       <br>
 
        <div style="width: 230px; height: 280px;">
-	{% if image %}
-	      <img src="{{user.image.url}}" />
+	{% if viewedUser.image %}
+	      <img src="{{viewedUser.image.url}}" />
 	      </div>
         {% else %}
 	      <p> <img src="http://placehold.it/320x300&text=photo" /></p>
-	      <p>Select your profile photo.</p>
+
 	      </div>
-	{% endif %}			
+	{% endif %}	
+
+    {% if viewedUser.id == user.id and viewedUser.username == user.username %}
 		<form action={% url 'user_image_upload' user.id  %} method="post" enctype="multipart/form-data">
-			<p><input type="file" name="image" /></p>
-	                <p><input type="submit" value="upload" /></p>
+		  <p>Select your profile photo.</p>
+		  <input type="file" class="button tiny" name="image" />
+	          <input type="submit" class="button tiny" value="Upload" />
 	      </form>
+	{% endif %}	
 
     <form data-abide>
       <fieldset>

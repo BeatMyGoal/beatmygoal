@@ -409,11 +409,14 @@ def goal_image_upload(request,goal_id):          #add Functional test here
             goal.image = request.FILES['image']
             goal.save()
 
-            return HttpResponseRedirect(reverse('goal_image_upload', args=(goal_id,)))
+            #return HttpResponseRedirect(reverse('goal_view_goal', args=(goal_id,)))
+            return HttpResponseRedirect('/goals/' + goal_id)
     else:
         image = ImageForm() #empty
 
-    return render(request, 'goals/viewGoal.html', {'image': image, 'goal_id': goal_id, 'goal' : goal, 'user' : request.user, 'isParticipant' : isParticipant, 'isCreator' : isCreator})
+        return HttpResponseRedirect('/goals/' + goal_id)
+    #return render(request, 'goals/viewGoal.html', {'image': image, 'goal_id': goal_id, 'goal' : goal, 'user' : request.user, 'isParticipant' : isParticipant, 'isCreator' : isCreator})
+    
 
 def user_image_upload(request,user_id):          #add Functional test here
     """
@@ -427,10 +430,11 @@ def user_image_upload(request,user_id):          #add Functional test here
         if image.is_valid():
             user.image = request.FILES['image']
             user.save()
-            return HttpResponseRedirect(reverse('user_image_upload', args=(user_id,)))
+            return HttpResponseRedirect(reverse('view_user', args=(user_id,)))
     else:
         image = ImageForm() #empty
     
-    return render(request, 'users/viewUser.html', {'image': image, 'user': user, 'goal':goal })
-
+    #return render(request, 'users/viewUser.html', {'image': image, 'user': user, 'goal':goal })
+    return HttpResponseRedirect(reverse('view_user', args=(user_id,)))
+    
 

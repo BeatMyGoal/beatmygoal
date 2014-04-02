@@ -174,18 +174,23 @@
     <div class="large-3 pull-9 columns">
        <br>
        <div style="width: 230px; height: 280px;">
-	{% if image %}
+	{% if goal.image %}
 	      <img src="{{goal.image.url}}" />
 	      </div>
         {% else %}
 	      <p> <img src="http://placehold.it/320x300&text=photo" /></p>
-	      <p>Select your photo.</p>
+
 	      </div>
-	{% endif %}			
+	{% endif %}
+    
+    {% if user.username == goal.creator.username %}
+
+	      <p>Select the goal photo photo.</p>
 		<form action={% url 'goal_image_upload' goal_id  %} method="post" enctype="multipart/form-data">
-			<p><input type="file" name="image" /></p>
-	                <p><input type="submit" value="upload" /></p>
+		  <input type="file" class="button tiny" name="image" />
+	          <input type="submit"  class="button tiny" value="Upload" />
 	      </form>
+	{% endif %}
       <form data-abide>
         <fieldset>
         <legend> <h3> Participants </h3></legend>
