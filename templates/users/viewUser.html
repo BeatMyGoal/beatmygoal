@@ -90,7 +90,7 @@
     <!-- tabs -->
     <dl class="section-container tabs" data-tab>
       <dd class="active"><a href="#panel2-1">{{ viewedUser.username }}'s Goals</a></dd>
-      <dd><a href="#panel2-2">Graph</a></dd>
+      <dd><a href="#panel2-2">History</a></dd>
       <dd><a href="#panel2-3">Comments</a></dd>
     </dl>
       
@@ -110,7 +110,11 @@
       </div>
 
       <div class="content" id="panel2-2">
-	  <p>Coming soon! </p>
+	  <ul>
+            {% for entry in viewedUser.logentries.all %}
+            <li><a href="/goals/{{ entry.log.goal.id }}">{{ entry.log.goal.title }}: {{ entry.entry_amount }}, {{ entry.comment }}</a></li>
+            {% endfor %}
+        </ul>
           <!-- <p> This feature is not implemented yet </p> -->
       </div>
       

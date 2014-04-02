@@ -198,6 +198,13 @@ class GoalTestIteration2(unittest.TestCase):
         self.assertEqual(le.entry_amount, 100)
         self.assertEqual(le.comment, 'test_comment')
 
+    def testCreateBadLogEntry(self):
+        """
+        Creates a LogEntry with an invalid Log
+        """
+        res = LogEntry.create(None, "test_user", 100, "test_comment")
+        self.assertTrue(res['errors'])
+        self.assertTrue(CODE_BAD_LOG in res['errors'])
 
 
     def testCreateGoalWithValidType(self):

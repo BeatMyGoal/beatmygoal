@@ -148,25 +148,106 @@ class RemoveGoalTests(TestCase):
        response2 = self.postJSON("/goals/remove", data2)
        self.assertEqual(response2.status_code, 200)
 
+class JoinGoalTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        BeatMyGoalUser.create("test", "test@test.com", "test")
+        self.testUser = BeatMyGoalUser.objects.get(username="test")
+        BeatMyGoalUser.create("test1", "test1@test.com", "test1")
+        self.testUser1 = BeatMyGoalUser.objects.get(username='test1')
+        Goal.create('title','des','test','test_prize', 1, 'Time-based', '50', 'pound', '11/13/2014')
+        self.testGoal = Goal.objects.get(title="title")
+
+    def postJSON(self, url, data):
+        return self.client.post(url, content_type='application/json', data=data)
+
+    def testJoinGoalSuccessfully(self):
+        data = """
+        { "username" : "test1", "password" : "test1" }
+        """
+        self.postJSON("/users/login", data)
+        data2 = """
+        {"goal_id" : %s }
+        """ % (self.testGoal.id)
+        response = self.postJSON("/goals/join", data2)
+        json_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(json_data['errors'])
+
+    def testJoinNonexistantGoal(self):
+        data = """
+        { "username" : "test", "password" : "test" }
+        """
+        self.postJSON("/users/login", data)
+        data2 = """
+        {"goal_id" : "2" }
+        """ 
+        response = self.postJSON("/goals/join", data2)
+        json_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(json_data['errors'])
+
+class LeaveGoalTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        BeatMyGoalUser.create("test", "test@test.com", "test")
+        self.testUser = BeatMyGoalUser.objects.get(username="test")
+        BeatMyGoalUser.create("test1", "test1@test.com", "test1")
+        self.testUser1 = BeatMyGoalUser.objects.get(username='test1')
+        Goal.create('title','des','test','test_prize', 1, 'Time-based', '50', 'pound', '11/13/2014')
+        self.testGoal = Goal.objects.get(title="title")
+
+    def postJSON(self, url, data):
+        return self.client.post(url, content_type='application/json', data=data)
+
+    def testLeaveGoalSuccessfully(self):
+        data = """
+        { "username" : "test1", "password" : "test1" }
+        """
+        self.postJSON("/users/login", data)
+        data2 = """
+        {"goal_id" : %s }
+        """ % (self.testGoal.id)
+        self.postJSON("/goals/join", data2)
+        response = self.postJSON("/goals/leave", data2)
+        json_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(json_data['errors'])
+
+    def testNonparticipantLeavesGoal(self):
+        data = """
+        { "username" : "test1", "password" : "test1" }
+        """
+        self.postJSON("/users/login", data)
+        data2 = """
+        {"goal_id" : %s }
+        """ % (self.testGoal.id)
+        response = self.postJSON("/goals/leave", data2)
+        json_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(json_data['errors'])
+
 
 class LogProgressTests(TestCase):
     def setUp(self):
-        self.testUser = BeatMyGoalUser(username="test", password="test", email="test@test.com")
-        self.testUser.save()
-        Goal.create('title','des','test','test_prize', 1, 'Time-based', '50', 'pound', '11/13/2014')
-        self.testGoal = Goal.objects.get(title='title')
         self.client = Client()
+        BeatMyGoalUser.create("test", "test@test.com", "test")
+        self.testUser = BeatMyGoalUser.objects.get(username="test")
+        Goal.create('title','des','test','test_prize', 1, 'Time-based', '50', 'pound', '11/13/2014')
+        self.testGoal = Goal.objects.get(title="title")
 
     def postJSON(self, url, data):
         return self.client.post(url, content_type='application/json', data=data)
 
     def testLogProgress(self):
-        data = { "username" : "test", "password" : "test" }
-        self.postJSON("/users/login", json.dumps(data))
-        log = {
-            'amount' : 100,
-            'comment' : 'hello world'
-        }
-        response = self.postJSON("/goals/" + str(self.testGoal.id) + "/log", json.dumps(log))
+        data = """
+        { "username" : "test", "password" : "test" }
+        """
+        self.postJSON("/users/login", data)
+        log = """
+        {"amount" : "100", "comment" : "hello world"}
+        """
+        response = self.postJSON("/goals/" + str(self.testGoal.id) + "/log", log)
+        res_json = json.loads(response.content)
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(response['errors'])
+        self.assertFalse(res_json['errors'])

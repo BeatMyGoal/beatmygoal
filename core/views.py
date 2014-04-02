@@ -118,7 +118,6 @@ def goal_create_goal(request):
             else:
                 goal = response['goal']
                 redirect = "/goals/%s/" % (goal.id)
-                BeatMyGoalUser.joinGoal(request.user, goal.id)
                 return HttpResponse(json.dumps({"redirect" : redirect,
                     "errors" : response["errors"]}), content_type = "application/json")
         else:

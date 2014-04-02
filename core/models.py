@@ -11,7 +11,7 @@ class Log(models.Model):
 
 class LogEntry(models.Model):
     log = models.ForeignKey('Log')
-    participant = models.ForeignKey('BeatMyGoalUser', related_name="log_participant")
+    participant = models.ForeignKey('BeatMyGoalUser', related_name="logentries")
     entry_amount = models.IntegerField()
     entry_date = models.DateTimeField(auto_now_add=True)
     comment = models.CharField(max_length=130)
@@ -87,13 +87,13 @@ class Goal(models.Model):
             if type(ending_date) != datetime or ending_date < datetime.now():
                 errors.append(CODE_BAD_DEADLINE)
 
-        print ending_date;
 
         if not errors:
             goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), 
                 prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0, ending_value=ending_value, 
                 unit=unit, ending_date=ending_date)
             goal.save()
+            BeatMyGoalUser.joinGoal(goal.creator.username, goal.id)
             newLog = Log(goal=goal)
             newLog.save()
             
@@ -276,7 +276,9 @@ class BeatMyGoalUser(AbstractUser):
             user = BeatMyGoalUser.objects.get(username = username)
         except:
             errors.append(CODE_BAD_USERNAME)
+            
         try:
+            user.goals.get(id=goal_id)
             user.goals.remove(goal)
         except:
             errors.append(CODE_NOT_PARTICIPANT)
