@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'core',
     'south',
+    'django_nose',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -126,3 +127,8 @@ MEDIA_URL = '/media/'
 
 
 AUTH_USER_MODEL = 'core.BeatMyGoalUser'
+
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+
