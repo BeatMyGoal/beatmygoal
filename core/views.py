@@ -413,6 +413,7 @@ def image_upload(request,goal_id):
         image = ImageForm(request.POST, request.FILES)
         if image.is_valid():
             goal.image = request.FILES['image']
+            goal.save()
 
             return HttpResponseRedirect(reverse('image_upload', args=(goal_id,)))
     else:
