@@ -5,13 +5,14 @@ from core.models import *
 
 import time as time
 
-class EditUserTest(LiveServerTestCase):
+class DashboardTest(LiveServerTestCase):
     def setUp(self):
         self.driver = webdriver.Firefox()
         self.driver.implicitly_wait(10)
 
         # Set up any objects you need here
-        BeatMyGoalUser.create("arjun", "arjun@example.com", "arjun")
+        BeatMyGoalUser.create("guitester", "guitester@example.com", "guitester")
+        Goal.create("testgoal", "testgoaldescription", "guitester", "testprize", 0, "testtype", "testendvalue", "testunit", "01/01/2030")
 
     def tearDown(self):
         self.driver.quit()
@@ -30,38 +31,27 @@ class EditUserTest(LiveServerTestCase):
         driver.find_element_by_id("login").click()
         time.sleep(1)
 
-    def test_edit_profile(self):
+    def test_dashboard(self):
         """
-        Tests editing the profile.
+        Tests viewing the dashboard.
         """
         driver = self.driver
 
         #Open the web driver and go to the main page
         self.driver.get(self.live_server_url)
 
-        self.login("arjun", "arjun")
-        driver.find_element_by_link_text("arjun").click()
+        self.login("guitester", "guitester")
+        driver.find_element_by_link_text("Browse Goals").click()
         time.sleep(1)
-        driver.find_element_by_link_text("Edit User").click()
-        time.sleep(1)
-        driver.find_element_by_id("password").clear()
-        driver.find_element_by_id("password").send_keys("arjun")
-        driver.find_element_by_id("Confirm_button").click()
-        time.sleep(1)
-        
-        self.assertTrue('Edit Profile' in driver.title, "Edit Profile page worked")
 
-        driver.find_element_by_id("password").clear()
-        driver.find_element_by_id("password").send_keys("arjun")
-        driver.find_element_by_id("email").clear()
-        driver.find_element_by_id("email").send_keys("a@rao.com")
-        time.sleep(1)
-        driver.find_element_by_id("save").click()
+        self.assertTrue('testgoal' in driver.find_element_by_css_selector(".dashcard-title").text, "Test goal displayed on dashboard")
+
+        driver.find_element_by_link_text("testgoal").click()
         time.sleep(1)
         
         # This is really pretty complex and likely to fail soon
         #self.assertEqual("Email : a@rao.com", driver.find_element_by_xpath("//div[@id='main-content']/div/div/form/fieldset/div/div[2]/h5").text)
 
         # I think this is a better alternative
-        self.assertTrue('a@rao.com' in driver.find_element_by_css_selector("BODY").text, "Email was updated after editing")
+        self.assertIn("testgoal | BeatMyGoal", self.driver.title)
 
