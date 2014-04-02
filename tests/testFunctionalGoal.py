@@ -153,9 +153,20 @@ class LogProgressTests(TestCase):
     def setUp(self):
         self.testUser = BeatMyGoalUser(username="test", password="test", email="test@test.com")
         self.testUser.save()
-        Goal.create('title','des','test','test_prize', 1, 'test_type')
+        Goal.create('title','des','test','test_prize', 1, 'Time-based', '50', 'pound', '11/13/2014')
         self.testGoal = Goal.objects.get(title='title')
         self.client = Client()
 
     def postJSON(self, url, data):
         return self.client.post(url, content_type='application/json', data=data)
+
+    def testLogProgress(self):
+        data = { "username" : "test", "password" : "test" }
+        self.postJSON("/users/login", json.dumps(data))
+        log = {
+            'amount' : 100,
+            'comment' : 'hello world'
+        }
+        response = self.postJSON("/goals/" + str(self.testGoal.id) + "/log", json.dumps(log))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response['errors'])
