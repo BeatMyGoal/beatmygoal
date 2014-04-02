@@ -7,7 +7,6 @@ from django.core.handlers.wsgi import *
 from django.test.client import Client
 
 class GoalPageTests(TestCase):
-
     def setUp(self):
         BeatMyGoalUser.create("test", "test@test.com", "test")
         self.testUser = BeatMyGoalUser.objects.get(username="test")
@@ -28,12 +27,11 @@ class GoalPageTests(TestCase):
     def testValidGoalCreateWithoutLoggingIn(self):
         data = """
         { "title" : "test_title", "description" : "test_description", "prize" : "test_prize",
-        "private_setting" : 1, "goal_type" : "test_goal_type" }
+        "private_setting" : 1, "goal_type" : "Time-based", "ending_value": "50", "unit" : "pound", 
+        "ending_date" : "7/6/2014" }
         """
         response = self.postJSON("/goals/create", data)
         self.assertEqual(response.status_code, 302) #Must redirect to the index page
-
-
 
     def testCreateGoalPageLoadWhileLoggingIn(self):
         """
@@ -47,16 +45,30 @@ class GoalPageTests(TestCase):
         response = self.client.get("/goals/create", {})
         self.assertEqual(response.status_code, 200) #Must redirect to the index page
 
-    def testValidGoalCreateWhileLoggedIn(self):
+
+    def testValidGoalCreateWhileLoggedIn_Timebased(self):
         data = """
         { "title" : "test_title", "description" : "test_description", "prize" : "test_prize",
-        "private_setting" : 1, "goal_type" : "test_goal_type" }
+        "private_setting" : 1, "goal_type" : "Time-based", "ending_value": "50", "unit" : "pound", 
+        "ending_date" : "7/6/2014" }
         """
         data2 = """
         { "username" : "test", "password" : "test" }
         """
         response2 = self.postJSON("/users/login", data2)
+        response = self.postJSON("/goals/create", data)
+        self.assertEqual(response.status_code, 200) #Must redirect to the index page
 
+    def testValidGoalCreateWhileLoggedIn_Valuebased(self):
+        data = """
+        { "title" : "test_title", "description" : "test_description", "prize" : "test_prize",
+        "private_setting" : 1, "goal_type" : "Value-based", "ending_value": "50", "unit" : "pound", 
+        "ending_date" : null }
+        """
+        data2 = """
+        { "username" : "test", "password" : "test" }
+        """
+        response2 = self.postJSON("/users/login", data2)
         response = self.postJSON("/goals/create", data)
         self.assertEqual(response.status_code, 200) #Must redirect to the index page
 
@@ -65,10 +77,8 @@ class GoalPageTests(TestCase):
 class ViewGoalTests(TestCase):
     def setUp(self):
         self.client = Client()
-        #self.testUser = BeatMyGoalUser(username="test", password="test", email="test@test.com")
-        #self.testGoal = Goal.objects.create('title','des','test','test_prize', 1, 'test_type')
         BeatMyGoalUser.create('test','p','wfe@wfewef')
-        Goal.create('title','des','test','test_prize', 1, 'test_type')
+        Goal.create('title','des','test','test_prize', 1, 'Time-based', '50', 'pound', '11/13/2014')
 
     def postJSON(self, url, data):
         return self.client.post(url, content_type='application/json', data=data)
@@ -86,7 +96,7 @@ class EditGoalTests(TestCase):
         self.client = Client()
         BeatMyGoalUser.create("test", "test@test.com", "test")
         self.testUser = BeatMyGoalUser.objects.get(username="test")
-        Goal.create('title','des','test','test_prize', 1, 'test_type')
+        Goal.create('title','des','test','test_prize', 1, 'Time-based', '50', 'pound', '11/13/2014')
 
 
     def postJSON(self, url, data):
@@ -120,10 +130,9 @@ class RemoveGoalTests(TestCase):
     def setUp(self):
         self.testUser = BeatMyGoalUser(username="test", password="test", email="test@test.com")
         self.testUser.save()
-        Goal.create('title','des','test','test_prize', 1, 'test_type')
+        Goal.create('title','des','test','test_prize', 1, 'Time-based', '50', 'pound', '11/13/2014')
         self.testGoal = Goal.objects.get(title='title')
         self.client = Client()
-
 
     def postJSON(self, url, data):
         return self.client.post(url, content_type='application/json', data=data)
