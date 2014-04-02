@@ -55,6 +55,7 @@ class EditUserTest(LiveServerTestCase):
         driver.find_element_by_id("password").send_keys("arjun")
         driver.find_element_by_id("email").clear()
         driver.find_element_by_id("email").send_keys("a@rao.com")
+        time.sleep(1)
         driver.find_element_by_id("save").click()
         time.sleep(1)
         
