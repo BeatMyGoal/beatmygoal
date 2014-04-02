@@ -85,7 +85,9 @@ $(document).ready(function() {
                 console.log(data.redirect);
                 if (data.errors.length === 0) {
                     window.location.href = data.redirect;
-            } 
+                } else if (data.errors.length > 0) {
+                    
+                }
             }).fail(function(data) {
                 console.log(data);
                 alert("failure");
@@ -104,7 +106,7 @@ $("#reveal_edit #Confirm_button").click(function(e) {
     var password = $('#reveal_edit #password').val();
     var data = {
         password: password
-    }
+    };
 
     $.ajax({
         type: "POST",

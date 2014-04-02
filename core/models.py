@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import validate_email
 from constants import *
 from datetime import *
+from sys import maxint
 
 class Log(models.Model):
     goal = models.OneToOneField('Goal')
@@ -19,6 +20,12 @@ class LogEntry(models.Model):
     def create(self, log, participant, amount, comment):
         errors = []
         logEntry = None
+
+        amount = int(amount)
+        if amount > maxint:
+            errors.append(CODE_BAD_AMOUNT)
+        if not log:
+            errors.append(CODE_BAD_LOG)
 
         if not errors:
             logEntry = LogEntry(log=log, participant=BeatMyGoalUser.objects.get(username=participant), entry_amount=amount, comment=comment)
