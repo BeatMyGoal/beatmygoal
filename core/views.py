@@ -396,7 +396,10 @@ def user_logout(request):       #add Functional test here
 
 
 
-def image_upload(request,goal_id):          #add Functional test here
+def goal_image_upload(request,goal_id):          #add Functional test here
+    """
+    Allows users to upload their goal's image
+    """
     goal = Goal.objects.get(id=goal_id)
     isCreator = str(request.user) == str(goal.creator)
     isParticipant = len(goal.beatmygoaluser_set.filter(username=request.user)) > 0
@@ -407,10 +410,28 @@ def image_upload(request,goal_id):          #add Functional test here
             goal.image = request.FILES['image']
             goal.save()
 
-            return HttpResponseRedirect(reverse('image_upload', args=(goal_id,)))
+            return HttpResponseRedirect(reverse('goal_image_upload', args=(goal_id,)))
     else:
         image = ImageForm() #empty
 
     return render(request, 'goals/viewGoal.html', {'image': image, 'goal_id': goal_id, 'goal' : goal, 'user' : request.user, 'isParticipant' : isParticipant, 'isCreator' : isCreator})
+
+def user_image_upload(request,user_id):          #add Functional test here
+    """
+        Allows users to upload their user's profile image
+    """
+    user = BeatMyGoalUser.objects.get(id = user_id)
+    goal = user.goals
+    # Handle file upload
+    if request.method == "POST":
+        image = ImageForm(request.POST, request.FILES)
+        if image.is_valid():
+            user.image = request.FILES['image']
+            user.save()
+            return HttpResponseRedirect(reverse('user_image_upload', args=(user_id,)))
+    else:
+        image = ImageForm() #empty
+    
+    return render(request, 'users/viewUser.html', {'image': image, 'user': user, 'goal':goal })
 
 

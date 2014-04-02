@@ -42,7 +42,8 @@ urlpatterns = patterns('',
 	#url(r'^users/test/view', core.views.view_user2),
 	#url(r'^users/test/edit', core.views.edit_user2),                       
 
-	url(r'^goals/(\d+)/imageload/$', core.views.image_upload, name ='image_upload'),
+	url(r'^goals/(\d+)/imageload/$', core.views.goal_image_upload, name ='goal_image_upload'),
+	url(r'^users/(\d+)/imageload/$', core.views.user_image_upload, name ='user_image_upload'),
          
     url(r'^dashboard', core.views.dashboard, name='dashboard'),                       
     url(r'^confirm', core.views.confirm, name='confirm'),

@@ -182,6 +182,7 @@ class BeatMyGoalUser(AbstractUser):
 
 
     goals = models.ManyToManyField(Goal)
+    image = models.FileField(upload_to='userimage/')
     
     
     @classmethod
