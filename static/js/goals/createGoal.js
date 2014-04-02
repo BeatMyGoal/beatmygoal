@@ -51,9 +51,8 @@ $(document).ready(function() {
                         $("label[for='prize']").addClass("error");
 					}
 					if (errors.indexOf(ERRCODES.CODE_BAD_DEADLINE) >= 0) {
-						console.log('deadline-error');
-						$('#deadline-error').text("Date must be a future value");
-                        $("label[for='deadline']").addClass("error");
+						$('#ending-error').text("Date must be a future value");
+                        $("label[for='ending']").addClass("error");
 					}
 				}
 			}
