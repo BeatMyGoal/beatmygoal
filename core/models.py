@@ -94,6 +94,9 @@ class Goal(models.Model):
                 prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0, ending_value=ending_value, 
                 unit=unit, ending_date=ending_date)
             goal.save()
+            print(goal.creator.username)
+            print(goal.title)
+            BeatMyGoalUser.joinGoal(goal.creator.username, goal.id)
             newLog = Log(goal=goal)
             newLog.save()
             
