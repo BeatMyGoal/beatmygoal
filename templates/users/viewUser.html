@@ -1,9 +1,6 @@
 {% extends "base.html" %}
-
 {% load staticfiles %}
-
 {% block title %}{{ viewedUser.username }}{% endblock %}
-
 {% block content %}
 
 <div class="row">
@@ -14,11 +11,10 @@
   <div style="width: 230px; height: 280px;">
   {% if viewedUser.image %}
     <img src="{{viewedUser.image.url}}" />
-  </div>
   {% else %}
     <p> <img src="http://placehold.it/320x300&text=photo" /></p>
-  </div>
   {% endif %}
+  </div>
 
   {% if viewedUser.id == user.id and viewedUser.username == user.username %}
   <form action={% url 'user_image_upload' user.id  %} method="post" enctype="multipart/form-data">
