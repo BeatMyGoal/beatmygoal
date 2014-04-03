@@ -183,7 +183,7 @@ def goal_edit_goal(request, gid):
     gid = int(gid)
     goal = Goal.objects.get(id=gid)
     user = request.user
-    
+    goalTitle= str(goal.title)
     if ( user.is_authenticated() and goal.creator.id == user.id ):
         if request.method == "GET":
             return render(request, 'goals/editGoal.html', {"goal": goal })
@@ -197,7 +197,6 @@ def goal_edit_goal(request, gid):
             unit =  data["unit"]
 
             
-
             edits = {'title': title, 'description': description, 'prize' : prize, 
                     'ending_value' : ending_value, 'unit' : unit}
         
