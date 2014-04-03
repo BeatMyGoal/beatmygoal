@@ -66,8 +66,9 @@
     <!-- tabs -->
     <dl class="section-container tabs" data-tab>
       <dd class="active"><a href="#panel2-1">{{ viewedUser.username }}'s Goals</a></dd>
-      <dd><a href="#panel2-2">History</a></dd>
-      <dd><a href="#panel2-3">Comments</a></dd>
+      <dd><a href="#panel2-2">Favorite Goals</a></dd>
+      <dd><a href="#panel2-3">History</a></dd>
+      <dd><a href="#panel2-4">Comments</a></dd>
     </dl>
       
     <div class="tabs-content">
@@ -87,6 +88,21 @@
 
       <div class="content" id="panel2-2">
         <ul>
+          {% if viewedUser.favorite_goals.all %}
+            {% for goal in viewedUser.favorite_goals.all %}
+            <li><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></li>
+            {% endfor %}
+          {% else %}
+            {% if viewedUser.id == user.id and viewedUser.username == user.username %}
+            <li><a href="/dashboard/"> You don't have a favorited Goal! </a></li>
+            {% endif %}
+          {% endif %}
+        </ul>
+      </div>
+
+
+      <div class="content" id="panel2-3">
+        <ul>
           {% for entry in viewedUser.logentries.all %}
           <li><a href="/goals/{{ entry.log.goal.id }}">{{ entry.log.goal.title }}: {{ entry.entry_amount }}, {{ entry.comment }}</a></li>
           {% endfor %}
@@ -94,7 +110,7 @@
           <!-- <p> This feature is not implemented yet </p> -->
       </div>
       
-      <div class="content" id="panel2-3">
+      <div class="content" id="panel2-4">
 	  <p>Coming soon! </p>
           <!-- <p> This feature is not implemented yet </p> -->
       </div>

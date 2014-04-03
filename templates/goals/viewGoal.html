@@ -82,6 +82,7 @@
     </fieldset>
     </form>
 
+
     <!-- buttons -->
     <div class="row">
       <ul class="button-group right">
@@ -93,13 +94,26 @@
         {% endif %}
         {% if isParticipant %}
             <li><a id = "log_button" data-reveal-id="myModal" data-reveal class="button tiny pull-3">Log Progress</a></li>
+            
         {% elif not isCreator and user.is_authenticated %}
             <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
         {% endif %}
        
         {% if user.username == goal.creator.username %}
+
         <li><a href="#" data-reveal-id="reveal_edit" class="button tiny pull-3 alert">Edit Goal</a> </li>
         {% endif %}
+
+
+        {% if isFavorite %}
+            <li><a id = "remove_favorite_button" type="button" class="button tiny alert">Remove Favorite</a></li>
+        {% elif not isFavorite  %}
+
+            <li><a id = "add_favorite_button" type="button" class="button tiny">Add to Favorite</a></li>
+        {% endif %}
+
+
+        
       </ul>
     </div>
 

@@ -159,6 +159,22 @@ def goal_join_goal(request):        #add Functional test here
     return HttpResponse(json.dumps({"errors": response["errors"],
         "redirect" : redirect}), content_type = "application/json")
 
+def goal_add_favorite(request):
+    """
+    Adds a goal as a favorite goal
+    """
+    data = json.loads(request.body)
+    goal_id = data["goal_id"]
+    user = request.user
+    response = BeatMyGoalUser.addFavorite(user, goal_id)
+    
+    redirect = "/goals/" + str(goal_id)
+    if response['errors']:
+            return HttpResponse(json.dumps(response), 
+                                content_type = "application/json")
+    return HttpResponse(json.dumps({"errors": response["errors"],
+        "redirect" : redirect}), content_type = "application/json")
+
 def goal_leave_goal(request):       #add Functional test here
     """
     Removes a user as a participant of a goal.
@@ -167,6 +183,22 @@ def goal_leave_goal(request):       #add Functional test here
     goal_id = data["goal_id"]
     user = request.user 
     response = BeatMyGoalUser.leaveGoal(user, goal_id)
+    redirect = "/goals/" + str(goal_id)
+    if response['errors']:
+        return HttpResponse(json.dumps(response),content_type = "application/json")
+
+    return HttpResponse(json.dumps({"errors": response["errors"],
+        "redirect" : redirect}), content_type = "application/json")
+
+def goal_remove_favorite(request):       
+    """
+    Removes a user as a participant of a goal.
+    """
+    data = json.loads(request.body)
+    goal_id = data["goal_id"]
+    user = request.user 
+    response = BeatMyGoalUser.removeFavorite(user, goal_id)
+    print response
     redirect = "/goals/" + str(goal_id)
     if response['errors']:
         return HttpResponse(json.dumps(response),content_type = "application/json")
@@ -228,8 +260,8 @@ def goal_view_goal(request, goal_id):
     image = str(goal.image)
     isCreator = str(request.user) == str(goal.creator)
     isParticipant = len(goal.beatmygoaluser_set.filter(username=request.user)) > 0
-
-    return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, "isParticipant" : isParticipant, "isCreator" : isCreator, "image" :image, "goal_id" : goal_id})
+    isFavorite = goal in request.user.favorite_goals.all()
+    return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, "isParticipant" : isParticipant, "isCreator" : isCreator, "isFavorite" : isFavorite, "image" :image, "goal_id" : goal_id})
 
 
 def goal_log_progress(request, gid):       #add Functional test here

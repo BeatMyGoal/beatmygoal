@@ -44,7 +44,10 @@ urlpatterns = patterns('',
 
 	url(r'^goals/(\d+)/imageload/$', core.views.goal_image_upload, name ='goal_image_upload'),
 	url(r'^users/(\d+)/imageload/$', core.views.user_image_upload, name ='user_image_upload'),
-         
+    
+    url(r'^goals/goal_add_favorite$', core.views.goal_add_favorite, name ='goal_add_favorite'),
+    url(r'^goals/goal_remove_favorite$', core.views.goal_remove_favorite, name ='goal_remove_favorite'),
+
     url(r'^dashboard', core.views.dashboard, name='dashboard'),                       
     url(r'^confirm', core.views.confirm, name='confirm'),
 
