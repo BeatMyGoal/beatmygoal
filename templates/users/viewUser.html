@@ -7,8 +7,8 @@
 {% block content %}
 
 <div class="row">
+  
   <!-- Photo -->
-
   <div class="large-3 columns">
   <br>
   <div style="width: 230px; height: 280px;">
@@ -29,9 +29,10 @@
   {% endif %}
   </div>
 
-  <!-- 22222222222 -->
+  <!-- Userinfo and tabs -->
   <div class="large-9 columns">
     
+    <!-- Userinfo -->
     <form data-abide>
       <fieldset>
       <legend> <h2>User Information</h2></legend>
@@ -66,8 +67,6 @@
     {% endif %}
  
 
-
-    <!-- 3333333333 -->
     <!-- tabs -->
     <dl class="section-container tabs" data-tab>
       <dd class="active"><a href="#panel2-1">{{ viewedUser.username }}'s Goals</a></dd>
@@ -91,10 +90,10 @@
       </div>
 
       <div class="content" id="panel2-2">
-	  <ul>
-            {% for entry in viewedUser.logentries.all %}
-            <li><a href="/goals/{{ entry.log.goal.id }}">{{ entry.log.goal.title }}: {{ entry.entry_amount }}, {{ entry.comment }}</a></li>
-            {% endfor %}
+        <ul>
+          {% for entry in viewedUser.logentries.all %}
+          <li><a href="/goals/{{ entry.log.goal.id }}">{{ entry.log.goal.title }}: {{ entry.entry_amount }}, {{ entry.comment }}</a></li>
+          {% endfor %}
         </ul>
           <!-- <p> This feature is not implemented yet </p> -->
       </div>
@@ -104,14 +103,10 @@
           <!-- <p> This feature is not implemented yet </p> -->
       </div>
     </div>
-
-
   </div>
-
-
 </div>
 
-  
+<!-- Friends -->
 <div class="row">
   <div class="large-3 columns">
     <form data-abide>
@@ -123,7 +118,7 @@
         </ul>
       </fieldset>
     </form>
-    </div>
+  </div>
 </div>
 
 
