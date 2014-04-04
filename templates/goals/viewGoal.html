@@ -105,9 +105,9 @@
         {% endif %}
 
 
-        {% if isFavorite %}
+        {% if isFavorite and isParticipant %}
             <li><a id = "remove_favorite_button" type="button" class="button tiny alert">Remove Favorite</a></li>
-        {% elif not isFavorite  %}
+        {% elif not isFavorite and isParticipant  %}
 
             <li><a id = "add_favorite_button" type="button" class="button tiny">Add to Favorite</a></li>
         {% endif %}

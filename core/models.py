@@ -309,6 +309,9 @@ class BeatMyGoalUser(AbstractUser):
         except:
             errors.append(CODE_NOT_PARTICIPANT)
 
+        if goal in user.favorite_goals.all():
+            user.favorite_goals.remove(goal)
+
         if not errors:
             user.save()
 
