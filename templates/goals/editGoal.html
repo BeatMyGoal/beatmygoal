@@ -14,13 +14,13 @@
 	<legend> <h2>Edit Goal </h2></legend>
 		<div class="large-6 columns">
 			<label for="title"> Title
-				<input id='title' type="text" value = {{ goal.title |default:'' }} maxlength="50"  required />
+				<input id='title' type="text" value = "{{ goal.title | default:'' }}" maxlength="50"  required />
 				<small id="title-error" class="error">A title is required</small>
 			</label>
 		</div>
 		<div class="large-6 columns">
 			<label for="prize"> Prize
-				<input id='prize' type="text" value = {{ goal.prize |default:'' }} maxlength="50"  required />
+				<input id='prize' type="text" value = "{{ goal.prize |default:'' }}" maxlength="50"  required />
 			</label>
 		</div>
 	</div>
@@ -28,7 +28,7 @@
 	<div class="row">
 		<div class="large-12 columns">
 			<label for='description'>Description
-				<input id='description' type="text" value = {{ goal.description |default:'' }} maxlength="130" required/>
+				<input id='description' type="text" value = "{{ goal.description |default:'' }}" maxlength="130" required/>
 				<small id="description-error" class="error">A description is required</small>
 			</label>
 		</div>
@@ -37,12 +37,12 @@
 	<div class="row">
 		<div class="large-6 columns">
 			<label for="ending_value"> Ending Value
-				<input id='ending_value' type="text" value = {{ goal.ending_value |default:'' }} maxlength="50"  required />
+				<input id='ending_value' type="text" value = "{{ goal.ending_value |default:'' }}" maxlength="50"  required />
 			</label>
 		</div>
 		<div class="large-6 columns">
 			<label for='unit'> Value Unit
-				<input id='unit' type="text" value = {{ goal.unit |default:'' }} maxlength="130" required />
+				<input id='unit' type="text" value = "{{ goal.unit |default:'' }}" maxlength="130" required />
 
 			</label>
 		</div>
@@ -51,14 +51,14 @@
 	<div class="row">
 		<div class="large-6 columns">
 			<label for='goal_type'>Goal Type
-				<input id='goal_type' type="text" value = {{ goal.goal_type |default:'' }} maxlength="130" readonly/>
+				<input id='goal_type' type="text" value = "{{ goal.goal_type |default:'' }}" maxlength="130" readonly/>
 			</label>
 		</div>
 			
 		<div class="large-6 columns">
 			<label for="ending_date"> Deadline
 			{% if goal.goal_type == "Time-based" %}
-				<input id='ending_date' type="text" value = " {{ goal.ending_date.month }} / {{ goal.ending_date.day }} / {{ goal.ending_date.year }}"    readonly />
+				<input id='ending_date' type="text" value = " {{ goal.ending_date }} "    readonly />
 			{% elif goal.goal_type == "Value-based" %}
 				<input id='ending_date' type="text" value =  "None"   readonly />
 			{% endif %}

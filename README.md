@@ -1,4 +1,4 @@
-beatmygoal
+atmygoal
 ==========
 
 Local Installation Instructions

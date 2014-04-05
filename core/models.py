@@ -57,6 +57,8 @@ class Goal(models.Model):
     image = models.FileField(upload_to='image/')
     ending_date = models.DateTimeField(blank=True, null=True);
 
+
+
     def __str__(self):
         return str(self.title)
 
@@ -182,6 +184,7 @@ class BeatMyGoalUser(AbstractUser):
 
 
     goals = models.ManyToManyField(Goal)
+    favorite_goals = models.ManyToManyField(Goal, related_name="favorite_goals")
     image = models.FileField(upload_to='userimage/')
     
     
@@ -264,6 +267,29 @@ class BeatMyGoalUser(AbstractUser):
 
         return { "errors" : errors }
 
+    @classmethod
+    def addFavorite(self, username, goal_id):
+        errors = []
+        try:
+            goal = Goal.objects.get(id = goal_id)
+        except:
+            errors.append(CODE_GOAL_DNE)
+        try:
+            user = BeatMyGoalUser.objects.get(username = username)
+        except:
+            errors.append(CODE_BAD_USERNAME)
+
+
+        if not goal in user.goals.all():
+            errors.append(CODE_NOT_PARTICIPANT)
+        if not errors:
+            print user.favorite_goals
+            user.favorite_goals.add(goal)
+            user.save()
+
+
+        return {"errors" : errors}
+
     
     @classmethod
     def leaveGoal(self, username, goal_id):     #add unit test here
@@ -283,10 +309,38 @@ class BeatMyGoalUser(AbstractUser):
         except:
             errors.append(CODE_NOT_PARTICIPANT)
 
+        if goal in user.favorite_goals.all():
+            user.favorite_goals.remove(goal)
+
         if not errors:
             user.save()
 
         return { "errors" : errors }
+
+    @classmethod
+    def removeFavorite(self, username, goal_id):     
+        errors = []
+        try:
+            goal = Goal.objects.get(id = goal_id)
+        except:
+            errors.append(CODE_GOAL_DNE)
+        try:
+            user = BeatMyGoalUser.objects.get(username = username)
+        except:
+            errors.append(CODE_BAD_USERNAME)
+        if not goal in user.favorite_goals.all():
+            errors.append(CODE_NOT_FAVORITE)
+            
+        try:
+            user.favorite_goals.get(id=goal_id)
+            user.favorite_goals.remove(goal)
+        except:
+            errors.append(CODE_NOT_PARTICIPANT)
+
+        if not errors:
+            user.save()
+        return { "errors" : errors }
+
 
     @classmethod
     def remove(self, userid):

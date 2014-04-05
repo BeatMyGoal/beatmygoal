@@ -1,39 +1,51 @@
 {% extends "base.html" %}
-
 {% load staticfiles %}
-
 {% block title %}{{ goal.title }}{% endblock %}
-
 {% block content %}
 <!doctype html>
   
 <body>
-    {% include "goals/logGoal.html" %}
-  <div class="row" >        
-    <!-- Main Content Section -->
-    <div class="large-9 push-3 columns">
-    
+  {% include "goals/logGoal.html" %}
+
+<div class="row" >        
+  
+  <!-- Photo -->
+  <div class="large-3 columns">
+    <br>
+    <div style="width: 230px; height: 280px;">
+    {% if goal.image %}
+      <img src="{{goal.image.url}}" />
+    {% else %}
+      <p> <img src="http://placehold.it/320x300&text=photo" /></p>
+    {% endif %}
+    </div>
+      
+    {% if user.username == goal.creator.username %}
+    <p>Select the goal photo photo.</p>
+    <form action={% url 'goal_image_upload' goal_id  %} method="post" enctype="multipart/form-data">
+    <input type="file" class="button tiny" name="image" />
+    <input type="submit"  class="button tiny" value="Upload" />
+    </form>
+    {% endif %}
+  </div>
+
+  <!-- Goalinfo and tabs -->
+  <div class="large-9 columns">
     <form data-abide>
-      <fieldset>
-      <legend> <h2> {{goal.title}}</h2></legend>
-
-      <!--
-      / Facebook login / Tweeter login
-      -->  
-
-        <div class="row" >
-          <div class="large-6 columns">
-            <h5 > Creator : {{ goal.creator.username }} </5>
-          </div>
-          <div class="large-6 columns">
-            <h5> Creator Email : {{ goal.creator.email }} </h5>
-          </div>
+    <fieldset>
+    <legend> <h2> {{goal.title}}</h2></legend>
+      <div class="row" >
+        <div class="large-6 columns">
+          <h5 > Creator : {{ goal.creator.username }} </h5>
         </div>
-
+        <div class="large-6 columns">
+          <h5> Creator Email : {{ goal.creator.email }} </h5>
+        </div>
+      </div>
 
       <div class="row">
         <div class="large columns">
-          <h5> Description : {{ goal.description }} </5>
+          <h5> Description : {{ goal.description }} </h5>
         </div>
 
       </div>
@@ -67,19 +79,12 @@
       </div>
 
       {% endif %}
-
-
-
-
-     
-
-
-      </fieldset>
+    </fieldset>
     </form>
+
 
     <!-- buttons -->
     <div class="row">
-  
       <ul class="button-group right">
         {% if isParticipant or isCreator %}
             <!-- <li><a id = "favorite_button" type="submit" class="round button tiny pull-5">Favorite</a></li> -->
@@ -89,32 +94,88 @@
         {% endif %}
         {% if isParticipant %}
             <li><a id = "log_button" data-reveal-id="myModal" data-reveal class="button tiny pull-3">Log Progress</a></li>
+            
         {% elif not isCreator and user.is_authenticated %}
             <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
         {% endif %}
        
-
         {% if user.username == goal.creator.username %}
 
         <li><a href="#" data-reveal-id="reveal_edit" class="button tiny pull-3 alert">Edit Goal</a> </li>
-
-
-
         {% endif %}
+
+
+        {% if isFavorite and isParticipant %}
+            <li><a id = "remove_favorite_button" type="button" class="button tiny alert">Remove Favorite</a></li>
+        {% elif not isFavorite and isParticipant  %}
+
+            <li><a id = "add_favorite_button" type="button" class="button tiny">Add to Favorite</a></li>
+        {% endif %}
+
+
+        
       </ul>
     </div>
 
+    <!-- tabs -->
+    <dl class="section-container tabs" data-tab>
+      <dd class="active"><a href="#panel2-1">Goal History</a></dd>
+      <dd><a href="#panel2-2">Progress Graph</a></dd>
+      <dd><a href="#panel2-3">Comments</a></dd>
+    </dl>
+    <div class="tabs-content">
+      <div class="content active" id="panel2-1">
+        <ul>
+            {% for entry in goal.log.logentry_set.all %}
 
-    <!-- Reveal Modals begin -->
+            <li>{{ entry.participant }} : {{ entry.entry_amount }}, {{ entry.comment }}</li>
+
+            {% endfor %}
+        </ul>
+      </div>
+
+      <div class="content" id="panel2-2">
+        <!-- <p> This feature is not implemented yet </p> -->
+       <p>Coming soon! </p>
+      </div>
+
+      <div class="content" id="panel2-3">
+        <!-- <p> Coming soon on iteration 2 </p> -->
+    	  <p>Coming soon! </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Participants -->
+<div class="row" >        
+  <div class="large-3 columns">
+    <form data-abide>
+      <fieldset>
+      <legend> <h3> Participants </h3></legend>
+      <ul class="side-nav">
+        {% for participant in goal.beatmygoaluser_set.all %} 
+
+        <li><a href="/users/{{ participant.id }}">{{ participant.username }}</a></li>
+        {% endfor %}
+      </ul>
+      </fieldset>
+  </form>
+  </div>
+    <div style="display:none" id="username">{{ goal.creator.username }}</div>
+</div>
+  
+
+
+<!-- Reveal Modals begin -->
 <div id="reveal_edit" class="reveal-modal medium" style="display: none" data-reveal>
   <h2> Please Re-authenticate </h2>
   <br>
   <label for='password'>Confirm Password
-
     <input id='password' type="password" required/>
     <small id="password-error" style="display:None" class="error">A password is required</small>
   </label>
-
   <ul class="button-group right">
     <li><a id = "Confirm_button" class="button large pull-2 radius alert"> Confirm </a></li>
     <li><a id = "Back_button" class="button large  radius"> Back </a></li>
@@ -123,94 +184,8 @@
 </div>
 
 
-
-
-
-
-
-      
-    
-    <!-- tabs -->
-    <dl class="section-container tabs" data-tab>
-        <dd class="active"><a href="#panel2-1">Goal History</a></dd>
-        <dd><a href="#panel2-2">Progress Graph</a></dd>
-        <dd><a href="#panel2-3">Comments</a></dd>
-      </dl>
-      <div class="tabs-content">
-     
-        <div class="content active" id="panel2-1">
-            <ul>
-                {% for entry in goal.log.logentry_set.all %}
-
-                <li>{{ entry.participant }} : {{ entry.entry_amount }}, {{ entry.comment }}</li>
-
-                {% endfor %}
-            </ul>
-	  <!--
-          <p> List Goal History </p>
-          <p> List Goal History </p>
-          <p> List Goal History </p>
-          <p> List Goal History </p>
-          <p> List Goal History </p> -->
-
-        </div>
-        <div class="content" id="panel2-2">
-          <!-- <p> This feature is not implemented yet </p> -->
-	  <p>Coming soon! </p>
-        </div>
-
-
-        <div class="content" id="panel2-3">
-          <!-- <p> Coming soon on iteration 2 </p> -->
-	  <p>Coming soon! </p>
-        </div>
-
-      </div>
-    </div>
-
-        
-
-    <!-- Nav Sidebar (Left)-->
-    <div class="large-3 pull-9 columns">
-       <br>
-       <div style="width: 230px; height: 280px;">
-	{% if goal.image %}
-	      <img src="{{goal.image.url}}" />
-	      </div>
-        {% else %}
-	      <p> <img src="http://placehold.it/320x300&text=photo" /></p>
-
-	      </div>
-	{% endif %}
-    
-    {% if user.username == goal.creator.username %}
-
-	      <p>Select the goal photo photo.</p>
-		<form action={% url 'goal_image_upload' goal_id  %} method="post" enctype="multipart/form-data">
-		  <input type="file" class="button tiny" name="image" />
-	          <input type="submit"  class="button tiny" value="Upload" />
-	      </form>
-	{% endif %}
-      <form data-abide>
-        <fieldset>
-        <legend> <h3> Participants </h3></legend>
-        <ul class="side-nav">
-          {% for participant in goal.beatmygoaluser_set.all %} 
-
-          <li><a href="/users/{{ participant.id }}">{{ participant.username }}</a></li>
-          {% endfor %}
-          
-          
-        </ul>
-        </fieldset>
-      </form>
-    </div>
-  
-
-    <div style="display:none" id="username">{{ goal.creator.username }}</div>
-  </body>
+</body>
 </html>
-
 <script src="{% static 'js/goals/viewGoal.js' %}"></script>
 
 {% endblock %}

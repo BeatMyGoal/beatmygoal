@@ -1,16 +1,55 @@
 $(document).ready(function() {
 
 
+    $('#add_favorite_button').click(function() {
+        var goal_id = window.location.pathname.split("/")[2];
+        var data = {
+            goal_id: goal_id,
+        };
+        $.ajax({
+            type:"POST",
+            url: "/goals/goal_add_favorite",
+            data: JSON.stringify(data),
+            contentType: "json",
+        }).done(function(data) {
+            console.log(data.errors);
+            if (data.errors.length === 0) {
+                window.location.href = data.redirect;
+            }
+            console.log(data.errors);
+        }).fail(function(data) {
+            alert("failure");
+        });
+
+    });
+
+    $('#remove_favorite_button').click(function() {
+        var goal_id = window.location.pathname.split("/")[2];
+        var data = {
+            goal_id: goal_id,
+        };
+        $.ajax({
+            type:"POST",
+            url: "/goals/goal_remove_favorite",
+            data: JSON.stringify(data),
+            contentType: "json",
+        }).done(function(data) {
+            console.log(data.errors);
+            if (data.errors.length === 0) {
+                window.location.href = data.redirect;
+            }
+            console.log(data.errors);
+        }).fail(function(data) {
+            alert("failure");
+        });
+    });
+
 
     $('#edit_goal_button').click(function() {
       window.location = window.location.href+"edit";
       return false;
     });
 
-    $('#favorite_button').click(function() {
-        console.log('favorite button pushed');
-        $(this).toggleClass('alert');
-    });
 
     $('#join_goal_button').click(function() {
         var goal_id = window.location.pathname.split("/")[2];

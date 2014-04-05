@@ -1,97 +1,74 @@
 {% extends "base.html" %}
-
 {% load staticfiles %}
-
 {% block title %}{{ viewedUser.username }}{% endblock %}
-
 {% block content %}
 
-<div class="row">        
-   <!-- Main Content Section -->
-  <div class="large-9 push-3 columns">
+<div class="row">
+  
+  <!-- Photo -->
+  <div class="large-3 columns">
+  <br>
+  <div style="width: 230px; height: 280px;">
+  {% if viewedUser.image %}
+    <img src="{{viewedUser.image.url}}" />
+  {% else %}
+    <p> <img src="http://placehold.it/320x300&text=photo" /></p>
+  {% endif %}
+  </div>
+
+  {% if viewedUser.id == user.id and viewedUser.username == user.username %}
+  <form action={% url 'user_image_upload' user.id  %} method="post" enctype="multipart/form-data">
+    <p>Select your profile photo.</p>
+    <input type="file" class="button tiny" name="image" />
+    <input type="submit" class="button tiny" value="Upload" />
+  </form>
+  {% endif %}
+  </div>
+
+  <!-- Userinfo and tabs -->
+  <div class="large-9 columns">
+    
+    <!-- Userinfo -->
     <form data-abide>
-       <fieldset>
-       <legend> <h2>User Information</h2></legend>
+      <fieldset>
+      <legend> <h2>User Information</h2></legend>
        
+      {% if not errors %}
+      <!-- <h7> BeatMyGoal login / Facebook login / Tweeter login </h7><br><br> -->
+      <div class="row">
+        <div class="large-6 columns">
+          <h5> Username : {{ viewedUser.username | default:'' }} </h5>
+        </div>
+        <div class="large-6 columns">
+          <h5> Email : {{ viewedUser.email | default:'' }} </h5>
+        </div>
+      </div>
       
-       {% if not errors %}
-       <!-- <h7> BeatMyGoal login </h7><br><br> -->
-      <!--
-      / Facebook login / Tweeter login
-      -->   
+      {%  else  %}
+      <h5> We couldn't find that user </h5>  
    
-       <div class="row">
-         <div class="large-6 columns">
-           <h5> Username : {{ viewedUser.username | default:'' }} </h5>
-   
-         </div>
-         <div class="large-6 columns">
-           <h5> Email : {{ viewedUser.email | default:'' }} </h5>
-         </div>
-       </div>
-
-       {%  else  %}
-       <h5> We couldn't find that user </h5>  
-   
-       {% endif %}
-        <!--
-        <div class="row">
-          <div class="large-6 columns">
-          <label for="First Name"> First Name
-          <input id='First_Name' type="text" value="">
-          </label>
-          </div>
-          <div class="large-6 columns">
-          <label for="Last Name"> Last Name
-          <input id='Last_Name' type="text" value="">
-          </label>
-          </div>
-          </div>
-
-          <div class="row">
-          <div class="large-6 columns">
-          <label for="Error Code"> Error Code
-          <input id='Error_Code' type="text" value="">
-          </label>
-          </div>
-          <div class="large-6 columns">
-          <label for="User id"> Userid
-          <input id='Userid' type="text" value="">
-          </label>
-          </div>
-          </div>
-        -->
+      {% endif %}  
       </fieldset>
     </form>
 
     {% if viewedUser.id == user.id and viewedUser.username == user.username %}
 
-
     <!-- buttons -->
     <div class="row">
       <ul class="button-group right">
- 
-      <!--
-      If request.user.is_authenticated(), hide these two buttons
-      -->  
-      <li><a href="#" data-reveal-id="reconfirom_delete_user" class="button tiny pull-5 radius alert">Delete User</a> </li>
-      <!--
-      <li><a id = "delete_user_button" type="button" class="button tiny pull-5 radius alert">Delete User</a></li>
-      <li><a id = "password_change_button" type="submit" class="button tiny pull-3">Password Change</a></li>
-      <li><a href = "edit" class="button tiny pull-3 radius">Edit User</a></li>
-      -->
-
-      <li><a href="#" data-reveal-id="reveal_edit" class="button tiny pull-3 radius">Edit User</a> </li>
-
+        <li><a href="#" data-reveal-id="reconfirom_delete_user" class="button tiny pull-5 radius alert">Delete User</a> </li>
+        <li><a href="#" data-reveal-id="reveal_edit" class="button tiny pull-3 radius">Edit User</a> </li>
       </ul>
     </div>
     {% endif %}
  
+
     <!-- tabs -->
     <dl class="section-container tabs" data-tab>
       <dd class="active"><a href="#panel2-1">{{ viewedUser.username }}'s Goals</a></dd>
-      <dd><a href="#panel2-2">History</a></dd>
-      <dd><a href="#panel2-3">Comments</a></dd>
+      <dd><a href="#panel2-2">Favorite Goals</a></dd>
+      <dd><a href="#panel2-3">History</a></dd>
+      <dd><a href="#panel2-4">Comments</a></dd>
     </dl>
       
     <div class="tabs-content">
@@ -110,56 +87,52 @@
       </div>
 
       <div class="content" id="panel2-2">
-	  <ul>
-            {% for entry in viewedUser.logentries.all %}
-            <li><a href="/goals/{{ entry.log.goal.id }}">{{ entry.log.goal.title }}: {{ entry.entry_amount }}, {{ entry.comment }}</a></li>
+        <ul>
+          {% if viewedUser.favorite_goals.all %}
+            {% for goal in viewedUser.favorite_goals.all %}
+            <li><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></li>
             {% endfor %}
+          {% else %}
+            {% if viewedUser.id == user.id and viewedUser.username == user.username %}
+            <li><a href="/dashboard/"> You don't have a favorited Goal! </a></li>
+            {% endif %}
+          {% endif %}
+        </ul>
+      </div>
+
+
+      <div class="content" id="panel2-3">
+        <ul>
+          {% for entry in viewedUser.logentries.all %}
+          <li><a href="/goals/{{ entry.log.goal.id }}">{{ entry.log.goal.title }}: {{ entry.entry_amount }}, {{ entry.comment }}</a></li>
+          {% endfor %}
         </ul>
           <!-- <p> This feature is not implemented yet </p> -->
       </div>
       
-      <div class="content" id="panel2-3">
+      <div class="content" id="panel2-4">
 	  <p>Coming soon! </p>
           <!-- <p> This feature is not implemented yet </p> -->
       </div>
     </div>
   </div>
+</div>
 
-
-  <!--Nav Sidebar (Left)-->
-  <div class="large-3 pull-9 columns">
-      <br>
-
-       <div style="width: 230px; height: 280px;">
-	{% if viewedUser.image %}
-	      <img src="{{viewedUser.image.url}}" />
-	      </div>
-        {% else %}
-	      <p> <img src="http://placehold.it/320x300&text=photo" /></p>
-
-	      </div>
-	{% endif %}	
-
-    {% if viewedUser.id == user.id and viewedUser.username == user.username %}
-		<form action={% url 'user_image_upload' user.id  %} method="post" enctype="multipart/form-data">
-		  <p>Select your profile photo.</p>
-		  <input type="file" class="button tiny" name="image" />
-	          <input type="submit" class="button tiny" value="Upload" />
-	      </form>
-	{% endif %}	
-
+<!-- Friends -->
+<div class="row">
+  <div class="large-3 columns">
     <form data-abide>
       <fieldset>
         <legend> <h3> Friends </h3></legend>
         <ul class="side-nav">
-	  <p>Coming soon! </p>
+          <p>Coming soon! </p>
           <!-- <p>This feature is not implemented yet</p> -->
         </ul>
       </fieldset>
     </form>
   </div>
-
 </div>
+
 
 
 
