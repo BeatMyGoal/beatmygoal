@@ -1,8 +1,10 @@
 .PHONY: unit func gui test
 
 hook:
-	cp pre-commit .git/hooks/
+	cp scripts/pre-commit .git/hooks/
+	cp scripts/post-merge .git/hooks/
 	chmod +x .git/hooks/pre-commit
+	chmod +x .git/hooks/post-merge
 
 unit:
 	python manage.py test tests/testUnit*.py -v2
