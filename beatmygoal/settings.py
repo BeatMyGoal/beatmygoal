@@ -66,7 +66,10 @@ WSGI_APPLICATION = 'beatmygoal.wsgi.application'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 # Auto logout delay in minutes
-AUTO_LOGOUT_DELAY = 1 #equivalent to 5 minutes
+AUTO_LOGOUT_DELAY = 1 #equivalent to 1 minutes
+
+# Close the session when user closes the browser
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
