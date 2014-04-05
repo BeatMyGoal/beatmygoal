@@ -1,4 +1,4 @@
-eatmygoal
+atmygoal
 ==========
 
 Local Installation Instructions
