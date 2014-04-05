@@ -53,12 +53,20 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'beatmygoal.middleware.AutoLogout',
 )
 
 ROOT_URLCONF = 'beatmygoal.urls'
 
 WSGI_APPLICATION = 'beatmygoal.wsgi.application'
 
+
+
+#Handle session is not Json Serializable
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
+# Auto logout delay in minutes
+AUTO_LOGOUT_DELAY = 1 #equivalent to 5 minutes
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
