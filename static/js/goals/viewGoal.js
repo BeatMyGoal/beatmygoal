@@ -176,3 +176,30 @@ $("#reveal_edit #Confirm_button").click(function(e) {
     });
 });
 
+$("#reveal_email #cancle_button").click(function(e) {
+    $('#reveal_email').foundation('reveal', 'close');
+});
+
+$("#reveal_email #send_button").click(function(e) {
+    var to = $('#reveal_email #to').val();
+    var data = {
+        to: to
+    }
+    console.log(data);
+
+    $.ajax({
+        type: "POST",
+        url: "/email/",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        dataType: "json",
+    }).done(function(data) {
+        console.log(data.errors);
+        if (data.errors.length === 0) {
+            window.location = data.redirect;
+        }
+    }).fail(function(data) {
+        alert("failure");
+    });
+});
+

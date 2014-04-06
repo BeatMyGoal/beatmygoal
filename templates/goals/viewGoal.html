@@ -151,9 +151,11 @@
 <!-- Participants -->
 <div class="row" >        
   <div class="large-3 columns">
+
     <form data-abide>
       <fieldset>
       <legend> <h3> Participants </h3></legend>
+      <a href="#" data-reveal-id="reveal_email" class="button tiny">Invite Friends</a>
       <ul class="side-nav">
         {% for participant in goal.beatmygoaluser_set.all %} 
 
@@ -182,6 +184,22 @@
   </ul>
   <a class="close-reveal-modal">&#215;</a>
 </div>
+
+
+<!-- Reveal Modals begin -->
+<div id="reveal_email" class="reveal-modal medium" style="display: none" data-reveal>
+  <h2> Invite Friends </h2>
+  <br>
+  <label for='to'>Friend's Email
+    <input id='to' type="text" required/>
+  </label>
+  <ul class="button-group right">
+    <li><a id = "send_button" class="button large pull-2 radius alert"> Send </a></li>
+    <li><a id = "cancle_button" class="button large  radius"> Cancle </a></li>
+  </ul>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
 
 
 </body>

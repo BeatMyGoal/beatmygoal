@@ -66,7 +66,7 @@ WSGI_APPLICATION = 'beatmygoal.wsgi.application'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 # Auto logout delay in minutes
-AUTO_LOGOUT_DELAY = 1 #equivalent to 1 minutes
+AUTO_LOGOUT_DELAY = 100 #equivalent to 1 minutes
 
 # Close the session when user closes the browser
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -143,3 +143,8 @@ AUTH_USER_MODEL = 'core.BeatMyGoalUser'
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'beatmygoalcal@gmail.com'
+EMAIL_HOST_PASSWORD = 'beatmygoal123'
+EMAIL_PORT = 587

@@ -6,6 +6,7 @@ from django.template import RequestContext, loader
 from authomatic import Authomatic
 from authomatic.adapters import DjangoAdapter
 from config import CONFIG
+from django.core.mail import send_mail, BadHeaderError, EmailMessage
 
 authomatic = Authomatic(CONFIG, 'CSRF_TOKEN')
 
@@ -22,6 +23,22 @@ from django.core.urlresolvers import reverse
 from django.views.generic import FormView,DetailView
 from .forms import ImageForm
 
+def send_email(request):
+    subject = "Test email from BeatMyGoal"
+    message = "This is a test email from BeatMyGoal"
+    data = json.loads(request.body)
+    to = data["to"]
+    errors = []
+    if to:
+        try:
+            email = EmailMessage(subject, message, to=[to])
+            email.send()
+        except Exception:
+            errors.append(999)
+    else:
+        errors.append(888)
+    return HttpResponse(json.dumps({"errors" : errors, "redirect" : ""}), content_type = "application/json")
+
 
 def user_login_fb(request):
     """
@@ -31,7 +48,7 @@ def user_login_fb(request):
     #response = HttpResponse()
     response = HttpResponseRedirect("/dashboard/")
     result = authomatic.login(DjangoAdapter(request, response), "fb")
-     
+
 
     if result:
         if result.error:
