@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from models import Goal, BeatMyGoalUser, Log, LogEntry
-from django.template import RequestContext, loader
+from django.template import RequestContext, loader, Context
 
 from authomatic import Authomatic
 from authomatic.adapters import DjangoAdapter
@@ -27,13 +27,17 @@ def send_email(request):
     subject = "Test email from BeatMyGoal"
     message = "This is a test email from BeatMyGoal"
     data = json.loads(request.body)
-    to = data["to"]
+    to = data["to"].split(",")
     errors = []
     if to:
         try:
-            email = EmailMessage(subject, message, to=[to])
+            html_content = loader.get_template('email.html')
+            html_content = html_content.render(Context({'from' : request.user}))
+            email = EmailMessage(subject, html_content, to=to)
+            email.content_subtype = "html"
             email.send()
-        except Exception:
+        except Exception as e:
+            print e
             errors.append(999)
     else:
         errors.append(888)

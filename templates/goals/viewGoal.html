@@ -141,7 +141,7 @@
 
       <div class="content" id="panel2-3">
         <!-- <p> Coming soon on iteration 2 </p> -->
-    	  <p>Coming soon! </p>
+        <p>Coming soon! </p>
       </div>
     </div>
   </div>
@@ -155,7 +155,12 @@
     <form data-abide>
       <fieldset>
       <legend> <h3> Participants </h3></legend>
-      <a href="#" data-reveal-id="reveal_email" class="button tiny">Invite Friends</a>
+      <a href="#" data-dropdown="drop1" class="button dropdown small">Invite Friends</a><br>
+    <ul id="drop1" data-dropdown-content class="f-dropdown">
+    <li><a href="#" data-reveal-id="reveal_email" c>With Email</a></li>
+      <li><a href="#">With Facebook</a></li>
+    </ul>
+
       <ul class="side-nav">
         {% for participant in goal.beatmygoaluser_set.all %} 
 
@@ -190,9 +195,17 @@
 <div id="reveal_email" class="reveal-modal medium" style="display: none" data-reveal>
   <h2> Invite Friends </h2>
   <br>
-  <label for='to'>Friend's Email
-    <input id='to' type="text" required/>
-  </label>
+  <div class="row" id="wrapper">
+    <div class="large-12 columns" id="wrapper2">
+      <div class="row collapse">
+        <div class="small-12 columns">
+          <input id='to' type="text" placeholder="Friend's Email">
+          <p style="font-size:x-small">Insert commas between multiple email addresses <a href="#">Preview Email</a></p>
+        </div>
+
+
+      </div>
+    </div>
   <ul class="button-group right">
     <li><a id = "send_button" class="button large pull-2 radius alert"> Send </a></li>
     <li><a id = "cancle_button" class="button large  radius"> Cancle </a></li>
