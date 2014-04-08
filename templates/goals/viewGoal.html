@@ -3,7 +3,26 @@
 {% block title %}{{ goal.title }}{% endblock %}
 {% block content %}
 <!doctype html>
-  
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script>
+FB.init({
+appId:'630259823729024',
+cookie:true,
+status:true,
+xfbml:true
+});
+
+function FacebookInviteFriends()
+{
+FB.ui({
+method: 'apprequests',
+message: 'Invitation to BeatMyGoal'
+});
+}
+</script>
+
+
+
 <body>
   {% include "goals/logGoal.html" %}
 
@@ -158,7 +177,8 @@
       <a href="#" data-dropdown="drop1" class="button dropdown small">Invite Friends</a><br>
     <ul id="drop1" data-dropdown-content class="f-dropdown">
     <li><a href="#" data-reveal-id="reveal_email" c>With Email</a></li>
-      <li><a href="#">With Facebook</a></li>
+    <div id="fb-root"></div>
+    <li><a href='#' onclick="FacebookInviteFriends();"> With FaceBook</a></li>
     </ul>
 
       <ul class="side-nav">
