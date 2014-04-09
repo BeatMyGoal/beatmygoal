@@ -14,12 +14,14 @@
         xfbml:true
     });
 
-    function FacebookInviteFriends()
-    {
+    function FacebookInviteFriends() {
         FB.ui({
             method: 'apprequests',
             message: 'Invitation to BeatMyGoal'
         });
+    }
+    if (top.location!= self.location) {
+        top.location = self.location;
     }
 </script>
 
