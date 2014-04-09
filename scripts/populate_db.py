@@ -84,7 +84,7 @@ for g in dummy_goals:
     l.save()
     for u in users:
         le = LogEntry.create(l, u.username, randrange(1,100), "hello world")['logEntry']
-        le.entry_date = datetime.date.today() + datetime.timedelta(days=randrange(1,7))
+        le.entry_date = datetime.date.today() + datetime.timedelta(days=randrange(1,5))
         le.save()
     goals.append(g)
 

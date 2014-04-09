@@ -16,7 +16,7 @@ class Log(models.Model):
         goal_created = self.goal.date_created
         goal_created = datetime(goal_created.year, goal_created.month, goal_created.day)
 
-        response = {"users" : [], "errors" : [], "days" : [0] * (total_days + 3)}
+        response = {"users" : [], "errors" : [], "days" : [0] * (total_days)}
 
         for user in users:
             user_entries = list(entries.filter(participant=user).order_by("entry_date"))
