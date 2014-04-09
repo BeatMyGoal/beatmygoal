@@ -3,6 +3,9 @@
 
 from core.models import *
 import random
+from random import randrange
+import datetime
+from datetime import timedelta
 
 dummy_users = \
 """
@@ -67,15 +70,22 @@ users = list(BeatMyGoalUser.objects.all())
 for g in dummy_goals:
     creator = random.choice(users)
     title = g[0]
-    #print title
-    t = "Value-based"
-    g = Goal(creator=creator, title=title, 
-             description=t, prize=t, progress_value=1.0, goal_type=t, private_setting=1, unit = "unit")
+    description = "This is test Goal"
+    prize = "$" + str(randrange(1,50) * 100)
+    goal_type = random.choice(['Time-based','Value-based'])
+    ending_value = str(randrange(1,6) * 100)
+    unit = random.choice(['dollar','pounds','kg','lines','km','times'])
+    if (goal_type == 'Time-based'):
+        ending_date = datetime.date.today() + datetime.timedelta(days=randrange(1,366))
+    else:
+        ending_date =  None
+    g = Goal(creator=creator, title=title, description=description, prize=prize, progress_value=1.0, goal_type=goal_type, private_setting=1, ending_value = ending_value, unit = unit, ending_date = ending_date)
     g.save()
-    #print "Creating goal: %s, %s, %s" % creator, title, prize
     l = Log(goal=g)
     l.save()
     goals.append(g)
+
+
 
 # Add random users to random goals
 for i in range(30):
