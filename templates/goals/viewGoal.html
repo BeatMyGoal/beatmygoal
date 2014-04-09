@@ -231,6 +231,7 @@
 
 <script type="text/javascript">
     var ctx = $("#progressChart").get(0).getContext("2d");
+    var colors = COLORS.list();
 
     var data = {
         labels : [
@@ -241,9 +242,9 @@
         datasets : [
             {% for user, amounts in progress.users %}
             {
-                fillColor : "rgba(220,220,220,0.5)",
-                strokeColor : "rgba(220,220,220,1)",
-                pointColor : "rgba(220,220,220,1)",
+                fillColor : "rgba(" + hexToRgb(colors[{{forloop.counter0 }}]) + ",0.1)",
+                strokeColor : colors[ {{forloop.counter0 }}],
+                pointColor : colors[ {{forloop.counter0 }}],
                 pointStrokeColor : "#fff",
                 data : [{% for amount in amounts %} {{ amount }}, {% endfor %}]
             },
@@ -251,7 +252,9 @@
         ]
     };
 
-    var myNewChart = new Chart(ctx).Line(data);
+    var myNewChart = new Chart(ctx).Line(data, {
+        datasetStrokeWidth : 5,
+    });
 </script>
 {% endblock %}
 
