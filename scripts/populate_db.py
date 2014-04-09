@@ -75,10 +75,12 @@ for g in dummy_goals:
     goal_type = random.choice(['Time-based','Value-based'])
     ending_value = str(randrange(1,6) * 100)
     unit = random.choice(['dollar','pounds','kg','lines','km','times'])
+    
     if (goal_type == 'Time-based'):
         ending_date = datetime.date.today() + datetime.timedelta(days=randrange(1,366))
     else:
         ending_date =  None
+
     g = Goal(creator=creator, title=title, description=description, prize=prize, progress_value=1.0, goal_type=goal_type, private_setting=1, ending_value = ending_value, unit = unit, ending_date = ending_date)
     g.save()
     l = Log(goal=g)
