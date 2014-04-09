@@ -2,10 +2,9 @@
 {% load staticfiles %}
 {% block title %}{{ goal.title }}{% endblock %}
 {% block content %}
-<!doctype html>
-  
-<body>
-  {% include "goals/logGoal.html" %}
+
+{% include "goals/logGoal.html" %}
+<script src="{% static 'js/Chart.min.js' %}"></script>
 
 <div class="row" >        
   
@@ -200,11 +199,35 @@
   <a class="close-reveal-modal">&#215;</a>
 </div>
 
-
-
-</body>
-</html>
 <script src="{% static 'js/goals/viewGoal.js' %}"></script>
 
+<div class="row">
+    <canvas id='progressChart' width='800' height='400'></canvas>
+</div>
+
+<script type="text/javascript">
+    var ctx = $("#progressChart").get(0).getContext("2d");
+
+    var data = {
+        labels : [
+            {% for i in progress.days %}
+                "Day {{ forloop.counter0 }}",
+            {% endfor %}
+        ],
+        datasets : [
+            {% for user, amounts in progress.users %}
+            {
+                fillColor : "rgba(220,220,220,0.5)",
+                strokeColor : "rgba(220,220,220,1)",
+                pointColor : "rgba(220,220,220,1)",
+                pointStrokeColor : "#fff",
+                data : [{% for amount in amounts %} {{ amount }}, {% endfor %}]
+            },
+            {% endfor %}
+        ]
+    };
+
+    var myNewChart = new Chart(ctx).Line(data);
+</script>
 {% endblock %}
 

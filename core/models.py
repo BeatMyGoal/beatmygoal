@@ -9,6 +9,30 @@ from sys import maxint
 class Log(models.Model):
     goal = models.OneToOneField('Goal')
 
+    def parseEntriesByUser(self):
+        entries = self.logentry_set.all()
+        users = set(entry.participant for entry in entries)
+        total_days = ((datetime.today() if not self.goal.ending_date else self.goal.ending_date) - self.goal.date_created).days + 3
+        goal_created = self.goal.date_created
+        goal_created = datetime(goal_created.year, goal_created.month, goal_created.day)
+
+        response = {"users" : [], "errors" : [], "days" : [0] * (total_days + 3)}
+
+        for user in users:
+            user_entries = list(entries.filter(participant=user).order_by("entry_date"))
+            amounts = []
+            for i in range(total_days):
+                amount = amounts[i-1] if i > 0 else 0
+                while user_entries and (user_entries[0].entry_date - (goal_created + timedelta(days=i))).days <= 0:
+                    entry = user_entries.pop(0)
+                    amount += entry.entry_amount
+                amounts.append(amount)
+            response["users"].append([user, amounts])
+
+        return response
+
+
+
 class LogEntry(models.Model):
     log = models.ForeignKey('Log')
     participant = models.ForeignKey('BeatMyGoalUser', related_name="logentries")
