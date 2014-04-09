@@ -5,27 +5,15 @@
 
 {% include "goals/logGoal.html" %}
 <script src="{% static 'js/Chart.min.js' %}"></script>
-<script src="http://connect.facebook.net/en_US/all.js"></script>
-<script>
-    FB.init({
-        appId:'630259823729024',
-        cookie:true,
-        status:true,
-        xfbml:true
-    });
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/ko_KR/all.js#xfbml=1&appId=630259823729024";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 
-    function FacebookInviteFriends() {
-        FB.ui({
-            method: 'apprequests',
-            message: 'Invitation to BeatMyGoal'
-        });
-    }
-    if (top.location!= self.location) {
-        top.location = self.location;
-    }
-</script>
-
-  {% include "goals/logGoal.html" %}
 
 <div class="row" >        
   
@@ -179,7 +167,7 @@
     <ul id="drop1" data-dropdown-content class="f-dropdown">
     <li><a href="#" data-reveal-id="reveal_email" c>With Email</a></li>
     <div id="fb-root"></div>
-    <li><a href='#' onclick="FacebookInviteFriends();"> With FaceBook</a></li>
+    <li><div id="fb-send" class="fb-send" data-href="http://beatmygoal.com" data-colorscheme="light"></div><li>
     </ul>
 
       <ul class="side-nav">
@@ -232,6 +220,7 @@
     <li><a id = "cancle_button" class="button large  radius"> Cancle </a></li>
   </ul>
   <a class="close-reveal-modal">&#215;</a>
+    </div>
 </div>
 
 <script src="{% static 'js/goals/viewGoal.js' %}"></script>
