@@ -3,24 +3,47 @@
 {% block title %}{{ viewedUser.username }}{% endblock %}
 {% block content %}
 
+<link rel="stylesheet" href="{% static 'css/viewUser.css' %}"/>
 <div class="row">
-  
+
   <!-- Photo -->
-  <div class="large-3 columns">
+  <div class="large-3 columns" onmouseover = "showfileButton()"
+  onmouseout = "hidefileButton()" >
   <br>
-  <div style="width: 230px; height: 280px;">
+  <div id = "imageContainer">
   {% if viewedUser.image %}
     <img src="{{viewedUser.image.url}}" />
   {% else %}
     <p> <img src="http://placehold.it/320x300&text=photo" /></p>
   {% endif %}
   </div>
-
+  <script>
+  function showfileButton()
+  {
+  $('#filebuttonContainer').show();
+  $('#submitbuttonContainer').show();
+  $('#dummybutton').show();
+  }
+  function hidefileButton()
+  {
+  $('#filebuttonContainer').hide();
+  $('#submitbuttonContainer').hide();
+  $('#dummybutton').hide();
+  }
+  </script>
+  
   {% if viewedUser.id == user.id and viewedUser.username == user.username %}
-  <form action={% url 'user_image_upload' user.id  %} method="post" enctype="multipart/form-data">
-    <p>Select your profile photo.</p>
-    <input type="file" class="button tiny" name="image" />
-    <input type="submit" class="button tiny" value="Upload" />
+  <form action={% url 'user_image_upload' user.id  %} method="post"
+  enctype="multipart/form-data">
+  <div id = "filebuttonContainer">
+    <input type="file" class="upload" name="image" id = "imagebutton" />
+  </div>
+  <div id = "dummybutton">
+  <input type = "button" class ="button tiny" value="Choose Photo">
+  </div>
+  <div id ="submitbuttonContainer">
+    <input type="submit" class="button tiny" value="Update" />
+  </div>
   </form>
   {% endif %}
   </div>
