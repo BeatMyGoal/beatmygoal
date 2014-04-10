@@ -65,7 +65,6 @@ for user in dummy_users.split("\n"):
 
 get = lambda x, y: x[y] if y < len(x) else ''
 users = list(BeatMyGoalUser.objects.all())
-
 # Create the goals
 for g in dummy_goals:
     creator = random.choice(users)
@@ -76,16 +75,18 @@ for g in dummy_goals:
     ending_value = str(randrange(1,6) * 100)
     unit = random.choice(['dollar','pounds','kg','lines','km','times'])
     if (goal_type == 'Time-based'):
-        ending_date = datetime.date.today() + datetime.timedelta(days=randrange(1,366))
+        ending_date = datetime.date.today() + datetime.timedelta(days=randrange(1,31))
     else:
         ending_date =  None
     g = Goal(creator=creator, title=title, description=description, prize=prize, progress_value=1.0, goal_type=goal_type, private_setting=1, ending_value = ending_value, unit = unit, ending_date = ending_date)
     g.save()
     l = Log(goal=g)
     l.save()
+    for u in users:
+        le = LogEntry.create(l, u.username, randrange(1,100), "hello world")['logEntry']
+        le.entry_date = datetime.date.today() + datetime.timedelta(days=randrange(1,5))
+        le.save()
     goals.append(g)
-
-
 
 # Add random users to random goals
 for i in range(30):

@@ -1,5 +1,4 @@
 $(document).ready(function() {
-	
 });
 
 $("#reconfirom_delete_user #Yes_button").click(function(event) {

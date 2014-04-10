@@ -25,12 +25,13 @@ TEMPLATE_DIRS = (
 SECRET_KEY = 'd5(+491*&)&l)%7e9o167l=@i5)42vt2qy%xpoy+n@*p&tlx49'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
 
 #ALLOWED_HOSTS = []
 
+ADMINS = (('beatmygoal', 'beatmygoal@googlegroups.com'))
 
 # Application definition
 
