@@ -31,6 +31,7 @@ TEMPLATE_DEBUG = True
 
 #ALLOWED_HOSTS = []
 
+ADMINS = (('beatmygoal', 'beatmygoal@googlegroups.com'))
 
 # Application definition
 
