@@ -50,7 +50,7 @@ urlpatterns = patterns('',
 
     url(r'^dashboard', core.views.dashboard, name='dashboard'),                       
     url(r'^confirm', core.views.confirm, name='confirm'),
-    url(r'^email$', core.views.send_email, name='email'),
+    url(r'^email/$', core.views.send_email, name='email'),
     url(r'^email/preview', core.views.email_preview, name='email_preview'),
     
 

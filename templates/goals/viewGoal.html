@@ -163,12 +163,14 @@
     <form data-abide>
       <fieldset>
       <legend> <h3> Participants </h3></legend>
+      {% if isParticipant %}
       <a href="#" data-dropdown="drop1" class="button dropdown small">Invite Friends</a><br>
     <ul id="drop1" data-dropdown-content class="f-dropdown">
     <li><a href="#" data-reveal-id="reveal_email" c>With Email</a></li>
     <div id="fb-root"></div>
     <li><div id="fb-send" class="fb-send" data-href="http://beatmygoal.com" data-colorscheme="light"></div><li>
     </ul>
+    {% endif %}
 
       <ul class="side-nav">
         {% for participant in goal.beatmygoaluser_set.all %} 
