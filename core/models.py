@@ -12,11 +12,12 @@ class Log(models.Model):
     def parseEntriesByUser(self):
         entries = self.logentry_set.all()
         users = set(entry.participant for entry in entries)
-        total_days = ((datetime.today() if not self.goal.ending_date else self.goal.ending_date) - self.goal.date_created).days + 3
+        chart_days = ((datetime.today() if not self.goal.ending_date else self.goal.ending_date) - self.goal.date_created).days + 3
+        total_days = ((datetime.today()) - self.goal.date_created).days + 3
         goal_created = self.goal.date_created
         goal_created = datetime(goal_created.year, goal_created.month, goal_created.day)
 
-        response = {"users" : [], "errors" : [], "days" : [0] * (total_days)}
+        response = {"users" : [], "errors" : [], "days" : [0] * (chart_days)}
 
         for user in users:
             user_entries = list(entries.filter(participant=user).order_by("entry_date"))
