@@ -43,6 +43,8 @@ def send_email(request):
         errors.append(888)
     return HttpResponse(json.dumps({"errors" : errors, "redirect" : ""}), content_type = "application/json")
 
+def email_preview(request):
+    return render_to_response('email.html', {'from' : request.user})
 
 def user_login_fb(request):
     """
