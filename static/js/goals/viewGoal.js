@@ -182,8 +182,10 @@ $("#reveal_email #cancle_button").click(function(e) {
 
 $("#reveal_email #send_button").click(function(e) {
     var to = $('#reveal_email #to').val();
+    var goal_id = window.location.pathname.split("/")[2];
     var data = {
-        to: to
+        to: to,
+        goal_id: goal_id,
     }
     console.log(data);
 

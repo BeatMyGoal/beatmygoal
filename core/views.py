@@ -28,23 +28,23 @@ def send_email(request):
     message = "This is a test email from BeatMyGoal"
     data = json.loads(request.body)
     to = data["to"].split(",")
+    goal_id = data["goal_id"]
     errors = []
     if to:
         try:
             html_content = loader.get_template('email.html')
-            html_content = html_content.render(Context({'from' : request.user}))
+            html_content = html_content.render(Context({'from' : request.user.username.capitalize(), 'goal_id' : goal_id }))
             email = EmailMessage(subject, html_content, to=to)
             email.content_subtype = "html"
             email.send()
         except Exception as e:
-            print e
             errors.append(999)
     else:
         errors.append(888)
     return HttpResponse(json.dumps({"errors" : errors, "redirect" : ""}), content_type = "application/json")
 
 def email_preview(request):
-    return render_to_response('email.html', {'from' : request.user})
+    return render_to_response('email.html', {'from' : request.user.username.capitalize() })
 
 def user_login_fb(request):
     """
@@ -89,6 +89,7 @@ def index(request):
         return HttpResponseRedirect("/dashboard/")
     else:
         return render(request, 'index.html')
+
 
 
 @csrf_exempt
@@ -280,6 +281,7 @@ def goal_view_goal(request, goal_id):
     View the profile of a goal.
     """
     goal = Goal.objects.get(id=goal_id)
+    print goal
     image = str(goal.image)
     isCreator = str(request.user) == str(goal.creator)
     isParticipant = len(goal.beatmygoaluser_set.filter(username=request.user)) > 0

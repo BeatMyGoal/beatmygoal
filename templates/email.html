@@ -22,7 +22,12 @@
  <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
    <td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
-    Chris challenged you to beat his goal!
+    <p>{{ from }} challenged you to beat his goal!</p>
+    {% if goal_id %}
+    <a href="http://beatmygoal.herokuapp.com/goals/{{ goal_id }}">Accept the challenge Now</a>
+    {% else %}
+    <a href="#">Accept the challenge Now</a>
+    {% endif %}
    </td>
   </tr>
   <tr>
