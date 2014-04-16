@@ -120,7 +120,7 @@ def dashboard_search(query, goals):
     temp_goals = []
     print(query)
     for goal in goals:
-        if query in goal.title.lower() or query in goal.description.lower():
+        if query.lower() in goal.title.lower() or query in goal.description.lower():
             
             temp_goals.append(goal)
     print(temp_goals)
