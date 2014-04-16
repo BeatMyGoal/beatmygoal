@@ -1,5 +1,4 @@
 $(document).ready(function() {
-	console.log(request)
 	$("#register-form").submit(function(e) {
         var invalid_fields = $("#register-form").find('[data-invalid]');
         console.log(invalid_fields);
@@ -8,7 +7,7 @@ $(document).ready(function() {
         }
 
         e.preventDefault();
-            e.stopPropagation();
+        e.stopPropagation();
 
 		var data = {
 			username: $("#register-username").val(),
