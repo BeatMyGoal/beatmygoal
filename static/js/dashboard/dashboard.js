@@ -12,11 +12,11 @@ $(document).ready(function() {
         get_goals_ajax();
     });
 	$(window).scroll(function() {
-	   if($(window).scrollTop() + $(window).height() == $(document).height() && !scroll_activated) {
-	        scroll_activated = true;
+       if($(window).scrollTop() + $(window).height() == $(document).height() && !scroll_activated) {
+            scroll_activated = true;
             get_goals_ajax();
 			scroll_activated = false;
-	   }
+       }
 	});
 
     function get_goals_ajax(){
