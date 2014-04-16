@@ -211,6 +211,10 @@
                 }
             }
         });
+
+        google.visualization.events.addListener(chart, 'error', function(err) {
+            $('#progressChart').css('display', 'none');
+        });
     };
 
     $(window).resize(function(){
