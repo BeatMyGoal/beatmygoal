@@ -37,6 +37,7 @@ $(document).ready(function() {
                 user = $(".users>#id"+fields['creator']);
                 //console.log(user);
                 $(".dashcard-container").append('<li><div class="dashcard-holder" id="'+entry['pk']+'"></div></li>');
+                $(".dashcard-holder#"+entry['pk']).empty();
                 $(".dashcard-holder#"+entry['pk']).append('<div class="dashcard" id="'+entry['pk']+'"></div>');
                 $("#"+entry['pk']+".dashcard").append('<div class=dashcard-img></div>');
                 $("#"+entry['pk']+".dashcard").append('<div class=dashcard-title><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></div>');
