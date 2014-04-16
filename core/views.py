@@ -100,11 +100,13 @@ def dashboard(request):
     if request.is_ajax():
         data = json.loads(request.body)
         page = data["page"]
+        query = data["query"]
         all_goals = Goal.objects.all()
+        queried_goals = dashboard_search(query, all_goals)
         if (page*20+19 < len(all_goals)):
-            goals = all_goals[page*20:page*20+19]
+            goals = queried_goals[page*20:page*20+19]
         else:
-            goals = all_goals[page*20:]
+            goals = queried_goals[page*20:]
         serialized_goals = serializers.serialize('json', goals)
         json_data = json.dumps({'goals':serialized_goals})
         return HttpResponse(json_data, content_type="application/json")
@@ -113,6 +115,16 @@ def dashboard(request):
         return render(request, 'dashboard/dashboard_main.html', {
                 'users': all_users
             })
+
+def dashboard_search(query, goals):
+    temp_goals = []
+    print(query)
+    for goal in goals:
+        if query in goal.title.lower() or query in goal.description.lower():
+            
+            temp_goals.append(goal)
+    print(temp_goals)
+    return temp_goals
 
 @csrf_exempt
 def goal_create_goal(request):
