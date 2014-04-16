@@ -83,7 +83,7 @@ for g in dummy_goals:
     l = Log(goal=g)
     l.save()
     for u in users:
-        #BeatMyGoalUser.joinGoal(u.username, g.id)
+        join = BeatMyGoalUser.joinGoal(u.username, g.id)
         le = LogEntry.create(l, u.username, randrange(1,100), "hello world")['logEntry']
         le.entry_date = datetime.date.today() + datetime.timedelta(days=randrange(1,5))
         le.save()
