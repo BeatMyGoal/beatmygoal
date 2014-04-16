@@ -1,0 +1,25 @@
+html, body {
+    background-color: #DDD;
+}
+
+.no-list-style {
+    list-style-type: none;   
+}
+
+.log_entry_list li {
+    margin: 5px;
+}
+
+.goal-buttons {
+    margin-top: -45px;
+    padding: 5px;
+}
+
+.card {
+    margin-bottom: 15px;
+    background-color: #FFF;
+}
+
+.no-padding {
+    padding: 0;
+}
