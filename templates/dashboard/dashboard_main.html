@@ -9,39 +9,9 @@
 <script src="{% static 'js/dashboard/dashboard.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
 
-
-
-<div class="row">
-    <div class="ten mobile-three columns">
-        <input id="dashboard_search" type="text" />
-    </div>
-    <div class="two mobile-one columns">
-        <a class="button expand postfix">Search</a>
-    </div>
-</div>
-
 <div class="row">
     <ul class="dashcard-container small-block-grid-1 medium-block-grid-2 large-block-grid-3"> </ul>
 </div>
-<!--     <div class="dashcard-container">
-        
-    </div>
- --><!-- <table class="table table-striped">
-    <thead>
-        <tr>
-            <b>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Creator</th>
-                <th>Prize</th>
-            </b>
-        </tr>
-    </thead>
-        <tbody>
-
-        </tbody>
-</table>
- -->
 <div class="users" style="display:none">
    {% for user in users %} 
         <div id="id{{ user.id }}">{{ user.username }}</div>
