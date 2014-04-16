@@ -367,7 +367,7 @@ def create_user(request):
     """
     Creates a user and authenticates them, if credentials are valid.
     """
-
+    print "creating"
     if request.method == "GET":
             return render(request, 'index.html')
     elif request.method == "POST":
@@ -383,6 +383,9 @@ def create_user(request):
             user =  authenticate(username=username, password=password)
             login(request, user)
             redirect = "/users/%s/" % (user.id)
+            if "goal" in data:
+                BeatMyGoalUser.joinGoal(user, data['goal'])
+                redirect = "/goals/" + str(data['goal'])
             return HttpResponse(json.dumps({"redirect" : redirect,
                 "errors" : response["errors"]
                 }), content_type = "application/json")
