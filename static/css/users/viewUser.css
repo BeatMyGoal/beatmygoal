@@ -1,3 +1,7 @@
+html, body {
+    background-color: #FFF;
+}
+
 #imageContainer {
     width: 230px;
     height: 280px;
@@ -53,4 +57,3 @@
     left: 0;
     display:none;
 }
-
