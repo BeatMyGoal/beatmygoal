@@ -35,6 +35,8 @@
                 
             {% elif not isCreator and user.is_authenticated %}
                 <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
+            {% elif not isCreator %}
+            <li><a href="#" data-reveal-id="reveal_register" class="button tiny pull-3 alert">Register to join</a> </li>
             {% endif %}
 
             {% if user.username == goal.creator.username %}
@@ -78,6 +80,9 @@
 <div class="row card">
     <div class="medium-9 small-12 columns">
         <div id='progressChart' style="width:100%; height:500px"></div>
+        <div data-alert id="chartAlert" class="alert-box" style="display:none">
+            No log information available to display.
+        </div>
     </div>
     <div class="medium-3 small-12 columns">
         {% if isParticipant %}
@@ -165,6 +170,13 @@
 
         // Instantiate and draw our chart, passing in some options.
         chart = new google.visualization.LineChart(document.getElementById('progressChart'));
+
+        google.visualization.events.addListener(chart, 'error', function(err) {
+            console.log('test');
+            $('#progressChart').css('display', 'none');
+            $('#chartAlert').css('display', 'inline-block');
+        });
+        
         chart.draw(data, options);
 
         var columns = [];
@@ -175,6 +187,7 @@
                 series[i - 1] = {};
             }
         }
+        
         
         google.visualization.events.addListener(chart, 'select', function () {
             console.log("test");
@@ -209,6 +222,7 @@
                 }
             }
         });
+
     };
 
     $(window).resize(function(){
@@ -217,6 +231,46 @@
 </script>
 
 {% include "goals/logGoal.html" %}
+<!-- Reveal Modals begin -->
+<div id="reveal_register" class="reveal-modal medium" style="display: none" data-reveal>
+  <h2> Registerting is easy </h2>
+  <br>
+  <form data-abide id="register-form" >
+      <div class="row">
+        <div class='small-12 medium-6 columns'>
+          <label for='username'>Username
+            <input id="register-username" type="text" required pattern="alpha_numeric"/>
+            <small id="username-error" class="error">Usernames can only contains letters or numbers.</small>
+          </label>
+        </div>
+
+        <div class="email-label small-12 medium-6 columns">
+          <label for='email'>Email
+            <input id="register-email" type="email" required  />
+            <small id="email-error" class="error">An email address is required.</small>
+          </label>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="password-label small-12 medium-6 columns">
+          <label for='password'>Password
+            <input id="register-password" type="password" required pattern="[a-zA-Z0-9]+" />
+            <small id="password-error" class="error">A password is required. Only alpha-numeric characters are allowed.</small>
+          </label>
+        </div>
+       <!--  <div class="small-12 medium-6 columns">
+         <label >Confirm Password</label>
+         <input id="" type="password" required pattern="[a-zA-Z0-9]+" />
+         <small id="" class="error">A password is required. Only alpha-numeric characters are allowed.</small>
+       </div> -->
+      </div>
+      <input id="register-submit" type="submit" class="float-right button small" value="Get Started">
+      <a id = "back_button" class="button small"> Back </a>
+    </form>
+
+  <a class="close-reveal-modal">&#215;</a>
+</div>
 
 <!-- Reveal Modals begin -->
 <div id="reveal_edit" class="reveal-modal medium" style="display: none" data-reveal>
