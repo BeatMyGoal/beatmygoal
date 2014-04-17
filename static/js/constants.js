@@ -27,13 +27,9 @@ ERRCODES = {
 COLORS = {};
 
 COLORS.names = {
-    aqua: "#00ffff",
-    azure: "#f0ffff",
-    beige: "#f5f5dc",
     black: "#000000",
     blue: "#0000ff",
     brown: "#a52a2a",
-    cyan: "#00ffff",
     darkblue: "#00008b",
     darkcyan: "#008b8b",
     darkgrey: "#a9a9a9",
@@ -50,13 +46,6 @@ COLORS.names = {
     gold: "#ffd700",
     green: "#008000",
     indigo: "#4b0082",
-    khaki: "#f0e68c",
-    lightblue: "#add8e6",
-    lightcyan: "#e0ffff",
-    lightgreen: "#90ee90",
-    lightgrey: "#d3d3d3",
-    lightpink: "#ffb6c1",
-    lightyellow: "#ffffe0",
     lime: "#00ff00",
     magenta: "#ff00ff",
     maroon: "#800000",

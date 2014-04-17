@@ -124,9 +124,9 @@
             <li><div id="fb-send" class="fb-send" data-href="http://beatmygoal.com" data-colorscheme="light"></div><li>
         </ul>
         {% endif %}
-        <ul class='no-list-style'>
+        <ul class='no-list-style participants-list'>
         {% for participant in goal.beatmygoaluser_set.all %} 
-            <li ><input type="checkbox" checked="checked" id="{{ forloop.counter }}-{{ participant.username }}" class='goal-participant-checkbox'><a href="/users/{{ participant.id }}" >{{ participant.username }} {% if participant.username == goal.creator.username %} (Creator) {% endif %}</a></li>
+            <li ><input type="checkbox" checked="checked" id="{{ forloop.counter }}-{{ participant.username }}" class='goal-participant-checkbox'><a href="/users/{{ participant.id }}" class="participant-{{ forloop.counter0 }}">{{ participant.username }} {% if participant.username == goal.creator.username %} (Creator) {% endif %}</a></li>
         {% endfor %}
         </ul>
     </div>
@@ -186,9 +186,10 @@
     var colors = COLORS.list();
     var chartColors = [];
 
-    {% for user,amounts in progress.users %}
-    chartColors.push(colors[{{ forloop.counter0 }}]);
-    {% endfor %}
+    for (var i = 0; i < $(".participants-list").children().length; i++){
+        chartColors.push(colors[i]);
+        $($(".participants-list").children()[i]).children("a").css("color", colors[i]);
+    };
 
     // Set a callback to run when the Google Visualization API is loaded.
     google.setOnLoadCallback(drawChart);
