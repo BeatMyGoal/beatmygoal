@@ -107,7 +107,7 @@
     </div>
     <div class="medium-12 columns">
          <ul class="log_entry_list no-list-style">
-            {% for entry in goal.log.logentry_set.all %}
+            {% for entry in goal.log.logentry_set.all reversed %}
             <li>
             <div class="row">
                 <div class="medium-1 hide-for-small columns">
@@ -119,10 +119,10 @@
                 </div>
                 <div class="medium-11 columns">
                     <div class="row">
-                        <a href="/users/{{ entry.participant.id }}"><strong>{{ entry.participant }}</strong></a> <small> logged {{ entry.entry_amount }} {{ goal.unit }} </small>
+                        <a href="/users/{{ entry.participant.id }}"><strong>{{ entry.participant }}</strong></a> <small> logged {{ entry.entry_amount }} {{ goal.unit }} ({{entry.entry_date|timesince}} ago)</small>
                     </div>
                     <div class="row">
-                        {{ entry.comment }}
+                        {{ entry.comment | safe }}
                     </div>
                 </div>
             </div>
