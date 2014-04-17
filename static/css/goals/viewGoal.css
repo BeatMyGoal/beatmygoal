@@ -9,6 +9,15 @@
     left: auto;
 }
 
+.goal-picture-container {
+    background-color: #777;
+}
+
+.goal-picture-container img {
+    display: block;
+    margin: 0 auto;
+}
+
 #upload-goal-image {
     position: absolute;
     bottom: 5px;

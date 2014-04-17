@@ -25,9 +25,9 @@
 <div class="row collapse card">
     <div class="row">
         <!-- Photo -->
-        <div class="small-12 columns no-padding" onmouseover="showfileButton()" onmouseout="hidefileButton()">
+        <div class="small-12 columns no-padding goal-picture-container" onmouseover="showfileButton()" onmouseout="hidefileButton()">
             {% if goal.image %}
-            <img src="{{goal.image.url}}" style="max-width:100%;height:100%;" />
+            <img src="{{goal.image.url}}" style="max-width:100%;height:300px;" />
             {% else %}
             <p> <img src="http://placehold.it/1080x300&text=goalPhoto" /></p>
             {% endif %}
@@ -61,27 +61,25 @@
                 <!-- <li><a id = "favorite_button" type="submit" class="round button tiny pull-5">Favorite</a></li> -->
             {% endif %}
             {% if isParticipant and not isCreator %}
-                <li><a id = "leave_goal_button" type="submit" class="button tiny pull-3">Leave Goal</a></li>
+                <li><a id = "leave_goal_button" type="submit" class="button tiny">Leave Goal</a></li>
             {% endif %}
             {% if isParticipant %}
-		<li><a id = "comment_button" data-reveal-id="comment_goal" data-reveal class="button tiny pull-3">Post Comment</a></li>
-                <li><a id = "log_button" data-reveal-id="myModal" data-reveal class="button tiny pull-3">Log Progress</a></li>
-                
+                <li><a id = "comment_button" data-reveal-id="comment_goal" data-reveal class="button tiny">Post Comment</a></li>
+                <li><a id = "log_button" data-reveal-id="myModal" data-reveal class="button tiny">Log Progress</a></li>
             {% elif not isCreator and user.is_authenticated %}
-		<li><a id = "comment_button" data-reveal-id="comment_goal" data-reveal class="button tiny pull-3">Post Comment</a></li>
-                <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
+                <li><a id = "comment_button" data-reveal-id="comment_goal" data-reveal class="button tiny">Post Comment</a></li>
+                <li><a id = "join_goal_button" type="submit" class="button tiny">Join Goal</a></li>
             {% elif not isCreator %}
-                <li><a href="#" data-reveal-id="reveal_register" class="button tiny pull-3 alert">Register and Join</a> </li>
+                <li><a href="#" data-reveal-id="reveal_register" class="button tiny alert">Register and Join</a> </li>
             {% endif %}
 	    
             {% if user.username == goal.creator.username %}	    
-                <li><a href="#" data-reveal-id="reveal_edit" class="button tiny pull-3 alert">Edit Goal</a> </li>
+                <li><a href="#" data-reveal-id="reveal_edit" class="button tiny alert">Edit Goal</a> </li>
             {% endif %}
 
             {% if isFavorite and isParticipant %}
                 <li><a id = "remove_favorite_button" type="button" class="button tiny alert">Remove Favorite</a></li>
             {% elif not isFavorite and isParticipant  %}
-
                 <li><a id = "add_favorite_button" type="button" class="button tiny">Add to Favorites</a></li>
             {% endif %}
             </ul>
