@@ -8,7 +8,9 @@ html, body {
     position: relative;
     z-index: 0
 }
-
+#imageContainer img{
+    border-radius: 50%;
+}
 #filebuttonContainer {
     width: 80%;
     height: 40%;
