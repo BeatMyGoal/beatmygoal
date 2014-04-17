@@ -25,11 +25,11 @@
 <div class="row collapse card">
     <div class="row">
         <!-- Photo -->
-        <div class="small-12 columns no-padding goal-picture-container" onmouseover="showfileButton()" onmouseout="hidefileButton()">
+        <div class="small-12 columns no-padding goal-picture-container" onmouseover="showfileButton()" onmouseout="hidefileButton()" style="height: 300px">
             {% if goal.image %}
-            <img src="{{goal.image.url}}" style="max-width:100%;height:300px;" />
+            <img src="{{goal.image.url}}" class='goal-image'/>
             {% else %}
-            <img src="http://placehold.it/1080x300&text=goalPhoto" />
+            <img src="http://placehold.it/1080x365&text=goalPhoto" />
             {% endif %}
 
             <script>
