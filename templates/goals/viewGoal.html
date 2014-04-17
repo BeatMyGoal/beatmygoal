@@ -21,8 +21,48 @@
 
 <div class="row collapse card">
     <div class="row">
-        <div class="small-12 columns no-padding">
-            <img src="http://placehold.it/1080x300&text=goalPhoto" />
+        <!-- Photo -->
+        <div class="small-12 columns no-padding" onmouseover = "showfileButton()" onmouseout = "hidefileButton()">
+	     <div id = "imageContainer">
+	       {% if goal.image %}
+		<img src="{{goal.image.url}}" width=1000px height=200px style="width:100%;height:100%" />
+		{% else %}
+		<p> <img src="http://placehold.it/1080x300&text=goalPhoto" /></p>
+		{% endif %}
+	      </div>
+
+	        <script>
+	      function showfileButton()
+	      {
+	      $('#filebuttonContainer').show();
+	      $('#submitbuttonContainer').show();
+	      $('#dummyContainer').show();
+	      }
+	      function hidefileButton()
+	      {
+	      $('#filebuttonContainer').hide();
+ 	      $('#submitbuttonContainer').hide();
+	      $('#dummyContainer').hide();
+	      }
+	      function submitimage()
+	      {
+	      $('#imagesubmitbutton').click();
+	      }
+	      </script>
+	    {% if user.username == goal.creator.username %}
+	    <form action={% url 'goal_image_upload' goal_id  %} method="post" enctype="multipart/form-data">
+	    <div id = "filebuttonContainer">
+	      <input type="file" class="upload" name="image" id = "imagebutton" onchange="submitimage()" />
+	    </div>
+	    <div id = "dummyContainer">
+	      <input type = "button" class ="button tiny" value="Choose Photo" id = "imdummy">
+	    </div>
+	    <div id ="submitbuttonContainer">
+	      <input type="submit" class="button tiny" value="Update" id ="imagesubmitbutton" />
+	    </div>
+	    </form>
+	    {% endif %}
+	    
             <ul class="button-group right goal-buttons">
             {% if isParticipant or isCreator %}
                 <!-- <li><a id = "favorite_button" type="submit" class="round button tiny pull-5">Favorite</a></li> -->
@@ -38,12 +78,10 @@
             {% elif not isCreator %}
             <li><a href="#" data-reveal-id="reveal_register" class="button tiny pull-3 alert">Register and Join</a> </li>
             {% endif %}
-
-            {% if user.username == goal.creator.username %}
-
+	    
+            {% if user.username == goal.creator.username %}	    
             <li><a href="#" data-reveal-id="reveal_edit" class="button tiny pull-3 alert">Edit Goal</a> </li>
-            {% endif %}
-
+	    {% endif %}
 
             {% if isFavorite and isParticipant %}
                 <li><a id = "remove_favorite_button" type="button" class="button tiny alert">Remove Favorite</a></li>
