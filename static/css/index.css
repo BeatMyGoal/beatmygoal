@@ -1,6 +1,5 @@
-#main-content {
-    margin: 0 auto;
-    margin-top: 200px;
+html, body {
+    background-color: inherit;
 }
 
 #background-overlay {
@@ -20,6 +19,13 @@
     background-position: 50% 80%;
     background-repeat: no-repeat;
     background-attachment: fixed;
+}
+
+.register-box {
+    margin: 0 auto;
+    margin-top: 200px;
+    z-index: 2;
+    background-color: #FFF;
 }
 
 .border-left {

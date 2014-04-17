@@ -1,7 +1,29 @@
+html, body {
+    background-color: #EDEEEF;
+}
+
+.no-list-style {
+    list-style-type: none;   
+}
+
+
+.card {
+    margin-bottom: 15px;
+    background-color: #FFF;
+}
+
+.no-padding {
+    padding: 0;
+}
+
 #main-content {
     padding: 15px;
 }
 
+.bmgfooter {
+    bottom: 0;
+    color: #FFF;
+}
 
 /* body {
     background-color: #D6D6D6;
