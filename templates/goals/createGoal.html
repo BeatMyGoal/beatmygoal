@@ -7,11 +7,64 @@
 {% block content %}
 
 <script src="{% static 'js/goals/createGoal.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/goals/createGoal.css' %}" />
 
-<div class="row">
 
-  <div class="large-12 columns" data-equalizer>
-    <h1>Create Goal</h1>
+<div class="row collapse card">
+  <div class="row">
+    <div class="medium-8 columns">
+      <h2>Create Goal</h2>
+    </div>
+  </div>
+
+  <!-- Photo -->
+  <div class="large-3 columns" onmouseover = "showfileButton()"
+  onmouseout = "hidefileButton()" >
+  <br>
+
+  
+  <div id = "imageContainer">
+    <p> <img src="http://placehold.it/320x300&text=photo" /></p>
+  </div>
+  <script>
+  function showfileButton()
+  {
+  $('#filebuttonContainer').show();
+  $('#submitbuttonContainer').show();
+  $('#dummybutton').show();
+  }
+  function hidefileButton()
+  {
+  $('#filebuttonContainer').hide();
+  $('#submitbuttonContainer').hide();
+  $('#dummybutton').hide();
+  }
+  </script>
+  
+  <form action={% url 'user_image_upload' user.id  %} method="post"
+  enctype="multipart/form-data">
+  <div id = "filebuttonContainer">
+    <input type="file" class="upload" name="image" id = "imagebutton" />
+  </div>
+  <div id = "dummybutton">
+  <input type = "button" class ="button tiny" value="Choose Photo">
+  </div>
+  <div id ="submitbuttonContainer">
+    <input type="submit" class="button tiny" value="Update" />
+  </div>
+  </form>
+  </div>
+
+
+
+  <div class="row">
+      <div class="small-12 columns no-padding">
+          <img src="http://placehold.it/1080x300&text=goalPhoto" />
+      </div>
+  </div>
+</div>
+
+<div class="row card">
     <div class="panel" data-equalizer-watch>
       <div data-abide id="register-form" >
 
@@ -77,10 +130,18 @@
 
       <input id="register-submit" type="submit" class="button" value="Create">
 
-      <br>    
     </div>
   </div>
+
+
+
 </div>
+
+
+
+
+  
+
 
 
 
