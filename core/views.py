@@ -78,9 +78,9 @@ def user_login_fb(request):
                 password = BeatMyGoalUser.objects.make_random_password(8)
                 user = BeatMyGoalUser.create(username, email, password)['user']
                 user =  authenticate(username=username, password=password)
-                facebook_id = str(profile["id"])
-                user.image = "http://graph.facebook.com/" + facebook_id +"/picture?width=140&height=140"
-                user.save()
+                #user.image = "http://graph.facebook.com/" + result.user.id +"/picture?width=140&height=140"
+
+                #user.save()
                 login(request, user)
                 response['Location'] = '/users/profile'
 
