@@ -22,48 +22,38 @@
 <div class="row collapse card">
     <div class="row">
         <!-- Photo -->
-        <div class="small-12 columns no-padding" onmouseover = "showfileButton()" onmouseout = "hidefileButton()">
-	     <div id = "imageContainer">
-	       {% if goal.image %}
-		<img src="{{goal.image.url}}" width=1000px height=200px style="width:100%;height:100%" />
-		{% else %}
-		<p> <img src="http://placehold.it/1080x300&text=goalPhoto" /></p>
-		{% endif %}
-	      </div>
+        <div class="small-12 columns no-padding" onmouseover="showfileButton()" onmouseout="hidefileButton()">
+            {% if goal.image %}
+            <img src="{{goal.image.url}}" style="max-width:100%;height:100%;" />
+            {% else %}
+            <p> <img src="http://placehold.it/1080x300&text=goalPhoto" /></p>
+            {% endif %}
 
-	        <script>
-	      function showfileButton()
-	      {
-	      $('#filebuttonContainer').show();
-	      $('#submitbuttonContainer').show();
-	      $('#dummyContainer').show();
-	      }
-	      function hidefileButton()
-	      {
-	      $('#filebuttonContainer').hide();
- 	      $('#submitbuttonContainer').hide();
-	      $('#dummyContainer').hide();
-	      }
-	      function submitimage()
-	      {
-	      $('#imagesubmitbutton').click();
-	      }
-	      </script>
-	    {% if user.username == goal.creator.username %}
-	    <form action={% url 'goal_image_upload' goal_id  %} method="post" enctype="multipart/form-data">
-	    <div id = "filebuttonContainer">
-	      <input type="file" class="upload" name="image" id = "imagebutton" onchange="submitimage()" />
-	    </div>
-	    <div id = "dummyContainer">
-	      <input type = "button" class ="button tiny" value="Choose Photo" id = "imdummy">
-	    </div>
-	    <div id ="submitbuttonContainer">
-	      <input type="submit" class="button tiny" value="Update" id ="imagesubmitbutton" />
-	    </div>
-	    </form>
-	    {% endif %}
+            <script>
+                function showfileButton() {
+                    $('#upload-goal-image').show();
+                }
+                function hidefileButton() {
+                    $('#upload-goal-image').hide();
+                }
+                function submitimage() {
+                    $('#imagesubmitbutton').click();
+                }
+                function getFile() {
+                    document.getElementById("imagebutton").click();
+                }
+            </script>
+    	    {% if user.username == goal.creator.username %}
+    	    <form action={% url 'goal_image_upload' goal_id  %} method="post" enctype="multipart/form-data" id="upload-goal-image">
+        	    <div id="filebuttonContainer">
+        	      <input type="file" class="upload" name="image" id="imagebutton" onchange="submitimage()" />
+        	    </div>
+                <input type="button" class ="button tiny" value="Choose Photo" id="imdummy" onclick="getFile()">
+                <input type="submit" class="button tiny" value="Update" id="imagesubmitbutton" />
+    	    </form>
+    	    {% endif %}
 	    
-            <ul class="button-group right goal-buttons">
+            <ul class="button-group goal-buttons">
             {% if isParticipant or isCreator %}
                 <!-- <li><a id = "favorite_button" type="submit" class="round button tiny pull-5">Favorite</a></li> -->
             {% endif %}
@@ -76,12 +66,12 @@
             {% elif not isCreator and user.is_authenticated %}
                 <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
             {% elif not isCreator %}
-            <li><a href="#" data-reveal-id="reveal_register" class="button tiny pull-3 alert">Register and Join</a> </li>
+                <li><a href="#" data-reveal-id="reveal_register" class="button tiny pull-3 alert">Register and Join</a> </li>
             {% endif %}
 	    
             {% if user.username == goal.creator.username %}	    
-            <li><a href="#" data-reveal-id="reveal_edit" class="button tiny pull-3 alert">Edit Goal</a> </li>
-	    {% endif %}
+                <li><a href="#" data-reveal-id="reveal_edit" class="button tiny pull-3 alert">Edit Goal</a> </li>
+            {% endif %}
 
             {% if isFavorite and isParticipant %}
                 <li><a id = "remove_favorite_button" type="button" class="button tiny alert">Remove Favorite</a></li>
@@ -133,7 +123,7 @@
         {% endif %}
         <ul class='no-list-style'>
         {% for participant in goal.beatmygoaluser_set.all %} 
-            <li ><a href="/users/{{ participant.id }}" id="usr-{{ participant.username }}">{{ participant.username }} {% if participant.username == goal.creator.username %} (Creator) {% endif %}</a></li>
+            <li ><input type="checkbox" checked="checked" id="{{ forloop.counter }}-{{ participant.username }}" class='goal-participant-checkbox'><a href="/users/{{ participant.id }}" >{{ participant.username }} {% if participant.username == goal.creator.username %} (Creator) {% endif %}</a></li>
         {% endfor %}
         </ul>
     </div>
@@ -214,15 +204,13 @@
             $('#progressChart').css('display', 'none');
             $('#chartAlert').css('display', 'inline-block');
         });
-        
-        chart.draw(data, options);
 
         var columns = [];
         var series = {};
         for (var i = 0; i < data.getNumberOfColumns(); i++) {
             columns.push(i);
             if (i > 0) {
-                series[i - 1] = {};
+                series[i-1] = {};
             }
         }
         
@@ -247,18 +235,27 @@
                         };
                         
                         // grey out the legend entry
-                        series[col - 1].color = '#CCCCCC';
+                        series[col].color = '#CCCCCC';
                     }
                     else {
                         // show the data series
                         columns[col] = col;
-                        series[col - 1].color = null;
+                        series[col].color = null;
                     }
                     var view = new google.visualization.DataView(data);
                     view.setColumns(columns);
                     chart.draw(view, options);
                 }
             }
+        });
+
+        chart.draw(data, options);
+
+        $(".goal-participant-checkbox").unbind('click').click(function(e) {
+            var col = e.currentTarget.id.split("-")[0];
+            console.log(col);
+            chart.setSelection([{column:col}]);
+            google.visualization.events.trigger(chart, 'select', {});
         });
 
     };

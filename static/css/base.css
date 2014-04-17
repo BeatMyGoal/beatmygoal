@@ -1,15 +1,18 @@
 html, body {
-    background-color: #EDEEEF;
+    background-color: #DDD;
 }
 
 .no-list-style {
     list-style-type: none;   
 }
 
-
 .card {
     margin-bottom: 15px;
     background-color: #FFF;
+}
+
+.padding {
+    padding: 7px;
 }
 
 .no-padding {
