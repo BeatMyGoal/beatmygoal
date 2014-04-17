@@ -12,7 +12,8 @@
   <br>
   <div id = "imageContainer">
   {% if viewedUser.image %}
-    <img src="{{viewedUser.image.url}}" />
+    <img src="{{viewedUser.image.url}}" width=100px height=110px
+  style="width:100%;height:100%" />
   {% else %}
     <p> <img src="http://placehold.it/320x300&text=photo" /></p>
   {% endif %}
@@ -22,13 +23,17 @@
   {
   $('#filebuttonContainer').show();
   $('#submitbuttonContainer').show();
-  $('#dummybutton').show();
+  $('#dummyContainer').show();
   }
   function hidefileButton()
   {
   $('#filebuttonContainer').hide();
   $('#submitbuttonContainer').hide();
-  $('#dummybutton').hide();
+  $('#dummyContainer').hide();
+  }
+  function submitimage()
+  {
+   $('#imagesubmitbutton').click();
   }
   </script>
   
@@ -36,13 +41,13 @@
   <form action={% url 'user_image_upload' user.id  %} method="post"
   enctype="multipart/form-data">
   <div id = "filebuttonContainer">
-    <input type="file" class="upload" name="image" id = "imagebutton" />
+    <input type="file" class="upload" name="image" id = "imagebutton" onchange="submitimage()" />
   </div>
-  <div id = "dummybutton">
-  <input type = "button" class ="button tiny" value="Choose Photo">
+  <div id = "dummyContainer">
+  <input type = "button" class ="button tiny" value="Upate Profile Picture" id = "imdummy">
   </div>
   <div id ="submitbuttonContainer">
-    <input type="submit" class="button tiny" value="Update" />
+    <input type="submit" class="button tiny" value="Update" id ="imagesubmitbutton" />
   </div>
   </form>
   {% endif %}

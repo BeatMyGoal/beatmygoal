@@ -1,12 +1,12 @@
 #imageContainer {
     width: 230px;
-    height: 280px;
+    height: 230px;
     position: relative;
     z-index: 0
 }
 
 #filebuttonContainer {
-    width: 130px;
+    width: 80%;
     height: 40%;
     position: absolute;
     margin-top: 190px;
@@ -18,8 +18,8 @@
     opacity:0;
 }
 
-#dummybutton {
-    width: 130px;
+#dummyContainer {
+    width: 80%;
     height: 40%;
     position: absolute;
     margin-top: 190px;
@@ -30,6 +30,10 @@
     display:none;
 }
 
+#imdummy{
+   width: 100%;
+}
+
 #imagebutton {
     font-size:30px;
     height:40%;
@@ -38,19 +42,19 @@
 
 #upload {
     position:relative;
-    width:100px;
+    width:200px;
 
 }
 
 #submitbuttonContainer {
-    width: 50%;
+    width: 1px;
     height: 40%;
     position: absolute;
     margin-top: 190px;
     margin-left: 150px;
-    z-index:3;
+    z-index:0;
     top: 0;
     left: 0;
+    opacity:0;
     display:none;
 }
-
