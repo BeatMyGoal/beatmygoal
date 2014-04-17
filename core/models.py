@@ -42,7 +42,7 @@ class LogEntry(models.Model):
     participant = models.ForeignKey('BeatMyGoalUser', related_name="logentries")
     entry_amount = models.IntegerField()
     entry_date = models.DateTimeField(auto_now_add=True)
-    comment = models.CharField(max_length=130)
+    comment = models.TextField()
 
     @classmethod
     def create(self, log, participant, amount, comment):
@@ -52,7 +52,8 @@ class LogEntry(models.Model):
         amount = int(amount)
         if amount > maxint:
             errors.append(CODE_BAD_AMOUNT)
-        if not log:
+    
+        if (not log) or ('script' in comment):
             errors.append(CODE_BAD_LOG)
 
         if not errors:

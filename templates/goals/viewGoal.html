@@ -6,6 +6,10 @@
 <script src="{% static 'js/Chart.min.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/goals/viewGoal.css' %}" />
 
+<script src="{% static 'js/redactor/redactor.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/redactor/redactor.css' %}" />
+
+
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
@@ -145,7 +149,8 @@
     </div>
     <div class="medium-12 columns">
          <ul class="log_entry_list no-list-style">
-            {% for entry in goal.log.logentry_set.all reversed %}
+
+            {% for entry in goal.log.logentry_set.all|dictsortreversed:"id"|slice:"8" %}
             <li>
             <div class="row">
                 <div class="medium-1 hide-for-small columns">
@@ -271,7 +276,7 @@
 {% include "goals/logGoal.html" %}
 <!-- Reveal Modals begin -->
 <div id="reveal_register" class="reveal-modal medium" style="display: none" data-reveal>
-  <h2> Registerting is easy </h2>
+  <h2> Registering is easy </h2>
   <br>
   <form data-abide id="register-form" >
       <div class="row">

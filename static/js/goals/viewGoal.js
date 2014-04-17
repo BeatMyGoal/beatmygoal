@@ -128,7 +128,8 @@ $(document).ready(function() {
                 if (data.errors.length === 0) {
                     window.location.href = data.redirect;
                 } else if (data.errors.length > 0) {
-                    
+                    $("#log-comment-error").text("Invalid comment.");
+		    $("#log-comment-error").show();
                 }
             }).fail(function(data) {
                 console.log(data);
