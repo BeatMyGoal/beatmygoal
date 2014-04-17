@@ -18,6 +18,11 @@
     margin: 0 auto;
 }
 
+.participants-list input {
+    margin-bottom: 3px;
+    margin-right: 2px;
+}
+
 #upload-goal-image {
     position: absolute;
     bottom: 5px;
