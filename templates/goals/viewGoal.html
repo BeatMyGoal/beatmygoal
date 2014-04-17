@@ -29,7 +29,7 @@
             {% if goal.image %}
             <img src="{{goal.image.url}}" class='goal-image'/>
             {% else %}
-            <img src="http://placehold.it/1080x365&text=goalPhoto" />
+            <img src="http://placehold.it/1080x300&text=goalPhoto" style="height: 300px"/>
             {% endif %}
 
             <script>
@@ -285,9 +285,9 @@
 
     };
 
-    $(window).resize(function(){
+/*    $(window).resize(function(){
         drawChart();
-    });
+    });*/
 </script>
 
 {% include "goals/logGoal.html" %}
