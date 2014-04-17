@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
 	var page = 0;
     var query = "";
 	var scroll_activated = false;
@@ -18,6 +19,21 @@ $(document).ready(function() {
 			scroll_activated = false;
 	   }
 	});
+    $(".dashcard-container").on({
+        mouseenter: function () {
+            var currid = $(this).attr('id');
+            console.log(currid);
+            $('#'+currid+'.dashcard-overlay').css("background-color","rgba(100,100,100,0.8)");
+            $('#'+currid+'.join-button').css("display","inline");
+        },
+        mouseleave: function () {
+            var currid = $(this).attr('id');
+            console.log(currid);
+            $('#'+currid+'.dashcard-overlay').css("background-color","rgba(100,100,100,0.1)");
+            $('#'+currid+'.join-button').css("display","none");
+        }
+    }, ".dashcard-overlay");
+
     function get_goals_ajax(){
         var data = {
             page: page,
@@ -45,7 +61,7 @@ $(document).ready(function() {
                 $("#"+entry['pk']+".dashcard").append('<div class=dashcard-prize><b>Prize:</b> '+fields['prize']+'</div>');
                 $("#"+entry['pk']+".dashcard").append('<div class=dashcard-description>'+fields['description']+'</div>');
                 $("#"+entry['pk']+".dashcard-holder").append('<div class="dashcard-overlay" id="'+entry['pk']+'"></div>');
-                $("#"+entry['pk']+".dashcard-overlay").append('<a href="/goals/'+entry['pk']+'">&nbsp;</a>');
+                $("#"+entry['pk']+".dashcard-overlay").append('<a href="/goals/'+entry['pk']+'" class="button join-button" id="'+entry['pk']+'">Join Goal</a>');
             });
         }).fail(function(data) {
             console.log(data);
