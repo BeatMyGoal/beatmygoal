@@ -22,7 +22,6 @@
 <script src="{% static 'js/goals/viewGoal.js' %}"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
-
 <div class="row collapse card">
     <div class="row">
         <!-- Photo -->
@@ -75,9 +74,11 @@
                 <li><a id = "leave_goal_button" type="submit" class="button tiny pull-3">Leave Goal</a></li>
             {% endif %}
             {% if isParticipant %}
+		<li><a id = "comment_button" data-reveal-id="comment_goal" data-reveal class="button tiny pull-3">Post Comment</a></li>
                 <li><a id = "log_button" data-reveal-id="myModal" data-reveal class="button tiny pull-3">Log Progress</a></li>
                 
             {% elif not isCreator and user.is_authenticated %}
+		<li><a id = "comment_button" data-reveal-id="comment_goal" data-reveal class="button tiny pull-3">Post Comment</a></li>
                 <li><a id = "join_goal_button" type="submit" class="button tiny pull-3">Join Goal</a></li>
             {% elif not isCreator %}
             <li><a href="#" data-reveal-id="reveal_register" class="button tiny pull-3 alert">Register and Join</a> </li>
@@ -162,7 +163,21 @@
                 </div>
                 <div class="medium-11 columns">
                     <div class="row">
-                        <a href="/users/{{ entry.participant.id }}"><strong>{{ entry.participant }}</strong></a> <small> logged {{ entry.entry_amount }} {{ goal.unit }} ({{entry.entry_date|timesince}} ago)</small>
+
+			{% if entry.entry_amount  %}
+			  <i class="fa fa-tasks"></i>
+			{% else %}
+			  <i class="fa fa-comment"></i>
+			{% endif %}
+                        <a href="/users/{{ entry.participant.id }}">
+			  <strong>{{ entry.participant }}</strong>
+			</a> 
+			
+			{% if entry.entry_amount  %}
+			<small> logged {{ entry.entry_amount }} {{ goal.unit }} </small>
+			{% endif %}
+
+			<small>({{entry.entry_date|timesince}} ago)</small>
                     </div>
                     <div class="row">
                         {{ entry.comment | safe }}
@@ -274,6 +289,7 @@
 </script>
 
 {% include "goals/logGoal.html" %}
+{% include "goals/commentGoal.html" %}
 <!-- Reveal Modals begin -->
 <div id="reveal_register" class="reveal-modal medium" style="display: none" data-reveal>
   <h2> Registering is easy </h2>
@@ -351,6 +367,6 @@
   <a class="close-reveal-modal">&#215;</a>
     </div>
 </div>
-    
+
 {% endblock %}
 

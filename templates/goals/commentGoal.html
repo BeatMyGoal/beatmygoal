@@ -1,0 +1,28 @@
+<script>
+$(document).ready(
+function() {
+  $('#comment').redactor();
+});
+</script>
+
+<div id="comment_goal" class="reveal-modal" data-reveal>
+    <h2>Post a Comment</h2>
+    <br>
+    <form id='comment_form' data-abide>
+        <div class="row">
+            <div class="large-12 columns">
+                <label for="log_comment">  
+                  <!-- <input type="text" id='log_comment' placeholder='Comment'> -->
+		  <textarea id="comment"></textarea>
+                    <small id="comment-error" class="error">This comment is too long</small>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-12 columns"> 
+                <a id = "submit_comment_button" type="submit" class="button tiny">Post</a>
+            </div>
+        </div>
+    </form>
+    <a class="close-reveal-modal">&#215;</a>
+</div>

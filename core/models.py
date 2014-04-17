@@ -20,7 +20,7 @@ class Log(models.Model):
         response = {"users" : [], "errors" : [], "days" : [i for i in range(chart_days)]}
 
         for user in users:
-            user_entries = list(entries.filter(participant=user).order_by("entry_date"))
+            user_entries = list(entries.filter(participant=user, entry_amount__isnull=False).order_by("entry_date"))
             amounts = []
             for i in range(total_days):
                 amount = amounts[i-1] if i > 0 else 0
@@ -40,7 +40,7 @@ class Log(models.Model):
 class LogEntry(models.Model):
     log = models.ForeignKey('Log')
     participant = models.ForeignKey('BeatMyGoalUser', related_name="logentries")
-    entry_amount = models.IntegerField()
+    entry_amount = models.IntegerField(null=True)
     entry_date = models.DateTimeField(auto_now_add=True)
     comment = models.TextField()
 
@@ -49,15 +49,25 @@ class LogEntry(models.Model):
         errors = []
         logEntry = None
 
-        amount = int(amount)
-        if amount > maxint:
-            errors.append(CODE_BAD_AMOUNT)
+        if amount != None:
+            amount = int(amount)
+            if amount > maxint:
+                errors.append(CODE_BAD_AMOUNT)
     
         if (not log) or ('script' in comment):
             errors.append(CODE_BAD_LOG)
 
         if not errors:
-            logEntry = LogEntry(log=log, participant=BeatMyGoalUser.objects.get(username=participant), entry_amount=amount, comment=comment)
+            if amount == None:
+                # It is a comment
+                logEntry = LogEntry(log=log, 
+                                    participant=BeatMyGoalUser.objects.get(username=participant),
+                                    comment=comment)
+            else:
+                logEntry = LogEntry(log=log,
+                                    participant=BeatMyGoalUser.objects.get(username=participant),
+                                    entry_amount=amount,
+                                    comment=comment)
             logEntry.save()
 
         return {'errors':errors, 'logEntry' : logEntry}

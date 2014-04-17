@@ -321,7 +321,8 @@ def goal_log_progress(request, gid):       #add Functional test here
     elif request.method == "POST":
         if request.user.is_authenticated() and len(goal.beatmygoaluser_set.filter(username=request.user)) > 0:
             data = json.loads(request.body)
-            response = LogEntry.create(log=goal.log, participant=request.user, amount=data['amount'], comment=data['comment'])
+            amount = data.get('amount', None)
+            response = LogEntry.create(log=goal.log, participant=request.user, amount=amount, comment=data['comment'])
             if response['errors']:
                 return HttpResponse(json.dumps(response), content_type='application/json')
             else:

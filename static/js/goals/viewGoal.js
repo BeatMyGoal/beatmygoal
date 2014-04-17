@@ -114,7 +114,7 @@ $(document).ready(function() {
         var goal_id = window.location.pathname.split("/")[2];
         var data = {
             amount : $('#log_progress_form #log_amount').val(),
-            comment : $('#log_progress_form #log_comment').val(),
+            comment : $('#log_comment').val(),
         };
         $.ajax({
         type: "POST",
@@ -264,6 +264,41 @@ $(document).ready(function() {
             alert("failure");
         });
 });
+
+    $('#submit_comment_button').click(function(e) {
+        e.preventDefault();
+
+        var invalid_fields = $("#log_progress_form").find('[data-invalid]');
+        console.log(invalid_fields);
+        if (invalid_fields.length > 0) {
+            return;
+        }
+        
+        var goal_id = window.location.pathname.split("/")[2];
+        var data = {
+            comment : $('#comment').val(),
+        };
+        $.ajax({
+        type: "POST",
+            url: "/goals/" + goal_id + "/log",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            dataType: "json",
+            }).done(function(data) {
+                console.log(data);
+                console.log(data.redirect);
+                if (data.errors.length === 0) {
+                    window.location.href = data.redirect;
+                } else if (data.errors.length > 0) {
+                    $("#log-comment-error").text("Invalid comment.");
+		    $("#log-comment-error").show();
+                }
+            }).fail(function(data) {
+                console.log(data);
+                alert("failure");
+        });
+
+    });
 
 
 });
