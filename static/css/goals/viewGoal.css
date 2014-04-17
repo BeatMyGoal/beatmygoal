@@ -1,73 +1,45 @@
-html, body {
-    background-color: #FFF;
-}
 .log_entry_list li {
     margin: 5px;
 }
 
 .goal-buttons {
-    margin-top: -15px;
-    padding: 5px;
-
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    left: auto;
 }
 
-#imageContainer {
-    width: 1000px;
-    height: 230px;
-    position: relative;
-    z-index: 0
+.goal-picture-container {
+    background-color: #777;
+}
+
+.goal-picture-container img {
+    display: block;
+    margin: 0 auto;
+}
+
+.participants-list input {
+    margin-bottom: 3px;
+    margin-right: 2px;
+}
+
+#upload-goal-image {
+    position: absolute;
+    bottom: 5px;
+    left: 5px; 
+}
+
+#imdummy {
+    margin-bottom: 3px;
 }
 
 #filebuttonContainer {
-    width: 10%;
-    height: 40%;
-    position: absolute;
-    margin-top: 235px;
-    margin-left: 5px;
-    top: 0;
-    left: 0;
-    z-index:2;
-    display:none;
-    opacity:0;
+    height: 0;
+    width: 0;
 }
 
-#dummyContainer {
-    width: 10%;
-    height: 40%;
-    position: absolute;
-    margin-top: 235px;
-    margin-left: 5px;
-    top: 0;
-    left: 0;
-    z-index:1;
-    display:none;
-}
-
-#imdummy{
-   width: 100%;
-}
-
-#imagebutton {
-    font-size:30px;
-    height:40%;
-
-}
-
-#upload {
-    position:relative;
-    width:200px;
-
-}
-
-#submitbuttonContainer {
-    width: 1px;
-    height: 40%;
-    position: absolute;
-    margin-top: 190px;
-    margin-left: 150px;
+#imagesubmitbutton {
     z-index:0;
-    top: 0;
-    left: 0;
     opacity:0;
     display:none;
 }

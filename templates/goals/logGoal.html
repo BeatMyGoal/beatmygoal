@@ -1,3 +1,10 @@
+<script>
+$(document).ready(
+function() {
+  $('#log_comment').redactor();
+});
+</script>
+
 <div id="myModal" class="reveal-modal" data-reveal>
     <h2>Log Your Progress For the Day!</h2>
     <br>
@@ -16,7 +23,8 @@
         <div class="row">
             <div class="large-12 columns">
                 <label for="log_comment">  
-                    <input type="text" id='log_comment' placeholder='Comment'>
+                  <!-- <input type="text" id='log_comment' placeholder='Comment'> -->
+		  <textarea id="log_comment"></textarea>
                     <small id="log-comment-error" class="error">This comment is too long</small>
                 </label>
             </div>
