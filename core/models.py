@@ -418,3 +418,5 @@ class BeatMyGoalUser(AbstractUser):
             user.save()
 
         return {"errors" : errors, "user" : user }
+
+

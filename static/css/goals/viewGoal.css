@@ -1,8 +1,75 @@
+html, body {
+    background-color: #FFF;
+}
 .log_entry_list li {
     margin: 5px;
 }
 
 .goal-buttons {
-    margin-top: -45px;
+    margin-top: -15px;
     padding: 5px;
+
 }
+
+#imageContainer {
+    width: 1000px;
+    height: 230px;
+    position: relative;
+    z-index: 0
+}
+
+#filebuttonContainer {
+    width: 10%;
+    height: 40%;
+    position: absolute;
+    margin-top: 235px;
+    margin-left: 5px;
+    top: 0;
+    left: 0;
+    z-index:2;
+    display:none;
+    opacity:0;
+}
+
+#dummyContainer {
+    width: 10%;
+    height: 40%;
+    position: absolute;
+    margin-top: 235px;
+    margin-left: 5px;
+    top: 0;
+    left: 0;
+    z-index:1;
+    display:none;
+}
+
+#imdummy{
+   width: 100%;
+}
+
+#imagebutton {
+    font-size:30px;
+    height:40%;
+
+}
+
+#upload {
+    position:relative;
+    width:200px;
+
+}
+
+#submitbuttonContainer {
+    width: 1px;
+    height: 40%;
+    position: absolute;
+    margin-top: 190px;
+    margin-left: 150px;
+    z-index:0;
+    top: 0;
+    left: 0;
+    opacity:0;
+    display:none;
+}
+
+

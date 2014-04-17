@@ -59,6 +59,8 @@ MIDDLEWARE_CLASSES = (
     'beatmygoal.middleware.AutoLogout',
 )
 
+
+
 ROOT_URLCONF = 'beatmygoal.urls'
 
 WSGI_APPLICATION = 'beatmygoal.wsgi.application'
@@ -152,3 +154,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'beatmygoalcal@gmail.com'
 EMAIL_HOST_PASSWORD = 'beatmygoal123'
 EMAIL_PORT = 587
+
+
