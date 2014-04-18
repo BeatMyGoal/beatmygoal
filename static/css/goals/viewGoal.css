@@ -13,9 +13,19 @@
     background-color: #777;
 }
 
-.goal-picture-container img {
-    display: block;
-    margin: 0 auto;
+.goal-image {
+    position:absolute; 
+    clip:rect(0px,1080px,300px,0px); 
+    left:0;
+    right:0;
+    top: 0px;
+    bottom: 0px;
+    margin: auto;
+}
+
+.participants-list input {
+    margin-bottom: 3px;
+    margin-right: 2px;
 }
 
 #upload-goal-image {
@@ -36,7 +46,5 @@
 #imagesubmitbutton {
     z-index:0;
     opacity:0;
-    display:none;
+    display:none
 }
-
-
