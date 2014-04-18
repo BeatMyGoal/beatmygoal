@@ -74,20 +74,20 @@ $(document).ready(function() {
 
     });
 	
-	$('#Collabolarative').hide();
+	$('#Collaborative').hide();
 	$('#Competitive').hide();
 
 	$('#goal_type').change(function() {
 		
-		if (document.getElementById('goal_type').value === "Collabolarative") {
-			$('#Collabolarative').fadeIn();
+		if (document.getElementById('goal_type').value === "Collaborative") {
+			$('#Collaborative').fadeIn();
 			$('#Competitive').hide();
 		}
 		else if (document.getElementById('goal_type').value === "Competitive") {
-			$('#Collabolarative').hide();
+			$('#Collaborative').hide();
 			$('#Competitive').fadeIn();
 		} else {
-			$('#Collabolarative').hide();
+			$('#Collaborative').hide();
 			$('#Competitive').hide();
 		}
 
