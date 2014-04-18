@@ -73,6 +73,27 @@ $(document).ready(function() {
         }
 
     });
+	
+	$('#Collabolarative').hide();
+	$('#Competitive').hide();
+
+	$('#goal_type').change(function() {
+		
+		if (document.getElementById('goal_type').value === "Collabolarative") {
+			$('#Collabolarative').fadeIn();
+			$('#Competitive').hide();
+		}
+		else if (document.getElementById('goal_type').value === "Competitive") {
+			$('#Collabolarative').hide();
+			$('#Competitive').fadeIn();
+		} else {
+			$('#Collabolarative').hide();
+			$('#Competitive').hide();
+		}
+
+    });
+
+
 
 });
 

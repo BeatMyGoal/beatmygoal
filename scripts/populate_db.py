@@ -73,7 +73,8 @@ for g in dummy_goals:
     prize = "$" + str(randrange(1,50) * 100)
     goal_type = random.choice(['Time-based','Value-based'])
     ending_value = str(randrange(1,6) * 100)
-    unit = random.choice(['dollar','pounds','kg','lines','km','times'])
+    #unit = random.choice(['dollar','pounds','kg','lines','km','times'])
+    unit = "TEST_UNIT"
     if (goal_type == 'Time-based'):
         ending_date = datetime.date.today() + datetime.timedelta(days=randrange(1,31))
     else:

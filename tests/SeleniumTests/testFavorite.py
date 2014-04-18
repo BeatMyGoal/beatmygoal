@@ -42,7 +42,6 @@ class FavoriteTest(LiveServerTestCase):
         self.assertIn("testgoal | BeatMyGoal", self.driver.title)
         self.assertFalse("Add to Favorite" in driver.page_source, "Favorite button is found")
 
-
     def testFavoriteButtonPresentWhenJoined(self):
         """
         Test editing a goal with valid inputs
@@ -68,7 +67,6 @@ class FavoriteTest(LiveServerTestCase):
         driver.find_element_by_link_text("My Profile").click()
         driver.find_element_by_link_text("Favorite Goals").click()
         self.assertTrue("testgoal" in driver.page_source, "Favorite goal not found in user profile")
-
 
         
     def tearDown(self):
