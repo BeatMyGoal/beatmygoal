@@ -5,6 +5,9 @@ from core.constants import *
 import random, json
 from django.core.handlers.wsgi import *
 from django.test.client import Client
+from django.core.files.uploadedfile import SimpleUploadedFile
+from core.forms import *
+from django.conf import settings
 
 class GoalPageTests(TestCase):
     def setUp(self):
@@ -251,3 +254,33 @@ class LogProgressTests(TestCase):
         res_json = json.loads(response.content)
         self.assertEqual(response.status_code, 200)
         self.assertFalse(res_json['errors'])
+
+class ImageUploadGoalTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        BeatMyGoalUser.create("test", "test@test.com", "test")
+        self.testUser = BeatMyGoalUser.objects.get(username="test")
+        Goal.create('title','des','test','test_prize', 1, 'Time-based', '50', 'pound', '11/13/2014')
+        self.testGoal = Goal.objects.get(title="title")
+    
+    def postJSON(self, url, data):
+        return self.client.post(url, content_type='application/json', data=data)
+    
+    def testImageUploadRedirect(self):
+        """
+            Tests that a goal creator can change profile image and server redirects successfully
+            """
+        image_path = settings.MEDIA_ROOT + "/image/microphone.png"
+        data = {"image" :open(image_path,"r")}
+        response = self.postJSON("/goals/" + str(self.testGoal.id), data)
+        self.assertEqual(response.status_code, 301)
+    
+    def testImageUploadForm(self):
+        """
+            Tests that a goal creator can change profile image and Imageform is valid
+            """
+        
+        data= {"image" : SimpleUploadedFile("microphone.png",settings.MEDIA_ROOT + "/image", content_type = "file")}
+        form = ImageForm(self.testGoal.id, data)
+        self.assertTrue(form.is_valid())
+
