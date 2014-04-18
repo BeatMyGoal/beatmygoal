@@ -188,6 +188,7 @@ class EditUserTests(TestCase):
 
     def testUserIsAuthenticated(self):
         pass
-    
+
+
 
 

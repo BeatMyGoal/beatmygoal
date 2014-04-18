@@ -33,7 +33,7 @@ def send_email(request):
     to = data["to"].split(",")
     goal_id = data["goal_id"]
     errors = []
-    if to:
+    if data["to"]:
         try:
             html_content = loader.get_template('email.html')
             html_content = html_content.render(Context({'from' : request.user.username.capitalize(), 'goal_id' : goal_id }))
@@ -41,9 +41,9 @@ def send_email(request):
             email.content_subtype = "html"
             email.send()
         except Exception as e:
-            errors.append(999)
+            errors.append(-400)
     else:
-        errors.append(888)
+        errors.append(-401)
     return HttpResponse(json.dumps({"errors" : errors, "redirect" : ""}), content_type = "application/json")
 
 def email_preview(request):
@@ -477,7 +477,7 @@ def user_logout(request):       #add Functional test here
 
 
 
-def goal_image_upload(request,goal_id):          #add Functional test here
+def goal_image_upload(request,goal_id):
     """
     Allows users to upload their goal's image
     """
@@ -490,17 +490,15 @@ def goal_image_upload(request,goal_id):          #add Functional test here
         if image.is_valid():
             goal.image = request.FILES['image']
             goal.save()
-
-            #return HttpResponseRedirect(reverse('goal_view_goal', args=(goal_id,)))
             return HttpResponseRedirect('/goals/' + goal_id)
     else:
         image = ImageForm() #empty
 
         return HttpResponseRedirect('/goals/' + goal_id)
-    #return render(request, 'goals/viewGoal.html', {'image': image, 'goal_id': goal_id, 'goal' : goal, 'user' : request.user, 'isParticipant' : isParticipant, 'isCreator' : isCreator})
+
     
 
-def user_image_upload(request,user_id):          #add Functional test here
+def user_image_upload(request,user_id):
     """
         Allows users to upload their user's profile image
     """
@@ -516,7 +514,6 @@ def user_image_upload(request,user_id):          #add Functional test here
     else:
         image = ImageForm() #empty
     
-    #return render(request, 'users/viewUser.html', {'image': image, 'user': user, 'goal':goal })
     return HttpResponseRedirect(reverse('view_user', args=(user_id,)))
     
 

@@ -5,6 +5,9 @@ from core.constants import *
 import random, json
 from django.core.handlers.wsgi import *
 from django.test.client import Client
+from django.core.files.uploadedfile import SimpleUploadedFile
+from core.forms import *
+from django.conf import settings
 
 class RegistrationTests(TestCase):
 
@@ -154,3 +157,30 @@ class EditUserTests(TestCase):
         """
         response2 = self.postJSON("/users/1/edit", data2)
         self.assertEqual(response2.status_code, 500)
+
+class ImageUploadUserTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        BeatMyGoalUser.create("test", "test@test.com", "test")
+        self.testUser = BeatMyGoalUser.objects.get(username="test")
+
+    def postJSON(self, url, data):
+        return self.client.post(url, content_type='application/json', data=data)
+
+    def testImageUploadRedirect(self):
+        """
+        Tests that a user can change profile image and server redirects successfully 
+        """
+        image_path = settings.BASE_DIR + "/tests/microphone.png"
+        data = {"image" :open(image_path,"r")}
+        response = self.postJSON("/users/" + str(self.testUser.id), data)
+        self.assertEqual(response.status_code, 301)
+    
+    def testImageUploadForm(self):
+        """
+        Tests that a user can change profile image and Imageform is valid
+        """
+
+        data= {"image" : SimpleUploadedFile("microphone.png",settings.BASE_DIR + "/tests", content_type = "file")}
+        form = ImageForm(self.testUser, data)
+        self.assertTrue(form.is_valid())
