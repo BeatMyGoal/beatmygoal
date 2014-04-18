@@ -270,7 +270,7 @@ class ImageUploadGoalTests(TestCase):
         """
             Tests that a goal creator can change profile image and server redirects successfully
             """
-        image_path = settings.MEDIA_ROOT + "/image/microphone.png"
+        image_path = settings.BASE_DIR + "/tests/microphone.png"
         data = {"image" :open(image_path,"r")}
         response = self.postJSON("/goals/" + str(self.testGoal.id), data)
         self.assertEqual(response.status_code, 301)
@@ -280,7 +280,7 @@ class ImageUploadGoalTests(TestCase):
             Tests that a goal creator can change profile image and Imageform is valid
             """
         
-        data= {"image" : SimpleUploadedFile("microphone.png",settings.MEDIA_ROOT + "/image", content_type = "file")}
+        data= {"image" : SimpleUploadedFile("microphone.png",settings.BASE_DIR + "/tests", content_type = "file")}
         form = ImageForm(self.testGoal.id, data)
         self.assertTrue(form.is_valid())
 

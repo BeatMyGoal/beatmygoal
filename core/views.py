@@ -477,7 +477,7 @@ def user_logout(request):       #add Functional test here
 
 
 
-def goal_image_upload(request,goal_id):          #add Functional test here
+def goal_image_upload(request,goal_id):
     """
     Allows users to upload their goal's image
     """
@@ -490,17 +490,15 @@ def goal_image_upload(request,goal_id):          #add Functional test here
         if image.is_valid():
             goal.image = request.FILES['image']
             goal.save()
-
-            #return HttpResponseRedirect(reverse('goal_view_goal', args=(goal_id,)))
             return HttpResponseRedirect('/goals/' + goal_id)
     else:
         image = ImageForm() #empty
 
         return HttpResponseRedirect('/goals/' + goal_id)
-    #return render(request, 'goals/viewGoal.html', {'image': image, 'goal_id': goal_id, 'goal' : goal, 'user' : request.user, 'isParticipant' : isParticipant, 'isCreator' : isCreator})
+
     
 
-def user_image_upload(request,user_id):          #add Functional test here
+def user_image_upload(request,user_id):
     """
         Allows users to upload their user's profile image
     """
@@ -516,7 +514,6 @@ def user_image_upload(request,user_id):          #add Functional test here
     else:
         image = ImageForm() #empty
     
-    #return render(request, 'users/viewUser.html', {'image': image, 'user': user, 'goal':goal })
     return HttpResponseRedirect(reverse('view_user', args=(user_id,)))
     
 

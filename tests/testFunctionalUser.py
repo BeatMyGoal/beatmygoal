@@ -171,7 +171,7 @@ class ImageUploadUserTests(TestCase):
         """
         Tests that a user can change profile image and server redirects successfully 
         """
-        image_path = settings.MEDIA_ROOT + "/userimage/microphone.png"
+        image_path = settings.BASE_DIR + "/tests/microphone.png"
         data = {"image" :open(image_path,"r")}
         response = self.postJSON("/users/" + str(self.testUser.id), data)
         self.assertEqual(response.status_code, 301)
@@ -181,6 +181,6 @@ class ImageUploadUserTests(TestCase):
         Tests that a user can change profile image and Imageform is valid
         """
 
-        data= {"image" : SimpleUploadedFile("microphone.png",settings.MEDIA_ROOT + "/userimage", content_type = "file")}
+        data= {"image" : SimpleUploadedFile("microphone.png",settings.BASE_DIR + "/tests", content_type = "file")}
         form = ImageForm(self.testUser, data)
         self.assertTrue(form.is_valid())
