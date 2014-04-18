@@ -1,0 +1,33 @@
+Name                                     Stmts   Miss  Cover   Missing
+----------------------------------------------------------------------
+beatmygoal/__init__                          0      0   100%   
+beatmygoal/middleware                       15      3    80%   14-16
+beatmygoal/settings                         44      2    95%   116-117
+beatmygoal/urls                              8      0   100%   
+core/__init__                                0      0   100%   
+core/admin                                   4      0   100%   
+core/config                                  2      0   100%   
+core/constants                              21      0   100%   
+core/forms                                   3      0   100%   
+core/models                                287     34    88%   23-33, 55, 63, 121, 148, 153, 249, 252, 300-301, 314-315, 318-319, 323, 338-339, 342-343, 352, 364-365, 368-369
+core/views                                 306     60    80%   43-44, 58-87, 95, 113, 166, 185, 215, 284, 320, 327, 334, 370, 386, 401, 411, 437, 445, 468, 475-476, 484-499, 507-520
+manage                                       6      0   100%   
+tests/SeleniumTests/testCreateAccount       38      0   100%   
+tests/SeleniumTests/testCreateGoal          73      0   100%   
+tests/SeleniumTests/testDashboard           32      8    75%   31-32, 44-56
+tests/SeleniumTests/testEditGoal            72      0   100%   
+tests/SeleniumTests/testEditProfile         42      0   100%   
+tests/SeleniumTests/testFavorite            53      7    87%   40-43, 68-70
+tests/SeleniumTests/testInvite              62      0   100%   
+tests/SeleniumTests/testLogin               37      0   100%   
+tests/SeleniumTests/testMainPage            29      0   100%   
+tests/SeleniumTests/testRegisterToJoin      63      0   100%   
+tests/__init__                               3      0   100%   
+tests/fake_data                              0      0   100%   
+tests/testFunctionalFavorites               43      0   100%   
+tests/testFunctionalGoal                   224      1    99%   84
+tests/testFunctionalUser                    85      0   100%   
+tests/testUnitGoal                         151      0   100%   
+tests/testUnitUser                         113      0   100%   
+----------------------------------------------------------------------
+TOTAL                                     1816    115    94% 
