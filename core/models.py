@@ -10,10 +10,14 @@ class Log(models.Model):
     goal = models.OneToOneField('Goal')
 
     def parseEntriesByUser(self):
+        """
+        Gathers all log entries for this log and sorts
+        by user for display in chart
+        """
         entries = self.logentry_set.all()
-        users = set(entry.participant for entry in entries)
-        chart_days = ((datetime.today() if not self.goal.ending_date else self.goal.ending_date) - self.goal.date_created).days + 3
-        total_days = ((datetime.today()) - self.goal.date_created).days + 2
+        users = set(entry.participant for entry in entries) #get user set
+        chart_days = ((datetime.today() if not self.goal.ending_date else self.goal.ending_date) - self.goal.date_created).days + 3 #how many days to display on chart, should display until end if time based else to today
+        total_days = ((datetime.today()) - self.goal.date_created).days + 2 #how many days to calculate for each user
         goal_created = self.goal.date_created
         goal_created = datetime(goal_created.year, goal_created.month, goal_created.day)
 
@@ -23,13 +27,13 @@ class Log(models.Model):
             user_entries = list(entries.filter(participant=user, entry_amount__isnull=False).order_by("entry_date"))
             amounts = []
             for i in range(total_days):
-                amount = amounts[i-1] if i > 0 else 0
-                while user_entries and (user_entries[0].entry_date - (goal_created + timedelta(days=i))).days <= 0:
+                amount = amounts[i-1] if i > 0 else 0 #amount for this day is equal to previous day
+                while user_entries and (user_entries[0].entry_date - (goal_created + timedelta(days=i))).days <= 0: #check if there are any more log entries for this day
                     entry = user_entries.pop(0)
-                    amount += entry.entry_amount
+                    amount += entry.entry_amount #if there are more entries, add them to today's total
                 amounts.append(amount)
             for j in range(total_days, chart_days):
-                amounts.append("null");
+                amounts.append("null"); #or trailing days (if time deadline) insert null
             response["users"].append([user, amounts])
 
 
@@ -50,8 +54,11 @@ class LogEntry(models.Model):
         logEntry = None
 
         if amount != None:
-            amount = int(amount)
-            if amount > maxint:
+            try:
+                amount = int(amount)
+                if amount > maxint:
+                    errors.append(CODE_BAD_AMOUNT)
+            except Exception, e:
                 errors.append(CODE_BAD_AMOUNT)
     
         if (not log) or ('script' in comment):

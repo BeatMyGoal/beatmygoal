@@ -255,6 +255,7 @@ class LogProgressTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse(res_json['errors'])
 
+
 class ImageUploadGoalTests(TestCase):
     def setUp(self):
         self.client = Client()
@@ -262,25 +263,135 @@ class ImageUploadGoalTests(TestCase):
         self.testUser = BeatMyGoalUser.objects.get(username="test")
         Goal.create('title','des','test','test_prize', 1, 'Time-based', '50', 'pound', '11/13/2014')
         self.testGoal = Goal.objects.get(title="title")
-    
+
     def postJSON(self, url, data):
         return self.client.post(url, content_type='application/json', data=data)
-    
+
     def testImageUploadRedirect(self):
         """
-            Tests that a goal creator can change profile image and server redirects successfully
-            """
+        Tests that a goal creator can change profile image and server redirects successfully
+        """
         image_path = settings.BASE_DIR + "/tests/microphone.png"
         data = {"image" :open(image_path,"r")}
         response = self.postJSON("/goals/" + str(self.testGoal.id), data)
         self.assertEqual(response.status_code, 301)
-    
+
     def testImageUploadForm(self):
         """
-            Tests that a goal creator can change profile image and Imageform is valid
-            """
-        
+        Tests that a goal creator can change profile image and Imageform is valid
+        """
+    
         data= {"image" : SimpleUploadedFile("microphone.png",settings.BASE_DIR + "/tests", content_type = "file")}
         form = ImageForm(self.testGoal.id, data)
         self.assertTrue(form.is_valid())
+
+
+class FavoriteGoalTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        BeatMyGoalUser.create("test", "test@test.com", "test")
+        self.testUser = BeatMyGoalUser.objects.get(username="test")
+        Goal.create('title','des','test','test_prize', 1, 'Time-based', '50', 'pound', '11/13/2014')
+        self.testGoal = Goal.objects.get(title="title")
+
+    def postJSON(self, url, data):
+        return self.client.post(url, content_type='application/json', data=data)
+
+    def testAddFavoriteSuccesfully(self):
+        data = """
+        { "username" : "test", "password" : "test" }
+        """
+        self.postJSON("/users/login", data)
+        data = """
+       { "goal_id" : %s }
+       """ % (self.testGoal.id)
+        response = self.postJSON("/goals/goal_add_favorite", data)
+        json_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(json_data['errors'])
+
+
+    def testRemoveFavoriteSuccesfully(self):
+        data = """
+        { "username" : "test", "password" : "test" }
+        """
+        self.postJSON("/users/login", data)
+        data = """
+       { "goal_id" : %s }
+       """ % (self.testGoal.id)
+        self.postJSON("/goals/goal_add_favorite", data)
+        response = self.postJSON("/goals/goal_remove_favorite", data)
+        json_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(json_data['errors'])
+
+    def testRemoveFavoritesWhileNotAddedToFavorite(self):
+        data = """
+        { "username" : "test", "password" : "test" }
+        """
+        self.postJSON("/users/login", data)
+        data = """
+       { "goal_id" : %s }
+       """ % (self.testGoal.id)
+        response = self.postJSON("/goals/goal_remove_favorite", data)
+        json_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(json_data['errors'])
+        self.assertTrue(-210 in json_data['errors'])
+        self.assertTrue(-207 in json_data['errors'])
+
+
+
+
+class EmailTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        BeatMyGoalUser.create("test", "test@test.com", "test")
+        self.testUser = BeatMyGoalUser.objects.get(username="test")
+        Goal.create('title','des','test','test_prize', 1, 'Time-based', '50', 'pound', '11/13/2014')
+        self.testGoal = Goal.objects.get(title="title")
+
+    def postJSON(self, url, data):
+        return self.client.post(url, content_type='application/json', data=data)
+
+    def testSendEmailSuccessfully(self):
+        data = """
+        { "username" : "test", "password" : "test" }
+        """
+        self.postJSON("/users/login", data)
+        data = """
+       { "goal_id" : %s, "to" : "kknd113@hotmail.com" }
+       """ % (self.testGoal.id)
+        response = self.postJSON("/email/", data)
+        json_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(json_data['errors'])
+
+
+    def testSendEmailSuccessfullyWithValidAddress(self):
+        data = """
+        { "username" : "test", "password" : "test" }
+        """
+        self.postJSON("/users/login", data)
+        data = """
+       { "goal_id" : %s, "to" : "abc@abc.com" }
+       """ % (self.testGoal.id)
+        response = self.postJSON("/email/", data)
+        json_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(json_data['errors'])
+
+    def testSendEmailFailsWithoutValidAdress(self):
+        data = """
+        { "username" : "test", "password" : "test" }
+        """
+        self.postJSON("/users/login", data)
+        data = """
+       { "goal_id" : %s, "to" : "" }
+       """ % (self.testGoal.id)
+        response = self.postJSON("/email/", data)
+        json_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(json_data['errors'])
+        self.assertTrue(-401 in json_data['errors'])
 
