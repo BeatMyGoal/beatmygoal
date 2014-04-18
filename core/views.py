@@ -33,7 +33,7 @@ def send_email(request):
     to = data["to"].split(",")
     goal_id = data["goal_id"]
     errors = []
-    if to:
+    if data["to"]:
         try:
             html_content = loader.get_template('email.html')
             html_content = html_content.render(Context({'from' : request.user.username.capitalize(), 'goal_id' : goal_id }))
@@ -41,9 +41,9 @@ def send_email(request):
             email.content_subtype = "html"
             email.send()
         except Exception as e:
-            errors.append(999)
+            errors.append(-400)
     else:
-        errors.append(888)
+        errors.append(-401)
     return HttpResponse(json.dumps({"errors" : errors, "redirect" : ""}), content_type = "application/json")
 
 def email_preview(request):
