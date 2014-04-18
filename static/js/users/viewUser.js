@@ -1,5 +1,18 @@
 $(document).ready(function() {
 });
+function showfileButton(){
+    $('#filebuttonContainer').show();
+    $('#submitbuttonContainer').show();
+    $('#dummyContainer').show();
+}
+function hidefileButton(){
+    $('#filebuttonContainer').hide();
+    $('#submitbuttonContainer').hide();
+    $('#dummyContainer').hide();
+}
+function submitimage(){
+    $('#imagesubmitbutton').click();
+}
 
 $("#reconfirom_delete_user #Yes_button").click(function(event) {
 	var uid = window.location.pathname.split("/")[2];

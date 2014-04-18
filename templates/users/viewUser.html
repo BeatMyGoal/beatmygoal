@@ -4,238 +4,158 @@
 {% block content %}
 
 <link rel="stylesheet" href="{% static 'css/users/viewUser.css' %}"/>
+<script src="{% static 'js/users/viewUser.js' %}"></script>
+
 <div class="row">
-
-  <!-- Photo -->
-  <div class="large-3 columns" onmouseover = "showfileButton()"
-  onmouseout = "hidefileButton()" >
-  <br>
-  <div id = "imageContainer">
-  {% if viewedUser.image %}
-    <img src="{{viewedUser.image.url}}" width=100px height=110px
-  style="width:100%;height:100%" />
-  {% else %}
-    <p> <img src="http://placehold.it/320x300&text=photo" /></p>
-  {% endif %}
-  </div>
-  <script>
-  function showfileButton()
-  {
-  $('#filebuttonContainer').show();
-  $('#submitbuttonContainer').show();
-  $('#dummyContainer').show();
-  }
-  function hidefileButton()
-  {
-  $('#filebuttonContainer').hide();
-  $('#submitbuttonContainer').hide();
-  $('#dummyContainer').hide();
-  }
-  function submitimage()
-  {
-   $('#imagesubmitbutton').click();
-  }
-  </script>
-  
-  {% if viewedUser.id == user.id and viewedUser.username == user.username %}
-  <form action={% url 'user_image_upload' user.id  %} method="post"
-  enctype="multipart/form-data">
-  <div id = "filebuttonContainer">
-    <input type="file" class="upload" name="image" id = "imagebutton" onchange="submitimage()" />
-  </div>
-  <div id = "dummyContainer">
-  <input type = "button" class ="button tiny" value="Upate Profile Picture" id = "imdummy">
-  </div>
-  <div id ="submitbuttonContainer">
-    <input type="submit" class="button tiny" value="Update" id ="imagesubmitbutton" />
-  </div>
-  </form>
-  {% endif %}
-  </div>
-
-  <!-- Userinfo and tabs -->
-  <div class="large-9 columns">
-    
-    <!-- Userinfo -->
-    <form data-abide>
-      <fieldset>
-      <legend> <h2>User Information</h2></legend>
-       
-      {% if not errors %}
-      <!-- <h7> BeatMyGoal login / Facebook login / Tweeter login </h7><br><br> -->
-      <div class="row">
-        <div class="large-6 columns">
-          <h5> Username : {{ viewedUser.username | default:'' }} </h5>
-        </div>
-        <div class="large-6 columns">
-          <h5> Email : {{ viewedUser.email | default:'' }} </h5>
-        </div>
-      </div>
-      
-      {%  else  %}
-      <h5> We couldn't find that user </h5>  
-   
-      {% endif %}  
-      </fieldset>
-    </form>
-
-    {% if viewedUser.id == user.id and viewedUser.username == user.username %}
-
-    <!-- buttons -->
-    <div class="row">
-      <ul class="button-group right">
-        <li><a href="#" data-reveal-id="reconfirom_delete_user" class="button tiny pull-5 radius alert">Delete User</a> </li>
-        <li><a href="#" data-reveal-id="reveal_edit" class="button tiny pull-3 radius">Edit User</a> </li>
-      </ul>
-    </div>
-    {% endif %}
- 
-
-    <!-- tabs -->
-    <dl class="section-container tabs" data-tab>
-      <dd class="active"><a href="#panel2-1">{{ viewedUser.username }}'s Goals</a></dd>
-      <dd><a href="#panel2-2">Favorite Goals</a></dd>
-      <dd><a href="#panel2-3">History</a></dd>
-      <dd><a href="#panel2-4">Comments</a></dd>
-    </dl>
-      
-    <div class="tabs-content">
-      <div class="content active" id="panel2-1">
-        <ul>
-          {% if viewedUser.goals.all %}
-            {% for goal in viewedUser.goals.all %}
-            <li><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></li>
-            {% endfor %}
-          {% else %}
-            {% if viewedUser.id == user.id and viewedUser.username == user.username %}
-            <li><a href="/dashboard/"> You don't have a joined Goal! Join now </a></li>
+    <div class="large-4 columns" onmouseover = "showfileButton()" onmouseout = "hidefileButton()" >
+        <br>
+        <div id = "imageContainer">
+            {% if viewedUser.image %}
+            <img src="{{viewedUser.image.url}}" width=100px height=110px style="width:100%;height:100%" />
+            {% else %}
+                <p> <img src="http://placehold.it/320x300&text=photo" /></p>
             {% endif %}
-          {% endif %}
-        </ul>
-      </div>
-
-      <div class="content" id="panel2-2">
-        <ul>
-          {% if viewedUser.favorite_goals.all %}
-            {% for goal in viewedUser.favorite_goals.all %}
-            <li><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></li>
-            {% endfor %}
-          {% else %}
-            {% if viewedUser.id == user.id and viewedUser.username == user.username %}
-            <li><a href="/dashboard/"> You don't have a favorited Goal! </a></li>
-            {% endif %}
-          {% endif %}
-        </ul>
-      </div>
-
-
-      <div class="content" id="panel2-3">
-        <ul>
-          {% for entry in viewedUser.logentries.all %}
-          <li><a href="/goals/{{ entry.log.goal.id }}">{{ entry.log.goal.title }}: {{ entry.entry_amount }}, {{ entry.comment }}</a></li>
-          {% endfor %}
-        </ul>
-          <!-- <p> This feature is not implemented yet </p> -->
-      </div>
-      
-      <div class="content" id="panel2-4">
-	  <p>Coming soon! </p>
-          <!-- <p> This feature is not implemented yet </p> -->
-      </div>
+        </div>
+        {% if viewedUser.id == user.id and viewedUser.username == user.username %}
+        <form action={% url 'user_image_upload' user.id  %} method="post" enctype="multipart/form-data">
+            <div id = "filebuttonContainer">
+                <input type="file" class="upload" name="image" id = "imagebutton" onchange="submitimage()" />
+            </div>
+            <div id = "dummyContainer">
+                <input type = "button" class ="button tiny" value="Upate Profile Picture" id = "imdummy">
+            </div>
+            <div id ="submitbuttonContainer">
+                <input type="submit" class="button tiny" value="Update" id ="imagesubmitbutton" />
+            </div>
+        </form>
+        {% endif %}
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="row">
+            <div class="large-12 large-centered columns text-center">
+                {% if viewedUser.id == user.id and viewedUser.username == user.username %}
+                    <div class="button-bar">
+                        <center>
+                            <ul class="button-group">
+                                <li><a href="#" data-reveal-id="reconfirom_delete_user" class="button tiny radius alert">Delete User</a> </li>
+                            </ul>
+                            <ul class="button-group">
+                                <li><a href="#" data-reveal-id="reveal_edit" class="button tiny radius">Edit User</a> </li>
+                            </ul>
+                        </center>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
-  </div>
+    <div class="large-8 columns">
+        {% if errors %}
+            <h5>We couldn't find that user</h5>
+        {% endif %}
+        <!-- tabs -->
+        <dl class="breadcrumbs tab-bar" data-tab>
+            <dd class="active"><a href="#panel2-1">Goals</a></dd>
+            <dd><a href="#panel2-2">Favorites</a></dd>
+            <dd><a href="#panel2-3">History</a></dd>
+            <dd><a href="#panel2-4">Comments</a></dd>
+        </dl>
+
+        <div class="tabs-content tab-content-holder">
+            <div class="content active" id="panel2-1">
+                <ul class="dashcard-container small-block-grid-2 medium-block-grid-2 large-block-grid-3"> 
+                    {% if viewedUser.goals.all %}
+                        {% for goal in viewedUser.goals.all %}
+                            <li>
+                                <div class="dashcard-holder" id="{{ goal.id }}">
+                                    <div class="dashcard" id="{{ goal.id }}">
+                                        <div class=dashcard-img></div>
+                                        <div class=dashcard-title><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></div>
+                                        <!-- <div class=dashcard-description>{{ goal.description }}</div> -->
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        {% if viewedUser.id == user.id and viewedUser.username == user.username %}
+                            <li><a href="/dashboard/"> You don't have a joined Goal! Join now </a></li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="content" id="panel2-2">
+                <ul class="dashcard-container small-block-grid-2 medium-block-grid-2 large-block-grid-3"> 
+                    {% if viewedUser.favorite_goals.all %}
+                        {% for goal in viewedUser.favorite_goals.all %}
+                            <li>
+                                <div class="dashcard-holder" id="{{ goal.id }}">
+                                    <div class="dashcard" id="{{ goal.id }}">
+                                        <div class=dashcard-img></div>
+                                        <div class=dashcard-title><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></div>
+                                        <!-- <div class=dashcard-description>{{ goal.description }}</div> -->
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        {% if viewedUser.id == user.id and viewedUser.username == user.username %}
+                            <li><a href="/dashboard/"> You don't have a joined Goal! Join now </a></li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="content" id="panel2-3">
+                <ul>
+                    {% if viewedUser.logentries.all %}
+                        {% for entry in viewedUser.logentries.all %}
+                            <li><a href="/goals/{{ entry.log.goal.id }}">{{ entry.log.goal.title }}: {{ entry.entry_amount }}, {{ entry.comment }}</a></li>
+                        {% endfor %}
+                    {% else %}
+                        <li>You don't have anything in your goal history. Try participating in one of your goals!</li>
+                    {% endif %}
+
+                </ul>
+                <!-- <p> This feature is not implemented yet </p> -->
+            </div>
+          
+            <div class="content" id="panel2-4">
+                <p>Coming soon! </p>
+                  <!-- <p> This feature is not implemented yet </p> -->
+            </div>
+        </div>
+    </div>
 </div>
-
-<!-- Friends -->
-<div class="row">
-  <div class="large-3 columns">
-    <form data-abide>
-      <fieldset>
-        <legend> <h3> Friends </h3></legend>
-        <ul class="side-nav">
-          <p>Coming soon! </p>
-          <!-- <p>This feature is not implemented yet</p> -->
-        </ul>
-      </fieldset>
-    </form>
-  </div>
-</div>
-
-
-
 
 <!-- < Delete User > Reveal Modals begin -->
 <div id="reconfirom_delete_user" class="reveal-modal medium" style="display: none" data-reveal>
-  <h2> Are you sure you want to delete BeatMyGoal user account?</h2>
-  <br>
-  <p>If you select "Yes", your account will be <code>permanently deleted</code>. </p>
-  <p>Click "No", If you don't want to delete your BeatMyGoal account.</p>
-  <ul class="button-group right">
-    <li><a id = "Yes_button" class="button large pull-2 radius alert"> YES </a></li>
-    <li><a id = "No_button" class="button large  radius"> NO </a></li>
-  </ul>
-  <a class="close-reveal-modal">&#215;</a>
+    <h2> Are you sure you want to delete BeatMyGoal user account?</h2>
+    <br>
+    <p>If you select "Yes", your account will be <code>permanently deleted</code>. </p>
+    <p>Click "No", If you don't want to delete your BeatMyGoal account.</p>
+    <ul class="button-group right">
+        <li><a id = "Yes_button" class="button large pull-2 radius alert"> YES </a></li>
+        <li><a id = "No_button" class="button large  radius"> NO </a></li>
+    </ul>
+    <a class="close-reveal-modal">&#215;</a>
 </div>
-
 
  <!-- < Edit User > Reveal Modals begin -->
 <div id="reveal_edit" class="reveal-modal medium" style="display: none" data-reveal>
-  <h2> Please Re-authenticate </h2>
-  <br>
-  <label for='password'>Confirm Password
+    <h2> Please Re-authenticate </h2>
+    <br>
+    <label for='password'>Confirm Password
+        <input id='password' type="password" required/>
+        <small id="password-error" style="display:None" class="error">A password is required</small>
+    </label>
 
-    <input id='password' type="password" required/>
-    <small id="password-error" style="display:None" class="error">A password is required</small>
-  </label>
-
-  <ul class="button-group right">
-    <li><a id = "Confirm_button" class="button large pull-2 radius alert"> Confirm </a></li>
-    <li><a id = "Back_button" class="button large  radius"> Back </a></li>
-  </ul>
-  <a class="close-reveal-modal">&#215;</a>
-</div>
-
-
-
-
-<script src="{% static 'js/users/viewUser.js' %}"></script>
-
-<div class="row card">
-    <div class="medium-3 small-12 columns no-padding">
-        <img src="http://placehold.it/175x175&text=photo" />
-    </div>
-    <div class="medium-9 small-12 columns padding">
-        <div class="row">
-            <div class="small-7 columns">
-                <h1>{{ viewedUser.username }}</h1>
-            </div>
-            <div class="small-5 columns">
-                <h4>{{ viewedUser.email }}</h4>
-            </div>
-        </div>
-        <div class="row">
-            <div class="small-2 columns">Summary:</div>
-            <div class="small-2 columns">In {{ viewedUser.goals.all|length }}</div>
-            <div class="small-2 columns">Created X</div>
-            <div class="small-2 columns">Leading X</div>
-            <div class="small-2 columns">Won X</div>
-            <div class="small-2 columns"></div>
-        </div>
-    </div>
-</div>
-
-<div class="row card">
-    <ul class='padding no-list-style'>
-        {% if viewedUser.goals.all %}
-        {% for goal in viewedUser.goals.all %}
-        <li><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></li>
-        {% endfor %}
-        {% else %}
-        {% if viewedUser.id == user.id and viewedUser.username == user.username %}
-        <li><a href="/dashboard/"> You don't have a joined Goal! Join now </a></li>
-        {% endif %}
-        {% endif %}
+    <ul class="button-group right">
+        <li><a id = "Confirm_button" class="button large pull-2 radius alert"> Confirm </a></li>
+        <li><a id = "Back_button" class="button large  radius"> Back </a></li>
     </ul>
+    <a class="close-reveal-modal">&#215;</a>
 </div>
-
+   
 {% endblock %}
