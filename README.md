@@ -59,3 +59,13 @@ Testing instruction (via django-nose)
 	- On command line, run 'python manage.py test tests.testUnitGoal'
 	- If you want to test specific method in 'testUnitGoal.py', say 'testCreateGoalWithValidData1',
 	- run 'python manage.py test tests.testUnitGoal:GoalTest.testCreateGoalWithValidData1'
+
+
+git tag instructions
+-------------------
+- do `git log` to find the most recent commit hash
+- git tag iteration3 <insert hash here>
+- git push --tags
+- if it works, you'll see the release [here](https://github.com/BeatMyGoal/beatmygoal/releases)
+- also handy is `git tag -d <tag>` to delete a tag
+

@@ -6,7 +6,6 @@
 <script src="{% static 'js/Chart.min.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/goals/viewGoal.css' %}" />
 
-<script src="{% static 'js/redactor/redactor.min.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/redactor/redactor.css' %}" />
 
 
@@ -110,7 +109,7 @@
 
 <div class="row card">
     <div class="medium-9 small-12 columns">
-        <div id='progressChart'></div>
+        <div id='progressChart' style="min-height: 400px"></div>
         <div data-alert id="chartAlert" class="alert-box" style="display:none">
             No log information available to display.
         </div>
@@ -213,12 +212,17 @@
         // Set chart options
         var options = {
             focusTarget:"category",
-            curveType : "none",
             colors : chartColors,
             legend:{position:'none'},
             width: $("#progressChart").width(),
             height: $("#progressChart").parent().parent().height(),
-            chartArea: {left: 30, top: 20, width: "100%", height: "80%"}
+            chartArea: {left: 20, top: 20, width: "100%", height: "80%"},
+            pointSize: 8,
+            lineWidth: 5,
+            curveType: "function",
+            vAxis: {textPosition: "in", gridlines: {color:"#DDD", }, baseline:{color: "#777"}, textStyle:{bold: true}},
+            hAxis: {textPosition: "out", textStyle:{bold: true}}
+
         };
 
         // Instantiate and draw our chart, passing in some options.
