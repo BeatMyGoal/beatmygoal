@@ -14,7 +14,7 @@ $(document).ready(function() {
         }).done(function(data) {
             console.log(data.errors);
             if (data.errors.length === 0) {
-                window.location.href = data.redirect;
+                win/dow.location.href = data.redirect;
             }
             console.log(data.errors);
         }).fail(function(data) {
@@ -73,7 +73,6 @@ $(document).ready(function() {
                 console.log(data);
                 alert("failure");
             });
-
     });
 
     $('#leave_goal_button').click(function() {

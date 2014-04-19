@@ -20,17 +20,51 @@ $(document).ready(function() {
 	   }
 	});
     $(".dashcard-container").on({
+        click: function () {
+            var goal_id = $(this).attr('id');
+            var data = {
+                goal_id: goal_id,
+            };
+            $.ajax({
+                type: "POST",
+                url: "/goals/join",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                dataType: "json",
+            }).done(function(data) {
+                console.log(data);
+                if (data.errors.length === 0) {
+                    console.log(data);
+                    window.location.href = data.redirect;
+                } 
+            }).fail(function(data) {
+                console.log(data);
+                alert("failure");
+            });
+        }
+    }, ".join-button");
+
+    $(".dashcard-container").on({
         mouseenter: function () {
             var currid = $(this).attr('id');
             console.log(currid);
             $('#'+currid+'.dashcard-overlay').css("background-color","rgba(100,100,100,0.8)");
             $('#'+currid+'.join-button').css("display","inline");
+            $('#'+currid+'.view-button').css("display","inline");
         },
         mouseleave: function () {
             var currid = $(this).attr('id');
             console.log(currid);
             $('#'+currid+'.dashcard-overlay').css("background-color","rgba(100,100,100,0.1)");
             $('#'+currid+'.join-button').css("display","none");
+            $('#'+currid+'.view-button').css("display","none");
+        }
+    }, ".dashcard-overlay");
+
+    $(".dashcard-container").on({
+        click: function () {
+            var currid = $(this).attr('id');
+            window.location.replace("/goals/"+currid); 
         }
     }, ".dashcard-overlay");
 
@@ -61,7 +95,8 @@ $(document).ready(function() {
                 $("#"+entry['pk']+".dashcard").append('<div class=dashcard-prize><b>Prize:</b> '+fields['prize']+'</div>');
                 $("#"+entry['pk']+".dashcard").append('<div class=dashcard-description>'+fields['description']+'</div>');
                 $("#"+entry['pk']+".dashcard-holder").append('<div class="dashcard-overlay" id="'+entry['pk']+'"></div>');
-                $("#"+entry['pk']+".dashcard-overlay").append('<a href="/goals/'+entry['pk']+'" class="button join-button" id="'+entry['pk']+'">Join Goal</a>');
+                $("#"+entry['pk']+".dashcard-overlay").append('<a href="#" class="button join-button" id="'+entry['pk']+'">Join Goal</a>');
+                $("#"+entry['pk']+".dashcard-overlay").append('<a href="/goals/'+entry['pk']+'" class="button view-button" id="'+entry['pk']+'">View Goal</a>');
             });
         }).fail(function(data) {
             console.log(data);

@@ -9,6 +9,11 @@
     position: relative;
 }
 .join-button{
+	margin: 10px;
+	display:none;
+}
+.view-button{
+	margin: 10px;
 	display:none;
 }
 .dashcard{
