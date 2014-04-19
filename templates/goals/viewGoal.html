@@ -3,7 +3,6 @@
 {% block title %}{{ goal.title }}{% endblock %}
 {% block content %}
 
-<script src="{% static 'js/Chart.min.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/goals/viewGoal.css' %}" />
 
 <link rel="stylesheet" href="{% static 'css/redactor/redactor.css' %}" />
@@ -200,16 +199,7 @@
 
         // Create the data table.
         var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Day');
-        {% for user,amounts in progress.users %}
-            data.addColumn('number', "{{ user.username }}");
-        {% endfor %}
-        {% for day in progress.days %}
-        data.addRow(['Day {{ day }}',{% for user,amounts in progress.users %}{% for amount in amounts %}{% if forloop.counter == forloop.parentloop.parentloop.counter %}{{ amount }},{% endif %}{% endfor %}{% endfor %}]);{% endfor %}
-
-
-
-        // Set chart options
+        var chart = new google.visualization.LineChart(document.getElementById('progressChart'));
         var options = {
             focusTarget:"category",
             colors : chartColors,
@@ -221,12 +211,24 @@
             lineWidth: 5,
             curveType: "function",
             vAxis: {textPosition: "in", gridlines: {color:"#DDD", }, baseline:{color: "#777"}, textStyle:{bold: true}},
-            hAxis: {textPosition: "out", textStyle:{bold: true}}
+            hAxis: {textPosition: "out", textStyle:{bold: true}},
+            animation: {duration: 2000, easing: "inAndOut"},
 
         };
+        data.addColumn('string', 'Day');
+        {% for user,amounts in progress.users %}
+            data.addColumn('number', "{{ user.username }}");
+        {% endfor %}
+        {% for day in progress.days %}
+        data.addRow(['Day {{ day }}',{% for user,amounts in progress.users %}{% for amount in amounts %}{% if forloop.counter == forloop.parentloop.parentloop.counter %}{{ amount }},{% endif %}{% endfor %}{% endfor %}]);
+        chart.draw(data, options);
+        {% endfor %}
+
+
+
+        // Set chart options
 
         // Instantiate and draw our chart, passing in some options.
-        chart = new google.visualization.LineChart(document.getElementById('progressChart'));
 
         google.visualization.events.addListener(chart, 'error', function(err) {
             console.log('test');
