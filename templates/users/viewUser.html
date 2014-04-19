@@ -7,7 +7,7 @@
 <script src="{% static 'js/users/viewUser.js' %}"></script>
 
 <div class="row">
-    <div class="large-4 columns" onmouseover = "showfileButton()" onmouseout = "hidefileButton()" >
+    <div class="small-8 medium-6 large-4 small-centered medium-centered large-uncentered columns" onmouseover = "showfileButton()" onmouseout = "hidefileButton()" >
         <br>
         <div id = "imageContainer">
             {% if viewedUser.image %}
@@ -17,39 +17,40 @@
             {% endif %}
         </div>
         {% if viewedUser.id == user.id and viewedUser.username == user.username %}
-        <form action={% url 'user_image_upload' user.id  %} method="post" enctype="multipart/form-data">
+        <form class = "prof-pic-form" action={% url 'user_image_upload' user.id  %} method="post" enctype="multipart/form-data">
             <div id = "filebuttonContainer">
                 <input type="file" class="upload" name="image" id = "imagebutton" onchange="submitimage()" />
             </div>
             <div id = "dummyContainer">
-                <input type = "button" class ="button tiny" value="Upate Profile Picture" id = "imdummy">
+                <input type = "button" class ="button tiny" value="Upate Profile Picture" id="imdummy">
             </div>
             <div id ="submitbuttonContainer">
-                <input type="submit" class="button tiny" value="Update" id ="imagesubmitbutton" />
+                <input type="submit" class="button tiny" value="Update" id ="imagesubmitbutton"/>
             </div>
         </form>
         {% endif %}
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
+        {% if viewedUser.id == user.id and viewedUser.username == user.username %}
         <div class="row">
-            <div class="large-12 large-centered columns text-center">
-                {% if viewedUser.id == user.id and viewedUser.username == user.username %}
+            <div class="small-1 medium-0 large-1 columns">
+            </div>
+            <div class="small-10 medium-12 large-10 small-centered medium-centered large-centered columns text-center">
+                            <a href="#" data-reveal-id="reconfirom_delete_user" class="button tiny radius alert">Delete User</a>
+                            <a href="#" data-reveal-id="reveal_edit" class="button tiny radius">Edit User</a>
+<!--                 <center>        
                     <div class="button-bar">
-                        <center>
-                            <ul class="button-group">
-                                <li><a href="#" data-reveal-id="reconfirom_delete_user" class="button tiny radius alert">Delete User</a> </li>
-                            </ul>
-                            <ul class="button-group">
-                                <li><a href="#" data-reveal-id="reveal_edit" class="button tiny radius">Edit User</a> </li>
-                            </ul>
-                        </center>
+                        <ul class="button-group">
+                            <li><a href="#" data-reveal-id="reconfirom_delete_user" class="button tiny radius alert">Delete User</a> </li>
+                        </ul>
+                        <ul class="button-group">
+                            <li><a href="#" data-reveal-id="reveal_edit" class="button tiny radius">Edit User</a> </li>
+                        </ul>
                     </div>
-                {% endif %}
+                </center>
+ -->            </div>
+            <div class="small-1 medium-0 large-1 columns">
             </div>
         </div>
+        {% endif %}
     </div>
     <div class="large-8 columns">
         {% if errors %}

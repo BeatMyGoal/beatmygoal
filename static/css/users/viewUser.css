@@ -1,8 +1,6 @@
 html, body {
     background-color: #EDEEEF;
 }
-
-
 .tab-bar{
    background-color: #fff; 
 }
@@ -57,11 +55,9 @@ html, body {
     font-size: 60%;
     color: #333;
 }
-
-
 #imageContainer {
-    width: 220px;
-    height: 220px;
+    width: 100%;
+    height: auto;
     position: relative;
     z-index: 0
 }
@@ -69,32 +65,26 @@ html, body {
     border-radius: 50%;
 }
 #filebuttonContainer {
-    width: 80%;
-    height: 40%;
-    position: absolute;
-    margin-top: 190px;
-    margin-left: 20px;
-    top: 0;
-    left: 0;
-    z-index:2;
-    display:none;
     opacity:0;
 }
-
+.prof-pic-form{
+    height:0px;
+    width:0px;
+}
 #dummyContainer {
-    width: 80%;
-    height: 40%;
+    width: 100%;
+    text-align: center;
     position: absolute;
-    margin-top: 190px;
-    margin-left: 30px;
+    margin-top: 70%;
     top: 0;
     left: 0;
     z-index:1;
-    display:none;
+    display: none;
 }
-
 #imdummy{
-   width: 100%;
+    position: relative;
+    margin: 0 auto;
+    width: 200px;
 }
 
 #imagebutton {
@@ -102,22 +92,13 @@ html, body {
     height:40%;
 
 }
-
 #upload {
     position:relative;
     width:200px;
-
 }
 
 #submitbuttonContainer {
-    width: 1px;
-    height: 40%;
-    position: absolute;
-    margin-top: 190px;
-    margin-left: 150px;
-    z-index:0;
-    top: 0;
-    left: 0;
+    height:0px;
+    width:0px;
     opacity:0;
-    display:none;
 }
