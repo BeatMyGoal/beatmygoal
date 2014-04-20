@@ -430,12 +430,6 @@ def edit_user(request, uid):
             data = json.loads(request.body)
             username = data['username']
             email = data['email']
-            password = data['password']
-
-            loginResponse = BeatMyGoalUser.login(user.username, password)
-            if loginResponse['errors']:
-                return HttpResponse(json.dumps({"errors" : loginResponse["errors"]}), content_type = "application/json")
-
 
             response = BeatMyGoalUser.updateUser(user, username, email)
 
