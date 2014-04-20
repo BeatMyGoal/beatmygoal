@@ -66,30 +66,28 @@
 
         <div class="tabs-content tab-content-holder">
             <div class="content active" id="panel2-1">
-                <ul class="dashcard-container small-block-grid-2 medium-block-grid-3 large-block-grid-3"> 
-                    {% if viewedUser.goals.all %}
+                {% if viewedUser.goals.all %}
+                    <ul class="dashcard-container small-block-grid-2 medium-block-grid-3 large-block-grid-3"> 
                         {% for goal in viewedUser.goals.all %}
                             <li>
                                 <div class="dashcard-holder" id="{{ goal.id }}">
                                     <div class="dashcard" id="{{ goal.id }}">
                                         <div class=dashcard-img></div>
                                         <div class=dashcard-title><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></div>
-                                        <!-- <div class=dashcard-description>{{ goal.description }}</div> -->
                                     </div>
                                 </div>
                             </li>
                         {% endfor %}
-                    {% else %}
-                        {% if viewedUser.id == user.id and viewedUser.username == user.username %}
-                            <li><a href="/dashboard/"> You don't have a joined Goal! Join now </a></li>
-                        {% endif %}
+                    </ul>
+                {% else %}
+                    {% if viewedUser.id == user.id and viewedUser.username == user.username %}
+                        <a href="/dashboard/"> You don't have a joined Goal! Join now </a>
                     {% endif %}
-                </ul>
+                {% endif %}
             </div>
-
             <div class="content" id="panel2-2">
-                <ul class="dashcard-container small-block-grid-2 medium-block-grid-2 large-block-grid-3"> 
-                    {% if viewedUser.favorite_goals.all %}
+                {% if viewedUser.favorite_goals.all %}
+                    <ul class="dashcard-container small-block-grid-2 medium-block-grid-2 large-block-grid-3"> 
                         {% for goal in viewedUser.favorite_goals.all %}
                             <li>
                                 <div class="dashcard-holder" id="{{ goal.id }}">
@@ -101,12 +99,12 @@
                                 </div>
                             </li>
                         {% endfor %}
-                    {% else %}
-                        {% if viewedUser.id == user.id and viewedUser.username == user.username %}
-                            <li><a href="/dashboard/">You haven't added any goals to your favorites.</a></li>
-                        {% endif %}
+                    </ul>
+                {% else %}
+                    {% if viewedUser.id == user.id and viewedUser.username == user.username %}
+                        <a href="/dashboard/">You haven't added any goals to your favorites.</a>
                     {% endif %}
-                </ul>
+                {% endif %}
             </div>
             <div class="content" id="panel2-3">
                 <ul>
