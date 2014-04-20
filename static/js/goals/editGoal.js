@@ -10,7 +10,7 @@ $(document).ready(function() {
 	gid = window.location.pathname.split("/")[2];
 
 
-	$('#delete_goal_button').click(function() {
+	var deleteAction = function() {
         var goal_id = window.location.pathname.split("/")[2];
         var data = {
            goal_id: goal_id,
@@ -32,11 +32,9 @@ $(document).ready(function() {
                 alert("failure");
         });
 
-    });
+    };
 
-
-
-	$("#save").click(function(event) {
+	var saveAction = function(event) {
 		var title = $title.val();
 		var description = $description.val();
 		var prize = $prize.val();
@@ -77,7 +75,7 @@ $(document).ready(function() {
 		}).fail(function(data) {
 			alert("failure");
 		});
-	});
+	};
 
 	$("#cancel").click(function(event) {
 		window.location.href = "/goals/" + gid;
@@ -85,7 +83,75 @@ $(document).ready(function() {
 
 	$("#firstModal #No_button").click(function(e) {
 	$('#firstModal').foundation('reveal', 'close');
-});
+	});
+
+
+	$("#reveal_save #Back_button").click(function(e) {
+        $('#reveal_save').foundation('reveal', 'close');
+    });
+
+
+    $("#reveal_save #Confirm_button").click(function(e) {
+        var password = $('#reveal_save #password').val();
+        var data = {
+            password: password
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/confirm/",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            dataType: "json",
+        }).done(function(data) {
+
+            console.log(data);
+            if (data.errors.length === 0) {
+                saveAction(event);
+            } else {
+                if (data.errors.length >= 0) {
+                    var errors = data.errors;
+                    if (errors.indexOf(ERRCODES.CODE_BAD_PASSWORD) >= 0) {
+                            $('#password-error').text('Validation failed');
+                            $("label[for='password']").addClass("error");
+                        }
+                }
+            }
+        }).fail(function(data) {
+            alert("failure");
+        });
+    });
+
+    $("#firstModal #Yes_button").click(function(e) {
+        var password = $('#firstModal #password').val();
+        var data = {
+            password: password
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/confirm/",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            dataType: "json",
+        }).done(function(data) {
+
+            console.log(data);
+            if (data.errors.length === 0) {
+                deleteAction(event);
+            } else {
+                if (data.errors.length >= 0) {
+                    var errors = data.errors;
+                    if (errors.indexOf(ERRCODES.CODE_BAD_PASSWORD) >= 0) {
+                            $('#password-error').text('Validation failed');
+                            $("label[for='password']").addClass("error");
+                        }
+                }
+            }
+        }).fail(function(data) {
+            alert("failure");
+        });
+    });
 });
 
 

@@ -71,7 +71,7 @@
 	<div class="row ">
 		<ul class="button-group right">
 			<div class="larger-12 columns">
-				<input id="save" type="button" class="button small radius" value="Save">
+				<a href="#" data-reveal-id="reveal_save" class="button small radius alert">Save</a>
 				<input id="cancel" type="button" class="button small radius" value="Cancel">
 				<input type="button" id="delete_goal_button2" data-reveal-id="firstModal" class="button small radius alert" value="Delete">
 			</div>
@@ -89,12 +89,32 @@
   <br>
   <p>If you select "Yes", this goal will be <code>permanently deleted</code>. </p>
   <p>Click "No", If you don't want to delete this goal.</p>
+  <label for='password'>Confirm Password
+    <input id='password' type="password" required/>
+    <small id="password-error" style="display:None" class="error">A password is required</small>
+  </label>
   <ul class="button-group right">
-    <li><a id = "delete_goal_button" class="button large pull-2 radius alert"> YES </a></li>
+    <li><a id = "Yes_button" class="button large pull-2 radius alert"> YES </a></li>
     <li><a id = "No_button" class="button large  radius"> NO </a></li>
   </ul>
   <a class="close-reveal-modal">&#215;</a>
 </div>
+
+
+<div id="reveal_save" class="reveal-modal medium" style="display: none" data-reveal>
+  <h2> Please Re-authenticate </h2>
+  <br>
+  <label for='password'>Confirm Password
+    <input id='password' type="password" required/>
+    <small id="password-error" style="display:None" class="error">A password is required</small>
+  </label>
+  <ul class="button-group right">
+    <li><a id = "Confirm_button" class="button large pull-2 radius alert"> Confirm </a></li>
+    <li><a id = "Back_button" class="button large  radius"> Back </a></li>
+  </ul>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
 
 
 

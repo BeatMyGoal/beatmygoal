@@ -47,7 +47,6 @@ $(document).ready(function() {
 
     $('#edit_goal_button').click(function() {
       window.location = window.location.href+"edit";
-      return false;
     });
 
 
@@ -136,46 +135,6 @@ $(document).ready(function() {
         });
 
     });
-
-
-    $("#reveal_edit #Back_button").click(function(e) {
-        $('#reveal_edit').foundation('reveal', 'close');
-    });
-
-
-
-    $("#reveal_edit #Confirm_button").click(function(e) {
-        var password = $('#reveal_edit #password').val();
-        var data = {
-            password: password
-        };
-
-        $.ajax({
-            type: "POST",
-            url: "/confirm/",
-            data: JSON.stringify(data),
-            contentType: "application/json",
-            dataType: "json",
-        }).done(function(data) {
-
-            console.log(data);
-            if (data.errors.length === 0) {
-                window.location = window.location.href+"edit";
-            } else {
-                if (data.errors.length >= 0) {
-                    var errors = data.errors;
-                    if (errors.indexOf(ERRCODES.CODE_BAD_PASSWORD) >= 0) {
-                            $('#password-error').text('Validation failed');
-                            $("label[for='password']").addClass("error");
-
-                        }
-                }
-            }
-        }).fail(function(data) {
-            alert("failure");
-        });
-    });
-
 
     $("#reveal_email #cancle_button").click(function(e) {
         $('#reveal_email').foundation('reveal', 'close');
