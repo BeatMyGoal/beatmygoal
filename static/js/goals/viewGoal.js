@@ -14,7 +14,7 @@ $(document).ready(function() {
         }).done(function(data) {
             console.log(data.errors);
             if (data.errors.length === 0) {
-                win/dow.location.href = data.redirect;
+                window.location.href = data.redirect;
             }
             console.log(data.errors);
         }).fail(function(data) {
