@@ -275,6 +275,7 @@
                     }
                     var view = new google.visualization.DataView(data);
                     view.setColumns(columns);
+                    options.animation.duration = 0;
                     chart.draw(view, options);
                 }
             }
