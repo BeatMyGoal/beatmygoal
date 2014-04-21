@@ -357,6 +357,7 @@ def user_login(request):
         data = json.loads(request.body)
         username= data["username"]
         password= data["password"]
+        redirect= data['redirect'] if data['redirect'] else "/dashboard/"
         response = BeatMyGoalUser.login(username,password)
             
         if response['errors']:
@@ -365,7 +366,7 @@ def user_login(request):
             user = response['user']
             login(request, user)
             return HttpResponse(json.dumps({"errors": response['errors'], 
-                                            "redirect" : "/dashboard/"}),
+                                            "redirect" : redirect}),
                                 content_type = "application/json")
 
 @csrf_exempt

@@ -12,6 +12,7 @@ $(document).ready(function() {
 		var data = {
 			username: $("#username").val(),
 			password: $("#password").val(),
+            redirect: window.location.pathname,
 		};
 
 		$.ajax({
