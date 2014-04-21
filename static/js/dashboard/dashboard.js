@@ -55,7 +55,7 @@ $(document).ready(function() {
         mouseleave: function () {
             var currid = $(this).attr('id');
             console.log(currid);
-            $('#'+currid+'.dashcard-overlay').css("background-color","rgba(100,100,100,0.1)");
+            $('#'+currid+'.dashcard-overlay').css("background-color","rgba(100,100,100,0.0)");
             $('#'+currid+'.join-button').css("display","none");
             $('#'+currid+'.view-button').css("display","none");
         }
@@ -86,7 +86,7 @@ $(document).ready(function() {
                 fields = entry['fields'];
                 user = $(".users>#id"+fields['creator']);
                 //console.log(user);
-                $(".dashcard-container").append('<li><div class="dashcard-holder" id="'+entry['pk']+'"></div></li>');
+                $(".dashcard-container").append('<li><div class="dashcard-holder card" id="'+entry['pk']+'"></div></li>');
                 $(".dashcard-holder#"+entry['pk']).empty();
                 $(".dashcard-holder#"+entry['pk']).append('<div class="dashcard" id="'+entry['pk']+'"></div>');
                 $("#"+entry['pk']+".dashcard").append('<div class=dashcard-img></div>');

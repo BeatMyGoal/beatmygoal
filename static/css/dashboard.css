@@ -40,8 +40,8 @@
 	width: 100%;
 	padding: 20px;
 	color: #333;
-    box-shadow: 1px 5px 5px #AAA;
-    background-color: #FFF;
+/*    box-shadow: 1px 5px 5px #AAA;
+*/    background-color: #FFF;
 }
 .dashcard-overlay{
     cursor: pointer;  

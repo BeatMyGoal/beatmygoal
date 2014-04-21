@@ -69,7 +69,7 @@
                     <ul class="dashcard-container small-block-grid-2 medium-block-grid-3 large-block-grid-3"> 
                         {% for goal in viewedUser.goals.all %}
                             <li>
-                                <div class="dashcard-holder" id="{{ goal.id }}">
+                                <div class="dashcard-holder card" id="{{ goal.id }}">
                                     <div class="dashcard" id="{{ goal.id }}">
                                         <div class=dashcard-img></div>
                                         <div class=dashcard-title><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></div>
@@ -89,7 +89,7 @@
                     <ul class="dashcard-container small-block-grid-2 medium-block-grid-2 large-block-grid-3"> 
                         {% for goal in viewedUser.favorite_goals.all %}
                             <li>
-                                <div class="dashcard-holder" id="{{ goal.id }}">
+                                <div class="dashcard-holder card" id="{{ goal.id }}">
                                     <div class="dashcard" id="{{ goal.id }}">
                                         <div class=dashcard-img></div>
                                         <div class=dashcard-title><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></div>
