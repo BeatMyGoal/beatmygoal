@@ -10,6 +10,11 @@ from django.core.mail import send_mail, BadHeaderError, EmailMessage
 
 authomatic = Authomatic(CONFIG, 'CSRF_TOKEN')
 
+import requests
+
+from django.core.files import File
+from django.core.files.temp import NamedTemporaryFile
+
 # Create your views here
 
 from django.shortcuts import render_to_response
@@ -78,9 +83,16 @@ def user_login_fb(request):
                 password = BeatMyGoalUser.objects.make_random_password(8)
                 user = BeatMyGoalUser.create(username, email, password)['user']
                 user =  authenticate(username=username, password=password)
-                #user.image = "http://graph.facebook.com/" + result.user.id +"/picture?width=140&height=140"
-
-                #user.save()
+            
+                #Get profile image from the user
+                url = 'http://graph.facebook.com/{}/picture?width=200&height=200'
+                url = url.format(result.user.id)
+                r = requests.get(url)
+                temp=NamedTemporaryFile(delete=True)
+                temp.write(r.content)
+                temp.flush()
+                user.image.save("faceimage.jpg",File(temp), save = True)
+               
                 login(request, user)
                 response['Location'] = '/users/profile'
 
