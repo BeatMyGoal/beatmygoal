@@ -1,10 +1,24 @@
+.card-holder-background{
+	height:100%;
+	width: 65%;
+	min-width: 400px;
+	max-width: 1000px;
+	margin: -15px auto;
+	padding: 15px 0px;
+    background-color: #DBDCDD;
+    border-left: 1px solid #AAA;
+    border-bottom: 1px solid #AAA;
+    border-right: 1px solid #AAA;
+    z-index: -10;
+}
+
 .dashcard-container li{
     text-align: center;
 }
 .dashcard-holder{
     display: inline-block;
 	height: 300px;
-	width: 380px;
+	width: 360px;
 	margin: 20px;
     position: relative;
 }
@@ -26,6 +40,7 @@
 	width: 100%;
 	padding: 20px;
 	color: #333;
+    box-shadow: 1px 5px 5px #AAA;
     background-color: #FFF;
 }
 .dashcard-overlay{
@@ -45,7 +60,7 @@
 }
 */.dashcard-img{
 	height: 50%;
-	width: 380px;
+	width: 360px;
 	margin: -20px 0px 0px -20px;
 	background-image: url('../img/trophy.gif') ;
 	background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../img/trophy.gif');

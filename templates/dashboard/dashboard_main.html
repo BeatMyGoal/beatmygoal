@@ -8,22 +8,28 @@
 
 <script src="{% static 'js/dashboard/dashboard.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
-<div class="row collapse">
-    <div class="large-10 small-8 columns">
-        <input id="dashboard_search" type="text" />
+<div class="card-holder-background">
+    <div class="row collapse">
+        <div class="large-1 small-1 columns">
+            &nbsp;
+        </div>
+        <div class="large-7 small-7 columns">
+            <input id="dashboard_search" type="text" />
+        </div>
+        <div class="large-3 small-3 columns">
+            <a class="button expand postfix">Search</a>
+        </div>
+        <div class="large-1 small-1 columns">
+            &nbsp;
+        </div>
     </div>
-    <div class="large-2 small-4 columns">
-        <a class="button expand postfix">Search</a>
+    <div class="row">
+        <ul class="dashcard-container small-block-grid-1 medium-block-grid-1 large-block-grid-2"> </ul>
+    </div>
+    <div class="users" style="display:none">
+       {% for user in users %} 
+            <div id="id{{ user.id }}">{{ user.username }}</div>
+       {% endfor %} 
     </div>
 </div>
-<div class="row">
-    <ul class="dashcard-container small-block-grid-1 medium-block-grid-2 large-block-grid-2"> </ul>
-</div>
-<div class="users" style="display:none">
-   {% for user in users %} 
-        <div id="id{{ user.id }}">{{ user.username }}</div>
-   {% endfor %} 
-</div>
-
-
 {% endblock %}
