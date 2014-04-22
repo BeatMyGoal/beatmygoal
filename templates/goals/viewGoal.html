@@ -25,7 +25,7 @@
         <!-- Photo -->
         <div class="small-12 columns no-padding goal-picture-container" onmouseover="showfileButton()" onmouseout="hidefileButton()" style="height: 300px">
             {% if goal.image %}
-            <img src="{{goal.image.url}}" class='goal-image'/>
+            <img src="/media/{{goal.image.url}}" class='goal-image'/>
             {% else %}
             <img src="http://placehold.it/1080x300&text=goalPhoto" style="height: 300px"/>
             {% endif %}
@@ -142,7 +142,7 @@
             <div class="row">
                 <div class="medium-1 hide-for-small columns">
                     {% if entry.participant.image %}
-                    <img src="{{entry.participant.image.url}}" style="width:65px; height:65px" />
+                    <img src="/media/{{entry.participant.image.url}}" style="width:65px; height:65px" />
                     {% else %}
                     <img src="http://placehold.it/65x65&text=photo" />
                     {% endif %}
