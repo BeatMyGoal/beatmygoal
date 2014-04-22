@@ -357,7 +357,7 @@ def user_login(request):
         data = json.loads(request.body)
         username= data["username"]
         password= data["password"]
-        redirect= data['redirect'] if data['redirect'] else "/dashboard/"
+        redirect= data['redirect'] if 'redirect' in data else "/dashboard/"
         response = BeatMyGoalUser.login(username,password)
             
         if response['errors']:
