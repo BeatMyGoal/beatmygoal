@@ -71,7 +71,7 @@
                 <li><a href="#" data-reveal-id="reveal_register" class="button tiny alert">Register and Join</a> </li>
             {% endif %}
 	    
-            {% if user.username == goal.creator.username %}
+            {% if user.username == goal.creator.username and user.social != None %}
                 <li><a id = "edit_goal_button" type="submit" class="button tiny alert">Edit Goal</a></li>	    
             {% endif %}
 

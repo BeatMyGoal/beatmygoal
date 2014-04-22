@@ -29,7 +29,7 @@
             </div>
         </form>
         {% endif %}
-        {% if viewedUser.id == user.id and viewedUser.username == user.username %}
+        {% if viewedUser.id == user.id and viewedUser.username == user.username  and user.social != None%}
         <div class="row">
             <div class="small-1 medium-0 large-1 columns">
             </div>

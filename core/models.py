@@ -232,7 +232,7 @@ class BeatMyGoalUser(AbstractUser):
     goals = models.ManyToManyField(Goal)
     favorite_goals = models.ManyToManyField(Goal, related_name="favorite_goals")
     image = models.FileField(upload_to='userimage/')
-    
+    social = models.CharField(null=True, blank=True, max_length=20)
     
     @classmethod
     def valid_email(self, e):
