@@ -80,11 +80,13 @@ def user_login_fb(request):
                 user.backend='django.contrib.auth.backends.ModelBackend'
                 login(request, user)
                 user.social = result.user.id
+                user.save()
             else:
                 password = BeatMyGoalUser.objects.make_random_password(8)
                 user = BeatMyGoalUser.create(username, email, password)['user']
                 user =  authenticate(username=username, password=password)
                 user.social = result.user.id
+                user.save()
                 #Get profile image from the user
                 url = 'http://graph.facebook.com/{}/picture?width=200&height=200'
                 url = url.format(result.user.id)
@@ -311,6 +313,7 @@ def goal_view_goal(request, goal_id):
     """
     View the profile of a goal.
     """
+    print request.user.social
     goal = Goal.objects.get(id=goal_id)
     print goal
     image = str(goal.image)
