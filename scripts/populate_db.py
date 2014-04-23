@@ -88,13 +88,16 @@ for g in dummy_goals:
         
         if (random.randint(0, 100) % 2 == 0):
             # Create a log entry
-            le = LogEntry.create(l, u.username, randrange(1,100), "<p>hello world</p>")['logEntry']
+            for i in range(random.randint(0,10)):
+                le = LogEntry.create(l, u.username, randrange(1,100), "<p>hello world</p>")['logEntry']
+                le.entry_date = datetime.date.today() + datetime.timedelta(seconds=randrange(1,100))
+                le.save()
         else:
             # Create a comment (because amount = None)
-            le = LogEntry.create(l, u.username, None, "<p>hello world</p>")['logEntry']
-        
-        le.entry_date = datetime.date.today() + datetime.timedelta(seconds=randrange(1,100))
-        le.save()
+            for i in range(random.randint(0,10)):
+                le = LogEntry.create(l, u.username, None, "<p>hello world</p>")['logEntry']
+                le.entry_date = datetime.date.today() + datetime.timedelta(seconds=randrange(1,100))
+                le.save()
     goals.append(g)
 
 # Add random users to random goals

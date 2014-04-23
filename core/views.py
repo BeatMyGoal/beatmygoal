@@ -313,9 +313,7 @@ def goal_view_goal(request, goal_id):
     """
     View the profile of a goal.
     """
-    print request.user.social
     goal = Goal.objects.get(id=goal_id)
-    print goal
     image = str(goal.image)
     isCreator = str(request.user) == str(goal.creator)
     isParticipant = len(goal.beatmygoaluser_set.filter(username=request.user)) > 0
@@ -427,7 +425,15 @@ def view_user(request, uid):
         if response['errors']:
             return render(request, 'users/viewUser.html', { "errors" : response["errors"] })
         else:
-            return render(request, 'users/viewUser.html', {'viewedUser' : response['user'], 'errors' : response['errors']} )
+            dict = {}
+            entries = response['user'].logentries.all()
+            for entry in entries:
+                goal_title = str(entry.log.goal.title)
+                if goal_title in dict:
+                    dict[goal_title] += 1
+                else:
+                    dict[goal_title] = 1
+            return render(request, 'users/viewUser.html', {'viewedUserData' : dict, 'viewedUser' : response['user'], 'errors' : response['errors']} )
 
 #@csrf_exempt
 def edit_user(request, uid):

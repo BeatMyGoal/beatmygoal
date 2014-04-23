@@ -185,6 +185,7 @@
     var chartColors = [];
 
     for (var i = 0; i < $(".participants-list").children().length; i++){
+        console.log(colors[i]);
         chartColors.push(colors[i]);
         $($(".participants-list").children()[i]).children("a").css("color", colors[i]);
     };

@@ -5,6 +5,8 @@
 
 <link rel="stylesheet" href="{% static 'css/users/viewUser.css' %}"/>
 <script src="{% static 'js/users/viewUser.js' %}"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
 
 <div class="row">
     <div class="small-8 medium-6 large-4 small-centered medium-centered large-uncentered columns" onmouseover = "showfileButton()" onmouseout = "hidefileButton()" >
@@ -128,5 +130,63 @@
 </div>
 
 
+
+<div class="row card">
+    <div class="medium-9 small-12 columns">
+        <div id='userProgressChart' style="min-height: 400px"></div>
+        <div data-alert id="chartAlert" class="alert-box" style="display:none">
+            No log information available to display.
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    // Load the Visualization API and the piechart package.
+    google.load('visualization', '1.0', {'packages':['corechart']});
+    var colors = COLORS.list();
+    var chartColors = [];
+
+    for (var i = 0; i < $(".participants-list").children().length; i++){
+        console.log(colors[i]);
+        chartColors.push(colors[i]);
+        $($(".participants-list").children()[i]).children("a").css("color", colors[i]);
+    };
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.setOnLoadCallback(drawChart);
+
+    // Callback that creates and populates a data table, 
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart() {
+        var data = new google.visualization.DataTable();
+        var chart = new google.visualization.BarChart(document.getElementById('userProgressChart'));
+        var options = {
+            title: 'Number of logs',
+            animation: {duration: 2000, easing: "inAndOut"},
+            groupWidth: '100%',
+        };
+        data.addColumn('string','name');
+        var row = [''];
+        {% for k,v in viewedUserData.items %}
+            data.addColumn('number', "{{ k }}")
+            console.log(typeof Number('{{v}}'));
+            row.push(Number("{{v}}"));
+        {% endfor %}
+        data.addRow(row);
+
+        chart.draw(data, options);
+    }
+</script>
+
    
 {% endblock %}
+
