@@ -313,9 +313,7 @@ def goal_view_goal(request, goal_id):
     """
     View the profile of a goal.
     """
-    print request.user.social
     goal = Goal.objects.get(id=goal_id)
-    print goal
     image = str(goal.image)
     isCreator = str(request.user) == str(goal.creator)
     isParticipant = len(goal.beatmygoaluser_set.filter(username=request.user)) > 0
