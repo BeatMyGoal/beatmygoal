@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	$('#hidden_tabs').hide();
 
 	$("#register-submit").click(function(e) {
 		$('#step4_check').fadeIn();
@@ -107,7 +108,7 @@ $(document).ready(function() {
 
     });
 	
-	//check icons
+	//Check icons
 	$('#step1_check').hide();
 	$('#step2_check').hide();
 	$('#step3_check').hide();
@@ -134,6 +135,7 @@ $(document).ready(function() {
 		} else {
 			document.getElementById('step2').click();
 			$('#step1_check').fadeIn();
+			document.getElementById("selected_goal_type").innerHTML = document.getElementById('goal_type').value;
 		}
 	});
 	$('#next_button_step2').click(function(e){
@@ -154,6 +156,7 @@ $(document).ready(function() {
 		if ($("#register-value-unit").val() === "") {
 			$("label[for='value_unit']").addClass("error");
 		}
+
 	});
 	$('#next_button_step3').click(function(e){
 		if ($('#deadline').is(":checked") && $('#datepicker').val() === "") {

@@ -8,9 +8,6 @@
 
 <!-- 
 Note - will fix later
-1. check mark in tabs (should mark with check when a step completed wihout error)
-2. (prev, next button) or (indicating which step has error on tabs)
-3. showing goal type after "your goal type : " in Setup Goal page.
 4. goal image upload
 5. Collaborative vs Competitive - should be done with model work and integrate with this.
  -->
@@ -19,18 +16,14 @@ Note - will fix later
 <link rel="stylesheet" href="{% static 'css/goals/createGoal.css' %}" />
 
 
-
 <div class="row collapse card">
   
   <!-- Create Goal Page Title -->
   <div class="row card">
     <div class="medium-8 columns">
-      <h2><font color="white">Create Goal
-      Activate Tab : {{msg}}
-      </font></h2>
+      <h2><font color="white">Create Goal</font></h2>
     </div>
   </div>
-
 
   <!-- Photo -->
   <div class="row card">
@@ -43,40 +36,33 @@ Note - will fix later
   <div class="row center">
     
     <!-- tabs classification-->
-    <div class="small-8 large-centered columns">
+    <div class="small-8 large-centered columns" style="padding-bottom: 0.2rem; padding-top: 0.2rem;">
       <dl class="tabs" data-tab>
         
-        <dd class="active" >
-          <a href="#step1"  id="step1"> <i class="fa fa-check" id="step1_check"> </i> Choose Goal Type</a>
-        </dd>
-        <dd >
-          <a href="#step2" id="step2"> <i class="fa fa-check" id="step2_check"> </i> Setup Goal</a>
-        </dd>
-        <dd>
-          <a href="#step3" id="step3"> <i class="fa fa-check" id="step3_check"> </i> Deadline</a>
-        </dd>
-        <dd>
-          <a href="#step4" id="step4"> <i class="fa fa-check" id="step4_check"></i> Prize / Payment</a>
-        </dd>
-
-
-        <!-- TEMP button.. Fix later
-        <dl class="tabs radius right"  data-tab>
-          <dd><a href="#step2" style="background: cornflowerblue"> Next </a></dd>
-        </dl>
-        -->
-        <!-- next button..-->
-
+        <!-- normal tabs (steps) -->
+        <dd><a> <i class="fa fa-check" id="step1_check"> </i> Choose Goal Type</a></dd>
+        <dd><a> <i class="fa fa-check" id="step2_check"> </i> Setup Goal</a></dd>
+        <dd><a> <i class="fa fa-check" id="step3_check"> </i> Deadline</a></dd>
+        <dd><a> <i class="fa fa-check" id="step4_check"></i> Prize / Payment</a></dd>
       </dl>
+
+      <!-- hidden tabs (used for navigation by prev,next button) -->
+      <dl class="tabs" id="hidden_tabs" data-tab>
+        <dd class ="active"> <a href="#step1" id="step1"> </a> </dd>
+        <dd> <a href="#step2" id="step2"> </a> </dd>
+        <dd> <a href="#step3" id="step3"> </a> </dd>
+        <dd> <a href="#step4" id="step4"> </a> </dd>
+      </dl>
+
     </div>
-    
+
 
     <!-- setting each tabs -->
     <div class="tabs-content">
 
       <!-- Choose Goal Type tab -->
       <div class="content active" id="step1">
-        <div class="row card" stype="height: 500px">
+        <div class="row card">
           <div class="panel" data-equalizer-watch>
             <div data-abide id="register-form" >
               <center><h3>Choose a Goal Type</h3></center>
@@ -99,14 +85,14 @@ Note - will fix later
                   <div class="row" id="Collaborative">
                     <p>You can collaborate with your friends to reach your goal</p>
                     <img src="{% static 'img/collaborative.jpg' %}" style="width:100%;height:100%;margin-bottom: .5rem" /> 
-                    <!-- next button..-->
+                    <!-- next button -->
                   </div>
 
                   <!-- when Competitive selected-->
                   <div class="row" id="Competitive">
                     <p>You can compete with your friend to reach your goal</p>
                     <img src="{% static 'img/competitive.jpg' %}" style="width:100%;height:100%;margin-bottom: 1rem"> 
-                    <!-- next button..-->
+                    <!-- next button -->
                   </div>
                   <input id="next_button_step1" type="submit" class="small button right radius" value="Next">
                   
@@ -128,7 +114,7 @@ Note - will fix later
 
               <div class="large-10 large-centered columns">
                 <div>
-                  <center><h3> Your Goal Type: </h3></center>
+                  <center><h5> Your Goal Type: </h5> <h3 id="selected_goal_type"></h3></center>
                 </div>
                 
                 <div class="large-12 columns">
@@ -159,9 +145,9 @@ Note - will fix later
                 </div>
 
                 <div class="large-12 columns">
-                  <!-- prev button..-->
+                  <!-- prev button -->
                   <input id="prev_button_step2" type="submit" class="small button left radius" value="Prev">
-                  <!-- next button..-->
+                  <!-- next button -->
                   <input id="next_button_step2" type="submit" class="small button right radius" value="Next">
                 </div>
               </div>
@@ -198,11 +184,10 @@ Note - will fix later
                   </label>
                 </div>
 
-                <!-- prev button..-->
+                <!-- prev button -->
                 <input id="prev_button_step3" type="submit" class="small button left radius" value="Prev">
-                <!-- next button..-->
+                <!-- next button -->
                 <input id="next_button_step3" type="submit" class="small button right radius" value="Next">
-
 
               </div>
             </div>
@@ -231,10 +216,10 @@ Note - will fix later
                 <br><br>
                 <p> Coming soon.... </p>
 
-                <!-- prev button..-->
+                <!-- prev button -->
                 <input id="prev_button_step4" type="submit" class="small button left radius" value="Prev">
 
-                <!-- prev button..-->
+                <!-- submit button -->
                 <input id="register-submit" type="submit" class="small button right radius" value="Create" style="background: #DA5C5C">
               </div>
             </div>
