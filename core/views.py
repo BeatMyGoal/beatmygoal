@@ -27,6 +27,7 @@ from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.views.generic import FormView,DetailView
 from .forms import ImageForm
+from helper import *
 
 import cgi
 import urllib
@@ -425,15 +426,9 @@ def view_user(request, uid):
         if response['errors']:
             return render(request, 'users/viewUser.html', { "errors" : response["errors"] })
         else:
-            dict = {}
-            entries = response['user'].logentries.all()
-            for entry in entries:
-                goal_title = str(entry.log.goal.title)
-                if goal_title in dict:
-                    dict[goal_title] += 1
-                else:
-                    dict[goal_title] = 1
-            return render(request, 'users/viewUser.html', {'viewedUserData' : dict, 'viewedUser' : response['user'], 'errors' : response['errors']} )
+            chart1_data = goal_to_numEntry(response['user'])
+            chart2_data = date_to_numEntry(response['user'])
+            return render(request, 'users/viewUser.html', {'chart2_data': chart2_data, 'chart1_data' : chart1_data, 'viewedUser' : response['user'], 'errors' : response['errors']} )
 
 #@csrf_exempt
 def edit_user(request, uid):
