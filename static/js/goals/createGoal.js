@@ -117,15 +117,12 @@ $(document).ready(function() {
 	//previous buttons
 	$('#prev_button_step2').click(function(e){
 		document.getElementById('step1').click();
-		$('#step2_check').hide();
 	});
 	$('#prev_button_step3').click(function(e){
 		document.getElementById('step2').click();
-		$('#step3_check').hide();
 	});
 	$('#prev_button_step4').click(function(e){
 		document.getElementById('step3').click();
-		$('#step4_check').hide();
 	});
 
 	//next buttons
