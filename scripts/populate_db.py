@@ -90,13 +90,13 @@ for g in dummy_goals:
             # Create a log entry
             for i in range(random.randint(0,10)):
                 le = LogEntry.create(l, u.username, randrange(1,100), "<p>hello world</p>")['logEntry']
-                le.entry_date = datetime.date.today() + datetime.timedelta(seconds=randrange(1,100))
+                le.entry_date = datetime.date.today() - datetime.timedelta(days=randrange(0,14), seconds=randrange(1,100))
                 le.save()
         else:
             # Create a comment (because amount = None)
             for i in range(random.randint(0,10)):
                 le = LogEntry.create(l, u.username, None, "<p>hello world</p>")['logEntry']
-                le.entry_date = datetime.date.today() + datetime.timedelta(seconds=randrange(1,100))
+                le.entry_date = datetime.date.today() - datetime.timedelta(days=randrange(0,14), seconds=randrange(1,100))
                 le.save()
     goals.append(g)
 

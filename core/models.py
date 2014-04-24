@@ -6,6 +6,13 @@ from constants import *
 from datetime import *
 from sys import maxint
 
+
+class Streak(models.Model):
+    user = models.OneToOneField('BeatMyGoalUser')
+    loginStreak = models.IntegerField(blank=True, null=True)
+    logStreak = models.IntegerField(blank=True, null=True)
+    streak_date = models.DateTimeField(auto_now_add=True)
+
 class Log(models.Model):
     goal = models.OneToOneField('Goal')
 
