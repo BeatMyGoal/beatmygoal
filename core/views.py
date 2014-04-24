@@ -428,7 +428,8 @@ def view_user(request, uid):
         else:
             chart1_data = goal_to_numEntry(response['user'])
             chart2_data = date_to_numEntry(response['user'])
-            return render(request, 'users/viewUser.html', {'chart2_data': chart2_data, 'chart1_data' : chart1_data, 'viewedUser' : response['user'], 'errors' : response['errors']} )
+            streak = get_streaks(response['user'])
+            return render(request, 'users/viewUser.html', {'streak': streak, 'chart2_data': chart2_data, 'chart1_data' : chart1_data, 'viewedUser' : response['user'], 'errors' : response['errors']} )
 
 #@csrf_exempt
 def edit_user(request, uid):
