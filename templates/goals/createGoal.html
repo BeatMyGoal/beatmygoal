@@ -33,7 +33,7 @@ Note - will fix later
   </div>
 
   <!-- Setup Tabs -->
-  <div class="row center">
+  <div class="row center" style="margin-top: 0rem; margin-bottom: 0rem;">
     
     <!-- tabs classification-->
     <div class="small-9 small-centered columns" style="padding-bottom: 0.2rem; padding-top: 0.2rem;">
@@ -67,6 +67,7 @@ Note - will fix later
       <div class="content active" id="step1">
         <div class="row card">
           <div class="panel" data-equalizer-watch>
+          <div align = "right"> <p>Step 1/4</p> </div>
             <div data-abide id="register-form" >
               <center><h3>Choose a Goal Type</h3></center>
               <br>
@@ -112,47 +113,55 @@ Note - will fix later
 
         <div class="row card">
           <div class="panel" data-equalizer-watch>
+            <div align = "right"> <p>Step 2/4</p> </div>
             <div data-abide id="register-form" >
-
-
               <div class="large-10 large-centered columns">
-                <div>
-                  <center><h5> Your Goal Type: </h5> <h3 id="selected_goal_type"></h3></center>
-                </div>
                 
-                <div class="large-12 columns">
-                  <label for='title'>Title
-                    <input id="register-title" type="text" placeholder = "example : Raise $500 for 'American Heart Association'" required />
-                    <small id="title-error" class="error">A title is required</small>
-                  </label>
+                <center><h5> Your Goal Type: </h5> <h3 id="selected_goal_type"></h3></center>
+
+                <div class="row">
+                  <div class="large-12 columns">
+                    <label for='title'>Title
+                      <input id="register-title" type="text" placeholder = "example : Raise $500 for 'American Heart Association'" required />
+                      <small id="title-error" class="error">A title is required</small>
+                    </label>
+                  </div>
                 </div>
 
-                <div class="large-12 columns">
-                  <label for='description'>Description
-                    <input id="register-description" type="text" required />
-                    <small id="description-error" class="error">A description is required</small>
-                  </label>
+                <div class="row">
+                  <div class="large-12 columns">
+                    <label for='description'>Description
+                      <input id="register-description" type="text" required />
+                      <small id="description-error" class="error">A description is required</small>
+                    </label>
+                  </div>
                 </div>
 
-                <div class="large-8 columns">
-                  <label for='ending_value'>Ending Value
-                    <input id="register-end-value" type="text" placeholder="example : 500" required />
-                    <small id="end-value-error" class="error">End-Value must be specified</small>
-                  </label>
-                </div>
-                <div class="large-4 columns">
-                  <label for='value_unit'>Value Unit
-                    <input id="register-value-unit" type="text" placeholder="example : dollar" required />
-                    <small id="unit-error" class="error">Units must be specified</small>
-                  </label>
+                <div class="row">
+                  <div class="large-8 columns">
+                    <label for='ending_value'>Ending Value
+                      <input id="register-end-value" type="text" placeholder="example : 500" required />
+                      <small id="end-value-error" class="error">End-Value must be specified</small>
+                    </label>
+                  </div>
+
+                  <div class="large-4 columns">
+                    <label for='value_unit'>Value Unit
+                      <input id="register-value-unit" type="text" placeholder="example : dollar" required />
+                      <small id="unit-error" class="error">Units must be specified</small>
+                    </label>
+                  </div>
                 </div>
 
-                <div class="large-12 columns">
-                  <!-- prev button -->
-                  <input id="prev_button_step2" type="submit" class="small button left radius" value="Prev">
-                  <!-- next button -->
-                  <input id="next_button_step2" type="submit" class="small button right radius" value="Next">
+                <div class="row">
+                  <div class="large-12 columns">
+                    <!-- prev button -->
+                    <input id="prev_button_step2" type="submit" class="small button left radius" value="Prev">
+                    <!-- next button -->
+                    <input id="next_button_step2" type="submit" class="small button right radius" value="Next">
+                  </div>
                 </div>
+
               </div>
             </div>
           </div>
@@ -164,34 +173,37 @@ Note - will fix later
       <div class="content" id="step3">
         <div class="row card">
           <div class="panel" data-equalizer-watch>
+            <div align = "right"> <p>Step 3/4</p> </div>
             <div data-abide id="register-form" >
-              
               <div class="large-5 large-centered columns">
-                <center><h3>DeadLine</h3></center> <br>
-                <p> If you'd like to set a deadline to meet your goal, check the following box and select your deadline:</p>
 
-                <div class="dead-line-label">
-                  <input id="deadline" type="checkbox"><label for="checkbox1">Deadline</label>
+                <div class="row">
+                  <center><h3>DeadLine</h3></center> <br>
+                  <p> If you'd like to set a deadline to meet your goal, check the following box and select your deadline:</p>
+
+                  <div class="dead-line-label">
+                    <input id="deadline" type="checkbox"><label for="checkbox1">Deadline</label>
+                  </div>
+
+                  <div class="end-time-label">
+                    <label>Ending Date</label>
+                      <meta charset="utf-8">
+                      <title>jQuery UI Datepicker - Default functionality</title>
+                      <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+                      <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+                      <script> $(function() { $( "#datepicker" ).datepicker(); }); </script>
+                    <label for='ending'>
+                      <input type="text" id="datepicker">
+                      <small id="ending-error" class="error">Date is required if you select deadline</small>
+                    </label>
+                  </div>
+
+                  <!-- prev button -->
+                  <input id="prev_button_step3" type="submit" class="small button left radius" value="Prev">
+                  <!-- next button -->
+                  <input id="next_button_step3" type="submit" class="small button right radius" value="Next">
+
                 </div>
-
-                <div class="end-time-label">
-                  <label>Ending Date</label>
-                    <meta charset="utf-8">
-                    <title>jQuery UI Datepicker - Default functionality</title>
-                    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-                    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-                    <script> $(function() { $( "#datepicker" ).datepicker(); }); </script>
-                  <label for='ending'>
-                    <input type="text" id="datepicker">
-                    <small id="ending-error" class="error">Date is required if you select deadline</small>
-                  </label>
-                </div>
-
-                <!-- prev button -->
-                <input id="prev_button_step3" type="submit" class="small button left radius" value="Prev">
-                <!-- next button -->
-                <input id="next_button_step3" type="submit" class="small button right radius" value="Next">
-
               </div>
             </div>
           </div>
@@ -203,28 +215,34 @@ Note - will fix later
       <div class="content" id="step4">
         <div class="row card">
           <div class="panel" data-equalizer-watch>
+          <div align = "right"> <p>Step 4/4</p> </div>
             <div data-abide id="register-form" >
 
-              <div class="large-5 large-centered columns">
-                <center><h3> Payment System </h3></center>
+              <div class="row">
+                <div class="large-5 large-centered columns">
+                  
+                  <center><h3> Payment System </h3></center>
 
-                <div class="prize-label">
-                  <label for='prize'>Prize
-                      <input id="register-prize" type="text" placeholder="example : $20" required />
-                      <small id="prize-error" class="error">A Prize is required</small>
-                  </label>
+                  <div class="prize-label">
+                    <label for='prize'>Prize
+                        <input id="register-prize" type="text" placeholder="example : $20" required />
+                        <small id="prize-error" class="error">A Prize is required</small>
+                    </label>
+                  </div>
+
+                  <center><img src="{% static 'img/paypal.jpeg' %}" /></center>
+                  <br><br>
+                  <p> Coming soon.... </p>
+
+                  <!-- prev button -->
+                  <input id="prev_button_step4" type="submit" class="small button left radius" value="Prev">
+
+                  <!-- submit button -->
+                  <input id="register-submit" type="submit" class="small button right radius" value="Create" style="background: #DA5C5C">
+                
                 </div>
-
-                <center><img src="{% static 'img/paypal.jpeg' %}" /></center>
-                <br><br>
-                <p> Coming soon.... </p>
-
-                <!-- prev button -->
-                <input id="prev_button_step4" type="submit" class="small button left radius" value="Prev">
-
-                <!-- submit button -->
-                <input id="register-submit" type="submit" class="small button right radius" value="Create" style="background: #DA5C5C">
               </div>
+
             </div>
           </div>
         </div>
