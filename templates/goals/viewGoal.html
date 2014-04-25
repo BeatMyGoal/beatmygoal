@@ -140,37 +140,36 @@
 
             {% for entry in goal.log.logentry_set.all|dictsortreversed:"id"|slice:"8" %}
             <li>
-            <div class="row">
-                <div class="medium-1 hide-for-small columns">
-                    {% if entry.participant.image %}
-                    <img src="/media/{{entry.participant.image.url}}" style="width:65px; height:65px" />
-                    {% else %}
-                    <img src="http://placehold.it/65x65&text=photo" />
-                    {% endif %}
-                </div>
-                <div class="medium-11 columns">
-                    <div class="row">
-
-			{% if entry.entry_amount  %}
-			  <i class="fa fa-tasks"></i>
-			{% else %}
-			  <i class="fa fa-comment"></i>
-			{% endif %}
-                        <a href="/users/{{ entry.participant.id }}">
-			  <strong>{{ entry.participant }}</strong>
-			</a> 
-			
-			{% if entry.entry_amount  %}
-			<small> logged {{ entry.entry_amount }} {{ goal.unit }} </small>
-			{% endif %}
-
-			<small>({{entry.entry_date|timesince}} ago)</small>
+                <div class="row">
+                    <div class="medium-1 hide-for-small columns">
+                        {% if entry.participant.image %}
+                        <img src="/media/{{entry.participant.image.url}}" style="width:65px; height:65px" />
+                        {% else %}
+                        <img src="http://placehold.it/65x65&text=photo" />
+                        {% endif %}
                     </div>
-                    <div class="row">
-                        {{ entry.comment | safe }}
+                    <div class="medium-11 columns">
+                        <div class="row">
+                            {% if entry.entry_amount  %}
+                            <i class="fa fa-tasks"></i>
+                            {% else %}
+                            <i class="fa fa-comment"></i>
+                            {% endif %}
+                            <a href="/users/{{ entry.participant.id }}">
+                                <strong>{{ entry.participant }}</strong>
+                            </a> 
+    			
+                            {% if entry.entry_amount  %}
+    			             <small> logged {{ entry.entry_amount }} {{ goal.unit }} </small>
+                            {% endif %}
+                            
+                            <small>({{entry.entry_date|timesince}} ago)</small>
+                        </div>
+                        <div class="row">
+                            {{ entry.comment | safe }}
+                        </div>
                     </div>
                 </div>
-            </div>
             </li>
 
             {% endfor %}
