@@ -59,7 +59,7 @@ $(document).ready(function() {
             $('#'+currid+'.join-button').css("display","none");
             $('#'+currid+'.view-button').css("display","none");
         }
-    }, ".dashcard-overlay");
+    }, ".dashcard-holder");
 
     $(".dashcard-container").on({
         click: function () {
@@ -85,11 +85,15 @@ $(document).ready(function() {
                 //console.log(entry);
                 fields = entry['fields'];
                 user = $(".users>#id"+fields['creator']);
+                console.log(fields) 
                 //console.log(user);
                 $(".dashcard-container").append('<li><div class="dashcard-holder card" id="'+entry['pk']+'"></div></li>');
                 $(".dashcard-holder#"+entry['pk']).empty();
                 $(".dashcard-holder#"+entry['pk']).append('<div class="dashcard" id="'+entry['pk']+'"></div>');
-                $("#"+entry['pk']+".dashcard").append('<div class=dashcard-img></div>');
+                $("#"+entry['pk']+".dashcard").append('<div class=dashcard-img id="'+entry['pk']+'"></div>');
+                if (fields['image'] != ""){
+                    $("#"+entry['pk']+".dashcard-img").append('<img src="/media/'+fields['image']+'" class="goal-image"/>');
+                }
                 $("#"+entry['pk']+".dashcard").append('<div class=dashcard-title><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></div>');
                 $("#"+entry['pk']+".dashcard").append('<div class=dashcard-creator><b>Creator:</b> <a href="/users/'+fields['creator']+'">'+user.text()+'</a></div>');
                 $("#"+entry['pk']+".dashcard").append('<div class=dashcard-prize><b>Prize:</b> '+fields['prize']+'</div>');
