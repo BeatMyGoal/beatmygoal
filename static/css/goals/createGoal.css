@@ -1,8 +1,5 @@
 .panel {
-	border-style: solid;
-	border-width: 1px;
-	border-color: #d8d8d8;
-	margin-bottom: 0rem;
+	margin-bottom: 0.3rem;
 	padding: 1.25rem;
 	background: #f2f2f2;
 }
@@ -27,18 +24,15 @@ button.small, .button.small {
     color: #DA5C5C;
   }
   .tabs:after {
-    clear: both; }
-  .tabs dd.active a {
-    background: #DA5C5C;
-    }
+    clear: both; 
+  }
   .tabs dd {
     top: 1px;
     float: left; }
     .tabs dd > a {
 
       /* color when selected*/
-      background: #DA5C5C;
-      color: white;
+      background: #AAA;
       padding-top: .5rem;
       padding-right: 1rem;
       padding-bottom: .5rem;
