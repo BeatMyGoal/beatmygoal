@@ -18,9 +18,9 @@
     clip:rect(0px,1080px,300px,0px); 
     left:0;
     right:0;
-    top: 0px;
+/*    top: 0px;
     bottom: 0px;
-    margin: auto;
+*/    margin: auto;
 }
 
 .participants-list input {
