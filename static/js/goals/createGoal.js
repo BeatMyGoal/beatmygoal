@@ -2,6 +2,7 @@ $(document).ready(function() {
 	$('#hidden_tabs').hide();
 	
 	// to check venmo work
+	var popupWindow
 	document.getElementById('step4').click();
 
 
@@ -169,14 +170,18 @@ $(document).ready(function() {
 
 	$('#get_vm_token').click(function(e){
 		venmo()
+		//var popupWindow;
 
 	});
 	function venmo(){
 		var url = 'https://api.venmo.com/v1/oauth/authorize?client_id=1700&scope=make_payments%20access_profile&response_type=token';
 		var popOption = "width=400, height=500, left=200, top=200 resizable=no, scrollbars=no, status=no;";
-		window.open(url,"",popOption);
+		popupWindow = window.open(url,"",popOption);
 	}
+	$('#close').click(function(e){
+		popupWindow.close();
 
+	});
 
 
 
