@@ -1,4 +1,11 @@
 $(document).ready(function() {
+    var delay = (function(){
+      var timer = 0;
+      return function(callback, ms){
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+      };
+    })();
 
 	var page = 0;
     var query = "";
@@ -7,13 +14,15 @@ $(document).ready(function() {
 
     get_goals_ajax(page, query);
     $('#dashboard_search').keyup(function() {
-        is_searching = true;
-        query = $('#dashboard_search').val();
-        // console.log(query);
-        page = 0;
-        $(".dashcard-container").empty();
-        get_goals_ajax();
-        is_searching = false;
+        delay(function(){
+            is_searching = true;
+            query = $('#dashboard_search').val();
+            // console.log(query);
+            page = 0;
+            $(".dashcard-container").empty();
+            get_goals_ajax();
+            is_searching = false;
+        }, 200 );
     });
 	$(window).scroll(function() {
 	   if($(window).scrollTop() + $(window).height() == $(document).height() && !is_searching && !scroll_activated) {
