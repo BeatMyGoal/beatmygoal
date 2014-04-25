@@ -201,7 +201,7 @@
 
         // Create the data table.
         var data = new google.visualization.DataTable();
-        var chart = new google.visualization.LineChart(document.getElementById('progressChart'));
+        chart = new google.visualization.LineChart(document.getElementById('progressChart'));
         var options = {
             focusTarget:"category",
             colors : chartColors,
@@ -268,12 +268,12 @@
                         };
                         
                         // grey out the legend entry
-                        series[col].color = '#CCCCCC';
+                        series[col-1].color = '#CCCCCC';
                     }
                     else {
                         // show the data series
                         columns[col] = col;
-                        series[col].color = null;
+                        series[col-1].color = null;
                     }
                     var view = new google.visualization.DataView(data);
                     view.setColumns(columns);
