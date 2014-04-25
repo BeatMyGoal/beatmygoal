@@ -5,6 +5,7 @@
 
 <link rel="stylesheet" href="{% static 'css/goals/viewGoal.css' %}" />
 
+<script src="{% static 'js/redactor/redactor.min.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/redactor/redactor.css' %}" />
 
 
@@ -186,9 +187,9 @@
 
     for (var i = 0; i < $(".participants-list").children().length; i++){
         console.log(colors[i]);
-        chartColors.push(colors[i]);
+        chartColors.push(colors[i % colors.length]);
         $($(".participants-list").children()[i]).children("a").css("color", colors[i]);
-    };
+    }
 
     // Set a callback to run when the Google Visualization API is loaded.
     google.setOnLoadCallback(drawChart);
@@ -200,7 +201,7 @@
 
         // Create the data table.
         var data = new google.visualization.DataTable();
-        var chart = new google.visualization.LineChart(document.getElementById('progressChart'));
+        chart = new google.visualization.LineChart(document.getElementById('progressChart'));
         var options = {
             focusTarget:"category",
             colors : chartColors,
@@ -252,8 +253,8 @@
             var sel = chart.getSelection();
             // if selection length is 0, we deselected an element
             if (sel.length > 0) {
-                // if row is undefined, we clicked on the legend
                 //if (typeof sel[0].row === 'undefined') {
+                // if row is undefined, we clicked on the legend
                 if (sel[0].row === null) {
                     var col = sel[0].column;
                     if (columns[col] == col) {
@@ -267,12 +268,12 @@
                         };
                         
                         // grey out the legend entry
-                        series[col].color = '#CCCCCC';
+                        series[col-1].color = '#CCCCCC';
                     }
                     else {
                         // show the data series
                         columns[col] = col;
-                        series[col].color = null;
+                        series[col-1].color = null;
                     }
                     var view = new google.visualization.DataView(data);
                     view.setColumns(columns);
