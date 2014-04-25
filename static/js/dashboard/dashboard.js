@@ -3,17 +3,20 @@ $(document).ready(function() {
 	var page = 0;
     var query = "";
 	var scroll_activated = false;
+    var is_searching = false;
 
     get_goals_ajax(page, query);
     $('#dashboard_search').keyup(function() {
+        is_searching = true;
         query = $('#dashboard_search').val();
-        console.log(query);
+        // console.log(query);
         page = 0;
         $(".dashcard-container").empty();
         get_goals_ajax();
+        is_searching = false;
     });
 	$(window).scroll(function() {
-	   if($(window).scrollTop() + $(window).height() == $(document).height() && !scroll_activated) {
+	   if($(window).scrollTop() + $(window).height() == $(document).height() && !is_searching && !scroll_activated) {
 	        scroll_activated = true;
             get_goals_ajax();
 			scroll_activated = false;
@@ -32,13 +35,13 @@ $(document).ready(function() {
                 contentType: "application/json",
                 dataType: "json",
             }).done(function(data) {
-                console.log(data);
+                // console.log(data);
                 if (data.errors.length === 0) {
-                    console.log(data);
+                    // console.log(data);
                     window.location.href = data.redirect;
                 } 
             }).fail(function(data) {
-                console.log(data);
+                // console.log(data);
                 alert("failure");
             });
         }
@@ -47,14 +50,14 @@ $(document).ready(function() {
     $(".dashcard-container").on({
         mouseenter: function () {
             var currid = $(this).attr('id');
-            console.log(currid);
+            // console.log(currid);
             $('#'+currid+'.dashcard-overlay').css("background-color","rgba(100,100,100,0.8)");
             $('#'+currid+'.join-button').css("display","inline");
             $('#'+currid+'.view-button').css("display","inline");
         },
         mouseleave: function () {
             var currid = $(this).attr('id');
-            console.log(currid);
+            // console.log(currid);
             $('#'+currid+'.dashcard-overlay').css("background-color","rgba(100,100,100,0.0)");
             $('#'+currid+'.join-button').css("display","none");
             $('#'+currid+'.view-button').css("display","none");
@@ -85,7 +88,7 @@ $(document).ready(function() {
                 //console.log(entry);
                 fields = entry['fields'];
                 user = $(".users>#id"+fields['creator']);
-                console.log(fields) 
+                // console.log(fields) 
                 //console.log(user);
                 $(".dashcard-container").append('<li><div class="dashcard-holder card" id="'+entry['pk']+'"></div></li>');
                 $(".dashcard-holder#"+entry['pk']).empty();
@@ -103,7 +106,7 @@ $(document).ready(function() {
                 $("#"+entry['pk']+".dashcard-overlay").append('<a href="/goals/'+entry['pk']+'" class="button view-button" id="'+entry['pk']+'">View Goal</a>');
             });
         }).fail(function(data) {
-            console.log(data);
+            // console.log(data);
             alert("failure");
         });
         page = page + 1;
