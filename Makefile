@@ -15,6 +15,10 @@ func:
 gui:
 	python manage.py test tests/SeleniumTests/*.py
 
+coverage:
+	coverage run --branch --source='core','beatmygoal' manage.py test
+	coverage report -m
+
 clean:
 	find . -name "*.pyc" | xargs rm
 

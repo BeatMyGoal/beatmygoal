@@ -102,6 +102,15 @@ def user_login_fb(request):
 
     return response
 
+def user_login_vm(request):
+    response = HttpResponseRedirect("/dashboard/")
+
+    
+
+
+
+    return response
+
 
 def index(request):
     """

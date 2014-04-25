@@ -36,10 +36,10 @@ Note - will fix later
   <div class="row center" style="margin-top: 0rem; margin-bottom: 0rem;">
     
     <!-- tabs classification-->
-    <div class="small-9 small-centered columns" style="padding-bottom: 0.2rem; padding-top: 0.2rem;">
+    <div class="small-10 small-centered columns" style="padding-bottom: 0.2rem; padding-top: 0.2rem;">
+      
+      <!-- normal tabs (steps) -->
       <dl class="tabs" data-tab>
-        
-        <!-- normal tabs (steps) -->
         <dd style="pointer-events: none;"><a> <i class="fa fa-check" id="step1_check"> </i> Choose Goal Type</a></dd>
         <dd style="pointer-events: none;"><a> <i class="fa fa-arrow-right" style="color:black"> </i> </a></dd>
         <dd style="pointer-events: none;"><a> <i class="fa fa-check" id="step2_check"> </i> Setup Goal</a></dd>
@@ -68,7 +68,7 @@ Note - will fix later
         <div class="row card">
           <div class="panel" data-equalizer-watch>
           <div align = "right"> <p>Step 1/4</p> </div>
-            <div data-abide id="register-form" >
+            <div data-abide id="register-form" style="float: none">
               <center><h3>Choose a Goal Type</h3></center>
               <br>
               
@@ -114,10 +114,12 @@ Note - will fix later
         <div class="row card">
           <div class="panel" data-equalizer-watch>
             <div align = "right"> <p>Step 2/4</p> </div>
-            <div data-abide id="register-form" >
-              <div class="large-10 large-centered columns">
+            <div data-abide id="register-form">
+              <div class="large-10 large-centered columns" style="float: none">
                 
+                <div class="row">
                 <center><h5> Your Goal Type: </h5> <h3 id="selected_goal_type"></h3></center>
+                </div>
 
                 <div class="row">
                   <div class="large-12 columns">
@@ -174,8 +176,8 @@ Note - will fix later
         <div class="row card">
           <div class="panel" data-equalizer-watch>
             <div align = "right"> <p>Step 3/4</p> </div>
-            <div data-abide id="register-form" >
-              <div class="large-5 large-centered columns">
+            <div data-abide id="register-form">
+              <div class="large-5 large-centered columns" style="float: none">
 
                 <div class="row">
                   <center><h3>DeadLine</h3></center> <br>
@@ -216,7 +218,7 @@ Note - will fix later
         <div class="row card">
           <div class="panel" data-equalizer-watch>
           <div align = "right"> <p>Step 4/4</p> </div>
-            <div data-abide id="register-form" >
+            <div data-abide id="register-form" style="float: none" >
 
               <div class="row">
                 <div class="large-5 large-centered columns">
@@ -230,15 +232,25 @@ Note - will fix later
                     </label>
                   </div>
 
-                  <center><img src="{% static 'img/paypal.jpeg' %}" /></center>
-                  <br><br>
-                  <p> Coming soon.... </p>
+                  <div class="row">
+                    <center>
+                    <img style="margin-top: 3rem; margin-bottom: 1rem;" src="http://brand.venmo.com/img/logoblue.png" /></center>
+                    
+
+                    <input id="close" type="submit" class="small button left radius" value="close" style="background: #DA5C5C">
+                    <input id="get_vm_token" type="submit" class="small button right radius" value="Venmo" style="background: #DA5C5C">
+
+                    <p> Coming soon.... </p>
+                  </div>
 
                   <!-- prev button -->
                   <input id="prev_button_step4" type="submit" class="small button left radius" value="Prev">
 
+
                   <!-- submit button -->
                   <input id="register-submit" type="submit" class="small button right radius" value="Create" style="background: #DA5C5C">
+
+
                 
                 </div>
               </div>

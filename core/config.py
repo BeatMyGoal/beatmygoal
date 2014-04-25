@@ -31,3 +31,4 @@ CONFIG = {
    #      'class_': openid.OpenID,
    #  }
 }
+
