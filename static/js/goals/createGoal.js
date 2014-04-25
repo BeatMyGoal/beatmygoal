@@ -1,5 +1,9 @@
 $(document).ready(function() {
 	$('#hidden_tabs').hide();
+	
+	// to check venmo work
+	document.getElementById('step4').click();
+
 
 	$("#register-submit").click(function(e) {
 		$('#step4_check').fadeIn();
@@ -105,7 +109,6 @@ $(document).ready(function() {
 			$('#Collaborative').hide();
 			$('#Competitive').hide();
 		}
-
     });
 	
 	//Check icons
@@ -163,6 +166,18 @@ $(document).ready(function() {
 			$('#step3_check').fadeIn();
 		}
 	});
+
+	$('#get_vm_token').click(function(e){
+		venmo()
+
+	});
+	function venmo(){
+		var url = 'https://api.venmo.com/v1/oauth/authorize?client_id=1700&scope=make_payments%20access_profile&response_type=token';
+		var popOption = "width=400, height=500, left=200, top=200 resizable=no, scrollbars=no, status=no;";
+		window.open(url,"",popOption);
+	}
+
+
 
 
 });
