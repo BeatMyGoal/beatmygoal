@@ -118,5 +118,5 @@ html, body {
 }
 
 .example-orbit-content {
-    background: url("/static/img/chart_bg.png");
+    background-color: #DCDCDC;
 }
