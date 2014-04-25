@@ -73,7 +73,11 @@
                             <li>
                                 <div class="dashcard-holder card" id="{{ goal.id }}">
                                     <div class="dashcard" id="{{ goal.id }}">
-                                        <div class=dashcard-img></div>
+                                        <div class=dashcard-img>
+                                            {% if goal.image %}
+                                                <img src="/media/{{goal.image.url}}" class='goal-image'/>
+                                            {% endif %}
+                                        </div>
                                         <div class=dashcard-title><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></div>
                                     </div>
                                 </div>
@@ -93,7 +97,11 @@
                             <li>
                                 <div class="dashcard-holder card" id="{{ goal.id }}">
                                     <div class="dashcard" id="{{ goal.id }}">
-                                        <div class=dashcard-img></div>
+                                        <div class=dashcard-img>
+                                            {% if goal.image %}
+                                                <img src="/media/{{goal.image.url}}" class='goal-image'/>
+                                            {% endif %}
+                                        </div>
                                         <div class=dashcard-title><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></div>
                                         <!-- <div class=dashcard-description>{{ goal.description }}</div> -->
                                     </div>
