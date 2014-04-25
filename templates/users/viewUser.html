@@ -228,19 +228,6 @@
 
         chart.draw(data, options);
         chart2.draw(data2, options2);
-
-
-        google.visualization.events.addListener(chart, 'error', function(err) {
-            console.log('test');
-            $('#userProgressChart1').css('display', 'none');
-            $('#chartAlert').css('display', 'inline-block');
-        });
-
-        google.visualization.events.addListener(chart2, 'error', function(err) {
-            console.log('test');
-            $('#userProgressChart2').css('display', 'none');
-            $('#chartAlert').css('display', 'inline-block');
-        });
     }
 
 
