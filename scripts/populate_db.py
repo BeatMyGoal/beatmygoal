@@ -1,6 +1,4 @@
-# TODO - let's have this script output JSON and use it like this
-# https://docs.djangoproject.com/en/dev/howto/initial-data/
-
+import environ
 from core.models import *
 import random
 from random import randrange
@@ -105,5 +103,5 @@ for g in dummy_goals:
 # Add random users to random goals
 for i in range(30):
     g = random.choice(goals)
-    u = random.choice(goals)
+    u = random.choice(users)
     u.goals.add(g)

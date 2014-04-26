@@ -26,6 +26,6 @@ local-db:
 	rm -f db.sqlite3
 	python manage.py syncdb --noinput
 	python manage.py createsuperuser --username=admin --email=admin@example.com --noinput
-	python manage.py shell < scripts/populate_db.py
+	python scripts/populate_db.py
 	@echo -e "\n"
 
