@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import validate_email
@@ -8,6 +9,9 @@ from sys import maxint
 
 class Log(models.Model):
     goal = models.OneToOneField('Goal')
+
+    def __str__(self):
+        return str("Log - " + str(self.goal))
 
     def parseEntriesByUser(self):
         """
@@ -46,7 +50,11 @@ class LogEntry(models.Model):
     participant = models.ForeignKey('BeatMyGoalUser', related_name="logentries")
     entry_amount = models.IntegerField(null=True)
     entry_date = models.DateTimeField(auto_now_add=True)
+    entry_date.editable=True
     comment = models.TextField()
+
+    def __str__(self):
+        return str(self.comment)
 
     @classmethod
     def create(self, log, participant, amount, comment):
@@ -95,6 +103,7 @@ class Goal(models.Model):
     description = models.CharField(max_length=MAX_LEN_DESC)
     prize = models.TextField(max_length=MAX_LEN_PRIZE)
     date_created = models.DateTimeField(auto_now_add=True)
+    date_created.editable=True
     progress_value = models.FloatField()
     goal_type = models.CharField(max_length=MAX_LEN_TYPE)
     private_setting = models.IntegerField()
@@ -102,7 +111,6 @@ class Goal(models.Model):
     unit = models.CharField(max_length=MAX_LEN_UNIT, blank=True)
     image = models.FileField(upload_to='image/')
     ending_date = models.DateTimeField(blank=True, null=True);
-
 
 
     def __str__(self):
@@ -437,4 +445,18 @@ class BeatMyGoalUser(AbstractUser):
 
         return {"errors" : errors, "user" : user }
 
+# Admin Models
 
+class GoalAdmin(admin.ModelAdmin):
+    list_display  = ('title', 'creator', 'description', 'prize', 'date_created', 'progress_value')
+    list_display += ('goal_type', 'private_setting', 'ending_value', 'unit', 'ending_date')
+
+
+class LogEntryAdmin(admin.ModelAdmin):
+    def get_goal_name(self, obj):
+        return obj.log.goal
+    get_goal_name.short_description = 'Goal'
+    list_display = ('comment', 'get_goal_name', 'participant', 'entry_amount', 'entry_date')
+
+class BeatMyGoalUserAdmin(admin.ModelAdmin):
+    list_display  = ('username', 'email', 'date_joined')
