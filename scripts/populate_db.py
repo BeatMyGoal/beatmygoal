@@ -11,7 +11,7 @@ class FakeUser():
         self.email = "%s@example.com" % username
         if image != None:
             try:
-                f = open('media/test/' + image)
+                f = open('media/userimage/' + image)
                 self.image = File(f)
             except IOError:
                 pass
@@ -78,7 +78,7 @@ class FakeGoal():
         
         if image != None:
             try:
-                f = open('media/test/' + image)
+                f = open('media/image/' + image)
                 self.image = File(f)
             except IOError:
                 pass
