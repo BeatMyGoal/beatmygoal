@@ -140,12 +140,32 @@
 
 
 <div class="row card">
-    <div class="medium-9 small-12 columns">
-        <div id='userProgressChart' style="min-height: 400px"></div>
+<ul class="example-orbit-content" data-orbit>
+  <li data-orbit-slide="headline-1">
+  <div class="medium-9 large-12 columns">
+        <div id='userProgressChart2' style="min-height: 400px"></div>
         <div data-alert id="chartAlert" class="alert-box" style="display:none">
             No log information available to display.
         </div>
     </div>
+  </li>
+  <li data-orbit-slide="headline-2">
+    <div class="medium-9 large-12 columns">
+        <div id='userProgressChart1' style="min-height: 400px"></div>
+        <div data-alert id="chartAlert" class="alert-box" style="display:none">
+            No log information available to display.
+        </div>
+    </div>
+  </li>
+  <li data-orbit-slide="headline-3">
+  <div class="medium-9 large-12 columns">
+        <div id='streakContainer'>
+        <p id='streakText'> 
+        {{ viewedUser }} Logged <span id='streakNumber'>{{ streak }} </span> day(s) in a row
+        </p>
+    </div>
+  </li>
+</ul>
 </div>
 
 
@@ -163,7 +183,6 @@
     var chartColors = [];
 
     for (var i = 0; i < $(".participants-list").children().length; i++){
-        console.log(colors[i]);
         chartColors.push(colors[i]);
         $($(".participants-list").children()[i]).children("a").css("color", colors[i]);
     };
@@ -176,24 +195,50 @@
     // draws it.
     function drawChart() {
         var data = new google.visualization.DataTable();
-        var chart = new google.visualization.BarChart(document.getElementById('userProgressChart'));
+        var chart = new google.visualization.BarChart(document.getElementById('userProgressChart1'));
+
+        var data2 = new google.visualization.DataTable();
+        var chart2 = new google.visualization.LineChart(document.getElementById('userProgressChart2'));
+
+
+
+
+
+        //----------chart1-----------//
         var options = {
-            title: 'Number of logs',
+            title: 'Number of logs per goal',
             animation: {duration: 2000, easing: "inAndOut"},
             groupWidth: '100%',
-        };
+            backgroundColor: { fill:'#DCDCDC' },
+            chartArea: {left:0, width: "80%"},
+            };
         data.addColumn('string','name');
         var row = [''];
-        {% for k,v in viewedUserData.items %}
+        {% for k,v in chart1_data.items %}
             data.addColumn('number', "{{ k }}")
-            console.log(typeof Number('{{v}}'));
             row.push(Number("{{v}}"));
         {% endfor %}
         data.addRow(row);
+        //----------char1-----------//
+
+        var options2 = {
+            title: 'Log progress over last 2 weeks',
+            curveType: 'function',
+            backgroundColor: { fill:'#DCDCDC' },
+            chartArea: {left: 10, width: "100%"},
+        };
+        data2.addColumn('string','date');
+        data2.addColumn('number','# of logs');
+        {% for k,v in chart2_data %}
+            data2.addRow(["{{ k }}".replace("midnight",""), Number("{{ v }}")])
+        {% endfor %}
+
+
+        //----------char2-----------//
 
         chart.draw(data, options);
-    }
-</script>
+        chart2.draw(data2, options2);
+    }</script>
 
    
 {% endblock %}

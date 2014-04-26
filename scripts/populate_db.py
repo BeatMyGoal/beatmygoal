@@ -81,6 +81,8 @@ for g in dummy_goals:
         ending_date =  None
     g = Goal(creator=creator, title=title, description=description, prize=prize, progress_value=1.0, goal_type=goal_type, private_setting=1, ending_value = ending_value, unit = unit, ending_date = ending_date)
     g.save()
+    g.date_created = datetime.datetime.today() - timedelta(days=14)
+    g.save()
     l = Log(goal=g)
     l.save()
     for u in users:
@@ -90,13 +92,13 @@ for g in dummy_goals:
             # Create a log entry
             for i in range(random.randint(0,10)):
                 le = LogEntry.create(l, u.username, randrange(1,100), "<p>hello world</p>")['logEntry']
-                le.entry_date = datetime.date.today() + datetime.timedelta(seconds=randrange(1,100))
+                le.entry_date = datetime.date.today() - datetime.timedelta(days=randrange(0,14))
                 le.save()
         else:
             # Create a comment (because amount = None)
             for i in range(random.randint(0,10)):
                 le = LogEntry.create(l, u.username, None, "<p>hello world</p>")['logEntry']
-                le.entry_date = datetime.date.today() + datetime.timedelta(seconds=randrange(1,100))
+                le.entry_date = datetime.date.today() - datetime.timedelta(days=randrange(0,14))
                 le.save()
     goals.append(g)
 
