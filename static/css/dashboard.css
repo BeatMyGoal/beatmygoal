@@ -76,7 +76,9 @@
   	-moz-background-size: cover;
   	-o-background-size: cover;
   	background-size: cover;
-
+}
+.dashcard-img img{
+	width: 100%;
 }
 .dashcard-title{
 	font-size: 120%;

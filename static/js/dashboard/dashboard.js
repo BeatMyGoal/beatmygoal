@@ -105,9 +105,8 @@ $(document).ready(function() {
                 $("#"+entry['pk']+".dashcard").append('<div class=dashcard-img id="'+entry['pk']+'"></div>');
                 if (fields['image'] != ""){
                     $("#"+entry['pk']+".dashcard-img").append('<img src="/media/'+fields['image']+'" class="goal-image"/>');
-		    
-		    // hide the trophy
-		    $("#"+entry['pk']+".dashcard-img").css("background-image", "none");
+        		    // hide the trophy
+        		    $("#"+entry['pk']+".dashcard-img").css("background-image", "none");
                 }
                 $("#"+entry['pk']+".dashcard").append('<div class=dashcard-title><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></div>');
                 $("#"+entry['pk']+".dashcard").append('<div class=dashcard-creator><b>Creator:</b> <a href="/users/'+fields['creator']+'">'+user.text()+'</a></div>');
