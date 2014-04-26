@@ -1,6 +1,5 @@
 local_settings.py
 venv/*
-media/*
 *.log
 *.pot
 *.pyc
