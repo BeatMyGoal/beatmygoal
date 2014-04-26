@@ -106,3 +106,21 @@ html, body {
     width:0px;
     opacity:0;
 }
+
+#streakText {
+    
+    font: 50px Tahoma, Helvetica, Arial, Sans-Serif;
+    text-align: center;
+    color: #222; text-shadow: 0px 2px 3px #555;
+}
+
+#streakNumber {
+    display: block; text-decoration: none;
+    font: 100px Helvetica, Arial, Sans-Serif; letter-spacing: -5px;  
+    text-align: center;
+    color: #999; text-shadow: 0px 3px 8px #2a2a2a;
+}
+
+.example-orbit-content {
+    background-color: #DCDCDC;
+}

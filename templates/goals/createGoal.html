@@ -108,10 +108,16 @@ Note - will fix later
         <div class="row card">
           <div class="panel" data-equalizer-watch>
             <div align = "right"> <p>Step 2/4</p> </div>
+<<<<<<< HEAD
             <div data-abide id="register-form" >
+=======
+            <div data-abide id="register-form">
+>>>>>>> 29a2f8c1fa5717703f66a04f790288992a9214fe
               <div class="large-10 large-centered columns" style="float: none">
                 
+                <div class="row">
                 <center><h5> Your Goal Type: </h5> <h3 id="selected_goal_type"></h3></center>
+                </div>
 
                 <div class="row">
                   <div class="large-12 columns">
@@ -168,7 +174,11 @@ Note - will fix later
         <div class="row card">
           <div class="panel" data-equalizer-watch>
             <div align = "right"> <p>Step 3/4</p> </div>
+<<<<<<< HEAD
             <div data-abide id="register-form" >
+=======
+            <div data-abide id="register-form">
+>>>>>>> 29a2f8c1fa5717703f66a04f790288992a9214fe
               <div class="large-5 large-centered columns" style="float: none">
 
                 <div class="row">
@@ -210,7 +220,7 @@ Note - will fix later
         <div class="row card">
           <div class="panel" data-equalizer-watch>
           <div align = "right"> <p>Step 4/4</p> </div>
-            <div data-abide id="register-form" >
+            <div data-abide id="register-form" style="float: none" >
 
               <div class="row">
                 <div class="large-5 large-centered columns">
@@ -224,15 +234,25 @@ Note - will fix later
                     </label>
                   </div>
 
-                  <center><img src="{% static 'img/paypal.jpeg' %}" /></center>
-                  <br><br>
-                  <p> Coming soon.... </p>
+                  <div class="row">
+                    <center>
+                    <img style="margin-top: 3rem; margin-bottom: 1rem;" src="http://brand.venmo.com/img/logoblue.png" /></center>
+                    
+
+                    <input id="close" type="submit" class="small button left radius" value="close" style="background: #DA5C5C">
+                    <input id="get_vm_token" type="submit" class="small button right radius" value="Venmo" style="background: #DA5C5C">
+
+                    <p> Coming soon.... </p>
+                  </div>
 
                   <!-- prev button -->
                   <input id="prev_button_step4" type="submit" class="small button left radius" value="Prev">
 
+
                   <!-- submit button -->
                   <input id="register-submit" type="submit" class="small button right radius" value="Create" style="background: #DA5C5C">
+
+
                 
                 </div>
               </div>

@@ -2,121 +2,268 @@
 
 {% load staticfiles %}
 
-{% block title %}Edit Goal{% endblock %}
+{% block title %}Create Goal{% endblock %}
 
 {% block content %}
 
-<script src="{% static 'js/goals/editGoal.js' %}"></script>
+<!-- 
+Note - will fix later
+4. goal image upload
+5. Collaborative vs Competitive - should be done with model work and integrate with this.
+ -->
 
-<form id="editForm" data-abide>
-
-	<div class="row">
-	<legend> <h2>Edit Goal </h2></legend>
-		<div class="large-6 columns">
-			<label for="title"> Title
-				<input id='title' type="text" value = "{{ goal.title | default:'' }}" maxlength="50"  required />
-				<small id="title-error" class="error">A title is required</small>
-			</label>
-		</div>
-		<div class="large-6 columns">
-			<label for="prize"> Prize
-				<input id='prize' type="text" value = "{{ goal.prize |default:'' }}" maxlength="50"  required />
-			</label>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="large-12 columns">
-			<label for='description'>Description
-				<input id='description' type="text" value = "{{ goal.description |default:'' }}" maxlength="130" required/>
-				<small id="description-error" class="error">A description is required</small>
-			</label>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="large-6 columns">
-			<label for="ending_value"> Ending Value
-				<input id='ending_value' type="text" value = "{{ goal.ending_value |default:'' }}" maxlength="50"  required />
-			</label>
-		</div>
-		<div class="large-6 columns">
-			<label for='unit'> Value Unit
-				<input id='unit' type="text" value = "{{ goal.unit |default:'' }}" maxlength="130" required />
-
-			</label>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="large-6 columns">
-			<label for='goal_type'>Goal Type
-				<input id='goal_type' type="text" value = "{{ goal.goal_type |default:'' }}" maxlength="130" readonly/>
-			</label>
-		</div>
-			
-		<div class="large-6 columns">
-			<label for="ending_date"> Deadline
-			{% if goal.goal_type == "Time-based" %}
-				<input id='ending_date' type="text" value = " {{ goal.ending_date }} "    readonly />
-			{% elif goal.goal_type == "Value-based" %}
-				<input id='ending_date' type="text" value =  "None"   readonly />
-			{% endif %}
-			</label>
-		</div>
-	</div>
-
-	<div class="row "> Goal Type and Deadline is readonly for now </div>
-
-	<div class="row ">
-		<ul class="button-group right">
-			<div class="larger-12 columns">
-				<a href="#" data-reveal-id="reveal_save" class="button small radius alert">Save</a>
-				<input id="cancel" type="button" class="button small radius" value="Cancel">
-				<input type="button" id="delete_goal_button2" data-reveal-id="firstModal" class="button small radius alert" value="Delete">
-			</div>
-		</ul>
-	</div>
-
-</form>
+<script src="{% static 'js/goals/createGoal.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/goals/createGoal.css' %}" />
 
 
+<div class="row collapse card">
+  
+  <!-- Create Goal Page Title -->
+  <div class="row card">
+    <div class="medium-8 columns">
+      <h2><font color="white">Create Goal</font></h2>
+    </div>
+  </div>
+
+  <!-- Photo -->
+  <div class="row card">
+    <div class="small-12 columns no-padding goal-picture-container">
+      <img src="http://placehold.it/1080x300&text=goalPhoto" />
+    </div>
+  </div>
+
+  <!-- Setup Tabs -->
+  <div class="row center" style="margin-top: 0rem; margin-bottom: 0rem;">
+    
+    <!-- tabs classification-->
+    <div class="small-10 small-centered columns" style="padding-bottom: 0.2rem; padding-top: 0.2rem;">
+      
+      <!-- normal tabs (steps) -->
+      <dl class="tabs" data-tab>
+        <dd style="pointer-events: none;"><a> <i class="fa fa-check" id="step1_check"> </i> Choose Goal Type</a></dd>
+        <dd style="pointer-events: none;"><a> <i class="fa fa-arrow-right" style="color:black"> </i> </a></dd>
+        <dd style="pointer-events: none;"><a> <i class="fa fa-check" id="step2_check"> </i> Setup Goal</a></dd>
+        <dd style="pointer-events: none;"><a> <i class="fa fa-arrow-right" style="color:black"> </i> </a></dd>
+        <dd style="pointer-events: none;"><a> <i class="fa fa-check" id="step3_check"> </i> Deadline</a></dd>
+        <dd style="pointer-events: none;"><a> <i class="fa fa-arrow-right" style="color:black"> </i> </a></dd>
+        <dd style="pointer-events: none;"><a> <i class="fa fa-check" id="step4_check"></i> Prize / Payment</a></dd>
+      </dl>
+
+      <!-- hidden tabs (used for navigation by prev,next button) -->
+      <dl class="tabs" id="hidden_tabs" data-tab>
+        <dd class ="active"> <a href="#step1" id="step1"> </a> </dd>
+        <dd> <a href="#step2" id="step2"> </a> </dd>
+        <dd> <a href="#step3" id="step3"> </a> </dd>
+        <dd> <a href="#step4" id="step4"> </a> </dd>
+      </dl>
+
+    </div>
 
 
-<!-- Reveal Modals begin -->
-<div id="firstModal" class="reveal-modal medium" style="display: none" data-reveal>
-  <h2> Are you sure you want to delete this goal?</h2>
-  <br>
-  <p>If you select "Yes", this goal will be <code>permanently deleted</code>. </p>
-  <p>Click "No", If you don't want to delete this goal.</p>
-  <label for='password'>Confirm Password
-    <input id='password' type="password" required/>
-    <small id="password-error" style="display:None" class="error">A password is required</small>
-  </label>
-  <ul class="button-group right">
-    <li><a id = "Yes_button" class="button large pull-2 radius alert"> YES </a></li>
-    <li><a id = "No_button" class="button large  radius"> NO </a></li>
-  </ul>
-  <a class="close-reveal-modal">&#215;</a>
+    <!-- setting each tabs -->
+    <div class="tabs-content">
+
+      <!-- Choose Goal Type tab -->
+      <div class="content active" id="step1">
+        <div class="row card">
+          <div class="panel" data-equalizer-watch>
+          <div align = "right"> <p>Step 1/4</p> </div>
+            <div data-abide id="register-form" style="float: none">
+              <center><h3>Choose a Goal Type</h3></center>
+              <br>
+              
+              <!-- Type select box -->
+              <div class="row">
+                <div class="large-7 large-centered columns">
+                  <label for='GoalType'>
+                    <select id="goal_type" required/>
+                      <option value="default" selected> Select Goal Type </option>
+                      <option value="Collaborative">Collaborative</option>
+                      <option value="Competitive">Competitive</option>                    
+                    </select>
+                    <small id="goal-type-error" class="error">Goal Type must be specified</small>
+                  </label>
+                  
+                
+                  <!-- when Collaborative selected-->
+                  <div class="row" id="Collaborative">
+                    <p>You can collaborate with your friends to reach your goal</p>
+                    <img src="{% static 'img/collaborative.jpg' %}" style="width:100%;height:100%;margin-bottom: .5rem" /> 
+                    <!-- next button -->
+                  </div>
+
+                  <!-- when Competitive selected-->
+                  <div class="row" id="Competitive">
+                    <p>You can compete with your friend to reach your goal</p>
+                    <img src="{% static 'img/competitive.jpg' %}" style="width:100%;height:100%;margin-bottom: 1rem"> 
+                    <!-- next button -->
+                  </div>
+                  <input id="next_button_step1" type="submit" class="small button right radius" value="Next">
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Setup Goal tab-->
+      <div class="content" id="step2">
+
+        <div class="row card">
+          <div class="panel" data-equalizer-watch>
+            <div align = "right"> <p>Step 2/4</p> </div>
+            <div data-abide id="register-form">
+              <div class="large-10 large-centered columns" style="float: none">
+                
+                <div class="row">
+                <center><h5> Your Goal Type: </h5> <h3 id="selected_goal_type"></h3></center>
+                </div>
+
+                <div class="row">
+                  <div class="large-12 columns">
+                    <label for='title'>Title
+                      <input id="register-title" type="text" placeholder = "example : Raise $500 for 'American Heart Association'" required />
+                      <small id="title-error" class="error">A title is required</small>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="large-12 columns">
+                    <label for='description'>Description
+                      <input id="register-description" type="text" required />
+                      <small id="description-error" class="error">A description is required</small>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="large-8 columns">
+                    <label for='ending_value'>Ending Value
+                      <input id="register-end-value" type="text" placeholder="example : 500" required />
+                      <small id="end-value-error" class="error">End-Value must be specified</small>
+                    </label>
+                  </div>
+
+                  <div class="large-4 columns">
+                    <label for='value_unit'>Value Unit
+                      <input id="register-value-unit" type="text" placeholder="example : dollar" required />
+                      <small id="unit-error" class="error">Units must be specified</small>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="large-12 columns">
+                    <!-- prev button -->
+                    <input id="prev_button_step2" type="submit" class="small button left radius" value="Prev">
+                    <!-- next button -->
+                    <input id="next_button_step2" type="submit" class="small button right radius" value="Next">
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Deadline tab-->
+      <div class="content" id="step3">
+        <div class="row card">
+          <div class="panel" data-equalizer-watch>
+            <div align = "right"> <p>Step 3/4</p> </div>
+            <div data-abide id="register-form">
+              <div class="large-5 large-centered columns" style="float: none">
+
+                <div class="row">
+                  <center><h3>DeadLine</h3></center> <br>
+                  <p> If you'd like to set a deadline to meet your goal, check the following box and select your deadline:</p>
+
+                  <div class="dead-line-label">
+                    <input id="deadline" type="checkbox"><label for="checkbox1">Deadline</label>
+                  </div>
+
+                  <div class="end-time-label">
+                    <label>Ending Date</label>
+                      <meta charset="utf-8">
+                      <title>jQuery UI Datepicker - Default functionality</title>
+                      <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+                      <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+                      <script> $(function() { $( "#datepicker" ).datepicker(); }); </script>
+                    <label for='ending'>
+                      <input type="text" id="datepicker">
+                      <small id="ending-error" class="error">Date is required if you select deadline</small>
+                    </label>
+                  </div>
+
+                  <!-- prev button -->
+                  <input id="prev_button_step3" type="submit" class="small button left radius" value="Prev">
+                  <!-- next button -->
+                  <input id="next_button_step3" type="submit" class="small button right radius" value="Next">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+      <!-- Payment tab-->
+      <div class="content" id="step4">
+        <div class="row card">
+          <div class="panel" data-equalizer-watch>
+          <div align = "right"> <p>Step 4/4</p> </div>
+            <div data-abide id="register-form" style="float: none" >
+
+              <div class="row">
+                <div class="large-5 large-centered columns">
+                  
+                  <center><h3> Payment System </h3></center>
+
+                  <div class="prize-label">
+                    <label for='prize'>Prize
+                        <input id="register-prize" type="text" placeholder="example : $20" required />
+                        <small id="prize-error" class="error">A Prize is required</small>
+                    </label>
+                  </div>
+
+                  <div class="row">
+                    <center>
+                    <img style="margin-top: 3rem; margin-bottom: 1rem;" src="http://brand.venmo.com/img/logoblue.png" /></center>
+                    
+
+                    <input id="close" type="submit" class="small button left radius" value="close" style="background: #DA5C5C">
+                    <input id="get_vm_token" type="submit" class="small button right radius" value="Venmo" style="background: #DA5C5C">
+
+                    <p> Coming soon.... </p>
+                  </div>
+
+                  <!-- prev button -->
+                  <input id="prev_button_step4" type="submit" class="small button left radius" value="Prev">
+
+
+                  <!-- submit button -->
+                  <input id="register-submit" type="submit" class="small button right radius" value="Create" style="background: #DA5C5C">
+
+
+                
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
 </div>
-
-
-<div id="reveal_save" class="reveal-modal medium" style="display: none" data-reveal>
-  <h2> Please Re-authenticate </h2>
-  <br>
-  <label for='password'>Confirm Password
-    <input id='password' type="password" required/>
-    <small id="password-error" style="display:None" class="error">A password is required</small>
-  </label>
-  <ul class="button-group right">
-    <li><a id = "Confirm_button" class="button large pull-2 radius alert"> Confirm </a></li>
-    <li><a id = "Back_button" class="button large  radius"> Back </a></li>
-  </ul>
-  <a class="close-reveal-modal">&#215;</a>
-</div>
-
-
-
+  
 
 {% endblock %}
-

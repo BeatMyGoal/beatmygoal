@@ -6,6 +6,7 @@ from constants import *
 from datetime import *
 from sys import maxint
 
+
 class Log(models.Model):
     goal = models.OneToOneField('Goal')
 
@@ -123,7 +124,7 @@ class Goal(models.Model):
             errors.append(CODE_BAD_TYPE)
         if not prize or len(prize)>self.MAX_LEN_PRIZE:
             errors.append(CODE_BAD_PRIZE)
-        creator_user = BeatMyGoalUser.getUserByName(creator)
+            creator_user = BeatMyGoalUser.getUserByName(creator)
         if creator_user < 0:
             errors.append(CODE_BAD_USERNAME)
             
@@ -233,6 +234,7 @@ class BeatMyGoalUser(AbstractUser):
     favorite_goals = models.ManyToManyField(Goal, related_name="favorite_goals")
     image = models.FileField(upload_to='userimage/')
     social = models.CharField(null=True, blank=True, max_length=20)
+
     
     @classmethod
     def valid_email(self, e):
