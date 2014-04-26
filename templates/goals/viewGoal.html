@@ -108,8 +108,8 @@
 </div>
 
 <div class="row card">
-    <div class="medium-9 small-12 columns">
-        <div id='progressChart' style="min-height: 400px"></div>
+    <div class="medium-9 small-12 columns" >
+        <div id='progressChart' style="min-height: 400px; max-height: 600px"></div>
         <div data-alert id="chartAlert" class="alert-box" style="display:none">
             No log information available to display.
         </div>
@@ -211,7 +211,7 @@
             pointSize: 8,
             lineWidth: 5,
             curveType: "function",
-            vAxis: {textPosition: "in", gridlines: {color:"#DDD", }, baseline:{color: "#777"}, textStyle:{bold: true}},
+            vAxis: {textPosition: "in", gridlines: {color:"#DDD", }, baseline:{color: "#777"}, textStyle:{bold: true}, viewWindow: {min: 0}},
             hAxis: {textPosition: "out", textStyle:{bold: true}},
             animation: {duration: 2000, easing: "inAndOut"},
 
@@ -284,6 +284,8 @@
 
         chart.draw(data, options);
 
+       
+
         $(".goal-participant-checkbox").unbind('click').click(function(e) {
             var col = e.currentTarget.id.split("-")[0];
             console.log(col);
@@ -294,6 +296,7 @@
     };
 
 /*    $(window).resize(function(){
+        options.animation.duration = 0;
         drawChart();
     });*/
 </script>
