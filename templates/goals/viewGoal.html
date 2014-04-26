@@ -124,7 +124,7 @@
         </ul>
         {% endif %}
         <ul class='no-list-style participants-list'>
-        {% for participant in goal.beatmygoaluser_set.all %} 
+        {% for participant,amount in progress.users %} 
             <li ><input type="checkbox" checked="checked" id="{{ forloop.counter }}-{{ participant.username }}" class='goal-participant-checkbox'><a href="/users/{{ participant.id }}" class="participant-{{ forloop.counter0 }}">{{ participant.username }} {% if participant.username == goal.creator.username %} (Creator) {% endif %}</a></li>
         {% endfor %}
         </ul>
@@ -187,7 +187,7 @@
     for (var i = 0; i < $(".participants-list").children().length; i++){
         console.log(colors[i]);
         chartColors.push(colors[i % colors.length]);
-        $($(".participants-list").children()[i]).children("a").css("color", colors[i]);
+        $(".participant-" + i).css("color", colors[i]);
     }
 
     // Set a callback to run when the Google Visualization API is loaded.
