@@ -120,8 +120,8 @@ dummy_goals = [
     FakeGoal("Complete the Fenton's Icecream challenge", 
              "it's a massive three-scoop, banana split with crushed pineapple, fudge, strawberry syrup, whip cream and a cherry on top!" , 
              "glory and calories",
-             "1",
-             "massive challenge",
+             "3",
+             "scoops",
              image="fentons.jpg"),
 
     FakeGoal("Meet 1 new person in each of our classes", 
