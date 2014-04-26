@@ -95,7 +95,7 @@ def user_login_fb(request):
                 temp=NamedTemporaryFile(delete=True)
                 temp.write(r.content)
                 temp.flush()
-                user.image.save("faceimage.jpg",File(temp), save = True)
+                user.image.save("faceimage" + str(result.user.id) + ".jpg",File(temp), save = True)
                
                 login(request, user)
                 response['Location'] = '/users/profile'
