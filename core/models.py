@@ -20,8 +20,8 @@ class Log(models.Model):
         """
         entries = self.logentry_set.all()
         users = set(entry.participant for entry in entries) #get user set
-        chart_days = ((datetime.today() if not self.goal.ending_date else self.goal.ending_date) - self.goal.date_created).days + 1 #how many days to display on chart, should display until end if time based else to today
-        total_days = ((datetime.today()) - self.goal.date_created).days + 1 #how many days to calculate for each user
+        chart_days = ((datetime.today() if not self.goal.ending_date else self.goal.ending_date) - self.goal.date_created).days + 2 #how many days to display on chart, should display until end if time based else to today
+        total_days = ((datetime.today()) - self.goal.date_created).days + 2 #how many days to calculate for each user
         goal_created = self.goal.date_created
         goal_created = datetime(goal_created.year, goal_created.month, goal_created.day)
 
@@ -32,7 +32,7 @@ class Log(models.Model):
             amounts = []
             for i in range(total_days):
                 amount = amounts[i-1] if i > 0 else 0 #amount for this day is equal to previous day
-                while user_entries and (user_entries[0].entry_date - (goal_created + timedelta(days=i))).days <= 0: #check if there are any more log entries for this day
+                while user_entries and (user_entries[0].entry_date - (goal_created + timedelta(days=i))).days < 1: #check if there are any more log entries for this day
                     entry = user_entries.pop(0)
                     amount += entry.entry_amount #if there are more entries, add them to today's total
                 amounts.append(amount)
