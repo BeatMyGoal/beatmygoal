@@ -43,7 +43,7 @@ STATIC_URL = S3_URL
 AWS_S3_SECURE_URLS = False       # use http instead of https
 AWS_QUERYSTRING_AUTH = False     # don't add complex authentication-related query parameters for requests
 AWS_S3_ACCESS_KEY_ID = 'AKIAJR6X6DVN5G33X3AQ'     # enter your access key id
-AWS_S3_SECRET_ACCESS_KEY = 'dBjeiuErr/KrFeRlI4t6OpoFULrgQGof5SmNymc9' # enter your secret access key
+AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_KEY', '')
 
 STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
