@@ -35,7 +35,18 @@ ADMINS = (('beatmygoal', 'beatmygoal@googlegroups.com'))
 
 # Application definition
 
+AWS_STORAGE_BUCKET_NAME = 'beatmygoalfiles'
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+STATIC_URL = S3_URL
+AWS_S3_SECURE_URLS = False       # use http instead of https
+AWS_QUERYSTRING_AUTH = False     # don't add complex authentication-related query parameters for requests
+AWS_S3_ACCESS_KEY_ID = 'AKIAJR6X6DVN5G33X3AQ'     # enter your access key id
+AWS_S3_SECRET_ACCESS_KEY = 'dBjeiuErr/KrFeRlI4t6OpoFULrgQGof5SmNymc9' # enter your secret access key
 
+STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
+ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -47,6 +58,7 @@ INSTALLED_APPS = (
     'core',
     'south',
     'django_nose',
+    'storages',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -131,7 +143,15 @@ except Exception as e:
 # Static asset configuration
 # import os
 # PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = 'staticfiles'
+
+
+
+
+# STATIC_ROOT = 'staticfiles'
+
+
+
+
 # STATIC_URL = '/static/'
 
 
@@ -140,7 +160,7 @@ STATIC_ROOT = 'staticfiles'
 # )
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-#MEDIA_URL = '/media/'
+# MEDIA_URL = '/media/'
 
 
 AUTH_USER_MODEL = 'core.BeatMyGoalUser'

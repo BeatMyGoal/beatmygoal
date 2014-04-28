@@ -13,7 +13,7 @@
         <br>
         <div id = "imageContainer">
             {% if viewedUser.image %}
-            <img src="/media/{{viewedUser.image.url}}" width=100px height=110px style="width:100%;height:100%" />
+            <img src="{{viewedUser.image.url}}" width=100px height=110px style="width:100%;height:100%" />
             {% else %}
                 <p> <img src="http://placehold.it/320x300&text=photo" /></p>
             {% endif %}
@@ -75,7 +75,7 @@
                                     <div class="dashcard" id="{{ goal.id }}">
                                         <div class=dashcard-img>
                                             {% if goal.image %}
-                                                <img src="/media/{{goal.image.url}}" class='goal-image'/>
+                                                <img src="{{goal.image.url}}" class='goal-image'/>
                                             {% endif %}
                                         </div>
                                         <div class=dashcard-title><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></div>
@@ -99,7 +99,7 @@
                                     <div class="dashcard" id="{{ goal.id }}">
                                         <div class=dashcard-img>
                                             {% if goal.image %}
-                                                <img src="/media/{{goal.image.url}}" class='goal-image'/>
+                                                <img src="{{goal.image.url}}" class='goal-image'/>
                                             {% endif %}
                                         </div>
                                         <div class=dashcard-title><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></div>
