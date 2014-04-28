@@ -31,21 +31,15 @@ TEMPLATE_DEBUG = True
 
 #ALLOWED_HOSTS = []
 
+STATIC_URL = "/static/"
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+
 ADMINS = (('beatmygoal', 'beatmygoal@googlegroups.com'))
 
 # Application definition
 
-AWS_STORAGE_BUCKET_NAME = 'beatmygoalfiles'
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
-STATIC_URL = S3_URL
-AWS_S3_SECURE_URLS = False       # use http instead of https
-AWS_QUERYSTRING_AUTH = False     # don't add complex authentication-related query parameters for requests
-AWS_S3_ACCESS_KEY_ID = 'AKIAJR6X6DVN5G33X3AQ'     # enter your access key id
-AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_KEY', '')
-
-STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 INSTALLED_APPS = (
@@ -112,21 +106,21 @@ USE_L10N = True
 USE_TZ = False  # changed to use datetime package
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
-
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-)
-
-
 # Parse database configuration from $DATABASE_URL
-import os
 if 'ON_HEROKU' in os.environ:
     DATABASES['default'] =  dj_database_url.config()
     DEBUG = False
+    AWS_STORAGE_BUCKET_NAME = 'beatmygoalfiles'
+    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+    STATIC_URL = S3_URL
+    AWS_S3_SECURE_URLS = False       # use http instead of https
+    AWS_QUERYSTRING_AUTH = False     # don't add complex authentication-related query parameters for requests
+    AWS_S3_ACCESS_KEY_ID = 'AKIAJR6X6DVN5G33X3AQ'     # enter your access key id
+    AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_KEY', '')
+
+    STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
