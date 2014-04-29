@@ -45,7 +45,7 @@
                     document.getElementById("imagebutton").click();
                 }
             </script>
-    	    {% if user.username == goal.creator.username %}
+    	    {% if user.username == goal.creator.username and not goal.isEnded %}
     	    <form action={% url 'goal_image_upload' goal_id  %} method="post" enctype="multipart/form-data" id="upload-goal-image">
         	    <div id="filebuttonContainer">
         	      <input type="file" class="upload" name="image" id="imagebutton" onchange="submitimage()" />
@@ -54,6 +54,8 @@
                 <input type="submit" class="button tiny" value="Update" id="imagesubmitbutton" />
     	    </form>
     	    {% endif %}
+
+            {% if not goal.isEnded %}
 	    
             <ul class="button-group goal-buttons">
             {% if isParticipant or isCreator %}
@@ -80,7 +82,14 @@
             {% elif not isFavorite and isParticipant  %}
                 <li><a id = "add_favorite_button" type="button" class="button tiny">Add to Favorites</a></li>
             {% endif %}
+            </ul >
+            {% endif %}
+            
+            {% if isParticipant and goal.isEnded %}
+            <ul class="button-group goal-buttons">
+                <li><a id = "comment_button" data-reveal-id="comment_goal" data-reveal class="button tiny">Post Comment</a></li>
             </ul>
+            {% endif %}
         </div>
     </div>
     
