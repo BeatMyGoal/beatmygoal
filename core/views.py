@@ -140,12 +140,10 @@ def dashboard(request):
 
 def dashboard_search(query, goals):
     temp_goals = []
-    print(query)
     for goal in goals:
         if query.lower() in goal.title.lower() or query in goal.description.lower():
             
             temp_goals.append(goal)
-    print(temp_goals)
     return temp_goals
 
 @csrf_exempt
@@ -390,7 +388,6 @@ def create_user(request):
     """
     Creates a user and authenticates them, if credentials are valid.
     """
-    print "creating"
     if request.method == "GET":
             return render(request, 'index.html')
     elif request.method == "POST":
