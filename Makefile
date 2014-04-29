@@ -1,5 +1,8 @@
 .PHONY: unit func gui test
 
+server:
+	python manage.py runserver
+
 hook:
 	cp scripts/pre-commit .git/hooks/
 	cp scripts/post-merge .git/hooks/
