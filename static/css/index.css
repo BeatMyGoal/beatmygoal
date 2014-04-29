@@ -10,6 +10,13 @@ html, body {
 }
 
 .register-box {
+    background: rgba(200, 200, 200, 0.65) !important;  
+}
+
+
+
+
+.register-box {
     margin: 0 auto;
     margin-top: 200px;
     z-index: 2;
