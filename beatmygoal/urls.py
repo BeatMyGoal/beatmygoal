@@ -4,7 +4,7 @@ from django.views.generic import RedirectView
 from django.contrib import admin
 admin.autodiscover()
 
-import core.views
+import core.views, os
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -56,7 +56,8 @@ urlpatterns = patterns('',
 
 )
 #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-urlpatterns += patterns('',
-        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+if 'ON_HEROKU' not in os.environ:
+    urlpatterns += patterns('',
+                            (r'^media/(?P<path>.*)$', 
+                             'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     )

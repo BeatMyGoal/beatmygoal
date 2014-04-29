@@ -104,7 +104,7 @@ $(document).ready(function() {
                 $(".dashcard-holder#"+entry['pk']).append('<div class="dashcard" id="'+entry['pk']+'"></div>');
                 $("#"+entry['pk']+".dashcard").append('<div class=dashcard-img id="'+entry['pk']+'"></div>');
                 if (fields['image'] != ""){
-                    $("#"+entry['pk']+".dashcard-img").append('<img src="http://beatmygoalfiles.s3.amazonaws.com/'+fields['image']+'" class="goal-image"/>');
+                    $("#"+entry['pk']+".dashcard-img").append('<img src="' + window.MEDIA_URL + fields['image']+'" class="goal-image"/>');
         		    // hide the trophy
         		    $("#"+entry['pk']+".dashcard-img").css("background-image", "none");
                 }
