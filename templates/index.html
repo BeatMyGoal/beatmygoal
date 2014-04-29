@@ -9,10 +9,9 @@
 <script src="{% static 'js/index.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/index.css' %}"/>
 
-<div id="background-overlay">
-</div>
 
-<div class="row outline panel register-box">
+
+<div style="background: rgba(200, 200, 200, 0.65)" class="row outline panel register-box">
   <div class="large-6 columns ">
     <div class="row">
       <h2>Welcome to Beat My Goal!</h2>
@@ -54,15 +53,15 @@
           </label>
         </div>
          <div class="small-12 medium-6 columns">
-	   <br>
-	   <input id="register-submit" type="submit" class="float-right button small" value="Get Started">
+     <br>
+     <input id="register-submit" type="submit" class="float-right button small" value="Get Started">
          <!-- <label >Confirm Password</label> -->
          <!-- <input id="" type="password" required pattern="[a-zA-Z0-9]+" /> -->
          <!-- <small id="" class="error">A password is required. Only alpha-numeric characters are allowed.</small> -->
        </div> 
       <hr style="border-color:black">
       <a href="/users/login/fb" id ="facebook-login" type="submit" class="float-right button small" style="background-color:#3B5998;">
-	<i class="fa fa-facebook" style="margin-right:10px;"></i> Login with Facebook</a>
+  <i class="fa fa-facebook" style="margin-right:10px;"></i> Login with Facebook</a>
       </div>
     </form>
   </div>
