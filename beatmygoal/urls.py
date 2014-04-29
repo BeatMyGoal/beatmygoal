@@ -38,9 +38,6 @@ urlpatterns = patterns('',
 
 	url(r'^users/logout', core.views.user_logout, name='user_logout'),
 	
-	#url(r'^users/test/$', core.views.test_user),
-	#url(r'^users/test/view', core.views.view_user2),
-	#url(r'^users/test/edit', core.views.edit_user2),                       
 
 	url(r'^goals/(\d+)/imageload/$', core.views.goal_image_upload, name ='goal_image_upload'),
 	url(r'^users/(\d+)/imageload/$', core.views.user_image_upload, name ='user_image_upload'),
@@ -52,6 +49,25 @@ urlpatterns = patterns('',
     url(r'^confirm', core.views.confirm, name='confirm'),
     url(r'^email/$', core.views.send_email, name='email'),
     url(r'^email/preview', core.views.email_preview, name='email_preview'),
+
+
+    #venmo
+    url(r'^vm', core.views.venmo, name='venmo'),
+    # The endpoint for creating and exchanging access tokens and refresh
+    # tokens is handled entirely by the djoauth2 library.
+    url(r'^oauth2/token/$', 'djoauth2.views.access_token_endpoint'),
+
+    # The authorization endpoint, a page where each "resource owner" will
+    # be shown the details of the permissions being requested by the
+    # "client".
+    url(r'^oauth2/authorization/$', 'oauth2server.views.authorization_endpoint'),
+
+    # The page to show when Client redirection URIs are misconfigured or
+    # invalid. This should be a nice, simple error page.
+    url(r'^oauth2/missing_redirect_uri/$', 'oauth2server.views.missing_redirect_uri'),
+
+    # An access-protected API endpoint, which we'll define later.
+    url(r'^api/user_info/$', 'api.views.user_info'),
     
 
 )

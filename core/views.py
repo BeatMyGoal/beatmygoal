@@ -32,6 +32,109 @@ from helper import *
 import cgi
 import urllib
 
+#venmo
+from djoauth2.authorization import make_authorization_endpoint
+from base64 import b64encode
+
+def missing_redirect_uri(request):
+  """ Display an error message when an authorization request fails and has no
+  valid redirect URI.
+
+  The Authorization flow depends on recognizing the Client that is requesting
+  certain permissions and redirecting the user back to an endpoint associated
+  with the Client.  If no Client can be recognized from the request, or the
+  endpoint is invalid for some reason, we redirect the user to a page
+  describing that an error has occurred.
+  """
+  return HttpResponse(content="Missing redirect URI!")
+
+authorization_endpoint = make_authorization_endpoint(
+  # The URI of a page to show when a "client" makes a malformed or insecure
+  # request and their registered redirect URI cannot be shown.  In general, it
+  # should simply show a nice message describing that an error has occurred;
+  # see the view definition above for more information.
+  missing_redirect_uri='/oauth2/missing_redirect_uri/',
+
+  # This endpoint is being dynamically constructed, but it also needs to know
+  # the URI at which it is set up so that it can create forms and handle
+  # redirects, so we explicitly pass it the URI.
+  authorization_endpoint_uri='/oauth2/authorization/',
+
+  # The name of the template to render to show the "resource owner" the details
+  # of the "client's" request. See the documentation for more details on the
+  # context used to render this template.
+  authorization_template_name='oauth2server/authorization_page.html')
+
+
+
+def venmo(request):
+    code = request.GET.get('code')
+    client_key = 1700
+    client_secret = 'yEneXJT8DHUckDZ3BdmeJ75Urkys37Xq'
+    token_response = requests.post(
+      'https://api.venmo.com/v1/oauth/access_token',
+      data={
+        'client_id':1700,
+        'client_secret':'yEneXJT8DHUckDZ3BdmeJ75Urkys37Xq',
+        'code': code,
+        'grant_type': 'authorization_code',
+      },
+      headers={
+        'Authorization': 'Basic {}'.format(
+            b64encode('{}:{}'.format(client_key, client_secret))),
+      })
+    
+    assert token_response.status_code == 200
+
+
+    token_data = json.loads(token_response.content)
+
+    """
+    data = {
+        "client_id":1700,
+        "client_secret":"yEneXJT8DHUckDZ3BdmeJ75Urkys37Xq",
+        "code":code
+    }
+    url = "https://api.venmo.com/v1/oauth/access_token"
+    import requests
+    response = requests.post(url, data)
+    response_dict = response.json()
+
+    response = render(request, 'venmo.html',{'access_token' : response_dict})
+    """
+    access_token = token_data['access_token']
+    refresh_token = token_data.get('refresh_token', None)
+    access_token_lifetime_seconds = token_data['expires_in']
+
+
+    #make request
+
+    api_response = requests.post(
+      'https://api.venmo.com/v1/payments',
+      headers={
+        'Authorization': 'Bearer {}'.format(token_data['access_token'])
+      },
+      data={
+        'client_id':1700,
+        'client_secret':'yEneXJT8DHUckDZ3BdmeJ75Urkys37Xq',
+        'access_token': token_data['access_token'],
+        'email': 'khs8727@gmail.com',
+        'note' : 'BeatMyGoal',
+        'amount' : '0.10',
+      })
+
+    
+    print api_response.content
+    
+
+    response = render(request, 'venmo.html',{'access_token' : api_response})
+
+    return response
+
+
+
+
+
 def send_email(request):
     subject = "Test email from BeatMyGoal"
     message = "This is a test email from BeatMyGoal"

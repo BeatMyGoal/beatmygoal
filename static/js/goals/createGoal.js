@@ -1,6 +1,9 @@
 $(document).ready(function() {
 	$('#hidden_tabs').hide();
 
+	//venmo
+	document.getElementById('step4').click();
+
 	$("#register-submit").click(function(e) {
 		$('#step4_check').fadeIn();
 		$("label[for='prize']").removeClass("error");
@@ -163,6 +166,28 @@ $(document).ready(function() {
 			$('#step3_check').fadeIn();
 		}
 	});
+
+
+
+	//venmo
+	$('#get_vm_token').click(function(e){
+		venmo()
+		//var popupWindow;
+
+	});
+	function venmo(){
+		var url = "https://api.venmo.com/v1/oauth/authorize?client_id=1700&scope=make_payments%20access_profile%20access_email%20access_phone%20access_balance&response_type=code";
+		var popOption = "width=400, height=500, left=200, top=200 resizable=no, scrollbars=no, status=no;";
+		popupWindow = window.open(url,"",popOption);
+	}
+	$('#close').click(function(e){
+		popupWindow.close();
+
+	});
+
+
+
+
 
 
 });
