@@ -141,12 +141,12 @@ PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 
-# STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = 'staticfiles'
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_PATH, '../static'),
-)
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = (
+#     os.path.join(PROJECT_PATH, '../static'),
+# )
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #print MEDIA_ROOT
@@ -167,3 +167,7 @@ EMAIL_PORT = 587
 
 
 
+STATIC_URL = "/static/"
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
