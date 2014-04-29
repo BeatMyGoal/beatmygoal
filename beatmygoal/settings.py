@@ -111,16 +111,16 @@ if 'ON_HEROKU' in os.environ:
     DATABASES['default'] =  dj_database_url.config()
     DEBUG = False
     AWS_STORAGE_BUCKET_NAME = 'beatmygoalfiles'
-    #STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
     S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
-    #STATIC_URL = S3_URL
+    STATIC_URL = S3_URL
     AWS_S3_SECURE_URLS = False       # use http instead of https
     AWS_QUERYSTRING_AUTH = False     # don't add complex authentication-related query parameters for requests
     AWS_S3_ACCESS_KEY_ID = 'AKIAJR6X6DVN5G33X3AQ'     # enter your access key id
     AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_KEY', '')
 
-    #STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
+    STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -135,21 +135,26 @@ except Exception as e:
 
 
 # Static asset configuration
-import os
-PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
+# import os
+# PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 
 
 # STATIC_ROOT = 'staticfiles'
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_PATH, '../static'),
-)
+
+
+
+# STATIC_URL = '/static/'
+
+
+# STATICFILES_DIRS = (
+#     os.path.join(PROJECT_PATH, '../static'),
+# )
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-#print MEDIA_ROOT
+print MEDIA_ROOT
 MEDIA_URL = '/media/'
 
 
