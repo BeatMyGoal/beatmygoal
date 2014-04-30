@@ -82,7 +82,7 @@ class LogEntry(models.Model):
         if amount != None:
             try:
                 amount = int(amount)
-                if amount > maxint:
+                if amount > maxint or amount < 0:
                     errors.append(CODE_BAD_AMOUNT)
             except Exception, e:
                 errors.append(CODE_BAD_AMOUNT)
@@ -232,13 +232,27 @@ class Goal(models.Model):
         if userTotal >= int(self.ending_value):
             self.endGoal(user)
 
+    def checkDeadline(self):
+        if datetime.today() > self.ending_date: #if today is after the deadline
+            winners = []
+            maxAmount = -1
+            for user in self.beatmygoaluser_set.all(): #check each user for their amount
+                userAmount = self.log.getUserTotal(user.username)
+                if userAmount > maxAmount: #if they have the highest, they're winner
+                    maxAmount = userAmount
+                    winners = [user]
+                elif userAmount == maxAmount: #if there is a tie, multiple winners
+                    winners.append(user)
+            self.endGoal(winners) #end goal, declaring the winner(s)
+
+
     def endGoal(self, winner):
-        if not self.isEnded():
+        if not self.isEnded(): #if the goal hasn't ended yet, end it
             winner = winner if isinstance(winner, list) else [winner]
             for i in range(len(winner)):
-                self.winners.add(BeatMyGoalUser.objects.get(username=winner[i]))
-            self.ended = len(winner)
-            super(Goal, self).save()
+                self.winners.add(BeatMyGoalUser.objects.get(username=winner[i])) #add each winner to the goal
+            self.ended = len(winner) #set the ended value to be the amount of winners
+            super(Goal, self).save() #regular save method won't work now
 
     def isEnded(self):
         return self.ended
@@ -1034,9 +1048,9 @@ class Log(models.Model):
 
         return response
 
-    def getUserTotal(self, uid):
+    def getUserTotal(self, user):
         errors = []
-        usr_res = BeatMyGoalUser.getUserById(uid)
+        usr_res = BeatMyGoalUser.getUserByName(user)
         user = usr_res['user'] if not usr_res['errors'] else None
         if not user:
             errors.append(CODE_BAD_USERID)
