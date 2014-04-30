@@ -5,6 +5,7 @@
 
 <link rel="stylesheet" href="{% static 'css/goals/viewGoal.css' %}" />
 
+<script src="{% static 'js/redactor/redactor.min.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/redactor/redactor.css' %}" />
 
 
@@ -65,13 +66,12 @@
                 <li><a id = "comment_button" data-reveal-id="comment_goal" data-reveal class="button tiny">Post Comment</a></li>
                 <li><a id = "log_button" data-reveal-id="myModal" data-reveal class="button tiny">Log Progress</a></li>
             {% elif not isCreator and user.is_authenticated %}
-                <li><a id = "comment_button" data-reveal-id="comment_goal" data-reveal class="button tiny">Post Comment</a></li>
                 <li><a id = "join_goal_button" type="submit" class="button tiny">Join Goal</a></li>
             {% elif not isCreator %}
                 <li><a href="#" data-reveal-id="reveal_register" class="button tiny alert">Register and Join</a> </li>
             {% endif %}
 	    
-            {% if user.username == goal.creator.username %}
+            {% if user.username == goal.creator.username and user.social == None %}
                 <li><a id = "edit_goal_button" type="submit" class="button tiny alert">Edit Goal</a></li>	    
             {% endif %}
 
@@ -107,8 +107,8 @@
 </div>
 
 <div class="row card">
-    <div class="medium-9 small-12 columns">
-        <div id='progressChart' style="min-height: 400px"></div>
+    <div class="medium-9 small-12 columns" >
+        <div id='progressChart' style="min-height: 400px; max-height: 600px"></div>
         <div data-alert id="chartAlert" class="alert-box" style="display:none">
             No log information available to display.
         </div>
@@ -123,7 +123,7 @@
         </ul>
         {% endif %}
         <ul class='no-list-style participants-list'>
-        {% for participant in goal.beatmygoaluser_set.all %} 
+        {% for participant,amount in progress.users %} 
             <li ><input type="checkbox" checked="checked" id="{{ forloop.counter }}-{{ participant.username }}" class='goal-participant-checkbox'><a href="/users/{{ participant.id }}" class="participant-{{ forloop.counter0 }}">{{ participant.username }} {% if participant.username == goal.creator.username %} (Creator) {% endif %}</a></li>
         {% endfor %}
         </ul>
@@ -139,37 +139,36 @@
 
             {% for entry in goal.log.logentry_set.all|dictsortreversed:"id"|slice:"8" %}
             <li>
-            <div class="row">
-                <div class="medium-1 hide-for-small columns">
-                    {% if entry.participant.image %}
-                    <img src="{{entry.participant.image.url}}" style="width:65px; height:65px" />
-                    {% else %}
-                    <img src="http://placehold.it/65x65&text=photo" />
-                    {% endif %}
-                </div>
-                <div class="medium-11 columns">
-                    <div class="row">
-
-			{% if entry.entry_amount  %}
-			  <i class="fa fa-tasks"></i>
-			{% else %}
-			  <i class="fa fa-comment"></i>
-			{% endif %}
-                        <a href="/users/{{ entry.participant.id }}">
-			  <strong>{{ entry.participant }}</strong>
-			</a> 
-			
-			{% if entry.entry_amount  %}
-			<small> logged {{ entry.entry_amount }} {{ goal.unit }} </small>
-			{% endif %}
-
-			<small>({{entry.entry_date|timesince}} ago)</small>
+                <div class="row">
+                    <div class="medium-1 hide-for-small columns">
+                        {% if entry.participant.image %}
+                        <img src="{{entry.participant.image.url}}" style="width:65px; height:65px" />
+                        {% else %}
+                        <img src="http://placehold.it/65x65&text=photo" />
+                        {% endif %}
                     </div>
-                    <div class="row">
-                        {{ entry.comment | safe }}
+                    <div class="medium-11 columns">
+                        <div class="row">
+                            {% if entry.entry_amount  %}
+                            <i class="fa fa-tasks"></i>
+                            {% else %}
+                            <i class="fa fa-comment"></i>
+                            {% endif %}
+                            <a href="/users/{{ entry.participant.id }}">
+                                <strong>{{ entry.participant }}</strong>
+                            </a> 
+    			
+                            {% if entry.entry_amount  %}
+    			             <small> logged {{ entry.entry_amount }} {{ goal.unit }} </small>
+                            {% endif %}
+                            
+                            <small>({{entry.entry_date|timesince}} ago)</small>
+                        </div>
+                        <div class="row">
+                            {{ entry.comment | safe }}
+                        </div>
                     </div>
                 </div>
-            </div>
             </li>
 
             {% endfor %}
@@ -185,9 +184,10 @@
     var chartColors = [];
 
     for (var i = 0; i < $(".participants-list").children().length; i++){
-        chartColors.push(colors[i]);
-        $($(".participants-list").children()[i]).children("a").css("color", colors[i]);
-    };
+        console.log(colors[i]);
+        chartColors.push(colors[i % colors.length]);
+        $(".participant-" + i).css("color", colors[i]);
+    }
 
     // Set a callback to run when the Google Visualization API is loaded.
     google.setOnLoadCallback(drawChart);
@@ -199,7 +199,7 @@
 
         // Create the data table.
         var data = new google.visualization.DataTable();
-        var chart = new google.visualization.LineChart(document.getElementById('progressChart'));
+        chart = new google.visualization.LineChart(document.getElementById('progressChart'));
         var options = {
             focusTarget:"category",
             colors : chartColors,
@@ -210,7 +210,7 @@
             pointSize: 8,
             lineWidth: 5,
             curveType: "function",
-            vAxis: {textPosition: "in", gridlines: {color:"#DDD", }, baseline:{color: "#777"}, textStyle:{bold: true}},
+            vAxis: {textPosition: "in", gridlines: {color:"#DDD", }, baseline:{color: "#777"}, textStyle:{bold: true}, viewWindow: {min: 0}},
             hAxis: {textPosition: "out", textStyle:{bold: true}},
             animation: {duration: 2000, easing: "inAndOut"},
 
@@ -251,8 +251,8 @@
             var sel = chart.getSelection();
             // if selection length is 0, we deselected an element
             if (sel.length > 0) {
-                // if row is undefined, we clicked on the legend
                 //if (typeof sel[0].row === 'undefined') {
+                // if row is undefined, we clicked on the legend
                 if (sel[0].row === null) {
                     var col = sel[0].column;
                     if (columns[col] == col) {
@@ -266,12 +266,12 @@
                         };
                         
                         // grey out the legend entry
-                        series[col].color = '#CCCCCC';
+                        series[col-1].color = '#CCCCCC';
                     }
                     else {
                         // show the data series
                         columns[col] = col;
-                        series[col].color = null;
+                        series[col-1].color = null;
                     }
                     var view = new google.visualization.DataView(data);
                     view.setColumns(columns);
@@ -283,6 +283,8 @@
 
         chart.draw(data, options);
 
+       
+
         $(".goal-participant-checkbox").unbind('click').click(function(e) {
             var col = e.currentTarget.id.split("-")[0];
             console.log(col);
@@ -293,6 +295,7 @@
     };
 
 /*    $(window).resize(function(){
+        options.animation.duration = 0;
         drawChart();
     });*/
 </script>
@@ -356,7 +359,7 @@
     </div>
   <ul class="button-group right">
     <li><a id = "send_button" class="button large pull-2 radius alert"> Send </a></li>
-    <li><a id = "cancle_button" class="button large  radius"> Cancle </a></li>
+    <li><a id = "cancle_button" class="button large  radius"> Cancel </a></li>
   </ul>
   <a class="close-reveal-modal">&#215;</a>
     </div>

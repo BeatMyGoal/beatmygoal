@@ -27,6 +27,7 @@ from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.views.generic import FormView,DetailView
 from .forms import ImageForm
+from helper import *
 
 import cgi
 import urllib
@@ -79,11 +80,14 @@ def user_login_fb(request):
                 user = BeatMyGoalUser.objects.get(username=username)
                 user.backend='django.contrib.auth.backends.ModelBackend'
                 login(request, user)
+                user.social = result.user.id
+                user.save()
             else:
                 password = BeatMyGoalUser.objects.make_random_password(8)
                 user = BeatMyGoalUser.create(username, email, password)['user']
                 user =  authenticate(username=username, password=password)
-            
+                user.social = result.user.id
+                user.save()
                 #Get profile image from the user
                 url = 'http://graph.facebook.com/{}/picture?width=200&height=200'
                 url = url.format(result.user.id)
@@ -91,7 +95,7 @@ def user_login_fb(request):
                 temp=NamedTemporaryFile(delete=True)
                 temp.write(r.content)
                 temp.flush()
-                user.image.save("faceimage.jpg",File(temp), save = True)
+                user.image.save("faceimage" + str(result.user.id) + ".jpg",File(temp), save = True)
                
                 login(request, user)
                 response['Location'] = '/users/profile'
@@ -136,12 +140,10 @@ def dashboard(request):
 
 def dashboard_search(query, goals):
     temp_goals = []
-    print(query)
     for goal in goals:
         if query.lower() in goal.title.lower() or query in goal.description.lower():
             
             temp_goals.append(goal)
-    print(temp_goals)
     return temp_goals
 
 @csrf_exempt
@@ -311,7 +313,6 @@ def goal_view_goal(request, goal_id):
     View the profile of a goal.
     """
     goal = Goal.objects.get(id=goal_id)
-    print goal
     image = str(goal.image)
     isCreator = str(request.user) == str(goal.creator)
     isParticipant = len(goal.beatmygoaluser_set.filter(username=request.user)) > 0
@@ -357,7 +358,7 @@ def user_login(request):
         data = json.loads(request.body)
         username= data["username"]
         password= data["password"]
-        redirect= data['redirect'] if data['redirect'] else "/dashboard/"
+        redirect= data['redirect'] if 'redirect' in data else "/dashboard/"
         response = BeatMyGoalUser.login(username,password)
             
         if response['errors']:
@@ -387,7 +388,6 @@ def create_user(request):
     """
     Creates a user and authenticates them, if credentials are valid.
     """
-    print "creating"
     if request.method == "GET":
             return render(request, 'index.html')
     elif request.method == "POST":
@@ -423,7 +423,10 @@ def view_user(request, uid):
         if response['errors']:
             return render(request, 'users/viewUser.html', { "errors" : response["errors"] })
         else:
-            return render(request, 'users/viewUser.html', {'viewedUser' : response['user'], 'errors' : response['errors']} )
+            chart1_data = goal_to_numEntry(response['user'])
+            chart2_data = date_to_numEntry(response['user'])
+            streak = get_streaks(response['user'])
+            return render(request, 'users/viewUser.html', {'streak': streak, 'chart2_data': chart2_data, 'chart1_data' : chart1_data, 'viewedUser' : response['user'], 'errors' : response['errors']} )
 
 #@csrf_exempt
 def edit_user(request, uid):

@@ -54,4 +54,9 @@ urlpatterns = patterns('',
     url(r'^email/preview', core.views.email_preview, name='email_preview'),
     
 
-)+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+)
+#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += patterns('',
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    )

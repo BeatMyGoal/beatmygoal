@@ -8,12 +8,10 @@
 # To enable this hook, rename this file to "pre-commit".
 make unit
 RESULT=$?
-git stash pop -q
 [ $RESULT -ne 0 ] && exit 1
 
 make func
 RESULT=$?
-git stash pop -q
 [ $RESULT -ne 0 ] && exit 1
 exit 0
 

@@ -1,26 +1,22 @@
 html, body {
-    background-color: inherit;
-}
-
-#background-overlay {
-    position:absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-    overflow:hidden;
-    z-index:-1;
     background: 
         linear-gradient(
-          rgba(0, 0, 0, 0.65), 
-          rgba(0, 0, 0, 0.65)
+          rgba(0, 0, 0, 0.25), 
+          rgba(0, 0, 0, 0.25)
         ),
-        url("/static/img/index_img.jpg");
-    background-position: 50% 80%;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: 100%;
+        url("http://beatmygoalfiles.s3.amazonaws.com/img/index_bg.jpg");
+
+
+    background-size: auto 130%;
+    background-position: center;
 }
+
+.register-box {
+    background: rgba(200, 200, 200, 0.65) !important;  
+}
+
+
+
 
 .register-box {
     margin: 0 auto;

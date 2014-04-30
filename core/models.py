@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import validate_email
@@ -9,6 +10,9 @@ from sys import maxint
 class Log(models.Model):
     goal = models.OneToOneField('Goal')
 
+    def __str__(self):
+        return str("Log - " + str(self.goal))
+
     def parseEntriesByUser(self):
         """
         Gathers all log entries for this log and sorts
@@ -16,8 +20,8 @@ class Log(models.Model):
         """
         entries = self.logentry_set.all()
         users = set(entry.participant for entry in entries) #get user set
-        chart_days = ((datetime.today() if not self.goal.ending_date else self.goal.ending_date) - self.goal.date_created).days + 1 #how many days to display on chart, should display until end if time based else to today
-        total_days = ((datetime.today()) - self.goal.date_created).days + 1 #how many days to calculate for each user
+        chart_days = ((datetime.today() if not self.goal.ending_date else self.goal.ending_date) - self.goal.date_created).days + 2 #how many days to display on chart, should display until end if time based else to today
+        total_days = ((datetime.today()) - self.goal.date_created).days + 2 #how many days to calculate for each user
         goal_created = self.goal.date_created
         goal_created = datetime(goal_created.year, goal_created.month, goal_created.day)
 
@@ -28,7 +32,7 @@ class Log(models.Model):
             amounts = []
             for i in range(total_days):
                 amount = amounts[i-1] if i > 0 else 0 #amount for this day is equal to previous day
-                while user_entries and (user_entries[0].entry_date - (goal_created + timedelta(days=i))).days <= 0: #check if there are any more log entries for this day
+                while user_entries and (user_entries[0].entry_date - (goal_created + timedelta(days=i))).days < 1: #check if there are any more log entries for this day
                     entry = user_entries.pop(0)
                     amount += entry.entry_amount #if there are more entries, add them to today's total
                 amounts.append(amount)
@@ -46,7 +50,11 @@ class LogEntry(models.Model):
     participant = models.ForeignKey('BeatMyGoalUser', related_name="logentries")
     entry_amount = models.IntegerField(null=True)
     entry_date = models.DateTimeField(auto_now_add=True)
+    entry_date.editable=True
     comment = models.TextField()
+
+    def __str__(self):
+        return str(self.comment)
 
     @classmethod
     def create(self, log, participant, amount, comment):
@@ -95,6 +103,7 @@ class Goal(models.Model):
     description = models.CharField(max_length=MAX_LEN_DESC)
     prize = models.TextField(max_length=MAX_LEN_PRIZE)
     date_created = models.DateTimeField(auto_now_add=True)
+    date_created.editable=True
     progress_value = models.FloatField()
     goal_type = models.CharField(max_length=MAX_LEN_TYPE)
     private_setting = models.IntegerField()
@@ -102,7 +111,6 @@ class Goal(models.Model):
     unit = models.CharField(max_length=MAX_LEN_UNIT, blank=True)
     image = models.FileField(upload_to='image/')
     ending_date = models.DateTimeField(blank=True, null=True);
-
 
 
     def __str__(self):
@@ -232,7 +240,7 @@ class BeatMyGoalUser(AbstractUser):
     goals = models.ManyToManyField(Goal)
     favorite_goals = models.ManyToManyField(Goal, related_name="favorite_goals")
     image = models.FileField(upload_to='userimage/')
-    
+    social = models.CharField(null=True, blank=True, max_length=20)
     
     @classmethod
     def valid_email(self, e):
@@ -437,4 +445,18 @@ class BeatMyGoalUser(AbstractUser):
 
         return {"errors" : errors, "user" : user }
 
+# Admin Models
 
+class GoalAdmin(admin.ModelAdmin):
+    list_display  = ('title', 'creator', 'description', 'prize', 'date_created', 'progress_value')
+    list_display += ('goal_type', 'private_setting', 'ending_value', 'unit', 'ending_date')
+
+
+class LogEntryAdmin(admin.ModelAdmin):
+    def get_goal_name(self, obj):
+        return obj.log.goal
+    get_goal_name.short_description = 'Goal'
+    list_display = ('comment', 'get_goal_name', 'participant', 'entry_amount', 'entry_date')
+
+class BeatMyGoalUserAdmin(admin.ModelAdmin):
+    list_display  = ('username', 'email', 'date_joined')

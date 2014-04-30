@@ -1,13 +1,17 @@
 .panel {
-	border-style: solid;
-	border-width: 1px;
-	border-color: #d8d8d8;
-	margin-bottom: 0rem;
+	margin-bottom: 0.3rem;
 	padding: 1.25rem;
 	background: #f2f2f2;
-    height: 600px;
 }
 
+button.small, .button.small {
+    padding-top: 0.5rem;
+    padding-right: 1rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    font-size: 1.2rem;
+    background: cornflowerblue;
+}
 .card {
     margin-bottom: 0px;
     background-color: #DA5C5C;
@@ -20,18 +24,15 @@
     color: #DA5C5C;
   }
   .tabs:after {
-    clear: both; }
-  .tabs dd.active a {
-    background: #DA5C5C;
-    }
+    clear: both; 
+  }
   .tabs dd {
     top: 1px;
     float: left; }
     .tabs dd > a {
 
       /* color when selected*/
-      background: #DA5C5C;
-      color: white;
+      background: #AAA;
       padding-top: .5rem;
       padding-right: 1rem;
       padding-bottom: .5rem;
@@ -53,7 +54,7 @@
   .tabs-content > .content {
     display: none;
     float: left;
-    padding: 0.5rem 0;
+    padding: 0rem;
     width: 100%; }
     .tabs-content > .content.active {
       display: block; }
@@ -74,36 +75,3 @@
     width: 80%;
     float: left;
     margin-left: -1px; } }
-ul.pagination {
-  display: block;
-  height: 1.5rem;
-  margin-left: -0.3125rem; }
-  ul.pagination li {
-    height: 1.5rem;
-    color: #222222;
-    font-size: 0.875rem;
-    margin-left: 0.3125rem; }
-    ul.pagination li a {
-      display: block;
-      padding: 0.0625rem 0.625rem 0.0625rem;
-      color: #999999;
-      -webkit-border-radius: 3px;
-      border-radius: 3px; }
-    ul.pagination li:hover a,
-    ul.pagination li a:focus {
-      background: #e6e6e6; }
-    ul.pagination li.unavailable a {
-      cursor: default;
-      color: #999999; }
-    ul.pagination li.unavailable:hover a, ul.pagination li.unavailable a:focus {
-      background: transparent; }
-    ul.pagination li.current a {
-      background: #008cba;
-      color: white;
-      font-weight: bold;
-      cursor: default; }
-      ul.pagination li.current a:hover, ul.pagination li.current a:focus {
-        background: #008cba; }
-  ul.pagination li {
-    float: left;
-    display: block; }

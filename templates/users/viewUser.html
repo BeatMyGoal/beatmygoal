@@ -6,9 +6,13 @@
 <link rel="stylesheet" href="{% static 'css/users/viewUser.css' %}"/>
 
 <script src="{% static 'js/users/viewUser.js' %}"></script>
+<<<<<<< HEAD
 <script src="{% static 'js/vendor/jquery.cookie.js' %}"></script>
 
 
+=======
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+>>>>>>> 5eb33715b828643464d99bff4559649e0028148a
 
 
 <div class="row">
@@ -27,14 +31,14 @@
                 <input type="file" class="upload" name="image" id = "imagebutton" onchange="submitimage()" />
             </div>
             <div id = "dummyContainer">
-                <input type = "button" class ="button tiny" value="Upate Profile Picture" id="imdummy">
+                <input type = "button" class ="button tiny" value="Update Profile Picture" id="imdummy">
             </div>
             <div id ="submitbuttonContainer">
                 <input type="submit" class="button tiny" value="Update" id ="imagesubmitbutton"/>
             </div>
         </form>
         {% endif %}
-        {% if viewedUser.id == user.id and viewedUser.username == user.username %}
+        {% if viewedUser.id == user.id and viewedUser.username == user.username  and user.social == None%}
         <div class="row">
             <div class="small-1 medium-0 large-1 columns">
             </div>
@@ -77,7 +81,11 @@
                             <li>
                                 <div class="dashcard-holder card" id="{{ goal.id }}">
                                     <div class="dashcard" id="{{ goal.id }}">
-                                        <div class=dashcard-img></div>
+                                        <div class=dashcard-img>
+                                            {% if goal.image %}
+                                                <img src="{{goal.image.url}}" class='goal-image'/>
+                                            {% endif %}
+                                        </div>
                                         <div class=dashcard-title><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></div>
                                     </div>
                                 </div>
@@ -97,7 +105,11 @@
                             <li>
                                 <div class="dashcard-holder card" id="{{ goal.id }}">
                                     <div class="dashcard" id="{{ goal.id }}">
-                                        <div class=dashcard-img></div>
+                                        <div class=dashcard-img>
+                                            {% if goal.image %}
+                                                <img src="{{goal.image.url}}" class='goal-image'/>
+                                            {% endif %}
+                                        </div>
                                         <div class=dashcard-title><a href="/goals/{{ goal.id }}">{{ goal.title }}</a></div>
                                         <!-- <div class=dashcard-description>{{ goal.description }}</div> -->
                                     </div>
@@ -183,5 +195,104 @@ $(document).ready(function(){
 }
 </script>
 
+<<<<<<< HEAD
  
+=======
+
+<div class="row card">
+<ul class="example-orbit-content" data-orbit>
+  <li data-orbit-slide="headline-1">
+  <div class="medium-9 large-12 columns">
+        <div id='userProgressChart2' style="min-height: 400px"></div>
+        <div data-alert id="chartAlert" class="alert-box" style="display:none">
+            No log information available to display.
+        </div>
+    </div>
+  </li>
+  <li data-orbit-slide="headline-2">
+    <div class="medium-9 large-12 columns">
+        <div id='userProgressChart1' style="min-height: 400px"></div>
+        <div data-alert id="chartAlert" class="alert-box" style="display:none">
+            No log information available to display.
+        </div>
+    </div>
+  </li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    // Load the Visualization API and the piechart package.
+    google.load('visualization', '1.0', {'packages':['corechart']});
+    var colors = COLORS.list();
+    var chartColors = [];
+
+    for (var i = 0; i < $(".participants-list").children().length; i++){
+        chartColors.push(colors[i]);
+        $($(".participants-list").children()[i]).children("a").css("color", colors[i]);
+    };
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.setOnLoadCallback(drawChart);
+
+    // Callback that creates and populates a data table, 
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart() {
+        var data = new google.visualization.DataTable();
+        var chart = new google.visualization.BarChart(document.getElementById('userProgressChart1'));
+
+        var data2 = new google.visualization.DataTable();
+        var chart2 = new google.visualization.LineChart(document.getElementById('userProgressChart2'));
+
+
+
+
+
+        //----------chart1-----------//
+        var options = {
+            title: 'Number of logs per goal',
+            animation: {duration: 2000, easing: "inAndOut"},
+            groupWidth: '100%',
+            backgroundColor: { fill:'#DCDCDC' },
+            chartArea: {left:0, width: "80%"},
+            };
+        data.addColumn('string','name');
+        var row = [''];
+        {% for k,v in chart1_data.items %}
+            data.addColumn('number', "{{ k }}")
+            row.push(Number("{{v}}"));
+        {% endfor %}
+        data.addRow(row);
+        //----------char1-----------//
+
+        var options2 = {
+            title: 'Log progress over last 2 weeks',
+            curveType: 'function',
+            backgroundColor: { fill:'#DCDCDC' },
+            chartArea: {left: 10, width: "100%"},
+        };
+        data2.addColumn('string','date');
+        data2.addColumn('number','# of logs');
+        {% for k,v in chart2_data %}
+            data2.addRow(["{{ k }}".replace("midnight",""), Number("{{ v }}")])
+        {% endfor %}
+
+
+        //----------char2-----------//
+
+        chart.draw(data, options);
+        chart2.draw(data2, options2);
+    }</script>
+
+   
+>>>>>>> 5eb33715b828643464d99bff4559649e0028148a
 {% endblock %}
+
