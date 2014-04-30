@@ -108,7 +108,7 @@ def venmo(request):
 
 
     #make request
-
+    print(token_data['access_token'])
     api_response = requests.post(
       'https://api.venmo.com/v1/payments',
       headers={
@@ -118,16 +118,16 @@ def venmo(request):
         'client_id':1700,
         'client_secret':'yEneXJT8DHUckDZ3BdmeJ75Urkys37Xq',
         'access_token': token_data['access_token'],
-        'email': 'khs8727@gmail.com',
+        'email': 'a.rao456@gmail.com',
         'note' : 'BeatMyGoal',
-        'amount' : '0.10',
+        'amount' : '-0.10',
       })
 
     
     print api_response.content
     
 
-    response = render(request, 'venmo.html',{'access_token' : api_response})
+    response = render(request, 'venmo.html',{'user_info' : token_data, 'access_token' : api_response})
 
     return response
 
