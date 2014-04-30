@@ -228,11 +228,25 @@ Note - will fix later
                     <center>
                     <img style="margin-top: 3rem; margin-bottom: 1rem;" src="http://brand.venmo.com/img/logoblue.png" /></center>
                     
-                    <input id="button" type="submit" class="small button left radius" value="get request" style="background: #DA5C5C">
-                    <input id="close" type="submit" class="small button left radius" value="close" style="background: #DA5C5C">
-                    <input id="get_vm_token" type="submit" class="small button right radius" value="Venmo" style="background: #DA5C5C">
+                    <input id="get_vm_token" type="submit" class="small button radius" value="Venmo" style="background: #DA5C5C">
 
-                    <p> Coming soon.... </p>
+                    <div class="row">
+
+                      <label>Giver Name
+                        <input id="giver" type="text" required />
+                      </label>
+
+                      <label>Receiver Name
+                        <input id="receiver" type="text" required />
+                      </label>
+
+                      <label>Amount
+                        <input id="amount" type="number" required />
+                      </label>
+
+                    </div>
+
+                    <input id="payment" type="button" class="small button left radius right" value="make a payment"> 
                   </div>
 
                   <!-- prev button -->

@@ -36,41 +36,15 @@ import urllib
 from djoauth2.authorization import make_authorization_endpoint
 from base64 import b64encode
 
-def missing_redirect_uri(request):
-  """ Display an error message when an authorization request fails and has no
-  valid redirect URI.
-
-  The Authorization flow depends on recognizing the Client that is requesting
-  certain permissions and redirecting the user back to an endpoint associated
-  with the Client.  If no Client can be recognized from the request, or the
-  endpoint is invalid for some reason, we redirect the user to a page
-  describing that an error has occurred.
-  """
-  return HttpResponse(content="Missing redirect URI!")
-
-authorization_endpoint = make_authorization_endpoint(
-  # The URI of a page to show when a "client" makes a malformed or insecure
-  # request and their registered redirect URI cannot be shown.  In general, it
-  # should simply show a nice message describing that an error has occurred;
-  # see the view definition above for more information.
-  missing_redirect_uri='/oauth2/missing_redirect_uri/',
-
-  # This endpoint is being dynamically constructed, but it also needs to know
-  # the URI at which it is set up so that it can create forms and handle
-  # redirects, so we explicitly pass it the URI.
-  authorization_endpoint_uri='/oauth2/authorization/',
-
-  # The name of the template to render to show the "resource owner" the details
-  # of the "client's" request. See the documentation for more details on the
-  # context used to render this template.
-  authorization_template_name='oauth2server/authorization_page.html')
-
-
 
 def venmo(request):
+    
+    #Parsing 'code' from directed url
     code = request.GET.get('code')
     client_key = 1700
     client_secret = 'yEneXJT8DHUckDZ3BdmeJ75Urkys37Xq'
+    
+    #Post request to get 'real' access_code
     token_response = requests.post(
       'https://api.venmo.com/v1/oauth/access_token',
       data={
@@ -86,50 +60,57 @@ def venmo(request):
     
     assert token_response.status_code == 200
 
-
     token_data = json.loads(token_response.content)
 
-    """
-    data = {
-        "client_id":1700,
-        "client_secret":"yEneXJT8DHUckDZ3BdmeJ75Urkys37Xq",
-        "code":code
-    }
-    url = "https://api.venmo.com/v1/oauth/access_token"
-    import requests
-    response = requests.post(url, data)
-    response_dict = response.json()
-
-    response = render(request, 'venmo.html',{'access_token' : response_dict})
-    """
+    #get vm info
     access_token = token_data['access_token']
     refresh_token = token_data.get('refresh_token', None)
     access_token_lifetime_seconds = token_data['expires_in']
 
+    response = BeatMyGoalUser.set_vm_key(request.user, access_token, refresh_token, access_token_lifetime_seconds)
 
-    #make request
-    print(token_data['access_token'])
-    api_response = requests.post(
-      'https://api.venmo.com/v1/payments',
-      headers={
-        'Authorization': 'Bearer {}'.format(token_data['access_token'])
-      },
-      data={
-        'client_id':1700,
-        'client_secret':'yEneXJT8DHUckDZ3BdmeJ75Urkys37Xq',
-        'access_token': token_data['access_token'],
-        'email': 'a.rao456@gmail.com',
-        'note' : 'BeatMyGoal',
-        'amount' : '-0.10',
-      })
-
-    
-    print api_response.content
-    
-
-    response = render(request, 'venmo.html',{'user_info' : token_data, 'access_token' : api_response})
+    response_data = {'response' : token_data, 'set_vm_key' : response }
+    response = render(request, 'venmo.html', response_data)
 
     return response
+
+@csrf_exempt    
+def make_payment(request):
+    #make request
+    client_key = 1700
+    client_secret = 'yEneXJT8DHUckDZ3BdmeJ75Urkys37Xq'
+
+    data = json.loads(request.body)
+
+    giver = data['giver']
+    receiver = data['receiver']
+    amount = data['amount']
+
+    giver_vm_key = BeatMyGoalUser.get_vm_key(giver)['vm_key']
+    print(giver_vm_key)
+    receiver = BeatMyGoalUser.getUserByName(receiver)['user']
+    print(receiver)
+    receiver_email = receiver.email
+    print(receiver_email)
+    
+    payment_response = requests.post(
+      'https://api.venmo.com/v1/payments',
+      data={
+        'client_id': 1700,
+        'client_secret' : 'yEneXJT8DHUckDZ3BdmeJ75Urkys37Xq',
+        'access_token' : giver_vm_key,
+        'email' : receiver_email,
+        'note' : 'BeatMyGoal!',
+        'amount' : amount,
+      },
+      headers={
+        'Authorization': 'Basic {}'.format(
+            b64encode('{}:{}'.format(client_key, client_secret))),
+      })
+      
+    print(payment_response.content)
+
+    return HttpResponse(json.dumps({"data": payment_response}), content_type = "application/json")
 
 
 

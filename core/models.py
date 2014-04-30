@@ -241,7 +241,40 @@ class BeatMyGoalUser(AbstractUser):
     favorite_goals = models.ManyToManyField(Goal, related_name="favorite_goals")
     image = models.FileField(upload_to='userimage/')
     social = models.CharField(null=True, blank=True, max_length=20)
-    
+    vm_key = models.CharField(null=True, blank=True, max_length=20)
+    vm_refresh_key = models.CharField(null=True, blank=True, max_length=20)
+    vm_expire_date = models.DateTimeField(blank=True, null=True);
+
+
+
+    @classmethod
+    def set_vm_key(self, username, vm_key, vm_refresh_key, vm_lifetime_seconds):
+        errors = []
+        if not BeatMyGoalUser.objects.filter(username=username).exists():
+            errors.append(CODE_BAD_USERID)
+        
+        user = BeatMyGoalUser.objects.get(username=username)
+        user.vm_key = vm_key
+        user.vm_refresh_key = vm_refresh_key
+        user.vm_expire_date = datetime.now() + timedelta(seconds=vm_lifetime_seconds)
+        user.save()
+        return { 'errors' : errors }
+
+    @classmethod
+    def get_vm_key(self, username):
+        errors = []
+        if not BeatMyGoalUser.objects.filter(username=username).exists():
+            errors.append(CODE_BAD_USERID)
+        
+        user = BeatMyGoalUser.objects.get(username=username)
+        vm_key = user.vm_key
+        if vm_key == None:
+            errors.append(CODE_NOT_VMCODE)
+
+        return { 'errors' : errors , 'vm_key' : vm_key }
+
+
+
     @classmethod
     def valid_email(self, e):
         return 0 < len(e)

@@ -83,7 +83,7 @@ MIDDLEWARE_CLASSES = (
 
 
 #venmo
-#DJOAUTH2_SSL_ONLY = False
+DJOAUTH2_SSL_ONLY = False
 
 
 
