@@ -1,5 +1,7 @@
 html, body {
-    background: url('/static/img/lego_yellow.jpg');
+    background: 
+
+        url("/static/img/lego_yellow.jpg");
     background-size: auto 100%;
     background-position: center;
 }
