@@ -102,3 +102,9 @@ html, body {
     width:0px;
     opacity:0;
 }
+
+.panel{
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 10px;
+}

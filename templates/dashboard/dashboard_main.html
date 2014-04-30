@@ -8,6 +8,7 @@
 
 <script src="{% static 'js/dashboard/dashboard.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+
 <div class="card-holder-background">
     <div class="row collapse">
         <div class="large-1 small-1 columns">
@@ -32,4 +33,56 @@
        {% endfor %} 
     </div>
 </div>
+
+<!--Tutorial-->
+
+<script>
+
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] == variable) {
+      return pair[1];
+    }
+  } 
+}
+</script>
+
+<ol id = "joyride_tour" class="joyride-list" data-joyride>
+  <li data-button="Next" >
+    <h3>Browse Goal</h3><hr />
+    <p>All public goals are displayed here. You can either join or view the goal on this page.</p>
+  </li>
+  <li data-id="createGoal" data-text="Next" data-options="tip_location: top;">
+    <h3>Create Goal</h3><hr />
+    <p>You can also create your own goal!</p>
+  </li>
+  <li data-button="End">
+    <h4>The End</h4><hr />
+  </li>
+</ol>
+
+<script src="{% static 'js/vendor/jquery.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.joyride.js' %}"></script>
+
+
+<script>
+
+if (getQueryVariable("tutorial")){
+$(function(){  
+    $(document).foundation({joyride: {post_step_callback: function(index){
+        if (index == 1){
+            window.location= "/goals/create?tutorial=true"};} 
+    }});
+});
+
+$(document).ready(function(){
+   $(document).foundation('joyride', 'start');
+});
+}
+</script>
+
 {% endblock %}
