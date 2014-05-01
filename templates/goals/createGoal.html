@@ -247,23 +247,22 @@ Note - will fix later
 
                     
                   <!-- Load Venmo Window -->
-                  <IFRAME SRC="/venmo_login" style='border-style:solid; border-width:1px; padding:1px' scrolling="no"width="100%" height="100%" id="venmoWindow" marginheight="0"  frameborder="0"></iframe>
-                  
+                  <IFRAME SRC="/venmo_login" style='border-style:solid; border-width:1px; padding:1px' scrolling="no"width="100%" height="100%" id="venmoWindow" marginheight="0" frameborder="0"></iframe>
                   
 
                   <div class="row">
                     
                     
-                    
-
                   <!-- prev button -->
                   <input id="prev_button_step4" type="submit" class="small button left radius" value="Prev">
 
 
-                  <!-- submit button -->
-                  <input id="register-submit" type="submit" class="small button right radius" value="Create" style="background: #DA5C5C">
+                  <!-- submit button  -->
+                  <input id="register-submit" type="submit" class="small button right radius" value="Create" style="display: none; background: #DA5C5C">
 
-                  
+                  <input id="resize" type="submit" class="small button right radius" value="reload" style=" background: #DA5C5C">
+
+                  </div>
                 
                 </div>
               </div>
@@ -302,15 +301,14 @@ function getQueryVariable(variable) {
 </ol>
 
 <script>
-
 if (getQueryVariable("tutorial")){
-$(function(){  
-    $(document).foundation();
-});
+  $(function(){  
+      $(document).foundation();
+  });
 
-$(document).ready(function(){
-   $(document).foundation('joyride', 'start');
-});
+  $(document).ready(function(){
+     $(document).foundation('joyride', 'start');
+  });
 }
 </script>
 

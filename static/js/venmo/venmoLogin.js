@@ -19,13 +19,12 @@ $(document).ready(function() {
 		}).done(function(data) {
 			alert("payment completed")
 		}).fail(function(data) {
-			alert("payment failure");
+			alert("payment failure : make_payments in view");
 		});
 	});
 
 	$('#get_vm_token').click(function(e){
 		venmo()
-		//var popupWindow;
 	});
 	
 	function venmo(){
@@ -34,8 +33,23 @@ $(document).ready(function() {
 		popupWindow = window.open(url,"",popOption);
 	}
 	
-
-
+	$('#vm_logout').click(function(e){
+		$.ajax({
+			type: "GET",
+			url: '/venmo_logout',
+			contentType: "application/json",
+			dataType: "json",
+		}).done(function(data) {
+			if (data.errors.length === 0) {
+				alert("success : logout from Venmo")
+				window.parent.document.getElementById('venmoWindow').contentDocument.location.reload(true);
+			}
+		}).fail(function(data) {
+			alert("failed : logout from Venmo");
+		});
+		
+	});
+	
 
 
 });

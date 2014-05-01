@@ -168,23 +168,7 @@ $(document).ready(function() {
 	});
 
 
-
 	//venmo
-	
-
-	function autoResize(id){
-		var newheight;
-		var newwidth;
-
-		if(document.getElementById){
-		newheight=document.getElementById(id).contentWindow.document.body.scrollHeight;
-		newwidth=document.getElementById(id).contentWindow.document.body.scrollWidth;
-		}
-
-		document.getElementById(id).height = (newheight) + "px";
-		document.getElementById(id).width = (newwidth) + "px";
-	}
-
 	$('#venmoWindow').hide();
 	$('#venmo_selected').change(function() {
 		$('#venmoWindow').hide();
@@ -194,8 +178,22 @@ $(document).ready(function() {
         }
     });
 
+	$('#resize').click(function(e){
+		autoResize('venmoWindow')
+	});
 
 
 });
 
+function autoResize(id){
+		var newheight;
+		var newwidth;
 
+		if(document.getElementById){
+		newheight=document.getElementById(id).contentWindow.document.body.scrollHeight;
+		newwidth=document.getElementById(id).contentWindow.document.body.scrollWidth+5;
+		}
+
+		document.getElementById(id).height = (newheight) + "px";
+		document.getElementById(id).width = (newwidth) + "px";
+}

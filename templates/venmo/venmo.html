@@ -1,27 +1,12 @@
 {% load staticfiles %}
 
-<div class="row" id="venmo-option">
-  <p><font color="red">Your Venmo account is not connected</font></p>
-  <p><font color="green">Your Venmo account is connected</font></p>
-</div>
 
+<script>
+window.opener.parent.document.getElementById('venmoWindow').contentDocument.location.reload(true);
+setTimeout(function(){resize();},1000);
+function resize() {
+	window.opener.parent.document.getElementById('resize').click();
+	window.close();
+}
 
-<ul>
-<form action="{{form_action}}" method="POST">
-  	Response : <br>
-  	{{response.is_Authentificated_Venmo}}
-</form>
-</ul>
-
-<br>
-
-<ul>
-	set_vm_key : <br>
-	{{ set_vm_key }}
-</ul>
-
-
-
-
-
-<script src="{% static 'js/venmo/venmo.js' %}"></script>
+</script>

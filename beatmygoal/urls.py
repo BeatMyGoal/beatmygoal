@@ -57,6 +57,7 @@ urlpatterns = patterns('',
     url(r'^payment', core.views.venmo_make_payment, name='venmo_make_payment'),
     #venmo - to assist user to authenticate with venmo
     url(r'^venmo_login', core.views.venmo_login, name='venmo_login'),
+    url(r'^venmo_logout', core.views.venmo_logout, name='venmo_logout'),
 
     # The endpoint for creating and exchanging access tokens and refresh
     # tokens is handled entirely by the djoauth2 library.

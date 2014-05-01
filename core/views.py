@@ -68,9 +68,8 @@ def venmo(request):
 
     response = BeatMyGoalUser.set_vm_key(request.user, access_token, refresh_token, access_token_lifetime_seconds)
 
-    response_data = {'response' : token_data, 'set_vm_key' : response }
-    response = render(request, 'venmo/venmo.html', response_data)
-    return response
+    response_data = {'data' : token_data, 'set_vm_key' : response }
+    return render(request, 'venmo/venmo.html', response_data)
 
 def venmo_login(request):
     user = BeatMyGoalUser.getUserByName(request.user)['user']
@@ -89,6 +88,22 @@ def venmo_login(request):
     response = render(request, 'venmo/venmoLogin.html' ,  {'data' : data, 'is_Authentificated_Venmo' : user.is_Authentificated_Venmo})
     return response
 
+def venmo_logout(request):
+    errors = []
+    print("logout??")
+    user = BeatMyGoalUser.getUserByName(request.user)['user']
+    user.vm_key = None
+    user.vm_refresh_key = None
+    user.vm_expire_date = None
+    user.is_Authentificated_Venmo = False
+    user.save()
+
+    return HttpResponse(json.dumps({"errors" : errors}), content_type = "application/json")
+
+
+
+
+
 @csrf_exempt    
 def venmo_make_payment(request):
     #make request
@@ -97,11 +112,17 @@ def venmo_make_payment(request):
     giver = data['giver']
     receiver = data['receiver']
     amount = data['amount']
-
+    print(giver)
+    print(receiver)
+    print(amount)
     giver_vm_key = BeatMyGoalUser.get_vm_key(giver)['vm_key']
+    print(giver_vm_key)
+
     receiver = BeatMyGoalUser.getUserByName(receiver)['user']
+    print(receiver)
+
     receiver_email = receiver.email
-    
+    print(receiver_email)
     payment_response = requests.post(
       'https://api.venmo.com/v1/payments',
       data={
@@ -116,9 +137,9 @@ def venmo_make_payment(request):
         'Authorization': 'Basic {}'.format(
             b64encode('{}:{}'.format(client_key, client_secret))),
       })
-    
+    print(json.loads(payment_response.content))
     data = json.loads(payment_response.content)['data']
-    print(data)
+
 
     return HttpResponse(json.dumps({"data": data}), content_type = "application/json")
 
