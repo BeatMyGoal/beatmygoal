@@ -277,10 +277,6 @@ class BeatMyGoalUser(AbstractUser):
     is_superuser,
     last_login,
     date_joined
-
-
-    << User method >>
-
     """
 
     MAX_LEN_USERNAME = 30
@@ -293,10 +289,12 @@ class BeatMyGoalUser(AbstractUser):
     favorite_goals = models.ManyToManyField(Goal, related_name="favorite_goals")
     image = models.FileField(upload_to='userimage/')
     social = models.CharField(null=True, blank=True, max_length=20)
+    
+    #VENMO
     vm_key = models.CharField(null=True, blank=True, max_length=20)
     vm_refresh_key = models.CharField(null=True, blank=True, max_length=20)
     vm_expire_date = models.DateTimeField(blank=True, null=True);
-
+    is_Authentificated_Venmo = models.BooleanField(default=False)
 
 
     @classmethod
@@ -304,27 +302,24 @@ class BeatMyGoalUser(AbstractUser):
         errors = []
         if not BeatMyGoalUser.objects.filter(username=username).exists():
             errors.append(CODE_BAD_USERID)
-        
         user = BeatMyGoalUser.objects.get(username=username)
         user.vm_key = vm_key
         user.vm_refresh_key = vm_refresh_key
         user.vm_expire_date = datetime.now() + timedelta(seconds=vm_lifetime_seconds)
+        user.is_Authentificated_Venmo = True
         user.save()
-        return { 'errors' : errors }
+        return { 'user' : user, 'errors' : errors }
 
     @classmethod
     def get_vm_key(self, username):
         errors = []
         if not BeatMyGoalUser.objects.filter(username=username).exists():
             errors.append(CODE_BAD_USERID)
-        
         user = BeatMyGoalUser.objects.get(username=username)
         vm_key = user.vm_key
         if vm_key == None:
             errors.append(CODE_NOT_VMCODE)
-
-        return { 'errors' : errors , 'vm_key' : vm_key }
-
+        return { 'user' : user, 'errors' : errors , 'vm_key' : vm_key }
 
 
     @classmethod

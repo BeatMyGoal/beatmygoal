@@ -51,9 +51,13 @@ urlpatterns = patterns('',
     url(r'^email/preview', core.views.email_preview, name='email_preview'),
 
 
-    #venmo
+    #venmo - to handle user who is redicted from venmo site.
     url(r'^vm', core.views.venmo, name='venmo'),
-    url(r'^payment', core.views.make_payment, name='make_payment'),
+    #venmo - to make a payment
+    url(r'^payment', core.views.venmo_make_payment, name='venmo_make_payment'),
+    #venmo - to assist user to authenticate with venmo
+    url(r'^venmo_login', core.views.venmo_login, name='venmo_login'),
+
     # The endpoint for creating and exchanging access tokens and refresh
     # tokens is handled entirely by the djoauth2 library.
     #url(r'^oauth2/token/$', 'djoauth2.views.access_token_endpoint'),

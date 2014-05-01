@@ -235,29 +235,26 @@ Note - will fix later
                   </div>
 
                   <div class="row">
-                    <center>
-                    <img style="margin-top: 3rem; margin-bottom: 1rem;" src="http://brand.venmo.com/img/logoblue.png" /></center>
-                    
-                    <input id="get_vm_token" type="submit" class="small button radius" value="Venmo" style="background: #DA5C5C">
-
-                    <div class="row">
-
-                      <label>Giver Name
-                        <input id="giver" type="text" required />
-                      </label>
-
-                      <label>Receiver Name
-                        <input id="receiver" type="text" required />
-                      </label>
-
-                      <label>Amount
-                        <input id="amount" type="number" required />
-                      </label>
-
+                    <p> The prize could be anything!! </p>
+                    <p> If the prize is cash, you can pay with VENMO!</p>
+                    <div class="venmo-label">
+                      <input id="venmo_selected" type="checkbox"><label for="checkbox1"> Pay with VENMO </label>
+                      <center>
+                        <img style="margin-top: 1rem; margin-bottom: 1rem;" src="http://brand.venmo.com/img/logoblue.png" />
+                      </center>
                     </div>
-
-                    <input id="payment" type="button" class="small button left radius right" value="make a payment"> 
                   </div>
+
+                    
+                  <!-- Load Venmo Window -->
+                  <IFRAME SRC="/venmo_login" style='border-style:solid; border-width:1px; padding:1px' scrolling="no"width="100%" height="100%" id="venmoWindow" marginheight="0"  frameborder="0"></iframe>
+                  
+                  
+
+                  <div class="row">
+                    
+                    
+                    
 
                   <!-- prev button -->
                   <input id="prev_button_step4" type="submit" class="small button left radius" value="Prev">

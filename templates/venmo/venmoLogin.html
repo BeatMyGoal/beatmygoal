@@ -1,0 +1,49 @@
+{% load staticfiles %}
+
+<html class="no-js" lang="en">
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="{% static 'css/foundation.css' %}" />
+<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+<script src="{% static 'js/vendor/modernizr.js' %}"></script>
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<script src="{% static "js/vendor/jquery.js" %}"></script>
+<script src="{% static "js/foundation.min.js" %}"></script>
+<script src="{% static 'js/constants.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.equalizer.js' %}"></script>
+
+<script src="{% static 'js/venmo/venmoLogin.js' %}"></script>
+
+<div class="row" id="venmo-option">
+  {% if is_Authentificated_Venmo %}
+  <p><font color="green">Your Venmo account is connected</font></p>
+  Username : {{data.user.display_name | default:'N/A'}}		<br>
+  Balance : {{data.balnace | default:'N/A'}}		<br>
+  Email : {{data.user.email | default:'N/A'}}		<br>
+  Phone : {{data.user.phone | default:'N/A'}}		<br>
+  <br>
+  <p> This is for test </p>
+
+	<label>Giver Name
+	<input id="giver" type="text" required />
+	</label>
+
+	<label>Receiver Name
+	<input id="receiver" type="text" required />
+	</label>
+
+	<label>Amount
+	<input id="amount" type="number" required />
+	</label>
+
+
+	<input id="payment" type="button" class="small button left radius right" value="make a payment"> 
+
+  {% else %}
+  <p><font color="red">Your Venmo account is not connected</font></p>
+  <input id="get_vm_token" type="submit" class="small button radius right" value="Connect Venmo" style="background: #DA5C5C">
+  {% endif %}
+
+</div>
