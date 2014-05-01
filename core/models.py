@@ -233,7 +233,7 @@ class Goal(models.Model):
             self.endGoal(user)
 
     def checkDeadline(self):
-        if datetime.today() > self.ending_date: #if today is after the deadline
+        if self.ending_date and (datetime.today() > self.ending_date): #if today is after the deadline
             winners = []
             maxAmount = -1
             for user in self.beatmygoaluser_set.all(): #check each user for their amount
