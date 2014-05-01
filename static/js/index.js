@@ -5,7 +5,7 @@ $(document).ready(function() {
         if (invalid_fields.length > 0) {
             return;
         }
-
+	    
         e.preventDefault();
         e.stopPropagation();
 
@@ -14,6 +14,8 @@ $(document).ready(function() {
 			password: $("#register-password").val(),
 			email: $("#register-email").val(),
 		};
+
+
 
 		$.ajax({
 			type: "POST",

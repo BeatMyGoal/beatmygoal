@@ -260,3 +260,48 @@ class GoalTestIteration2(unittest.TestCase):
         """
         response = Goal.create('test_title','test_description','test_user','test_prize',1,'test_goal_type', '500','dollars', '23/23/2020')
         self.assertFalse(not response['errors'])
+
+    def testGoalEnded(self):
+        """
+        Goal has ended after threshold is passed
+        """
+        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type', '500','dollars','4/23/2015')
+        g = Goal.objects.all()[0]
+        LogEntry.create(g.log, 'test_user', 500, "comment")
+        self.assertTrue(g.isEnded())
+
+    def testWinByValue(self):
+        """
+        Winner captured by goal after log
+        """
+        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type', '500','dollars','4/23/2015')
+        g = Goal.objects.all()[0]
+        LogEntry.create(g.log, 'test_user', 500, "comment")
+        self.assertTrue(g.winners.all())
+        self.assertEqual(g.winners.all()[0].username, 'test_user')
+
+    def testWinByTime(self):
+        """
+        Winner captured by goal after end date
+        """
+        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type', '500','dollars','4/23/2015')
+        g = Goal.objects.all()[0]
+        g.date_created = datetime.strptime("4/28/2014",'%m/%d/%Y')
+        g.ending_date = datetime.strptime("4/29/2014",'%m/%d/%Y')
+        g.save()
+        g.checkDeadline()
+        self.assertTrue(g.winners.all())
+        #self.assertEqual(g.winners.all()[0].username, 'test_user')
+
+
+    def testGoalNotModifiedAfterEnded(self):
+        """
+        Goal is not modified after ended
+        """
+        Goal.create('title','sample_description','test_user','test_prize',2,'test_goal_type', '500','dollars','4/23/2015')
+        g = Goal.objects.all()[0]
+        LogEntry.create(g.log, 'test_user', 500, "comment")
+        g.title = 'test'
+        g.save()
+        g = Goal.objects.all()[0]
+        self.assertEqual(g.title, 'title')

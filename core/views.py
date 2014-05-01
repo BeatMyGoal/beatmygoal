@@ -397,6 +397,7 @@ def goal_view_goal(request, goal_id):
     View the profile of a goal.
     """
     goal = Goal.objects.get(id=goal_id)
+    goal.checkDeadline()
     image = str(goal.image)
     isCreator = str(request.user) == str(goal.creator)
     isParticipant = len(goal.beatmygoaluser_set.filter(username=request.user)) > 0
@@ -486,7 +487,7 @@ def create_user(request):
             # user = response['user']
             user =  authenticate(username=username, password=password)
             login(request, user)
-            redirect = "/users/%s/" % (user.id)
+            redirect = "/users/%s/?tutorial=true" % (user.id)
             if "goal" in data:
                 BeatMyGoalUser.joinGoal(user, data['goal'])
                 redirect = "/goals/" + str(data['goal'])

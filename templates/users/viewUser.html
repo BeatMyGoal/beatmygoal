@@ -4,8 +4,11 @@
 {% block content %}
 
 <link rel="stylesheet" href="{% static 'css/users/viewUser.css' %}"/>
+
 <script src="{% static 'js/users/viewUser.js' %}"></script>
+<script src="{% static 'js/vendor/jquery.cookie.js' %}"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
 
 
 <div class="row">
@@ -52,6 +55,7 @@
             </div>
         </div>
         {% endif %}
+
     </div>
     <div class="large-8 columns">
         {% if errors %}
@@ -136,6 +140,52 @@
         </div>
     </div>
 </div>
+
+<!--Tutorial-->
+
+<script>
+
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] == variable) {
+      return pair[1];
+    }
+  } 
+}
+</script>
+
+{% if viewedUser.id == user.id and viewedUser.username == user.username %}
+
+<ol id = "joyride_tour" class="joyride-list" data-joyride>
+  <li data-button="Take a Tour" >
+    <h1>Welcome {{user.username}}</h1><hr />
+    <p>Start by taking a tour of our fabulous website!</p>
+  </li>
+  <li data-id="browseGoals" data-text="View Browse Goal" data-options="tip_location: top; nub_position: top;">
+    <h3>Browse Goal</h3><hr />
+    <p>You can look at the list of goals we have currently here!</p>
+  </li>  
+</ol>
+{% endif %}
+
+<script>
+
+if (getQueryVariable("tutorial")){
+$(function(){
+    $(document).foundation({joyride: {post_step_callback: function(index){
+        if (index == 1){
+            window.location= "/dashboard?tutorial=true"};} 
+    }});
+});
+
+$(document).ready(function(){
+   $(document).foundation('joyride', 'start');
+});
+}
+</script>
 
 
 
@@ -232,6 +282,5 @@
         chart2.draw(data2, options2);
     }</script>
 
-   
 {% endblock %}
 

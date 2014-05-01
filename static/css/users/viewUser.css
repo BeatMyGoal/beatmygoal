@@ -107,6 +107,13 @@ html, body {
     opacity:0;
 }
 
+
+.panel{
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
 #streakText {
     
     font: 50px Tahoma, Helvetica, Arial, Sans-Serif;
@@ -124,3 +131,4 @@ html, body {
 .example-orbit-content {
     background-color: #DCDCDC;
 }
+
