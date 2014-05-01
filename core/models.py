@@ -278,6 +278,18 @@ class Goal(models.Model):
         deadlineRatio = (float(numer.days)/denom.days)*100
         return int(deadlineRatio)
 
+
+    #pretty darn inefficient. come back and fix
+    def getBestProgressRatio(self):
+        best=0
+        for user in self.beatmygoaluser_set.all():
+            if self.getProgressRatio(user) > best:
+                best = self.getProgressRatio(user)
+        return best
+
+
+
+
     
 class BeatMyGoalUser(AbstractUser):
     """
