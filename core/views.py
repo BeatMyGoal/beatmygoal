@@ -36,8 +36,8 @@ import urllib
 from djoauth2.authorization import make_authorization_endpoint
 from base64 import b64encode
 
-client_key = 1700
-client_secret = 'yEneXJT8DHUckDZ3BdmeJ75Urkys37Xq'
+client_key = ''
+client_secret = ''
 
 
 def venmo(request):
