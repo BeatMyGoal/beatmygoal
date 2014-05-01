@@ -260,6 +260,24 @@ class Goal(models.Model):
     def save(self, *args, **kwargs):
         if not self.isEnded():
             super(Goal, self).save(*args, **kwargs)
+
+    def getProgressRatio(self,user):
+        if not user in self.beatmygoaluser_set.all():
+            return 0
+        else:
+            progress_ratio = (float(self.log.getUserTotal(user)) / int(self.ending_value)) * 100
+        if progress_ratio > 100: progress_ratio=100
+        return progress_ratio
+
+    def getDeadlineRatio(self):
+        if self.ending_date:
+            denom = self.ending_date - self.date_created
+            numer = self.ending_date - datetime.today()
+        else:
+            return 0
+        deadlineRatio = (float(numer.days)/denom.days)*100
+        return int(deadlineRatio)
+
     
 class BeatMyGoalUser(AbstractUser):
     """

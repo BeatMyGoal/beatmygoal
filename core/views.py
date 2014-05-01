@@ -318,11 +318,18 @@ def goal_view_goal(request, goal_id):
     isCreator = str(request.user) == str(goal.creator)
     isParticipant = len(goal.beatmygoaluser_set.filter(username=request.user)) > 0
     progress = goal.log.parseEntriesByUser()
+    progress_ratio = goal.getProgressRatio(request.user)
+    deadline_ratio = goal.getDeadlineRatio()
+
     try:
         isFavorite = goal in request.user.favorite_goals.all()
     except:
         isFavorite = False
-    return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, "isParticipant" : isParticipant, "isCreator" : isCreator, "isFavorite" : isFavorite, "image" :image, "goal_id" : goal_id, "progress" : progress})
+
+    return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, 
+        "isParticipant" : isParticipant, "isCreator" : isCreator, 
+        "isFavorite" : isFavorite, "image" :image, "goal_id" : goal_id, "progress" : progress,
+        "progressRatio" : progress_ratio, "deadlineRatio" : deadline_ratio})
 
 
 def goal_log_progress(request, gid):       #add Functional test here

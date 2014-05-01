@@ -41,3 +41,9 @@ html, body {
 footer {
     color: #FFF;
 }
+
+
+h2,h5,li {
+    font-family: 'Ubuntu', Georgia, Times, serif !important;
+}
+

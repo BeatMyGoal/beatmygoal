@@ -7,7 +7,9 @@
 
 <script src="{% static 'js/redactor/redactor.min.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/redactor/redactor.css' %}" />
-
+<link href="http://fonts.googleapis.com/css?family=Ubuntu:bold" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Vollkorn" rel="stylesheet" type="text/css">
+    
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
@@ -92,28 +94,74 @@
             {% endif %}
         </div>
     </div>
-    
+
     <div class="row">
-        <div class="medium-8 columns">
-            <h2>{{ goal.title }}</h2>
+        <div style="border-style:solid; border-width:3px;" class="row">
+            <div class="large-12 columns">
+                <h1 style="font-family: 'Ubuntu'; text-align: center"> {{ goal.title }} </h1>
+            </div>
         </div>
-        <div class="medium-4 columns">
-              <div class="row">
-                  <div class="medium-12 columns">
-                      <h3>Prize: {{ goal.prize }}</h3>
-                  </div>
-              </div>
-              <div class="row">
-                  <div class="medium-6 columns">
-                      <h7>Goal: {{ goal.ending_value }} {{ goal.unit }}</h7>
-                  </div>
-                  <div class="medium-6 columns">
-                      <h7>By {{ goal.ending_date.date|default:"No Deadline" }}</h7>
-                  </div>
-              </div>
-        </div>
+
+
+
+        <dl class="accordion" data-accordion>
+  <dd style="border-style:solid; border-top-style:none; border-width:2px;" >
+    <a href="#panel1" style="text-align:center">Prize: {{ goal.prize }}</a>
+  </dd>
+  <dd style="border-style:solid; border-top-style:none; border-width:2px;">
+    <a style="text-align:center" href="#panel2">Goal: {{ goal.ending_value }} {{ goal.unit }} </a>
+    <div id="panel2" class="content">
+      <div class="row">
+            <div class="large-12 columns">
+              <table class="chart">
+                <tbody>
+                <tr>
+                <td>
+                    <p class="percentage"> {{progressRatio}}%</p>
+                </td>
+                <td class="chart">
+                    Your progress on this goal so far
+                    <div class="barchart">
+                    <span class="meter" style="width:  {{progressRatio}}%"></span>
+                    </div>
+                </td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+        </div> 
+    </div>
+  </dd>
+  <dd style="border-style:solid; border-top-style:none; border-width:2px;">
+    <a style="text-align:center" href="#panel3">By {{ goal.ending_date.date|default:"No Deadline" }}</a>
+    <div id="panel3" class="content">
+        <div class="row">
+            <div class="large-12 columns">
+              <table class="chart">
+                <tbody>
+                <tr>
+                <td>
+                    <p class="percentage"> {{deadlineRatio}}%</p>
+                </td>
+                <td class="chart">
+                    {{deadlineRatio}}% of remaining days have passed
+                    <div class="barchart">
+                    <span class="meter" style="width:  {{deadlineRatio}}%"></span>
+                    </div>
+                </td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>              
+    </div>
+  </dd>
+        </dl>
     </div>
 </div>
+
+
+
 
 <div class="row card">
     <div class="medium-9 small-12 columns" >
