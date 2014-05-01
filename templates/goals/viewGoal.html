@@ -163,6 +163,16 @@
 
 
 
+
+{% if goal.isEnded %}
+<div class="row card alert-box info">
+    <div data-alert class="small-12 columns ">
+        <h3>Congratulations to {% for winner in goal.winners.all %}<a href="/users/{{ winner.id }}">{{winner.username}}</a> {% if forloop.counter < goal.winners.all|length %} | {% endif %}{% endfor %} for winning this goal!</h3>
+    </div>
+</div>
+{% endif %}
+
+
 <div class="row card">
     <div class="medium-9 small-12 columns" >
         <div id='progressChart' style="min-height: 400px; max-height: 600px"></div>
