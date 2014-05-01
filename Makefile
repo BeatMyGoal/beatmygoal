@@ -1,6 +1,6 @@
 .PHONY: unit func gui test
 
-server:
+s:
 	python manage.py runserver
 
 hook:
