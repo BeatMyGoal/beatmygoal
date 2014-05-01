@@ -65,7 +65,7 @@ def venmo(request):
     access_token = token_data['access_token']
     refresh_token = token_data.get('refresh_token', None)
     access_token_lifetime_seconds = token_data['expires_in']
-
+    print(request.user)
     response = BeatMyGoalUser.set_vm_key(request.user, access_token, refresh_token, access_token_lifetime_seconds)
 
     response_data = {'data' : token_data, 'set_vm_key' : response }
