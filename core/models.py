@@ -267,7 +267,7 @@ class Goal(models.Model):
         else:
             progress_ratio = (float(self.log.getUserTotal(user)) / int(self.ending_value)) * 100
         if progress_ratio > 100: progress_ratio=100
-        return progress_ratio
+        return int(progress_ratio)
 
     def getDeadlineRatio(self):
         if self.ending_date:
