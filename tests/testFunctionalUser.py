@@ -76,12 +76,39 @@ class LoginTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(CODE_BAD_PASSWORD in json.loads(response.content)['errors'])
 
+    def testLogout(self):
+        """
+        Tests logging out after logging in
+        """
+        data = """
+            { "username" : "user1", "password" : "pw"}
+        """
+        response = self.postJSON("/users/login", data)
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get("/users/logout", {})
+        self.assertEqual(response.status_code, 302, "redirecting home")        
+
+    def testConfirm(self):
+        """
+        Tests confirming which is required for reauth
+        """
+        data = """
+            { "username" : "user1", "password" : "pw"}
+        """
+        response = self.postJSON("/users/login", data)
+        self.assertEqual(response.status_code, 200)
+        response = self.postJSON("/confirm", data)
+        self.assertEqual(response.status_code, 200)
+
 
 class ViewUserTests(TestCase):
     def setUp(self):
-        self.cleint = Client()
-        self.testUser = BeatMyGoalUser(username="kyle", password="123", email="kyle@test.com")
-        self.testUser.save()
+        self.client = Client()
+        BeatMyGoalUser.create("kyle", "kyle@test.com", "123")
+        self.testUser = BeatMyGoalUser.objects.get(username="kyle")
+
+    def postJSON(self, url, data):
+        return self.client.post(url, content_type='application/json', data=data)
 
     def testUserView(self):
         """
@@ -92,6 +119,29 @@ class ViewUserTests(TestCase):
         email = self.testUser.email
         response = self.client.get("/users/" + str(userid)+ "/", {})
         self.assertEqual(response.status_code, 200)
+
+    def testUserProfileLoggedIn(self):
+        """
+        Tests when a user loads their own profile
+        """
+        data = """
+        { "username" : "kyle", "password" : "123" }
+        """
+        response = self.postJSON("/users/login", data)
+        response2 = self.client.get("/users/profile", {})
+        self.assertEqual(response2.status_code, 302)
+        self.assertTrue("/users/" + str(self.testUser.id)+ "/" in str(response2), 
+                        "redirect to profile")
+
+    def testUserProfileNotLoggedIn(self):
+        """
+        Tests when a user tries to load their own profile and not logged in
+        """
+        response2 = self.client.get("/users/profile", {})
+        self.assertEqual(response2.status_code, 302)
+        self.assertTrue("/users/create/" in str(response2), 
+                        "redirect to create an account")
+
 
 
 class DeleteUserTests(TestCase):
@@ -184,3 +234,32 @@ class ImageUploadUserTests(TestCase):
         data= {"image" : SimpleUploadedFile("microphone.png",settings.BASE_DIR + "/tests", content_type = "file")}
         form = ImageForm(self.testUser, data)
         self.assertTrue(form.is_valid())
+
+class HomepageTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        BeatMyGoalUser.create("kyle", "kyle@test.com", "123")
+        self.testUser = BeatMyGoalUser.objects.get(username="kyle")
+
+    def postJSON(self, url, data):
+        return self.client.post(url, content_type='application/json', data=data)
+
+    def testIndexLoggedIn(self):
+        """
+        Tests index if a user is logged in
+        """
+        data = """
+        { "username" : "kyle", "password" : "123" }
+        """
+        response = self.postJSON("/users/login", data)
+        response2 = self.client.get("/", {})
+        self.assertEqual(response2.status_code, 302)
+        self.assertTrue("/dashboard/" in str(response2), 
+                        "redirect to dashboard")
+
+    def testIndexNotLoggedIn(self):
+        """
+        Tests index if a user is not logged in
+        """
+        response2 = self.client.get("/", {})
+        self.assertEqual(response2.status_code, 200)

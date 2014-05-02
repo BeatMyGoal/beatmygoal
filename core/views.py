@@ -289,7 +289,11 @@ def goal_edit_goal(request, gid):
 
 
 
-def confirm(request):           #add Functional test here
+def confirm(request):
+    """
+    Reauthenticates a user if they are about to make an important account change
+    (e.g. change their password)
+    """
     if request.method == "POST":
         data = json.loads(request.body)
         user = request.user;
@@ -370,7 +374,7 @@ def user_login(request):
                                 content_type = "application/json")
 
 @csrf_exempt
-def profile(request):       #add Functional test here
+def profile(request):
     """
     Returns the profile of the authenticated user or else prompts them to login.
     """
@@ -477,7 +481,7 @@ def delete_user(request, uid):
                 ttpResponse("Invalid request", status=500)
     return HttpResponse("Invalid request", status=500)
 
-def user_logout(request):       #add Functional test here
+def user_logout(request):
     """
     De-authenticates the user and redirects to the homepage.
     """
