@@ -47,6 +47,10 @@ if 'ON_HEROKU' in os.environ:
     STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
     ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
     MEDIA_URL = S3_URL + "/"
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, "static"),
+    )
 else:
     STATIC_URL = '/static/'
     STATICFILES_DIRS = (
