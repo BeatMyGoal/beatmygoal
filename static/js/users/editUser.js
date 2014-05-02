@@ -8,8 +8,7 @@ $(document).ready(function() {
 	uid = window.location.pathname.split("/")[2];
 	
 	var saveAction = function(e) {
-		e.preventDefault();
-  
+        e.preventDefault();  
 		var invalid_fields = $("#editForm").find('[data-invalid]');
 		if (invalid_fields.length > 0) {
 			return;
@@ -73,6 +72,16 @@ $(document).ready(function() {
 	$("#cancel").click(function(e) {
 		window.location.href = "/users/" + uid;
 	});
+
+    $("#save").click(function(e){
+        e.preventDefault();
+        var invalid_fields = $("#editForm").find('[data-invalid]');
+        if (invalid_fields.length > 0) {
+            return;
+        } else {
+            $('#reveal_save').foundation('reveal', 'open');
+        }
+    });
 
 	$("#reveal_save #Back_button").click(function(e) {
         $('#reveal_save').foundation('reveal', 'close');

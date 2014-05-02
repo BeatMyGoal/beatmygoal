@@ -35,6 +35,13 @@ $(document).ready(function() {
     };
 
 	var saveAction = function(event) {
+        event.preventDefault();
+  
+        var invalid_fields = $("#editForm").find('[data-invalid]');
+        if (invalid_fields.length > 0) {
+            return;
+        }
+        
 		var title = $title.val();
 		var description = $description.val();
 		var prize = $prize.val();
@@ -90,12 +97,28 @@ $(document).ready(function() {
         $('#reveal_save').foundation('reveal', 'close');
     });
 
+    $("#save").click(function(e){
+        e.preventDefault();
+        var invalid_fields = $("#editForm").find('[data-invalid]');
+        if (invalid_fields.length > 0) {
+            return;
+        } else {
+            $('#reveal_save').foundation('reveal', 'open');
+        }
+    });
+
 
     $("#reveal_save #Confirm_button").click(function(e) {
         var password = $('#reveal_save #password').val();
         var data = {
             password: password
         };
+
+        var invalid_fields = $("#editForm").find('[data-invalid]');
+        if (invalid_fields.length > 0) {
+            $('#reveal_save').foundation('reveal', 'close');
+            return;
+        }
 
         $.ajax({
             type: "POST",
