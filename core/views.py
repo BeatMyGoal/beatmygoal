@@ -33,7 +33,7 @@ import cgi
 import urllib
 
 def send_email(request):
-    subject = "Test email from BeatMyGoal"
+    subject = str(request.user) + " challenged you to beat his goal!"
     message = "This is a test email from BeatMyGoal"
     data = json.loads(request.body)
     to = data["to"].split(",")
@@ -42,7 +42,7 @@ def send_email(request):
     if data["to"]:
         try:
             html_content = loader.get_template('email.html')
-            html_content = html_content.render(Context({'from' : request.user.username.capitalize(), 'goal_id' : goal_id }))
+            html_content = html_content.render(Context({'from' : request.user.username, 'goal_id' : goal_id }))
             email = EmailMessage(subject, html_content, to=to)
             email.content_subtype = "html"
             email.send()
