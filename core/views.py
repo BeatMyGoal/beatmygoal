@@ -43,6 +43,8 @@ client_secret = 'yEneXJT8DHUckDZ3BdmeJ75Urkys37Xq'
 def venmo(request):
     #Parsing 'code' from directed url
     code = request.GET.get('code')
+    print code
+    print request.user
     
     #Post request to get 'real' access_code
     token_response = requests.post(
@@ -63,7 +65,7 @@ def venmo(request):
 
     #get venmo token
     access_token = token_data['access_token']
-    refresh_token = token_data.get('refresh_token', None)
+    refresh_token = token_data['refresh_token']
     access_token_lifetime_seconds = token_data['expires_in']
 
     response = BeatMyGoalUser.set_vm_key(request.user, access_token, refresh_token, access_token_lifetime_seconds)

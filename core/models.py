@@ -299,6 +299,7 @@ class BeatMyGoalUser(AbstractUser):
 
     @classmethod
     def set_vm_key(self, username, vm_key, vm_refresh_key, vm_lifetime_seconds):
+        print username
         errors = []
         if not BeatMyGoalUser.objects.filter(username=username).exists():
             errors.append(CODE_BAD_USERID)
