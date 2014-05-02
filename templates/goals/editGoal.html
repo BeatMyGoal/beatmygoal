@@ -38,6 +38,7 @@
 		<div class="large-6 columns">
 			<label for="ending_value"> Ending Value
 				<input id='ending_value' type="text" value = "{{ goal.ending_value |default:'' }}" maxlength="50"  required />
+				<small id="ending-value-error" class="error">A numerical ending value must be specified with number</small>
 			</label>
 		</div>
 		<div class="large-6 columns">

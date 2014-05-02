@@ -132,7 +132,7 @@ class Goal(models.Model):
     progress_value = models.FloatField()
     goal_type = models.CharField(max_length=MAX_LEN_TYPE)
     private_setting = models.IntegerField()
-    ending_value = models.CharField(max_length=MAX_LEN_UNIT, blank=True)
+    ending_value = models.IntegerField(max_length=MAX_LEN_UNIT)
     unit = models.CharField(max_length=MAX_LEN_UNIT, blank=True)
     image = models.FileField(upload_to='image/')
     ending_date = models.DateTimeField(blank=True, null=True);
@@ -160,7 +160,13 @@ class Goal(models.Model):
         creator_user = BeatMyGoalUser.getUserByName(creator)
         if creator_user < 0:
             errors.append(CODE_BAD_USERNAME)
-            
+        if not ending_value:
+            errors.append(CODE_BAD_ENDING_VALUE)
+        else:
+            try:
+                ending_value = float(ending_value)
+            except:
+                errors.append(CODE_BAD_ENDING_VALUE)
         if ending_date:
             try:
                 ending_date = datetime.strptime(ending_date,'%m/%d/%Y')
@@ -228,6 +234,14 @@ class Goal(models.Model):
         if not goal.description or len(goal.description)>self.MAX_LEN_DESC:
             errors.append(CODE_BAD_DESCRIPTION)
 
+        if not ending_value:
+            errors.append(CODE_BAD_ENDING_VALUE)
+        else:
+            try:
+                ending_value = float(ending_value)
+            except:
+                errors.append(CODE_BAD_ENDING_VALUE)
+        
         if not errors:
             goal.save()
 
@@ -425,6 +439,7 @@ class BeatMyGoalUser(AbstractUser):
             goal = Goal.objects.get(id = goal_id)
         except:
             errors.append(CODE_GOAL_DNE)
+        
         try:
             user = BeatMyGoalUser.objects.get(username = username)
         except:

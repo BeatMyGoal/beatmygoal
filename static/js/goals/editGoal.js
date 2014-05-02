@@ -76,6 +76,11 @@ $(document).ready(function() {
 						$('#description-error').text('Invalid description');
 						$("label[for='description']").addClass("error");
 					}
+                    if (errors.indexOf(ERRCODES.CODE_BAD_ENDING_VALUE) >= 0) {
+                        console.log("here");
+                        $('#end-value-error').text("Ending value must be specified with number");
+                        $("label[for='ending_value']").addClass("error");
+                    }
 
 				}
 			}

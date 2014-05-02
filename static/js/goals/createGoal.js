@@ -74,6 +74,13 @@ $(document).ready(function() {
 						$('#step2_check').hide();
 						document.getElementById('step2').click();
 					}
+					if (errors.indexOf(ERRCODES.CODE_BAD_ENDING_VALUE) >= 0) {
+						console.log("here");
+						$('#end-value-error').text("Ending value must be specified with number");
+                        $("label[for='ending_value']").addClass("error");
+						$('#step2_check').hide();
+						document.getElementById('step2').click();
+					}
 				}
 			}
 
