@@ -291,7 +291,7 @@ class Goal(models.Model):
             numer = self.ending_date - datetime.today()
         else:
             return 0
-        deadlineRatio = (float(numer.days)/denom.days)*100
+        deadlineRatio = (float(numer.days)/(denom.days+1))*100
         return int(deadlineRatio)
 
 
