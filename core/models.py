@@ -149,7 +149,6 @@ class Goal(models.Model):
         errors = []
         goal = None
 
-
         if not title or len(title)>self.MAX_LEN_TITLE:
             errors.append(CODE_BAD_TITLE)
         if not description or len(description)>self.MAX_LEN_DESC:
