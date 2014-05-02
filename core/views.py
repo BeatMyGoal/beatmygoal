@@ -94,6 +94,50 @@ def user_login_fb(request, mock=None):
 
     return response
 
+def user_login_twitter(request, mock=None):
+    """
+    Handles the login of a user from Facebook.
+    If there is no BMG account for the user, one is created.
+    """
+    response = HttpResponseRedirect("/dashboard/")
+    result = authomatic.login(DjangoAdapter(request, response), "tw") if not mock else mock
+
+    if result:
+        print result
+        if result.error: pass #TODO
+        elif result.user:
+            print "passed!!!!"
+            print result.user.name
+            print result.user.id
+            print result.user.email
+            # Get the info from the user
+            if not (result.user.name and result.user.id):
+                result.user.update()
+
+            username, email= result.user.name, result.user.name + "2" + result.user.name + ".com"
+
+            if (BeatMyGoalUser.objects.filter(username=username).exists()):
+                user = BeatMyGoalUser.objects.get(username=username)
+                user.backend='django.contrib.auth.backends.ModelBackend'
+                if not mock: login(request, user)
+            else:
+                password = BeatMyGoalUser.objects.make_random_password(8)
+                user = BeatMyGoalUser.create(username, email, password)['user']
+                user =  authenticate(username=username, password=password)
+                user.social = result.user.id
+                user.save()
+
+                if not mock:
+                    url = 'http://graph.facebook.com/{}/picture?width=200&height=200'.format(result.user.id)
+                    temp=NamedTemporaryFile(delete=True)
+                    temp.write(requests.get(url).content)
+                    temp.flush()
+                    user.image.save("faceimage" + str(result.user.id) + ".jpg",File(temp), save = True)               
+                    login(request, user)
+                response['Location'] = '/users/profile'
+
+    return response
+
 
 def index(request):
     """
