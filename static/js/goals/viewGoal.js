@@ -18,7 +18,7 @@ $(document).ready(function() {
             }
             console.log(data.errors);
         }).fail(function(data) {
-            alert("failure");
+//            alert("failure");
         });
 
     });
@@ -40,7 +40,7 @@ $(document).ready(function() {
             }
             console.log(data.errors);
         }).fail(function(data) {
-            alert("failure");
+//            alert("failure");
         });
     });
 
@@ -70,7 +70,7 @@ $(document).ready(function() {
 
             }).fail(function(data) {
                 console.log(data);
-                alert("failure");
+//                alert("failure");
             });
     });
 
@@ -95,7 +95,7 @@ $(document).ready(function() {
 
             }).fail(function(data) {
                 console.log(data);
-                alert("failure");
+//                alert("failure");
             });
 
     });
@@ -131,7 +131,7 @@ $(document).ready(function() {
                 }
             }).fail(function(data) {
                 console.log(data);
-                alert("failure");
+//                alert("failure");
         });
 
     });
@@ -161,7 +161,7 @@ $(document).ready(function() {
                 window.location = data.redirect;
             }
         }).fail(function(data) {
-            alert("failure");
+//            alert("failure");
         });
     });
 
@@ -219,7 +219,7 @@ $(document).ready(function() {
             }
 
         }).fail(function(data) {
-            alert("failure");
+//            alert("failure");
         });
 });
 
@@ -253,7 +253,7 @@ $(document).ready(function() {
                 }
             }).fail(function(data) {
                 console.log(data);
-                alert("failure");
+//                alert("failure");
         });
 
     });

@@ -32,7 +32,7 @@ $(document).ready(function() {
 				}
 			}
 		}).fail(function(data) {
-			alert("fail to login");
+			// alert("fail to login");
 		});
 	});
 

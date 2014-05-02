@@ -52,7 +52,7 @@ $(document).ready(function() {
                 }
             }
 		}).fail(function(data) {
-			alert("failure");
+			// alert("failure");
 		});
 	};
 
@@ -66,7 +66,7 @@ $(document).ready(function() {
 		}).done(function(data) {
 			window.location.href = data.redirect;
 		}).fail(function(){
-			alert("failed to delete");
+			// alert("failed to delete");
 		});
 	};
 
@@ -106,7 +106,7 @@ $(document).ready(function() {
                 }
             }
         }).fail(function(data) {
-            alert("failure");
+            // alert("failure");
         });
     });
 
@@ -141,7 +141,7 @@ $(document).ready(function() {
                 }
             }
         }).fail(function(data) {
-            alert("failure");
+            // alert("failure");
         });
     });
 

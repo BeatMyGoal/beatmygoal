@@ -29,7 +29,7 @@ $(document).ready(function() {
                 } 
             }).fail(function(data) {
                 console.log(data);
-                alert("failure");
+//                alert("failure");
         });
 
     };
@@ -73,7 +73,7 @@ $(document).ready(function() {
 				}
 			}
 		}).fail(function(data) {
-			alert("failure");
+//			alert("failure");
 		});
 	};
 
@@ -118,7 +118,7 @@ $(document).ready(function() {
                 }
             }
         }).fail(function(data) {
-            alert("failure");
+//            alert("failure");
         });
     });
 
@@ -149,7 +149,7 @@ $(document).ready(function() {
                 }
             }
         }).fail(function(data) {
-            alert("failure");
+//            alert("failure");
         });
     });
 });
