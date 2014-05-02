@@ -132,7 +132,7 @@ class Goal(models.Model):
     progress_value = models.FloatField()
     goal_type = models.CharField(max_length=MAX_LEN_TYPE)
     private_setting = models.IntegerField()
-    ending_value = models.IntegerField(max_length=MAX_LEN_UNIT)
+    ending_value = models.IntegerField()
     unit = models.CharField(max_length=MAX_LEN_UNIT, blank=True)
     image = models.FileField(upload_to='image/')
     ending_date = models.DateTimeField(blank=True, null=True);
@@ -166,6 +166,9 @@ class Goal(models.Model):
             try:
                 ending_value = float(ending_value)
             except:
+                errors.append(CODE_BAD_ENDING_VALUE)
+            if int(ending_value) > maxint:
+                print 'hi'
                 errors.append(CODE_BAD_ENDING_VALUE)
         if ending_date:
             try:
