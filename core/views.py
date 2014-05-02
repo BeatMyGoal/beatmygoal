@@ -55,20 +55,16 @@ def send_email(request):
 def email_preview(request):
     return render_to_response('email.html', {'from' : request.user.username.capitalize() })
 
-def user_login_fb(request):
+def user_login_fb(request, mock=None):
     """
     Handles the login of a user from Facebook.
     If there is no BMG account for the user, one is created.
     """
-    #response = HttpResponse()
     response = HttpResponseRedirect("/dashboard/")
-    result = authomatic.login(DjangoAdapter(request, response), "fb")
-
+    result = authomatic.login(DjangoAdapter(request, response), "fb") if not mock else mock
 
     if result:
-        if result.error:
-            #TODO - right now this is redirecting anyway
-            pass
+        if result.error: pass #TODO
         elif result.user:
             # Get the info from the user
             if not (result.user.name and result.user.id):
@@ -78,26 +74,21 @@ def user_login_fb(request):
 
             if (BeatMyGoalUser.objects.filter(username=username).exists()):
                 user = BeatMyGoalUser.objects.get(username=username)
-                user.backend='django.contrib.auth.backends.ModelBackend'
-                login(request, user)
-                user.social = result.user.id
-                user.save()
+                if not mock: login(request, user)
             else:
                 password = BeatMyGoalUser.objects.make_random_password(8)
                 user = BeatMyGoalUser.create(username, email, password)['user']
                 user =  authenticate(username=username, password=password)
                 user.social = result.user.id
                 user.save()
-                #Get profile image from the user
-                url = 'http://graph.facebook.com/{}/picture?width=200&height=200'
-                url = url.format(result.user.id)
-                r = requests.get(url)
-                temp=NamedTemporaryFile(delete=True)
-                temp.write(r.content)
-                temp.flush()
-                user.image.save("faceimage" + str(result.user.id) + ".jpg",File(temp), save = True)
-               
-                login(request, user)
+
+                if not mock:
+                    url = 'http://graph.facebook.com/{}/picture?width=200&height=200'.format(result.user.id)
+                    temp=NamedTemporaryFile(delete=True)
+                    temp.write(requests.get(url).content)
+                    temp.flush()
+                    user.image.save("faceimage" + str(result.user.id) + ".jpg",File(temp), save = True)               
+                    login(request, user)
                 response['Location'] = '/users/profile'
 
     return response
@@ -111,8 +102,6 @@ def index(request):
         return HttpResponseRedirect("/dashboard/")
     else:
         return render(request, 'index.html')
-
-
 
 @csrf_exempt
 def dashboard(request):
