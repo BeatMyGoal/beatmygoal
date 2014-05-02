@@ -285,6 +285,27 @@ class ImageUploadGoalTests(TestCase):
         form = ImageForm(self.testGoal.id, data)
         self.assertTrue(form.is_valid())
 
+    def testUserImageUploadFormRequest(self):
+        """
+        Tests that a user can upload a profile picture through the view
+        """
+        user_id = str(self.testUser.id)
+        image_path = settings.BASE_DIR + "/tests/microphone.png"
+        self.assertFalse(BeatMyGoalUser.objects.get(id=user_id).image, "user image empty to start")
+        with open(image_path) as fp:
+            self.client.post('/users/' + user_id +  '/imageload/', {'image': fp})
+        self.assertTrue(BeatMyGoalUser.objects.get(id=user_id).image, "user image is now set")
+
+    def testGoalImageUploadFormRequest(self):
+        """
+        Tests that a goal can have a photo uploaded through the view
+        """
+        goal_id = str(self.testGoal.id)
+        image_path = settings.BASE_DIR + "/tests/microphone.png"
+        self.assertFalse(Goal.objects.get(id=goal_id).image, "goal image empty to start")
+        with open(image_path) as fp:
+            self.client.post('/goals/' + goal_id +  '/imageload/', {'image': fp})
+        self.assertTrue(Goal.objects.get(id=goal_id).image, "user image is now set")
 
 class FavoriteGoalTests(TestCase):
     def setUp(self):

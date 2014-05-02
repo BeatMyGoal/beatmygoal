@@ -29,12 +29,19 @@ $(document).ready(function() {
                 } 
             }).fail(function(data) {
                 console.log(data);
-                alert("failure");
+//                alert("failure");
         });
 
     };
 
 	var saveAction = function(event) {
+        event.preventDefault();
+  
+        var invalid_fields = $("#editForm").find('[data-invalid]');
+        if (invalid_fields.length > 0) {
+            return;
+        }
+        
 		var title = $title.val();
 		var description = $description.val();
 		var prize = $prize.val();
@@ -69,11 +76,16 @@ $(document).ready(function() {
 						$('#description-error').text('Invalid description');
 						$("label[for='description']").addClass("error");
 					}
+                    if (errors.indexOf(ERRCODES.CODE_BAD_ENDING_VALUE) >= 0) {
+                        console.log("here");
+                        $('#end-value-error').text("Ending value must be specified with number");
+                        $("label[for='ending_value']").addClass("error");
+                    }
 
 				}
 			}
 		}).fail(function(data) {
-			alert("failure");
+//			alert("failure");
 		});
 	};
 
@@ -90,12 +102,28 @@ $(document).ready(function() {
         $('#reveal_save').foundation('reveal', 'close');
     });
 
+    $("#save").click(function(e){
+        e.preventDefault();
+        var invalid_fields = $("#editForm").find('[data-invalid]');
+        if (invalid_fields.length > 0) {
+            return;
+        } else {
+            $('#reveal_save').foundation('reveal', 'open');
+        }
+    });
+
 
     $("#reveal_save #Confirm_button").click(function(e) {
         var password = $('#reveal_save #password').val();
         var data = {
             password: password
         };
+
+        var invalid_fields = $("#editForm").find('[data-invalid]');
+        if (invalid_fields.length > 0) {
+            $('#reveal_save').foundation('reveal', 'close');
+            return;
+        }
 
         $.ajax({
             type: "POST",
@@ -107,7 +135,7 @@ $(document).ready(function() {
 
             console.log(data);
             if (data.errors.length === 0) {
-                saveAction(event);
+                saveAction(e);
             } else {
                 if (data.errors.length >= 0) {
                     var errors = data.errors;
@@ -118,7 +146,7 @@ $(document).ready(function() {
                 }
             }
         }).fail(function(data) {
-            alert("failure");
+//            alert("failure");
         });
     });
 
@@ -138,7 +166,7 @@ $(document).ready(function() {
 
             console.log(data);
             if (data.errors.length === 0) {
-                deleteAction(event);
+                deleteAction(e);
             } else {
                 if (data.errors.length >= 0) {
                     var errors = data.errors;
@@ -149,7 +177,7 @@ $(document).ready(function() {
                 }
             }
         }).fail(function(data) {
-            alert("failure");
+//            alert("failure");
         });
     });
 });

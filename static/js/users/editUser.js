@@ -8,8 +8,7 @@ $(document).ready(function() {
 	uid = window.location.pathname.split("/")[2];
 	
 	var saveAction = function(e) {
-		e.preventDefault();
-
+        e.preventDefault();  
 		var invalid_fields = $("#editForm").find('[data-invalid]');
 		if (invalid_fields.length > 0) {
 			return;
@@ -52,7 +51,7 @@ $(document).ready(function() {
                 }
             }
 		}).fail(function(data) {
-			alert("failure");
+			// alert("failure");
 		});
 	};
 
@@ -66,13 +65,23 @@ $(document).ready(function() {
 		}).done(function(data) {
 			window.location.href = data.redirect;
 		}).fail(function(){
-			alert("failed to delete");
+			// alert("failed to delete");
 		});
 	};
 
 	$("#cancel").click(function(e) {
 		window.location.href = "/users/" + uid;
 	});
+
+    $("#save").click(function(e){
+        e.preventDefault();
+        var invalid_fields = $("#editForm").find('[data-invalid]');
+        if (invalid_fields.length > 0) {
+            return;
+        } else {
+            $('#reveal_save').foundation('reveal', 'open');
+        }
+    });
 
 	$("#reveal_save #Back_button").click(function(e) {
         $('#reveal_save').foundation('reveal', 'close');
@@ -95,7 +104,7 @@ $(document).ready(function() {
 
             console.log(data);
             if (data.errors.length === 0) {
-                saveAction(event);
+                saveAction(e);
             } else {
                 if (data.errors.length >= 0) {
                     var errors = data.errors;
@@ -106,7 +115,7 @@ $(document).ready(function() {
                 }
             }
         }).fail(function(data) {
-            alert("failure");
+            // alert("failure");
         });
     });
 
@@ -130,7 +139,7 @@ $(document).ready(function() {
 
             console.log(data);
             if (data.errors.length === 0) {
-                deleteAction(event);
+                deleteAction(e);
             } else {
                 if (data.errors.length >= 0) {
                     var errors = data.errors;
@@ -141,7 +150,7 @@ $(document).ready(function() {
                 }
             }
         }).fail(function(data) {
-            alert("failure");
+            // alert("failure");
         });
     });
 

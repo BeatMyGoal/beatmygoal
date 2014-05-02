@@ -52,7 +52,7 @@ $(document).ready(function() {
                 } 
             }).fail(function(data) {
                 // console.log(data);
-                alert("failure");
+//                alert("failure");
             });
         }
     }, ".join-button");
@@ -131,7 +131,7 @@ $(document).ready(function() {
             }
         }).fail(function(data) {
             // console.log(data);
-            alert("failure");
+//            alert("failure");
         });
         page = page + 1;
     }

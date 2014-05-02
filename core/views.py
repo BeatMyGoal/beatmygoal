@@ -33,7 +33,7 @@ import cgi
 import urllib
 
 def send_email(request):
-    subject = "Test email from BeatMyGoal"
+    subject = str(request.user) + " challenged you to beat his goal!"
     message = "This is a test email from BeatMyGoal"
     data = json.loads(request.body)
     to = data["to"].split(",")
@@ -42,7 +42,7 @@ def send_email(request):
     if data["to"]:
         # try:
             html_content = loader.get_template('email.html')
-            html_content = html_content.render(Context({'from' : request.user.username.capitalize(), 'goal_id' : goal_id }))
+            html_content = html_content.render(Context({'from' : request.user.username, 'goal_id' : goal_id }))
             email = EmailMessage(subject, html_content, to=to)
             email.content_subtype = "html"
             for email_address in to:
@@ -57,20 +57,16 @@ def send_email(request):
 def email_preview(request):
     return render_to_response('email.html', {'from' : request.user.username.capitalize() })
 
-def user_login_fb(request):
+def user_login_fb(request, mock=None):
     """
     Handles the login of a user from Facebook.
     If there is no BMG account for the user, one is created.
     """
-    #response = HttpResponse()
     response = HttpResponseRedirect("/dashboard/")
-    result = authomatic.login(DjangoAdapter(request, response), "fb")
-
+    result = authomatic.login(DjangoAdapter(request, response), "fb") if not mock else mock
 
     if result:
-        if result.error:
-            #TODO - right now this is redirecting anyway
-            pass
+        if result.error: pass #TODO
         elif result.user:
             # Get the info from the user
             if not (result.user.name and result.user.id):
@@ -81,25 +77,65 @@ def user_login_fb(request):
             if (BeatMyGoalUser.objects.filter(username=username).exists()):
                 user = BeatMyGoalUser.objects.get(username=username)
                 user.backend='django.contrib.auth.backends.ModelBackend'
-                login(request, user)
-                user.social = result.user.id
-                user.save()
+                if not mock: login(request, user)
             else:
                 password = BeatMyGoalUser.objects.make_random_password(8)
                 user = BeatMyGoalUser.create(username, email, password)['user']
                 user =  authenticate(username=username, password=password)
                 user.social = result.user.id
                 user.save()
-                #Get profile image from the user
-                url = 'http://graph.facebook.com/{}/picture?width=200&height=200'
-                url = url.format(result.user.id)
-                r = requests.get(url)
-                temp=NamedTemporaryFile(delete=True)
-                temp.write(r.content)
-                temp.flush()
-                user.image.save("faceimage" + str(result.user.id) + ".jpg",File(temp), save = True)
-               
-                login(request, user)
+
+                if not mock:
+                    url = 'http://graph.facebook.com/{}/picture?width=200&height=200'.format(result.user.id)
+                    temp=NamedTemporaryFile(delete=True)
+                    temp.write(requests.get(url).content)
+                    temp.flush()
+                    user.image.save("faceimage" + str(result.user.id) + ".jpg",File(temp), save = True)               
+                    login(request, user)
+                response['Location'] = '/users/profile'
+
+    return response
+
+def user_login_twitter(request, mock=None):
+    """
+    Handles the login of a user from Facebook.
+    If there is no BMG account for the user, one is created.
+    """
+    response = HttpResponseRedirect("/dashboard/")
+    result = authomatic.login(DjangoAdapter(request, response), "tw") if not mock else mock
+
+    if result:
+        print result
+        if result.error: pass #TODO
+        elif result.user:
+            print "passed!!!!"
+            print result.user.name
+            print result.user.id
+            print result.user.email
+            # Get the info from the user
+            if not (result.user.name and result.user.id):
+                result.user.update()
+
+            username, email= result.user.name, result.user.name + "2" + result.user.name + ".com"
+
+            if (BeatMyGoalUser.objects.filter(username=username).exists()):
+                user = BeatMyGoalUser.objects.get(username=username)
+                user.backend='django.contrib.auth.backends.ModelBackend'
+                if not mock: login(request, user)
+            else:
+                password = BeatMyGoalUser.objects.make_random_password(8)
+                user = BeatMyGoalUser.create(username, email, password)['user']
+                user =  authenticate(username=username, password=password)
+                user.social = result.user.id
+                user.save()
+
+                if not mock:
+                    url = 'http://graph.facebook.com/{}/picture?width=200&height=200'.format(result.user.id)
+                    temp=NamedTemporaryFile(delete=True)
+                    temp.write(requests.get(url).content)
+                    temp.flush()
+                    user.image.save("faceimage" + str(result.user.id) + ".jpg",File(temp), save = True)               
+                    login(request, user)
                 response['Location'] = '/users/profile'
 
     return response
@@ -113,8 +149,6 @@ def index(request):
         return HttpResponseRedirect("/dashboard/")
     else:
         return render(request, 'index.html')
-
-
 
 @csrf_exempt
 def dashboard(request):
@@ -198,6 +232,7 @@ def goal_create_goal(request):
             unit = data['unit']
             ending_value = data['ending_value']
             ending_date = data['ending_date']
+            iscompetitive = int(data['iscompetitive']) if "iscompetitive" in data else 1
 
             if private_setting:
                 response = Goal.create(title, description, creator, prize, 1, goal_type, ending_value, unit, ending_date)
@@ -334,7 +369,11 @@ def goal_edit_goal(request, gid):
 
 
 
-def confirm(request):           #add Functional test here
+def confirm(request):
+    """
+    Reauthenticates a user if they are about to make an important account change
+    (e.g. change their password)
+    """
     if request.method == "POST":
         data = json.loads(request.body)
         user = request.user;
@@ -415,7 +454,7 @@ def user_login(request):
                                 content_type = "application/json")
 
 @csrf_exempt
-def profile(request):       #add Functional test here
+def profile(request):
     """
     Returns the profile of the authenticated user or else prompts them to login.
     """
@@ -522,7 +561,7 @@ def delete_user(request, uid):
                 ttpResponse("Invalid request", status=500)
     return HttpResponse("Invalid request", status=500)
 
-def user_logout(request):       #add Functional test here
+def user_logout(request):
     """
     De-authenticates the user and redirects to the homepage.
     """

@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+    var inviteList = document.getElementById('drop1');
+    var goal_id = window.location.pathname.split("/")[2];
+    inviteList.innerHTML='<li><a href="#" data-reveal-id="reveal_email" c>With Email</a></li><div id="fb-root"></div><li><div id="fb-send" class="fb-send" data-href="http://www.beatmygoal.com/goals/' + goal_id + '" data-colorscheme="light"></div><li>';
 
     $('#add_favorite_button').click(function() {
         var goal_id = window.location.pathname.split("/")[2];
@@ -18,7 +21,7 @@ $(document).ready(function() {
             }
             console.log(data.errors);
         }).fail(function(data) {
-            alert("failure");
+//            alert("failure");
         });
 
     });
@@ -40,7 +43,7 @@ $(document).ready(function() {
             }
             console.log(data.errors);
         }).fail(function(data) {
-            alert("failure");
+//            alert("failure");
         });
     });
 
@@ -70,7 +73,7 @@ $(document).ready(function() {
 
             }).fail(function(data) {
                 console.log(data);
-                alert("failure");
+//                alert("failure");
             });
     });
 
@@ -95,7 +98,7 @@ $(document).ready(function() {
 
             }).fail(function(data) {
                 console.log(data);
-                alert("failure");
+//                alert("failure");
             });
 
     });
@@ -131,7 +134,7 @@ $(document).ready(function() {
                 }
             }).fail(function(data) {
                 console.log(data);
-                alert("failure");
+//                alert("failure");
         });
 
     });
@@ -161,7 +164,7 @@ $(document).ready(function() {
                 window.location = data.redirect;
             }
         }).fail(function(data) {
-            alert("failure");
+//            alert("failure");
         });
     });
 
@@ -219,7 +222,7 @@ $(document).ready(function() {
             }
 
         }).fail(function(data) {
-            alert("failure");
+//            alert("failure");
         });
 });
 
@@ -253,7 +256,7 @@ $(document).ready(function() {
                 }
             }).fail(function(data) {
                 console.log(data);
-                alert("failure");
+//                alert("failure");
         });
 
     });

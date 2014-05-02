@@ -30,7 +30,8 @@ $(document).ready(function() {
 			goal_type: goal_type,
 			ending_value: $("#register-end-value").val(),
 			unit: $("#register-value-unit").val(),
-			ending_date : ending_date
+			ending_date : ending_date,
+            iscompetitive : $('#goal_type').val() == "Collaborative" ? 0 : 1,
 		};
 
 
@@ -73,11 +74,18 @@ $(document).ready(function() {
 						$('#step2_check').hide();
 						document.getElementById('step2').click();
 					}
+					if (errors.indexOf(ERRCODES.CODE_BAD_ENDING_VALUE) >= 0) {
+						console.log("here");
+						$('#end-value-error').text("Ending value must be specified with number");
+                        $("label[for='ending_value']").addClass("error");
+						$('#step2_check').hide();
+						document.getElementById('step2').click();
+					}
 				}
 			}
 
 		}).fail(function(data) {
-			alert("failure");
+//			alert("failure");
 		});
 	});
 
