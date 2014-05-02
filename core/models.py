@@ -56,6 +56,12 @@ class Log(models.Model):
             for entry in logentries:
                 total += entry.entry_amount if entry.entry_amount else 0
             return total
+    
+    def getGoalTotal(self):
+        total = 0
+        for entry in self.logentry_set.all():
+            total += entry.entry_amount
+        return total
 
 
 
@@ -132,13 +138,14 @@ class Goal(models.Model):
     ending_date = models.DateTimeField(blank=True, null=True);
     winners = models.ManyToManyField('BeatMyGoalUser', blank=True, null=True, related_name='goalsWon')
     ended = models.PositiveSmallIntegerField(default=0, blank=True, null=True)
+    iscompetitive = models.PositiveSmallIntegerField(default=1, blank=True)
 
     def __str__(self):
         return str(self.title)
 
 
     @classmethod
-    def create(self, title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date):
+    def create(self, title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date, iscompetitive=1):
         errors = []
         goal = None
 
@@ -167,7 +174,7 @@ class Goal(models.Model):
         if not errors:
             goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), 
                 prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0, ending_value=ending_value, 
-                unit=unit, ending_date=ending_date)
+                unit=unit, ending_date=ending_date, iscompetitive=iscompetitive)
             goal.save()
             BeatMyGoalUser.joinGoal(goal.creator.username, goal.id)
             newLog = Log(goal=goal)
@@ -228,30 +235,39 @@ class Goal(models.Model):
         return {"errors" : errors}
 
     def checkWinner(self, user):
-        userTotal = self.log.getUserTotal(user)
-        if userTotal >= int(self.ending_value):
-            self.endGoal(user)
+        if self.iscompetitive:
+            userTotal = self.log.getUserTotal(user)
+            if userTotal >= int(self.ending_value):
+                self.endGoal(user)
+        else:
+            goalTotal = self.log.getGoalTotal()
+            if goalTotal >= int(self.ending_value):
+                self.endGoal([user.username for user in self.beatmygoaluser_set.all()])
 
     def checkDeadline(self):
         if self.ending_date and (datetime.today() > self.ending_date): #if today is after the deadline
-            winners = []
-            maxAmount = -1
-            for user in self.beatmygoaluser_set.all(): #check each user for their amount
-                userAmount = self.log.getUserTotal(user.username)
-                if userAmount > maxAmount: #if they have the highest, they're winner
-                    maxAmount = userAmount
-                    winners = [user]
-                elif userAmount == maxAmount: #if there is a tie, multiple winners
-                    winners.append(user)
-            self.endGoal(winners) #end goal, declaring the winner(s)
+            if self.iscompetitive:
+                winners = []
+                maxAmount = -1
+                for user in self.beatmygoaluser_set.all(): #check each user for their amount
+                    userAmount = self.log.getUserTotal(user.username)
+                    if userAmount > maxAmount: #if they have the highest, they're winner
+                        maxAmount = userAmount
+                        winners = [user]
+                    elif userAmount == maxAmount: #if there is a tie, multiple winners
+                        winners.append(user)
+                self.endGoal(winners) #end goal, declaring the winner(s)
+            else:
+                self.endGoal() #end goal with no winners, no one met this goal
 
 
-    def endGoal(self, winner):
+    def endGoal(self, winner=None):
         if not self.isEnded(): #if the goal hasn't ended yet, end it
-            winner = winner if isinstance(winner, list) else [winner]
-            for i in range(len(winner)):
-                self.winners.add(BeatMyGoalUser.objects.get(username=winner[i])) #add each winner to the goal
-            self.ended = len(winner) #set the ended value to be the amount of winners
+            if winner:
+                winner = winner if isinstance(winner, list) else [winner]
+                for i in range(len(winner)):
+                    self.winners.add(BeatMyGoalUser.objects.get(username=winner[i])) #add each winner to the goal
+            self.ended = len(winner) if winner else 1 #set the ended value to be the amount of winners
             super(Goal, self).save() #regular save method won't work now
 
     def isEnded(self):

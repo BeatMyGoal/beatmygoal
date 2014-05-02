@@ -178,7 +178,11 @@
 {% if goal.isEnded %}
 <div class="row card alert-box info">
     <div data-alert class="small-12 columns ">
+        {% if goa.iscomeptitive %}
         <h3>Congratulations to {% for winner in goal.winners.all %}<a href="/users/{{ winner.id }}">{{winner.username}}</a> {% if forloop.counter < goal.winners.all|length %} | {% endif %}{% endfor %} for winning this goal!</h3>
+        {% else %}
+        <h3>Congratulations to all participants for completing this goal together!</h3>
+        {% endif %}
     </div>
 </div>
 {% endif %}

@@ -95,7 +95,7 @@ $(document).ready(function() {
 
             console.log(data);
             if (data.errors.length === 0) {
-                saveAction(event);
+                saveAction(e);
             } else {
                 if (data.errors.length >= 0) {
                     var errors = data.errors;
