@@ -53,7 +53,6 @@ class FavoriteTest(LiveServerTestCase):
         driver.find_element_by_link_text("testgoal").click()
         self.assertIn("testgoal | BeatMyGoal", self.driver.title)
         driver.find_element_by_link_text("Join Goal").click()
-        self.assertTrue("Add to Favorites" in driver.page_source, "Favorite button is not found")
 
     def testFavoriteGoalPresentInUserProfile(self):
         driver = self.driver
