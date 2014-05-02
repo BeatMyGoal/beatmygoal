@@ -109,7 +109,7 @@
     <a href="#panel1" style="text-align:center">Prize: {{ goal.prize }}</a>
   </dd>
   <dd style="border-style:solid; border-top-style:none; border-width:2px;">
-    <a style="text-align:center" href="#panel2"><strong>{% if goal.iscomeptitive %}Competitive {% else %}Collaborative {% endif %}</strong>Goal: {{ goal.ending_value }} {{ goal.unit }} </a>
+    <a style="text-align:center" href="#panel2"><strong>{% if goal.iscompetitive %}Competitive {% else %}Collaborative {% endif %}</strong>Goal: {{ goal.ending_value }} {{ goal.unit }} </a>
     <div id="panel2" class="content">
       <div class="row">
             <div class="large-12 columns">
@@ -178,7 +178,7 @@
 {% if goal.isEnded %}
 <div class="row card alert-box info">
     <div data-alert class="small-12 columns ">
-        {% if goal.iscomeptitive %}
+        {% if goal.iscompetitive %}
         <h3>Congratulations to {% for winner in goal.winners.all %}<a href="/users/{{ winner.id }}">{{winner.username}}</a> {% if forloop.counter < goal.winners.all|length %} | {% endif %}{% endfor %} for winning this goal!</h3>
         {% else %}
         <h3>Congratulations to all participants for completing this goal together!</h3>

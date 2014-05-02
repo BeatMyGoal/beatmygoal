@@ -166,7 +166,7 @@ def goal_create_goal(request):
             unit = data['unit']
             ending_value = data['ending_value']
             ending_date = data['ending_date']
-            iscompetitive = data['iscompetitive'] if "iscompetitive" in data else 1
+            iscompetitive = int(data['iscompetitive']) if "iscompetitive" in data else 1
 
             response = Goal.create(title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date, iscompetitive)
 

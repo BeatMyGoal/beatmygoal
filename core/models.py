@@ -174,7 +174,7 @@ class Goal(models.Model):
         if not errors:
             goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), 
                 prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0, ending_value=ending_value, 
-                unit=unit, ending_date=ending_date, iscompetitive=iscompetitive)
+                unit=unit, ending_date=ending_date, iscompetitive=int(iscompetitive))
             goal.save()
             BeatMyGoalUser.joinGoal(goal.creator.username, goal.id)
             newLog = Log(goal=goal)
