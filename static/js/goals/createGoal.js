@@ -1,6 +1,9 @@
 $(document).ready(function() {
 	$('#hidden_tabs').hide();
 
+	//venmo
+	document.getElementById('step4').click();
+
 	$("#register-submit").click(function(e) {
 		$('#step4_check').fadeIn();
 		$("label[for='prize']").removeClass("error");
@@ -168,6 +171,32 @@ $(document).ready(function() {
 	});
 
 
+	//venmo
+	$('#venmoWindow').hide();
+	$('#venmo_selected').change(function() {
+		$('#venmoWindow').hide();
+        if($(this).is(":checked")) {
+        	$('#venmoWindow').fadeIn();
+        	autoResize('venmoWindow')
+        }
+    });
+
+	$('#resize').click(function(e){
+		autoResize('venmoWindow')
+	});
+
+
 });
 
+function autoResize(id){
+		var newheight;
+		var newwidth;
 
+		if(document.getElementById){
+		newheight=document.getElementById(id).contentWindow.document.body.scrollHeight;
+		newwidth=document.getElementById(id).contentWindow.document.body.scrollWidth+5;
+		}
+
+		document.getElementById(id).height = (newheight) + "px";
+		document.getElementById(id).width = (newwidth) + "px";
+}

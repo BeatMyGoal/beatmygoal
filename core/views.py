@@ -32,6 +32,123 @@ from helper import *
 import cgi
 import urllib
 
+#venmo
+from djoauth2.authorization import make_authorization_endpoint
+from base64 import b64encode
+
+client_key = 1700
+client_secret = 'yEneXJT8DHUckDZ3BdmeJ75Urkys37Xq'
+
+
+def venmo(request):
+    #Parsing 'code' from directed url
+    code = request.GET.get('code')
+    print code
+    print request.user
+    
+    #Post request to get 'real' access_code
+    token_response = requests.post(
+      'https://api.venmo.com/v1/oauth/access_token',
+      data={
+        'client_id':client_key,
+        'client_secret':client_secret,
+        'code': code,
+        'grant_type': 'authorization_code',
+      },
+      headers={
+        'Authorization': 'Basic {}'.format(
+            b64encode('{}:{}'.format(client_key, client_secret))),
+      })
+    
+    assert token_response.status_code == 200
+    token_data = json.loads(token_response.content)
+
+    #get venmo token
+    access_token = token_data['access_token']
+    refresh_token = token_data['refresh_token']
+    access_token_lifetime_seconds = token_data['expires_in']
+
+    response = BeatMyGoalUser.set_vm_key(request.user, access_token, refresh_token, access_token_lifetime_seconds)
+
+    response_data = {'data' : token_data, 'set_vm_key' : response }
+    return render(request, 'venmo/venmo.html', response_data)
+
+def venmo_login(request):
+    user = BeatMyGoalUser.getUserByName(request.user)['user']
+    userinfo_response = None
+    if user.is_Authentificated_Venmo:
+        user_vm_key = user.vm_key
+        url = 'https://api.venmo.com/v1/me?access_token=' + user_vm_key
+        userinfo_response = requests.get(url)
+        assert userinfo_response.status_code == 200
+    if userinfo_response != None:
+        data = json.loads(userinfo_response.content)['data']
+    else:
+        data = None
+
+    print(data)
+    response = render(request, 'venmo/venmoLogin.html' ,  {'data' : data, 'is_Authentificated_Venmo' : user.is_Authentificated_Venmo})
+    return response
+
+def venmo_logout(request):
+    errors = []
+    print("logout??")
+    user = BeatMyGoalUser.getUserByName(request.user)['user']
+    user.vm_key = None
+    user.vm_refresh_key = None
+    user.vm_expire_date = None
+    user.is_Authentificated_Venmo = False
+    user.save()
+
+    return HttpResponse(json.dumps({"errors" : errors}), content_type = "application/json")
+
+
+
+
+
+@csrf_exempt    
+def venmo_make_payment(request):
+    #make request
+    data = json.loads(request.body)
+
+    giver = data['giver']
+    receiver = data['receiver']
+    amount = data['amount']
+    print(giver)
+    print(receiver)
+    print(amount)
+    giver_vm_key = BeatMyGoalUser.get_vm_key(giver)['vm_key']
+    print(giver_vm_key)
+
+    receiver = BeatMyGoalUser.getUserByName(receiver)['user']
+    print(receiver)
+
+    receiver_email = receiver.email
+    print(receiver_email)
+    payment_response = requests.post(
+      'https://api.venmo.com/v1/payments',
+      data={
+        'client_id': client_key,
+        'client_secret' : client_secret,
+        'access_token' : giver_vm_key,
+        'email' : receiver_email,
+        'note' : 'BeatMyGoal!',
+        'amount' : amount,
+      },
+      headers={
+        'Authorization': 'Basic {}'.format(
+            b64encode('{}:{}'.format(client_key, client_secret))),
+      })
+    print(json.loads(payment_response.content))
+    data = json.loads(payment_response.content)['data']
+
+
+    return HttpResponse(json.dumps({"data": data}), content_type = "application/json")
+
+
+
+
+
 def send_email(request):
     subject = "Test email from BeatMyGoal"
     message = "This is a test email from BeatMyGoal"

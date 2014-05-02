@@ -68,6 +68,7 @@ INSTALLED_APPS = (
     'south',
     'django_nose',
     'storages',
+    'djoauth2',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -79,6 +80,13 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'beatmygoal.middleware.AutoLogout',
 )
+
+
+#venmo
+DJOAUTH2_SSL_ONLY = False
+
+
+
 
 
 
@@ -149,9 +157,7 @@ except Exception as e:
 
 
 
-
 # STATIC_ROOT = 'staticfiles'
-
 
 
 
