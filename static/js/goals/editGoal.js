@@ -94,7 +94,7 @@ $(document).ready(function() {
 	});
 
 	$("#firstModal #No_button").click(function(e) {
-	$('#firstModal').foundation('reveal', 'close');
+	   $('#firstModal').foundation('reveal', 'close');
 	});
 
 
@@ -108,7 +108,8 @@ $(document).ready(function() {
         if (invalid_fields.length > 0) {
             return;
         } else {
-            $('#reveal_save').foundation('reveal', 'open');
+            //$('#reveal_save').foundation('reveal', 'open');
+            saveAction(e);
         }
     });
 
