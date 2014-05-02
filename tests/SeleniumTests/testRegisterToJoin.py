@@ -13,7 +13,7 @@ class FavoriteTest(LiveServerTestCase):
         # Set up any objects you need here
         BeatMyGoalUser.create("guitester", "guitester@example.com", "guitester")
         BeatMyGoalUser.create("creator", "creator@example.com", "creator")
-        Goal.create("testgoal", "testgoaldescription", "creator", "testprize", 0, "testtype", "testendvalue", "testunit", "01/01/2030")
+        Goal.create("testgoal", "testgoaldescription", "creator", "testprize", 0, "testtype", 200, "testunit", "01/01/2030")
 
     
 

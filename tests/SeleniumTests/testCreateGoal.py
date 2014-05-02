@@ -40,7 +40,6 @@ class CreateGoalTestWithInvalidInput(LiveServerTestCase):
         self.login("kyle", "kyle")
 
         driver.find_element_by_link_text("Create Goal").click()
-        driver.find_element_by_css_selector("option[value=\"Competitive\"]").click()
         driver.find_element_by_link_text("Next").click()
         driver.find_element_by_id("register-title").clear()
         driver.find_element_by_id("register-title").send_keys("t")

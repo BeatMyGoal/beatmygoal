@@ -9,7 +9,7 @@ $(document).ready(function() {
 	
 	var saveAction = function(e) {
 		e.preventDefault();
-
+  
 		var invalid_fields = $("#editForm").find('[data-invalid]');
 		if (invalid_fields.length > 0) {
 			return;
@@ -95,7 +95,50 @@ $(document).ready(function() {
 
             console.log(data);
             if (data.errors.length === 0) {
-                saveAction(event);
+                var invalid_fields = $("#editForm").find('[data-invalid]');
+        if (invalid_fields.length > 0) {
+            return;
+        }
+
+        var fname = $fname.val();
+        var lname = $lname.val();
+        var username = $username.val();
+        var email = $email.val();
+
+        var data = {
+            username: username,
+            email: email,
+            fname: fname,
+            lname: lname,
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            dataType: "json",
+        }).done(function(data) {
+            console.log(data);
+            if (data.errors.length === 0) {
+                window.location.href = data.redirect;
+            } else {
+                if (data.errors.length >= 0) {
+                    var errors = data.errors;
+                    if (errors.indexOf(ERRCODES.CODE_DUPLICATE_USERNAME) >= 0) {
+                        $("#username-error").text("Sorry, that username has already been used");
+                        $('label[for="username"]').addClass("error");
+                    
+                    }
+                    if (errors.indexOf(ERRCODES.CODE_DUPLICATE_EMAIL) >= 0) {
+                        $("#email-error").text("Sorry, that email has already been used");
+                        $('label[for="email"]').addClass('error');
+                    }
+                }
+            }
+        }).fail(function(data) {
+            alert("failure");
+        });
             } else {
                 if (data.errors.length >= 0) {
                     var errors = data.errors;
@@ -130,7 +173,7 @@ $(document).ready(function() {
 
             console.log(data);
             if (data.errors.length === 0) {
-                deleteAction(event);
+                deleteAction(e);
             } else {
                 if (data.errors.length >= 0) {
                     var errors = data.errors;

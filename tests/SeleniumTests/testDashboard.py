@@ -12,7 +12,7 @@ class DashboardTest(LiveServerTestCase):
 
         # Set up any objects you need here
         BeatMyGoalUser.create("guitester", "guitester@example.com", "guitester")
-        Goal.create("testgoal", "testgoaldescription", "guitester", "testprize", 0, "testtype", "testendvalue", "testunit", "01/01/2030")
+        Goal.create("testgoal", "testgoaldescription", "guitester", "testprize", 0, "testtype", 123, "testunit", "01/01/2030")
 
     def tearDown(self):
         self.driver.quit()

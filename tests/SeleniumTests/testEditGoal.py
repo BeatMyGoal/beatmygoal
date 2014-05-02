@@ -12,7 +12,7 @@ class EditGoalTest(LiveServerTestCase):
 
         # Set up any objects you need here
         BeatMyGoalUser.create("guitester", "guitester@example.com", "guitester")
-        Goal.create("testgoal", "testgoaldescription", "guitester", "testprize", 0, "testtype", "testendvalue", "testunit", "01/01/2030")
+        Goal.create("testgoal", "testgoaldescription", "guitester", "testprize", 0, "testtype", 20, "testunit", "01/01/2030")
 
     
 
@@ -38,15 +38,10 @@ class EditGoalTest(LiveServerTestCase):
         self.login("guitester", "guitester")
         driver.find_element_by_link_text("Browse Goals").click()
         driver.find_element_by_link_text("testgoal").click()
-        time.sleep(1)
         self.assertIn("testgoal | BeatMyGoal", self.driver.title)
-
         driver.find_element_by_link_text("Edit Goal").click()
-        driver.find_element_by_id("password").clear()
-        driver.find_element_by_id("password").send_keys("guitester")
-        driver.find_element_by_id("Confirm_button").click()
-        time.sleep(1)
         self.assertIn("Edit Goal | BeatMyGoal", self.driver.title)
+
 
         driver.find_element_by_id("title").clear()
         driver.find_element_by_id("title").send_keys("New Title")
@@ -56,8 +51,12 @@ class EditGoalTest(LiveServerTestCase):
         driver.find_element_by_id("ending_value").send_keys("200")
         driver.find_element_by_id("unit").clear()
         driver.find_element_by_id("unit").send_keys("new unit")
+        driver.find_element_by_link_text("Save").click()
         time.sleep(1)
-        driver.find_element_by_id("save").click()
+        driver.find_element_by_css_selector("#reveal_save > label > #password").clear()
+        driver.find_element_by_css_selector("#reveal_save > label > #password").send_keys("guitester")
+        driver.find_element_by_id("Confirm_button").click()
+        time.sleep(1)
         self.assertIn("New Title | BeatMyGoal", self.driver.title)
 
     def testEditGoalWithInvalidInput(self):
@@ -73,10 +72,6 @@ class EditGoalTest(LiveServerTestCase):
         self.assertIn("testgoal | BeatMyGoal", self.driver.title)
 
         driver.find_element_by_link_text("Edit Goal").click()
-        driver.find_element_by_id("password").clear()
-        driver.find_element_by_id("password").send_keys("guitester")
-        driver.find_element_by_id("Confirm_button").click()
-        time.sleep(1)
         self.assertIn("Edit Goal | BeatMyGoal", self.driver.title)
 
         driver.find_element_by_id("title").clear()
@@ -87,9 +82,8 @@ class EditGoalTest(LiveServerTestCase):
         driver.find_element_by_id("ending_value").send_keys("200")
         driver.find_element_by_id("unit").clear()
         driver.find_element_by_id("unit").send_keys("new unit")
-        time.sleep(1)
-        driver.find_element_by_id("save").click()
-        self.assertIn("Invalid Title", self.driver.find_element_by_id("title-error").text)
+
+        self.assertIn("A Title Is Required", self.driver.find_element_by_id("title-error").text)
 
 
     def tearDown(self):
