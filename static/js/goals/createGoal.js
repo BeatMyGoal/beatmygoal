@@ -30,8 +30,11 @@ $(document).ready(function() {
 			goal_type: goal_type,
 			ending_value: $("#register-end-value").val(),
 			unit: $("#register-value-unit").val(),
-			ending_date : ending_date
+			ending_date : ending_date,
+            iscompetitive : $('#goal_type').val() == "Collaborative" ? 0 : 1,
 		};
+
+        console.log(data);
 
 		$.ajax({
 			type: "POST",
