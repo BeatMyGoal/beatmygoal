@@ -542,3 +542,20 @@ class LogEntryAdmin(admin.ModelAdmin):
 
 class BeatMyGoalUserAdmin(admin.ModelAdmin):
     list_display  = ('username', 'email', 'date_joined')
+
+# Pending Invited User 
+class PendingInvite(models.Model):
+    goal = models.ForeignKey('Goal')
+    email = models.EmailField(null=True, max_length=20)
+    @classmethod
+    def create(self, email, goal_id):
+        errors = []
+        pendinginvite = None
+        print("hellohello")
+        pendinginvite = PendingInvite(email=email, goal=Goal.objects.get(id=goal_id))
+        print('created')
+        pendinginvite.save()
+        print(pendinginvite)
+        return {'errors':errors, 'pendinginvite' : pendinginvite}
+
+

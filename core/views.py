@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import Goal, BeatMyGoalUser, Log, LogEntry
+from models import *
 from django.template import RequestContext, loader, Context
 
 from authomatic import Authomatic
@@ -40,14 +40,16 @@ def send_email(request):
     goal_id = data["goal_id"]
     errors = []
     if data["to"]:
-        try:
+        # try:
             html_content = loader.get_template('email.html')
             html_content = html_content.render(Context({'from' : request.user.username.capitalize(), 'goal_id' : goal_id }))
             email = EmailMessage(subject, html_content, to=to)
             email.content_subtype = "html"
+            for email_address in to:
+                pendinginvite = PendingInvite.create(email_address, goal_id)
             email.send()
-        except Exception as e:
-            errors.append(-400)
+        # except Exception as e:
+        #     errors.append(-400)
     else:
         errors.append(-401)
     return HttpResponse(json.dumps({"errors" : errors, "redirect" : ""}), content_type = "application/json")
@@ -123,9 +125,12 @@ def dashboard(request):
         data = json.loads(request.body)
         page = data["page"]
         query = data["query"]
+        filter_type = data["filter"]
         all_goals = Goal.objects.all()
-        queried_goals = dashboard_search(query, all_goals)
-        if (page*20+19 < len(all_goals)):
+        curr_user = request.user
+        filtered_goals = dashboard_filter(filter_type, all_goals, curr_user)
+        queried_goals = dashboard_search(query, filtered_goals)
+        if (page*20+19 < len(queried_goals)):
             goals = queried_goals[page*20:page*20+19]
         else:
             goals = queried_goals[page*20:]
@@ -142,8 +147,35 @@ def dashboard_search(query, goals):
     temp_goals = []
     for goal in goals:
         if query.lower() in goal.title.lower() or query in goal.description.lower():
-            
             temp_goals.append(goal)
+    return temp_goals
+
+def dashboard_filter(filter_type, goals, curr_user):
+    temp_goals = []
+    if curr_user.is_authenticated():
+        if filter_type == "mine":
+            for goal in goals:
+                if (len(goal.beatmygoaluser_set.filter(username=curr_user))>0):
+                    temp_goals.append(goal)
+        elif filter_type == "priv":
+            for goal in goals:
+                if goal.private_setting==1 and (len(goal.beatmygoaluser_set.filter(username=curr_user))>0):
+                    temp_goals.append(goal)
+        elif filter_type == "pend":
+            for goal in goals:
+                if (len(goal.pendinginvite_set.filter(email=curr_user.email,goal=goal))>0 and goal.private_setting==1 and (len(goal.beatmygoaluser_set.filter(username=curr_user))==0)):
+                    temp_goals.append(goal)
+        else:
+            for goal in goals:
+                if goal.private_setting==0:
+                    temp_goals.append(goal)
+    else:
+        if filter_type == "all":
+            for goal in goals:
+                if goal.private_setting==0:
+                    temp_goals.append(goal)
+        else:
+            return []
     return temp_goals
 
 @csrf_exempt
@@ -167,7 +199,10 @@ def goal_create_goal(request):
             ending_value = data['ending_value']
             ending_date = data['ending_date']
 
-            response = Goal.create(title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date)
+            if private_setting:
+                response = Goal.create(title, description, creator, prize, 1, goal_type, ending_value, unit, ending_date)
+            else:
+                response = Goal.create(title, description, creator, prize, 0, goal_type, ending_value, unit, ending_date)
 
             if response['errors']:
                 return HttpResponse(json.dumps(response), content_type = "application/json")

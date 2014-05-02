@@ -26,12 +26,14 @@ $(document).ready(function() {
 			description: $("#register-description").val(),
 			creator: "come back to this",
 			prize: $("#register-prize").val(),
-			private_setting: 1.0,
+			private_setting: $("#register-private-setting").is(":checked"),
 			goal_type: goal_type,
 			ending_value: $("#register-end-value").val(),
 			unit: $("#register-value-unit").val(),
 			ending_date : ending_date
 		};
+
+
 
 		$.ajax({
 			type: "POST",

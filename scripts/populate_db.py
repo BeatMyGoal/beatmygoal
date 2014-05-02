@@ -201,7 +201,7 @@ for g in dummy_goals:
     else:
         ending_date =  None
 
-    private_setting = 1
+    private_setting = 0
 
     result = Goal.create(g.title, g.description, creator, g.prize, private_setting, 
                     goal_type, g.ending_value, g.unit, ending_date)
