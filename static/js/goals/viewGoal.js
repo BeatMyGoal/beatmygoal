@@ -2,8 +2,9 @@ $(document).ready(function() {
 
     var inviteList = document.getElementById('drop1');
     var goal_id = window.location.pathname.split("/")[2];
-    inviteList.innerHTML='<li><a href="#" data-reveal-id="reveal_email" c>With Email</a></li><div id="fb-root"></div><li><div id="fb-send" class="fb-send" data-href="http://www.beatmygoal.com/goals/' + goal_id + '" data-colorscheme="light"></div><li>';
-
+    if (inviteList) {
+        inviteList.innerHTML='<li><a href="#" data-reveal-id="reveal_email" c>With Email</a></li><div id="fb-root"></div><li><div id="fb-send" class="fb-send" data-href="http://www.beatmygoal.com/goals/' + goal_id + '" data-colorscheme="light"></div><li>';
+    }
     $('#add_favorite_button').click(function() {
         var goal_id = window.location.pathname.split("/")[2];
         var data = {
