@@ -21,7 +21,7 @@
                 <p> <img src="http://placehold.it/320x300&text=photo" /></p>
             {% endif %}
             {% if viewedUser.id != user.id %}
-            <b style="color:grey;font-size:25px;">{{user.username}} </b>
+            <b style="color:grey;font-size:25px;">{{viewedUser.username}} </b>
             {% endif %}
         </div>
         {% if viewedUser.id == user.id and viewedUser.username == user.username %}
