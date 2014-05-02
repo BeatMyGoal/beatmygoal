@@ -74,6 +74,7 @@ def user_login_fb(request, mock=None):
 
             if (BeatMyGoalUser.objects.filter(username=username).exists()):
                 user = BeatMyGoalUser.objects.get(username=username)
+                user.backend='django.contrib.auth.backends.ModelBackend'
                 if not mock: login(request, user)
             else:
                 password = BeatMyGoalUser.objects.make_random_password(8)
