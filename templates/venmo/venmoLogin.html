@@ -24,17 +24,20 @@
   Email : {{data.user.email | default:'N/A'}}		<br>
   Phone : {{data.user.phone | default:'N/A'}}		<br>
   <br>
-  <p> This is for test </p>
+  <p> The following payment form is for Payment Testing </p>
 
-	<label>Giver Name
+	<label>Giver Name <br>
+  (type correct "BeatMyGoal USER ID" used when login)
 	<input id="giver" type="text" required />
 	</label>
 
-	<label>Receiver Name
+	<label>Receiver Name <br>
+  (type correct "BeatMyGoal USER ID" having a valid email address)
 	<input id="receiver" type="text" required />
 	</label>
 
-	<label>Amount
+	<label>Amount <br>
+  payment : (+) value / charge : (-) value
 	<input id="amount" type="text" required />
 	</label>
 

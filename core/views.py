@@ -44,7 +44,7 @@ def venmo(request):
     #Parsing 'code' from directed url
     code = request.GET.get('code')
     print code
-    print request.user
+    print 'in view, user :' + str(request.user.username)
     
     #Post request to get 'real' access_code
     token_response = requests.post(
