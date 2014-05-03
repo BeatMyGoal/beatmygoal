@@ -395,7 +395,9 @@ def goal_view_goal(request, goal_id):
     progress_ratio = goal.getProgressRatio(request.user)
     best_progress_ratio = goal.getBestProgressRatio()
     deadline_ratio = goal.getDeadlineRatio()
-    print best_progress_ratio
+    leaders = goal.checkLeaders()
+    print leaders
+    print goal.winners
     try:
         isFavorite = goal in request.user.favorite_goals.all()
     except:
@@ -404,7 +406,7 @@ def goal_view_goal(request, goal_id):
     return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, 
         "isParticipant" : isParticipant, "isCreator" : isCreator, 
         "isFavorite" : isFavorite, "image" :image, "goal_id" : goal_id, "progress" : progress,
-        "progressRatio" : progress_ratio, "deadlineRatio" : deadline_ratio, "bestprogressRatio" : best_progress_ratio})
+        "progressRatio" : progress_ratio, "deadlineRatio" : deadline_ratio, "bestprogressRatio" : best_progress_ratio, "leaders" : leaders})
 
 
 def goal_log_progress(request, gid):       #add Functional test here

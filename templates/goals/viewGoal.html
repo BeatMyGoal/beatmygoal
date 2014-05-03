@@ -131,7 +131,7 @@
                     <p class="percentage"> {{bestprogressRatio}}%</p>
                 </td>
                 <td class="chart">
-                    The leader's progress on this goal so far
+                    The leader's progress on this goal so far ( {% for leader in leaders %} *<a href="/users/{{ leader.id}}">{{ leader.username }} </a> {% endfor %})
                     <div class="barchart">
                     <span class="meter" style="width:  {{bestprogressRatio}}%"></span>
                     </div>
@@ -179,7 +179,7 @@
 <div class="row card alert-box info">
     <div data-alert class="small-12 columns ">
         {% if goal.iscompetitive %}
-        <h3>Congratulations to {% for winner in goal.winners.all %}<a href="/users/{{ winner.id }}">{{winner.username}}</a> {% if forloop.counter < goal.winners.all|length %} | {% endif %}{% endfor %} for winning this goal!</h3>
+        <h3>Congratulations to {% for winner in goal.winners.all %}<a href="/users/{{ winner.id }}">{{winner.username}}</a> {% if forloop.counter < goal.winners.all|length %} | {% endif %}{% endfor %} for winning this goal!  <span style="font-size: 60%"> (Date/Time won: {{ goal.winning_date }}) </h5> </h3>
         {% else %}
         <h3>Congratulations to all participants for completing this goal together!</h3>
         {% endif %}

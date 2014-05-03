@@ -136,6 +136,7 @@ class Goal(models.Model):
     unit = models.CharField(max_length=MAX_LEN_UNIT, blank=True)
     image = models.FileField(upload_to='image/')
     ending_date = models.DateTimeField(blank=True, null=True);
+    winning_date = models.DateTimeField(blank=True, null=True);
     winners = models.ManyToManyField('BeatMyGoalUser', blank=True, null=True, related_name='goalsWon')
     ended = models.PositiveSmallIntegerField(default=0, blank=True, null=True)
     iscompetitive = models.PositiveSmallIntegerField(default=1, blank=True)
@@ -260,18 +261,22 @@ class Goal(models.Model):
             if goalTotal >= int(self.ending_value):
                 self.endGoal([user.username for user in self.beatmygoaluser_set.all()])
 
+    def checkLeaders(self):
+        maxAmount = -1
+        leaders = []
+        for user in self.beatmygoaluser_set.all():
+            userAmount = self.log.getUserTotal(user.username)
+            if userAmount > maxAmount:
+                maxAmount = userAmount
+                leaders = [user]
+            elif userAmount == maxAmount:
+                leaders.append(user)
+        return leaders
+
     def checkDeadline(self):
         if self.ending_date and (datetime.today() > self.ending_date): #if today is after the deadline
             if self.iscompetitive:
-                winners = []
-                maxAmount = -1
-                for user in self.beatmygoaluser_set.all(): #check each user for their amount
-                    userAmount = self.log.getUserTotal(user.username)
-                    if userAmount > maxAmount: #if they have the highest, they're winner
-                        maxAmount = userAmount
-                        winners = [user]
-                    elif userAmount == maxAmount: #if there is a tie, multiple winners
-                        winners.append(user)
+                winners = self.checkLeaders()
                 self.endGoal(winners) #end goal, declaring the winner(s)
             else:
                 self.endGoal() #end goal with no winners, no one met this goal
@@ -284,6 +289,7 @@ class Goal(models.Model):
                 for i in range(len(winner)):
                     self.winners.add(BeatMyGoalUser.objects.get(username=winner[i])) #add each winner to the goal
             self.ended = len(winner) if winner else 1 #set the ended value to be the amount of winners
+            self.winning_date = datetime.now()
             super(Goal, self).save() #regular save method won't work now
 
     def isEnded(self):
