@@ -108,10 +108,6 @@ def user_login_twitter(request, mock=None):
         print result
         if result.error: pass #TODO
         elif result.user:
-            print "passed!!!!"
-            print result.user.name
-            print result.user.id
-            print result.user.email
             # Get the info from the user
             if not (result.user.name and result.user.id):
                 result.user.update()
