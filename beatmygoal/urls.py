@@ -59,23 +59,6 @@ urlpatterns = patterns('',
     url(r'^venmo_login', core.views.venmo_login, name='venmo_login'),
     url(r'^venmo_logout', core.views.venmo_logout, name='venmo_logout'),
 
-    # The endpoint for creating and exchanging access tokens and refresh
-    # tokens is handled entirely by the djoauth2 library.
-    #url(r'^oauth2/token/$', 'djoauth2.views.access_token_endpoint'),
-
-    # The authorization endpoint, a page where each "resource owner" will
-    # be shown the details of the permissions being requested by the
-    # "client".
-    #url(r'^oauth2/authorization/$', 'oauth2server.views.authorization_endpoint'),
-
-    # The page to show when Client redirection URIs are misconfigured or
-    # invalid. This should be a nice, simple error page.
-    #url(r'^oauth2/missing_redirect_uri/$', 'oauth2server.views.missing_redirect_uri'),
-
-    # An access-protected API endpoint, which we'll define later.
-    #url(r'^api/user_info/$', 'api.views.user_info'),
-    
-
 )
 #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

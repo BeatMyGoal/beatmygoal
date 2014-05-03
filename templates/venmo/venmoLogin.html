@@ -17,36 +17,38 @@
 <script src="{% static 'js/venmo/venmoLogin.js' %}"></script>
 
 <div class="row" id="venmo-option">
-  {% if is_Authentificated_Venmo %}
-  <p><font color="green">Your Venmo account is connected</font></p>
-  Username : {{data.user.display_name | default:'N/A'}}		<br>
-  Balance : {{data.balnace | default:'N/A'}}		<br>
-  Email : {{data.user.email | default:'N/A'}}		<br>
-  Phone : {{data.user.phone | default:'N/A'}}		<br>
-  <br>
-  <p> The following payment form is for Payment Testing </p>
+  {% if is_authentificated_venmo %}
+    <p><font color="green">Your Venmo account has been connected</font></p>
+    Username : {{data.user.display_name | default:'N/A'}}		<br>
+    Balance : {{data.balnace | default:'N/A'}}		<br>
+    Email : {{data.user.email | default:'N/A'}}		<br>
+    Phone : {{data.user.phone | default:'N/A'}}		<br>
+    <br>
 
-	<label>Giver Name <br>
-  (type correct "BeatMyGoal USER ID" used when login)
-	<input id="giver" type="text" required />
-	</label>
+    <p> The following payment form is for Payment Testing </p>
 
-	<label>Receiver Name <br>
-  (type correct "BeatMyGoal USER ID" having a valid email address)
-	<input id="receiver" type="text" required />
-	</label>
+  	<label>Giver Name <br>
+    (type correct "BeatMyGoal USER ID" used when login)
+  	<input id="giver" type="text" required />
+  	</label>
 
-	<label>Amount <br>
-  payment : (+) value / charge : (-) value
-	<input id="amount" type="text" required />
-	</label>
+  	<label>Receiver Name <br>
+    (type correct "BeatMyGoal USER ID" having a valid email address)
+  	<input id="receiver" type="text" required />
+  	</label>
 
-  <input id="vm_logout" type="button" class="small button left radius left" value="Venmo Logout" style="background: #DA5C5C"> 
-	<input id="payment" type="button" class="small button left radius right" value="make a payment"> 
+  	<label>Amount <br>
+    payment : (+) value / charge : (-) value
+  	<input id="amount" type="text" required />
+  	</label>
+
+    <input id="vm_logout" type="button" class="tiny button left radius left" value="Logout" style="background: #DA5C5C"> 
+  	<input id="payment" type="button" class="tiny button left radius right" value="payment"> 
 
   {% else %}
-  <p><font color="red">Your Venmo account is not connected</font></p>
-  <input id="get_vm_token" type="submit" class="small button radius right" value="Connect Venmo" style="background: #DA5C5C">
+    <p><font color="red">Your Venmo account has not been connected</font></p>
+    <input id="get_vm_token" type="submit" class="tiny button radius right" value="Connect Venmo">
+
   {% endif %}
 
 </div>

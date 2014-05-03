@@ -148,7 +148,7 @@ class Goal(models.Model):
     def create(self, title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date, iscompetitive=1):
         errors = []
         goal = None
-
+        print datetime.today()
 
         if not title or len(title)>self.MAX_LEN_TITLE:
             errors.append(CODE_BAD_TITLE)
@@ -340,7 +340,7 @@ class BeatMyGoalUser(AbstractUser):
     vm_key = models.CharField(null=True, blank=True, max_length=20)
     vm_refresh_key = models.CharField(null=True, blank=True, max_length=20)
     vm_expire_date = models.DateTimeField(blank=True, null=True);
-    is_Authentificated_Venmo = models.BooleanField(default=False)
+    is_authentificated_venmo = models.BooleanField(default=False)
 
 
     @classmethod
@@ -353,7 +353,7 @@ class BeatMyGoalUser(AbstractUser):
         user.vm_key = vm_key
         user.vm_refresh_key = vm_refresh_key
         user.vm_expire_date = datetime.now() + timedelta(seconds=vm_lifetime_seconds)
-        user.is_Authentificated_Venmo = True
+        user.is_authentificated_venmo = True
         user.save()
         return { 'user' : user, 'errors' : errors }
 

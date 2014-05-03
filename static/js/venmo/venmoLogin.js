@@ -17,6 +17,7 @@ $(document).ready(function() {
 			contentType: "application/json",
 			dataType: "json",
 		}).done(function(data) {
+			
 			alert("payment completed")
 		}).fail(function(data) {
 			alert("payment failure : make_payments in view");

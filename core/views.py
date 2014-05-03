@@ -76,7 +76,7 @@ def venmo(request):
 def venmo_login(request):
     user = BeatMyGoalUser.getUserByName(request.user)['user']
     userinfo_response = None
-    if user.is_Authentificated_Venmo:
+    if user.is_authentificated_venmo:
         user_vm_key = user.vm_key
         url = 'https://api.venmo.com/v1/me?access_token=' + user_vm_key
         userinfo_response = requests.get(url)
@@ -87,7 +87,7 @@ def venmo_login(request):
         data = None
 
     print(data)
-    response = render(request, 'venmo/venmoLogin.html' ,  {'data' : data, 'is_Authentificated_Venmo' : user.is_Authentificated_Venmo})
+    response = render(request, 'venmo/venmoLogin.html' ,  {'data' : data, 'is_authentificated_venmo' : user.is_authentificated_venmo})
     return response
 
 def venmo_logout(request):
@@ -97,7 +97,7 @@ def venmo_logout(request):
     user.vm_key = None
     user.vm_refresh_key = None
     user.vm_expire_date = None
-    user.is_Authentificated_Venmo = False
+    user.is_authentificated_venmo = False
     user.save()
 
     return HttpResponse(json.dumps({"errors" : errors}), content_type = "application/json")
@@ -141,7 +141,6 @@ def venmo_make_payment(request):
       })
     print(json.loads(payment_response.content))
     data = json.loads(payment_response.content)['data']
-
 
     return HttpResponse(json.dumps({"data": data}), content_type = "application/json")
 
