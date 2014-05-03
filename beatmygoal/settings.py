@@ -47,6 +47,10 @@ if 'ON_HEROKU' in os.environ:
     STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
     ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
     MEDIA_URL = S3_URL + "/"
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, "static"),
+    )
 else:
     STATIC_URL = '/static/'
     STATICFILES_DIRS = (
@@ -120,7 +124,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Los_Angeles'
 
 USE_I18N = True
 
@@ -184,3 +188,19 @@ EMAIL_PORT = 587
 
 
 
+import logging
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+        }
+    }
+}

@@ -29,7 +29,7 @@ $(document).ready(function() {
 			description: $("#register-description").val(),
 			creator: "come back to this",
 			prize: $("#register-prize").val(),
-			private_setting: 1.0,
+			private_setting: $("#register-private-setting").is(":checked"),
 			goal_type: goal_type,
 			ending_value: $("#register-end-value").val(),
 			unit: $("#register-value-unit").val(),
@@ -37,7 +37,7 @@ $(document).ready(function() {
             iscompetitive : $('#goal_type').val() == "Collaborative" ? 0 : 1,
 		};
 
-        console.log(data);
+
 
 		$.ajax({
 			type: "POST",
@@ -77,11 +77,18 @@ $(document).ready(function() {
 						$('#step2_check').hide();
 						document.getElementById('step2').click();
 					}
+					if (errors.indexOf(ERRCODES.CODE_BAD_ENDING_VALUE) >= 0) {
+						console.log("here");
+						$('#end-value-error').text("Ending value must be specified with number");
+                        $("label[for='ending_value']").addClass("error");
+						$('#step2_check').hide();
+						document.getElementById('step2').click();
+					}
 				}
 			}
 
 		}).fail(function(data) {
-			alert("failure");
+//			alert("failure");
 		});
 	});
 

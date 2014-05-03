@@ -21,7 +21,7 @@ $(document).ready(function() {
                 $('#login-page').addClass("error");
             }
 		}).fail(function(data) {
-			alert("fail to login");
+			// alert("fail to login");
 		});
 	});
 

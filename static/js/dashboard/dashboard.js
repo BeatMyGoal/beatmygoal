@@ -9,10 +9,11 @@ $(document).ready(function() {
 
 	var page = 0;
     var query = "";
+    var filter = "all"; 
 	var scroll_activated = false;
     var is_searching = false;
 
-    get_goals_ajax(page, query);
+    get_goals_ajax();
     $('#dashboard_search').keyup(function() {
         delay(function(){
             is_searching = true;
@@ -51,10 +52,16 @@ $(document).ready(function() {
                 } 
             }).fail(function(data) {
                 // console.log(data);
-                alert("failure");
+//                alert("failure");
             });
         }
     }, ".join-button");
+    $(".filter-choice").click(function(){
+        filter = $(this).attr('id');
+        page = 0;
+        $(".dashcard-container").empty();
+        get_goals_ajax();
+    });
 
     $(".dashcard-container").on({
         mouseenter: function () {
@@ -84,6 +91,7 @@ $(document).ready(function() {
         var data = {
             page: page,
             query: query,
+            filter: filter,
         };
         $.ajax({
             type: "POST",
@@ -93,32 +101,37 @@ $(document).ready(function() {
             dataType: "json",
         }).done(function(data) {
             goals = jQuery.parseJSON(data['goals']);
-            goals.forEach(function(entry) {
-                //console.log(entry);
-                fields = entry['fields'];
-                user = $(".users>#id"+fields['creator']);
-                // console.log(fields) 
-                //console.log(user);
-                $(".dashcard-container").append('<li><div class="dashcard-holder card" id="'+entry['pk']+'"></div></li>');
-                $(".dashcard-holder#"+entry['pk']).empty();
-                $(".dashcard-holder#"+entry['pk']).append('<div class="dashcard" id="'+entry['pk']+'"></div>');
-                $("#"+entry['pk']+".dashcard").append('<div class=dashcard-img id="'+entry['pk']+'"></div>');
-                if (fields['image'] != ""){
-                    $("#"+entry['pk']+".dashcard-img").append('<img src="' + window.MEDIA_URL + fields['image']+'" class="goal-image"/>');
-        		    // hide the trophy
-        		    $("#"+entry['pk']+".dashcard-img").css("background-image", "none");
-                }
-                $("#"+entry['pk']+".dashcard").append('<div class=dashcard-title><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></div>');
-                $("#"+entry['pk']+".dashcard").append('<div class=dashcard-creator><b>Creator:</b> <a href="/users/'+fields['creator']+'">'+user.text()+'</a></div>');
-                $("#"+entry['pk']+".dashcard").append('<div class=dashcard-prize><b>Prize:</b> '+fields['prize']+'</div>');
-                $("#"+entry['pk']+".dashcard").append('<div class=dashcard-description>'+fields['description']+'</div>');
-                $("#"+entry['pk']+".dashcard-holder").append('<div class="dashcard-overlay" id="'+entry['pk']+'"></div>');
-                $("#"+entry['pk']+".dashcard-overlay").append('<a href="#" class="button join-button" id="'+entry['pk']+'">Join Goal</a>');
-                $("#"+entry['pk']+".dashcard-overlay").append('<a href="/goals/'+entry['pk']+'" class="button view-button" id="'+entry['pk']+'">View Goal</a>');
-            });
+            if (goals.length===0){
+                // $(".dashcard-container").empty();
+            }
+            else{
+                goals.forEach(function(entry) {
+                    //console.log(entry);
+                    fields = entry['fields'];
+                    user = $(".users>#id"+fields['creator']);
+                    // console.log(fields) 
+                    //console.log(user);
+                    $(".dashcard-container").append('<li><div class="dashcard-holder card" id="'+entry['pk']+'"></div></li>');
+                    $(".dashcard-holder#"+entry['pk']).empty();
+                    $(".dashcard-holder#"+entry['pk']).append('<div class="dashcard" id="'+entry['pk']+'"></div>');
+                    $("#"+entry['pk']+".dashcard").append('<div class=dashcard-img id="'+entry['pk']+'"></div>');
+                    if (fields['image'] != ""){
+                        $("#"+entry['pk']+".dashcard-img").append('<img src="' + window.MEDIA_URL + fields['image']+'" class="goal-image"/>');
+                        // hide the trophy
+                        $("#"+entry['pk']+".dashcard-img").css("background-image", "none");
+                    }
+                    $("#"+entry['pk']+".dashcard").append('<div class=dashcard-title><a href="/goals/'+entry['pk']+'">'+fields['title']+'</a></div>');
+                    $("#"+entry['pk']+".dashcard").append('<div class=dashcard-creator><b>Creator:</b> <a href="/users/'+fields['creator']+'">'+user.text()+'</a></div>');
+                    $("#"+entry['pk']+".dashcard").append('<div class=dashcard-prize><b>Prize:</b> '+fields['prize']+'</div>');
+                    $("#"+entry['pk']+".dashcard").append('<div class=dashcard-description>'+fields['description']+'</div>');
+                    $("#"+entry['pk']+".dashcard-holder").append('<div class="dashcard-overlay" id="'+entry['pk']+'"></div>');
+                    $("#"+entry['pk']+".dashcard-overlay").append('<a href="#" class="button join-button" id="'+entry['pk']+'">Join Goal</a>');
+                    $("#"+entry['pk']+".dashcard-overlay").append('<a href="/goals/'+entry['pk']+'" class="button view-button" id="'+entry['pk']+'">View Goal</a>');
+                });
+            }
         }).fail(function(data) {
             // console.log(data);
-            alert("failure");
+//            alert("failure");
         });
         page = page + 1;
     }

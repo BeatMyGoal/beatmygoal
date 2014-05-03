@@ -2,13 +2,20 @@ html, body {
     background-size: auto 100%;
     background-position: center;
 }
+.dashboard{
+	max-width: 75rem;
+}
+.filter-bar{
+	float: right;
+	vertical-align: middle;
+}
 
 .card-holder-background{
 	height:100%;
-	width: 80%;
-	min-width: 400px;
+	width: 100%;
+/*	min-width: 400px;
 	max-width: 1000px;
-	margin: -15px auto;
+*/	margin: -15px auto;
 	padding: 15px 40px;
     background-color: rgba(200, 200, 200, 0.75);
     border-left: 1px solid #AAA;

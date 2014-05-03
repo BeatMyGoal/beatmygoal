@@ -29,12 +29,19 @@ $(document).ready(function() {
                 } 
             }).fail(function(data) {
                 console.log(data);
-                alert("failure");
+//                alert("failure");
         });
 
     };
 
 	var saveAction = function(event) {
+        event.preventDefault();
+  
+        var invalid_fields = $("#editForm").find('[data-invalid]');
+        if (invalid_fields.length > 0) {
+            return;
+        }
+        
 		var title = $title.val();
 		var description = $description.val();
 		var prize = $prize.val();
@@ -69,11 +76,16 @@ $(document).ready(function() {
 						$('#description-error').text('Invalid description');
 						$("label[for='description']").addClass("error");
 					}
+                    if (errors.indexOf(ERRCODES.CODE_BAD_ENDING_VALUE) >= 0) {
+                        console.log("here");
+                        $('#end-value-error').text("Ending value must be specified with number");
+                        $("label[for='ending_value']").addClass("error");
+                    }
 
 				}
 			}
 		}).fail(function(data) {
-			alert("failure");
+//			alert("failure");
 		});
 	};
 
@@ -82,12 +94,23 @@ $(document).ready(function() {
 	});
 
 	$("#firstModal #No_button").click(function(e) {
-	$('#firstModal').foundation('reveal', 'close');
+	   $('#firstModal').foundation('reveal', 'close');
 	});
 
 
 	$("#reveal_save #Back_button").click(function(e) {
         $('#reveal_save').foundation('reveal', 'close');
+    });
+
+    $("#save").click(function(e){
+        e.preventDefault();
+        var invalid_fields = $("#editForm").find('[data-invalid]');
+        if (invalid_fields.length > 0) {
+            return;
+        } else {
+            //$('#reveal_save').foundation('reveal', 'open');
+            saveAction(e);
+        }
     });
 
 
@@ -96,6 +119,12 @@ $(document).ready(function() {
         var data = {
             password: password
         };
+
+        var invalid_fields = $("#editForm").find('[data-invalid]');
+        if (invalid_fields.length > 0) {
+            $('#reveal_save').foundation('reveal', 'close');
+            return;
+        }
 
         $.ajax({
             type: "POST",
@@ -118,7 +147,7 @@ $(document).ready(function() {
                 }
             }
         }).fail(function(data) {
-            alert("failure");
+//            alert("failure");
         });
     });
 
@@ -149,7 +178,7 @@ $(document).ready(function() {
                 }
             }
         }).fail(function(data) {
-            alert("failure");
+//            alert("failure");
         });
     });
 });

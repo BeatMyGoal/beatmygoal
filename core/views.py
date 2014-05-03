@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import Goal, BeatMyGoalUser, Log, LogEntry
+from models import *
 from django.template import RequestContext, loader, Context
 
 from authomatic import Authomatic
@@ -149,21 +149,23 @@ def venmo_make_payment(request):
 
 
 def send_email(request):
-    subject = "Test email from BeatMyGoal"
+    subject = str(request.user) + " challenged you to beat his goal!"
     message = "This is a test email from BeatMyGoal"
     data = json.loads(request.body)
     to = data["to"].split(",")
     goal_id = data["goal_id"]
     errors = []
     if data["to"]:
-        try:
+        # try:
             html_content = loader.get_template('email.html')
-            html_content = html_content.render(Context({'from' : request.user.username.capitalize(), 'goal_id' : goal_id }))
+            html_content = html_content.render(Context({'from' : request.user.username, 'goal_id' : goal_id }))
             email = EmailMessage(subject, html_content, to=to)
             email.content_subtype = "html"
+            for email_address in to:
+                pendinginvite = PendingInvite.create(email_address, goal_id)
             email.send()
-        except Exception as e:
-            errors.append(-400)
+        # except Exception as e:
+        #     errors.append(-400)
     else:
         errors.append(-401)
     return HttpResponse(json.dumps({"errors" : errors, "redirect" : ""}), content_type = "application/json")
@@ -190,6 +192,47 @@ def user_login_fb(request, mock=None):
 
             if (BeatMyGoalUser.objects.filter(username=username).exists()):
                 user = BeatMyGoalUser.objects.get(username=username)
+                user.backend='django.contrib.auth.backends.ModelBackend'
+                if not mock: login(request, user)
+            else:
+                password = BeatMyGoalUser.objects.make_random_password(8)
+                user = BeatMyGoalUser.create(username, email, password)['user']
+                user =  authenticate(username=username, password=password)
+                user.social = result.user.id
+                user.save()
+
+                if not mock:
+                    url = 'http://graph.facebook.com/{}/picture?width=200&height=200'.format(result.user.id)
+                    temp=NamedTemporaryFile(delete=True)
+                    temp.write(requests.get(url).content)
+                    temp.flush()
+                    user.image.save("faceimage" + str(result.user.id) + ".jpg",File(temp), save = True)               
+                    login(request, user)
+                response['Location'] = '/users/profile'
+
+    return response
+
+def user_login_twitter(request, mock=None):
+    """
+    Handles the login of a user from Facebook.
+    If there is no BMG account for the user, one is created.
+    """
+    response = HttpResponseRedirect("/dashboard/")
+    result = authomatic.login(DjangoAdapter(request, response), "tw") if not mock else mock
+
+    if result:
+        print result
+        if result.error: pass #TODO
+        elif result.user:
+            # Get the info from the user
+            if not (result.user.name and result.user.id):
+                result.user.update()
+
+            username, email= result.user.name, result.user.name + "2" + result.user.name + ".com"
+
+            if (BeatMyGoalUser.objects.filter(username=username).exists()):
+                user = BeatMyGoalUser.objects.get(username=username)
+                user.backend='django.contrib.auth.backends.ModelBackend'
                 if not mock: login(request, user)
             else:
                 password = BeatMyGoalUser.objects.make_random_password(8)
@@ -228,9 +271,12 @@ def dashboard(request):
         data = json.loads(request.body)
         page = data["page"]
         query = data["query"]
+        filter_type = data["filter"]
         all_goals = Goal.objects.all()
-        queried_goals = dashboard_search(query, all_goals)
-        if (page*20+19 < len(all_goals)):
+        curr_user = request.user
+        filtered_goals = dashboard_filter(filter_type, all_goals, curr_user)
+        queried_goals = dashboard_search(query, filtered_goals)
+        if (page*20+19 < len(queried_goals)):
             goals = queried_goals[page*20:page*20+19]
         else:
             goals = queried_goals[page*20:]
@@ -247,8 +293,35 @@ def dashboard_search(query, goals):
     temp_goals = []
     for goal in goals:
         if query.lower() in goal.title.lower() or query in goal.description.lower():
-            
             temp_goals.append(goal)
+    return temp_goals
+
+def dashboard_filter(filter_type, goals, curr_user):
+    temp_goals = []
+    if curr_user.is_authenticated():
+        if filter_type == "mine":
+            for goal in goals:
+                if (len(goal.beatmygoaluser_set.filter(username=curr_user))>0):
+                    temp_goals.append(goal)
+        elif filter_type == "priv":
+            for goal in goals:
+                if goal.private_setting==1 and (len(goal.beatmygoaluser_set.filter(username=curr_user))>0):
+                    temp_goals.append(goal)
+        elif filter_type == "pend":
+            for goal in goals:
+                if (len(goal.pendinginvite_set.filter(email=curr_user.email,goal=goal))>0 and goal.private_setting==1 and (len(goal.beatmygoaluser_set.filter(username=curr_user))==0)):
+                    temp_goals.append(goal)
+        else:
+            for goal in goals:
+                if goal.private_setting==0:
+                    temp_goals.append(goal)
+    else:
+        if filter_type == "all":
+            for goal in goals:
+                if goal.private_setting==0:
+                    temp_goals.append(goal)
+        else:
+            return []
     return temp_goals
 
 @csrf_exempt
@@ -273,7 +346,10 @@ def goal_create_goal(request):
             ending_date = data['ending_date']
             iscompetitive = int(data['iscompetitive']) if "iscompetitive" in data else 1
 
-            response = Goal.create(title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date, iscompetitive)
+            if private_setting:
+                response = Goal.create(title, description, creator, prize, 1, goal_type, ending_value, unit, ending_date)
+            else:
+                response = Goal.create(title, description, creator, prize, 0, goal_type, ending_value, unit, ending_date)
 
             if response['errors']:
                 return HttpResponse(json.dumps(response), content_type = "application/json")
@@ -431,7 +507,9 @@ def goal_view_goal(request, goal_id):
     progress_ratio = goal.getProgressRatio(request.user)
     best_progress_ratio = goal.getBestProgressRatio()
     deadline_ratio = goal.getDeadlineRatio()
-    print best_progress_ratio
+    leaders = goal.checkLeaders()
+    print leaders
+    print goal.winners
     try:
         isFavorite = goal in request.user.favorite_goals.all()
     except:
@@ -440,7 +518,7 @@ def goal_view_goal(request, goal_id):
     return render(request, 'goals/viewGoal.html', {"goal" : goal, "user" : request.user, 
         "isParticipant" : isParticipant, "isCreator" : isCreator, 
         "isFavorite" : isFavorite, "image" :image, "goal_id" : goal_id, "progress" : progress,
-        "progressRatio" : progress_ratio, "deadlineRatio" : deadline_ratio, "bestprogressRatio" : best_progress_ratio})
+        "progressRatio" : progress_ratio, "deadlineRatio" : deadline_ratio, "bestprogressRatio" : best_progress_ratio, "leaders" : leaders})
 
 
 def goal_log_progress(request, gid):       #add Functional test here

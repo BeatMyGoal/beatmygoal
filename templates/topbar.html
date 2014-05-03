@@ -1,6 +1,5 @@
 {% load staticfiles %}
 <script src = "{% static 'js/topbar.js' %}"></script>
-<link rel="stylesheet" href="{% static 'css/topbar.css' %}"/>
 <div class="sticky">
 <nav class="top-bar" data-topbar>
       <ul class="title-area">
@@ -58,7 +57,7 @@
     <li id="browseGoals"><a href="/dashboard">Browse Goals</a></li>
 
     {% if user.is_authenticated %}
-          <li><a href="/users/profile">My Profile</a></li>
+       <!-- <li><a href="/users/profile">My Profile</a></li> -->
           <li id ="createGoal"><a href="/goals/create">Create Goal</a></li>
     {% else %}
           <li><a href="/users/create">Register</a></li>

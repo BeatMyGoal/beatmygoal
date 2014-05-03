@@ -8,31 +8,62 @@
 
 <script src="{% static 'js/dashboard/dashboard.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
-
-<div class="card-holder-background">
-    <div class="row collapse">
-        <div class="large-1 small-1 columns">
-            &nbsp;
-        </div>
-        <div class="large-8 small-7 columns">
-            <input id="dashboard_search" type="text" />
-        </div>
-        <div class="large-2 small-3 columns">
-            <a class="button expand postfix">Search</a>
-        </div>
-        <div class="large-1 small-1 columns">
-            &nbsp;
-        </div>
+<div class="row dashboard">
+  <div class="hide-for-small-only">
+    <div class="large-2 medium-2 columns">
+      <ul class="side-nav filter-bar">
+        <center>
+        <li><h4>Filters</h4></li>
+        <li id = "all" class="filter-choice side current"><a href="#">All Goals</a></li>
+        <li id = "mine" class="filter-choice side"><a href="#">My Goals</a></li>
+        <li id = "priv" class="filter-choice side"><a href="#">Private Goals</a></li>
+        <li id = "pend" class="filter-choice side"><a href="#">Pending Invites</a></li>
+      </center>
+      </ul>
     </div>
-    <div class="row">
-        <ul class="dashcard-container small-block-grid-1 medium-block-grid-1 large-block-grid-2"> </ul>
+  </div> 
+  <div class="large-8 medium-8 columns">
+    <div class="card-holder-background">
+       <div class="show-for-small-only">
+        <div class="row collapse">
+          <ul class="breadcrumbs filter-bar">
+            <li><h4>Filter Goals</h4></li>
+            <li id = "all" class="filter-choice current"><a href="#">All</a></li>
+            <li id = "mine" class="filter-choice"><a href="#">Mine</a></li>
+            <li id = "priv" class="filter-choice"><a href="#">Private</a></li>
+            <li id = "pend" class="filter-choice"><a href="#">Pending</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="row collapse">
+          <div class="large-1 small-1 columns">
+              &nbsp;
+          </div>
+          <div class="large-8 small-7 columns">
+              <input id="dashboard_search" type="text" />
+          </div>
+          <div class="large-2 small-3 columns">
+              <a class="button expand postfix">Search</a>
+          </div>
+          <div class="large-1 small-1 columns">
+              &nbsp;
+          </div>
+      </div>
+      <div class="row">
+          <ul class="dashcard-container small-block-grid-1 medium-block-grid-1 large-block-grid-2"> </ul>
+      </div>
+      <div class="users" style="display:none">
+         {% for user in users %} 
+              <div id="id{{ user.id }}">{{ user.username }}</div>
+         {% endfor %} 
+      </div>
     </div>
-    <div class="users" style="display:none">
-       {% for user in users %} 
-            <div id="id{{ user.id }}">{{ user.username }}</div>
-       {% endfor %} 
-    </div>
+  </div> 
+  <div class="large-2 medium-2 columns">
+    
+  </div> 
 </div>
+
 
 <!--Tutorial-->
 

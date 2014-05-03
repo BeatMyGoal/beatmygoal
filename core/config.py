@@ -14,15 +14,15 @@ CONFIG = {
         'scope': ['user_about_me', 'email', 'publish_stream'],
     }, 
 
-   # 'tw': { # Your internal provider name
+    'tw': { # Your internal provider name
         
-   #      # Provider class
-   #      'class_': oauth1.Twitter,
+         # Provider class
+         'class_': oauth1.Twitter,
         
-   #      # Twitter is an AuthorizationProvider so we need to set several other properties too:
-   #      'consumer_key': '########################',
-   #      'consumer_secret': '########################',
-   #  },
+         # Twitter is an AuthorizationProvider so we need to set several other properties too:
+         'consumer_key': 'HHtzVZhu3XDhadA3qRih1MJJz',
+         'consumer_secret': '8h2oitbipCrncqa6Y3rNbPq2SBgAfiDs3sndvCQMoUflpTSDvn',
+     },
     
     
    #  'oi': {
