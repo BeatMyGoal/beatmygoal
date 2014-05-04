@@ -76,7 +76,7 @@ $(document).ready(function() {
 					}
 					if (errors.indexOf(ERRCODES.CODE_BAD_ENDING_VALUE) >= 0) {
 						console.log("here");
-						$('#end-value-error').text("Ending value must be specified with number");
+						$('#end-value-error').text("Ending value must be greater than zero");
                         $("label[for='ending_value']").addClass("error");
 						$('#step2_check').hide();
 						document.getElementById('step2').click();
