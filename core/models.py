@@ -150,6 +150,7 @@ class Goal(models.Model):
         errors = []
         goal = None
 
+        
         if not title or len(title)>self.MAX_LEN_TITLE:
             errors.append(CODE_BAD_TITLE)
         if not description or len(description)>self.MAX_LEN_DESC:
@@ -168,8 +169,7 @@ class Goal(models.Model):
                 ending_value = float(ending_value)
             except:
                 errors.append(CODE_BAD_ENDING_VALUE)
-            if int(ending_value) > maxint:
-                print 'hi'
+            if ending_value > maxint or ending_value <= 0:
                 errors.append(CODE_BAD_ENDING_VALUE)
         if ending_date:
             try:
