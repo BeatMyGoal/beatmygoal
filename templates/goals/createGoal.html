@@ -143,9 +143,9 @@ Note - will fix later
 
                 <div class="row">
                   <div class="large-8 columns">
-                    <label for='ending_value'>Ending Value
-                      <input id="register-end-value" type="text" placeholder="example : 500" required />
-                      <small id="end-value-error" class="error">End-Value must be specified</small>
+                    <label for='ending_value'>Ending Value (number)
+                      <input id="register-end-value" type="number" placeholder="example : 500" min="1" required />
+                      <small id="end-value-error" class="error">End-Value must be specified and numerical value</small>
                     </label>
                   </div>
 
@@ -233,15 +233,31 @@ Note - will fix later
 
               <div class="row">
                 <div class="large-5 large-centered columns">
-                  
                   <center><h3> Payment System </h3></center>
 
-                  <div class="prize-label">
+                  <div class="prize-label" id="prize_normal">
                     <label for='prize'>Prize
-                        <input id="register-prize" type="text" placeholder="example : $20" required />
-                        <small id="prize-error" class="error">A Prize is required</small>
+                    <input id="register-prize-normal" type="text" placeholder="example : $100 heroku credit" required />
+                    <small id="prize-error-normal" class="error">A Prize is required</small>
                     </label>
                   </div>
+
+
+                  <!-- venmo prize value -->
+
+                  <div id="prize_venmo" class="row collapse">
+                    <label for='prize-value-venmo'>Prize</label>
+                    <div class="small-9 columns">
+                      <label for="venmo-prize">
+                      <input id="register-prize-venmo" type="text" placeholder="example : 20" required/>
+                      <small id="prize-error-venmo" class="error">A Prize is required</small>
+                      </label>
+                    </div>
+                    <div class="small-3 columns">
+                      <span class="postfix">(USD)</span>
+                    </div>
+                  </div>
+
 
                   <div class="row">
                     <p> The prize could be anything!! </p>
@@ -253,6 +269,7 @@ Note - will fix later
                       </center>
                     </div>
                   </div>
+
 
                     
                   <!-- Load Venmo Window -->

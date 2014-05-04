@@ -36,9 +36,6 @@ import urllib
 from djoauth2.authorization import make_authorization_endpoint
 from base64 import b64encode
 
-client_key = 1700
-client_secret = 'yEneXJT8DHUckDZ3BdmeJ75Urkys37Xq'
-
 
 def venmo(request):
     #Parsing 'code' from directed url
@@ -50,14 +47,14 @@ def venmo(request):
     token_response = requests.post(
       'https://api.venmo.com/v1/oauth/access_token',
       data={
-        'client_id':client_key,
-        'client_secret':client_secret,
+        'client_id':CONFIG['vm']['client_key'],
+        'client_secret':CONFIG['vm']['client_secret'],
         'code': code,
         'grant_type': 'authorization_code',
       },
       headers={
         'Authorization': 'Basic {}'.format(
-            b64encode('{}:{}'.format(client_key, client_secret))),
+            b64encode('{}:{}'.format(CONFIG['vm']['client_key'], CONFIG['vm']['client_secret']))),
       })
     
     assert token_response.status_code == 200
@@ -104,8 +101,6 @@ def venmo_logout(request):
 
 
 
-
-
 @csrf_exempt    
 def venmo_make_payment(request):
     #make request
@@ -128,8 +123,8 @@ def venmo_make_payment(request):
     payment_response = requests.post(
       'https://api.venmo.com/v1/payments',
       data={
-        'client_id': client_key,
-        'client_secret' : client_secret,
+        'client_id': CONFIG['vm']['client_key'],
+        'client_secret' : CONFIG['vm']['client_secret'],
         'access_token' : giver_vm_key,
         'email' : receiver_email,
         'note' : 'BeatMyGoal!',
@@ -137,7 +132,7 @@ def venmo_make_payment(request):
       },
       headers={
         'Authorization': 'Basic {}'.format(
-            b64encode('{}:{}'.format(client_key, client_secret))),
+            b64encode('{}:{}'.format(CONFIG['vm']['client_key'], CONFIG['vm']['client_secret']))),
       })
     print(json.loads(payment_response.content))
     data = json.loads(payment_response.content)['data']
@@ -345,13 +340,15 @@ def goal_create_goal(request):
             ending_value = data['ending_value']
             ending_date = data['ending_date']
             iscompetitive = int(data['iscompetitive']) if "iscompetitive" in data else 1
+            is_pay_with_venmo = data['is_pay_with_venmo']
 
             if private_setting:
-                response = Goal.create(title, description, creator, prize, 1, goal_type, ending_value, unit, ending_date)
+                response = Goal.create(title, description, creator, prize, 1, goal_type, ending_value, unit, ending_date, is_pay_with_venmo)
             else:
-                response = Goal.create(title, description, creator, prize, 0, goal_type, ending_value, unit, ending_date)
+                response = Goal.create(title, description, creator, prize, 0, goal_type, ending_value, unit, ending_date, is_pay_with_venmo)
 
             if response['errors']:
+                print(response['errors'])
                 return HttpResponse(json.dumps(response), content_type = "application/json")
             else:
                 goal = response['goal']

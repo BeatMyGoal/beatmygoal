@@ -140,13 +140,14 @@ class Goal(models.Model):
     winners = models.ManyToManyField('BeatMyGoalUser', blank=True, null=True, related_name='goalsWon')
     ended = models.PositiveSmallIntegerField(default=0, blank=True, null=True)
     iscompetitive = models.PositiveSmallIntegerField(default=1, blank=True)
+    is_pay_with_venmo = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.title)
 
 
     @classmethod
-    def create(self, title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date, iscompetitive=1):
+    def create(self, title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date, is_pay_with_venmo, iscompetitive=1):
         errors = []
         goal = None
 
@@ -168,7 +169,8 @@ class Goal(models.Model):
                 ending_value = float(ending_value)
             except:
                 errors.append(CODE_BAD_ENDING_VALUE)
-            if int(ending_value) > maxint:
+
+            if ending_value > maxint or ending_value <= 0:
                 errors.append(CODE_BAD_ENDING_VALUE)
         if ending_date:
             try:
@@ -177,12 +179,23 @@ class Goal(models.Model):
                 errors.append(CODE_BAD_DEADLINE)
             if type(ending_date) != datetime or ending_date < datetime.now():
                 errors.append(CODE_BAD_DEADLINE)
+        if is_pay_with_venmo:
+            try:
+                prize = float(prize)
+                print(prize)
+                if prize > 300.00 or prize <= 0:
+                    errors.append(CODE_BAD_PRIZE_WITH_VENMO)
+            except:
+                errors.append(CODE_BAD_PRIZE_WITH_VENMO)
+
+        if is_pay_with_venmo and not creator_user['user'].is_authentificated_venmo:
+            errors.append(CODE_NOT_AUTHORIZED_WITH_VENMO)
 
 
         if not errors:
             goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), 
                 prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0, ending_value=ending_value, 
-                unit=unit, ending_date=ending_date, iscompetitive=int(iscompetitive))
+                unit=unit, ending_date=ending_date, is_pay_with_venmo=is_pay_with_venmo, iscompetitive=int(iscompetitive))
             goal.save()
             BeatMyGoalUser.joinGoal(goal.creator.username, goal.id)
             newLog = Log(goal=goal)

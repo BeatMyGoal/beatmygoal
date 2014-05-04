@@ -67,9 +67,22 @@
 		</div>
 	</div>
 
-	<div class="row "> Goal Type and Deadline is readonly for now </div>
 
-	<div class="row ">
+	<div class="row">
+	<p> Goal Type and Deadline is readonly for now </p>
+		<div class="large-6 large-push-6 columns"> 
+			{% if goal.is_pay_with_venmo %}
+				<font color="green"> This prize will be awarded to winner through </font> 
+				<img style="margin-top: 0rem; margin-bottom: 0rem;" height="60" width="90" src="http://brand.venmo.com/img/logoblue.png" />
+				<br><br><br>
+			{% endif %}
+			
+		</div>
+	</div>
+
+
+
+	<div class="row">
 		<ul class="button-group right">
 			<div class="larger-12 columns">
 				<input type="submit" id="save" class="button small radius alert" value="Save">

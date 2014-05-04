@@ -18,7 +18,7 @@
 
 <div class="row" id="venmo-option">
   {% if is_authentificated_venmo %}
-    <p><font color="green">Your Venmo account has been connected</font></p>
+    <p><span style="text-decoration: blink;"><font color="green">Your Venmo account has been connected</font></p>
     Username : {{data.user.display_name | default:'N/A'}}		<br>
     Balance : {{data.balnace | default:'N/A'}}		<br>
     Email : {{data.user.email | default:'N/A'}}		<br>
