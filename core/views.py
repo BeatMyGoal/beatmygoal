@@ -231,9 +231,9 @@ def goal_create_goal(request):
             iscompetitive = int(data['iscompetitive']) if "iscompetitive" in data else 1
 
             if private_setting:
-                response = Goal.create(title, description, creator, prize, 1, goal_type, ending_value, unit, ending_date)
+                response = Goal.create(title, description, creator, prize, 1, goal_type, ending_value, unit, ending_date, iscompetitive)
             else:
-                response = Goal.create(title, description, creator, prize, 0, goal_type, ending_value, unit, ending_date)
+                response = Goal.create(title, description, creator, prize, 0, goal_type, ending_value, unit, ending_date, iscompetitive)
 
             if response['errors']:
                 return HttpResponse(json.dumps(response), content_type = "application/json")
