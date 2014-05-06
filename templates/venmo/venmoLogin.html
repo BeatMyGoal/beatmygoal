@@ -25,6 +25,7 @@
     Phone : {{data.user.phone | default:'N/A'}}		<br>
     <br>
 
+    <!-- Venmo Testing
     <p> The following payment form is for Payment Testing </p>
 
   	<label>Giver Name <br>
@@ -41,9 +42,10 @@
     payment : (+) value / charge : (-) value
   	<input id="amount" type="text" required />
   	</label>
-
-    <input id="vm_logout" type="button" class="tiny button left radius left" value="Logout" style="background: #DA5C5C"> 
-  	<input id="payment" type="button" class="tiny button left radius right" value="payment"> 
+     
+  	<input id="payment" type="button" class="tiny button left radius" value="payment"> 
+    -->
+    <input id="vm_logout" type="button" class="tiny button right radius left" value="Logout" style="background: #DA5C5C">
 
   {% else %}
     <p><font color="red">Your Venmo account has not been connected</font></p>

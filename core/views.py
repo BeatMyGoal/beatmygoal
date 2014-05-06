@@ -33,7 +33,6 @@ import cgi
 import urllib
 
 #venmo
-from djoauth2.authorization import make_authorization_endpoint
 from base64 import b64encode
 
 
@@ -101,7 +100,6 @@ def venmo_logout(request):
 
 
 
-@csrf_exempt    
 def venmo_make_payment(request):
     #make request
     data = json.loads(request.body)
@@ -109,17 +107,11 @@ def venmo_make_payment(request):
     giver = data['giver']
     receiver = data['receiver']
     amount = data['amount']
-    print(giver)
-    print(receiver)
-    print(amount)
     giver_vm_key = BeatMyGoalUser.get_vm_key(giver)['vm_key']
-    print(giver_vm_key)
-
+    print('giver venmo key : ' + giver_vm_key)
     receiver = BeatMyGoalUser.getUserByName(receiver)['user']
-    print(receiver)
-
     receiver_email = receiver.email
-    print(receiver_email)
+    print('receiver_email : ' + receiver_email)
     payment_response = requests.post(
       'https://api.venmo.com/v1/payments',
       data={
