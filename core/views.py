@@ -55,10 +55,9 @@ def venmo(request):
         'Authorization': 'Basic {}'.format(
             b64encode('{}:{}'.format(CONFIG['vm']['client_key'], CONFIG['vm']['client_secret']))),
       })
-    
-    assert token_response.status_code == 200
+    #print 'status code : ' + str(token_response.status_code)
+    #assert token_response.status_code == 200
     token_data = json.loads(token_response.content)
-
     #get venmo token
     access_token = token_data['access_token']
     refresh_token = token_data['refresh_token']

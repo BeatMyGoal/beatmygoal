@@ -45,7 +45,6 @@ class Log(models.Model):
                 amounts.append("null"); #or trailing days (if time deadline) insert null
             response["users"].append([user, amounts])
 
-
         return response
 
     def getUserTotal(self, user):
