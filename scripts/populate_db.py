@@ -97,7 +97,7 @@ dummy_goals = [
              image="japanese.jpg"),
 
     FakeGoal("Raise $500 for the American Red Cross", 
-             "The American Red Cross supplies about 40 percent of the nation's blood supply in 2700 hospitals nation wide. We need your help!" , 
+             "We supply 40 percent of the nation's blood supply in 2700 hospitals nationwide. help!" , 
              "helping many others",
              "500",
              "dollars",
@@ -118,7 +118,7 @@ dummy_goals = [
              image="code.jpg"),
 
     FakeGoal("Complete the Fenton's Icecream challenge", 
-             "it's a massive three-scoop, banana split with crushed pineapple, fudge, strawberry syrup, whip cream and a cherry on top!" , 
+             "it's a massive three-scoop, banana split with pineapple, fudge, whip cream and a cherry!" , 
              "glory and calories",
              "3",
              "scoops",
@@ -228,16 +228,19 @@ for g in dummy_goals:
             # Create a log
             le = LogEntry.create(g.log, u.username, 
                                  random.randrange(1,int(g.ending_value)), 
-                                 "<p>" + random.choice(log_comments)+ "</p>")['logEntry']
-
-            le.entry_date = datetime.date.today() - datetime.timedelta(days=random.randrange(0,14))
-            le.save()
+                                 "<p>" + random.choice(log_comments)+ "</p>")
+            if not le['errors']:
+                le = le['logEntry']
+                le.entry_date = datetime.date.today() - datetime.timedelta(days=random.randrange(0,14))
+                le.save()
         else:
             # Create a comment (because amount = None)
             le = LogEntry.create(g.log, u.username, 
-                                 None, "<p>" + random.choice(comments) +"</p>")['logEntry']
+                                 None, "<p>" + random.choice(comments) +"</p>")
 
-            le.entry_date = datetime.date.today() - datetime.timedelta(days=random.randrange(0,14))
-            le.save()
+            if not le['errors']:
+                le = le['logEntry']
+                le.entry_date = datetime.date.today() - datetime.timedelta(days=random.randrange(0,14))
+                le.save()
 
     goals.append(g)

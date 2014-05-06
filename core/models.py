@@ -65,7 +65,8 @@ class Log(models.Model):
     def getGoalTotal(self):
         total = 0
         for entry in self.logentry_set.all():
-            total += entry.entry_amount
+            if entry.entry_amount:
+                total += entry.entry_amount
         return total
 
 
