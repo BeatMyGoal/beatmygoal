@@ -57,19 +57,23 @@
             <small id="password-error" class="error">A password is required. Only alpha-numeric characters are allowed.</small>
           </label>
         </div>
-         <div class="small-12 medium-6 columns">
-     <br>
-     <input id="register-submit" type="submit" class="float-right button small" value="Get Started">
-         <!-- <label >Confirm Password</label> -->
-         <!-- <input id="" type="password" required pattern="[a-zA-Z0-9]+" /> -->
-         <!-- <small id="" class="error">A password is required. Only alpha-numeric characters are allowed.</small> -->
-       </div> 
-      <hr style="border-color:black">
-      <a href="/users/login/fb" id ="facebook-login" type="submit" class="float-right button small" style="background-color:#3B5998;">
-  <i class="fa fa-facebook" style="margin-right:10px;"></i> Login with Facebook</a>
-  <a href="/users/login/twitter" id ="twitter-login" style="margin-left:10px" type="submit" class="float-left button small" style="background-color:#3B5998;">
-   <i class="fa fa-twitter" style="margin-right:10px;"></i> Login with Twitter</a>
+        <div class="password-label small-12 medium-6 columns">
+          <label for='confirm-password'>Confirm Password
+            <input id="register-confirm-password" type="password" required pattern="[a-zA-Z0-9]+" />
+            <small id="confirm-password-error" class="error">Password does not match</small>
+          </label>
+        </div>
       </div>
+      <div class="row">
+        <div class="small-2 push-10 columns">
+            <input id="register-submit" type="submit" class="float-right button small" value="Get Started">
+        </div>  
+      </div>
+        <hr style="border-color:black"/>
+        <a href="/users/login/fb" id ="facebook-login" type="submit" class="float-right button small" style="background-color:#3B5998;">
+        <i class="fa fa-facebook" style="margin-right:10px;"></i> Login with Facebook</a>
+        <a href="/users/login/twitter" id ="twitter-login" style="margin-left:10px" type="submit" class="float-left button small" style="background-color:#3B5998;">
+        <i class="fa fa-twitter" style="margin-right:10px;"></i> Login with Twitter</a>
     </form>
   </div>
 </div>
