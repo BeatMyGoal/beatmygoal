@@ -310,7 +310,8 @@ class Goal(models.Model):
                 print 'numWinner : ' + str(numWinner)
                 winnersList = self.winners.all()
                 print 'winnersList : ' + str(winnersList)
-                amount = round( float(self.prize) / numWinner)
+                print('self prize : '+ self.prize)
+                amount = round( (float(self.prize) / numWinner) , 2)
                 print 'amount : ' + str(amount)
                 creator = self.creator
                 for winner in winnersList:
