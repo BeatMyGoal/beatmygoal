@@ -414,8 +414,8 @@ class BeatMyGoalUser(AbstractUser):
     social = models.CharField(null=True, blank=True, max_length=20)
     
     #VENMO
-    vm_key = models.CharField(null=True, blank=True, max_length=20)
-    vm_refresh_key = models.CharField(null=True, blank=True, max_length=20)
+    vm_key = models.CharField(null=True, blank=True, max_length=40)
+    vm_refresh_key = models.CharField(null=True, blank=True, max_length=40)
     vm_expire_date = models.DateTimeField(blank=True, null=True);
     is_authentificated_venmo = models.BooleanField(default=False)
 
