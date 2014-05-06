@@ -113,3 +113,13 @@ html, body {
 	font-size: 80%;
 	padding: 0px 20px;
 }
+
+.side-nav li.current a{
+    cursor: default;
+    color: #000;
+}
+
+.side-nav li.current a:hover{
+    cursor: default;
+    color: #000;
+}
