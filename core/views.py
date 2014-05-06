@@ -133,7 +133,7 @@ def user_login_twitter(request, mock=None):
                     temp.flush()
                     user.image.save("faceimage" + str(result.user.id) + ".jpg",File(temp), save = True)               
                     login(request, user)
-                response['Location'] = '/users/profile'
+                response['Location'] = '/users/%s/?tutorial=true' % (user.id)
 
     return response
 
