@@ -115,7 +115,7 @@
     </a>
   </dd>
   <dd style="border-style:solid; border-top-style:none; border-width:2px;">
-    <a style="text-align:center" href="#panel2"><strong>{% if goal.iscompetitive %}Competitive {% else %}Collaborative {% endif %}</strong>Goal: {{ goal.ending_value }} {{ goal.unit }} </a>
+    <a style="text-align:center" href="#panel2"><strong>{% if goal.iscompetitive %}Competitive {% else %}Collaborative {% endif %}</strong>Goal: {{ goal.ending_value }} {{ goal.unit }} <i class="fa fa-hand-o-up"></i></a>
     <div id="panel2" class="content">
       <div class="row">
             <div class="large-12 columns">
@@ -155,7 +155,7 @@
     </div>
   </dd>
   <dd style="border-style:solid; border-top-style:none; border-width:2px;">
-    <a style="text-align:center" href="#panel3">By {{ goal.ending_date.date|default:"No Deadline" }}</a>
+    <a style="text-align:center" href="#panel3">By {{ goal.ending_date.date|default:"No Deadline" }}<i class="fa fa-hand-o-up"></i></a>
     <div id="panel3" class="content">
         <div class="row">
             <div class="large-12 columns">
