@@ -151,7 +151,7 @@ class Goal(models.Model):
         return str(self.title)
 
     @classmethod
-    def create(self, title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date, is_pay_with_venmo, iscompetitive=1):
+    def create(self, title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date, iscompetitive=1, is_pay_with_venmo=False):
         errors = []
         goal = None
 

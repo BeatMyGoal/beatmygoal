@@ -1,5 +1,15 @@
 $(document).ready(function() {
 	$("#register-form").submit(function(e) {
+
+	if ($("#register-form #register-confirm-password").val() != $("#register-form #register-password").val()  ) {
+	    e.preventDefault();
+            e.stopPropagation();
+
+	    $('#register-form label[for="confirm-password"]').addClass('error');
+	    // alert("here");
+	    return;
+	}
+	    
         var invalid_fields = $("#register-form").find('[data-invalid]');
         console.log(invalid_fields);
         if (invalid_fields.length > 0) {

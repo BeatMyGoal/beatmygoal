@@ -30,7 +30,7 @@
             {% if goal.image %}
             <img src="{{goal.image.url}}" class='goal-image'/>
             {% else %}
-            <img src="http://placehold.it/1080x300&text=goalPhoto" style="height: 300px"/>
+            <img class="trophy-img" src="{% static 'img/trophy.gif' %}" style="height: 300px"/>
             {% endif %}
 
             <script>

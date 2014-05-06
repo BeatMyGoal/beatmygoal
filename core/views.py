@@ -141,11 +141,12 @@ def send_email(request):
     data = json.loads(request.body)
     to = data["to"].split(",")
     goal_id = data["goal_id"]
+    goal = Goal.objects.get(id=int(goal_id))
     errors = []
     if data["to"]:
         # try:
             html_content = loader.get_template('email.html')
-            html_content = html_content.render(Context({'from' : request.user.username, 'goal_id' : goal_id }))
+            html_content = html_content.render(Context({'from' : request.user.username, 'goal_id' : goal_id, 'goal' : goal }))
             email = EmailMessage(subject, html_content, to=to)
             email.content_subtype = "html"
             for email_address in to:
@@ -195,7 +196,7 @@ def user_login_fb(request, mock=None):
                     temp.flush()
                     user.image.save("faceimage" + str(result.user.id) + ".jpg",File(temp), save = True)               
                     login(request, user)
-                response['Location'] = '/users/profile'
+                response['Location'] = '/users/%s/?tutorial=true' % (user.id)
 
     return response
 
@@ -235,7 +236,7 @@ def user_login_twitter(request, mock=None):
                     temp.flush()
                     user.image.save("faceimage" + str(result.user.id) + ".jpg",File(temp), save = True)               
                     login(request, user)
-                response['Location'] = '/users/profile'
+                response['Location'] = '/users/%s/?tutorial=true' % (user.id)
 
     return response
 
@@ -335,9 +336,10 @@ def goal_create_goal(request):
             is_pay_with_venmo = data['is_pay_with_venmo']
 
             if private_setting:
-                response = Goal.create(title, description, creator, prize, 1, goal_type, ending_value, unit, ending_date, is_pay_with_venmo)
+
+                response = Goal.create(title, description, creator, prize, 1, goal_type, ending_value, unit, ending_date, iscompetitive, is_pay_with_venmo)
             else:
-                response = Goal.create(title, description, creator, prize, 0, goal_type, ending_value, unit, ending_date, is_pay_with_venmo)
+                response = Goal.create(title, description, creator, prize, 0, goal_type, ending_value, unit, ending_date, iscompetitive, is_pay_with_venmo)
 
             if response['errors']:
                 print(response['errors'])
