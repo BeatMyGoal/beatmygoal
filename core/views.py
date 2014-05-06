@@ -99,7 +99,7 @@ def venmo_logout(request):
     return HttpResponse(json.dumps({"errors" : errors}), content_type = "application/json")
 
 
-
+#Test for making a payment
 def venmo_make_payment(request):
     #make request
     data = json.loads(request.body)
@@ -333,7 +333,7 @@ def goal_create_goal(request):
             ending_value = data['ending_value']
             ending_date = data['ending_date']
             iscompetitive = int(data['iscompetitive']) if "iscompetitive" in data else 1
-            is_pay_with_venmo = data['is_pay_with_venmo']
+            is_pay_with_venmo = data.get('is_pay_with_venmo',False)
 
             if private_setting:
 

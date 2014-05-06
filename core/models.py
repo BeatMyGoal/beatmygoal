@@ -186,7 +186,6 @@ class Goal(models.Model):
         if is_pay_with_venmo:
             try:
                 prize = float(prize)
-                print(prize)
                 if prize > 300.00 or prize <= 0:
                     errors.append(CODE_BAD_PRIZE_WITH_VENMO)
             except:
@@ -307,12 +306,10 @@ class Goal(models.Model):
             if (self.is_pay_with_venmo):
                 errors={}
                 numWinner = len(self.winners.all())
-                print 'numWinner : ' + str(numWinner)
                 winnersList = self.winners.all()
                 print 'winnersList : ' + str(winnersList)
-                print('self prize : '+ self.prize)
                 amount = round( (float(self.prize) / numWinner) , 2)
-                print 'amount : ' + str(amount)
+                print 'amount per each winner : ' + str(amount)
                 creator = self.creator
                 for winner in winnersList:
                     response_vm_payment = Goal.venmo_make_payment(creator, winner, amount)
@@ -323,10 +320,8 @@ class Goal(models.Model):
     def venmo_make_payment(self, giver, winner, amount):
         errors={}
         giver_vm_key = BeatMyGoalUser.get_vm_key(giver)['vm_key']
-        print('Creator Venmo Key : ' + giver_vm_key)
         receiver = BeatMyGoalUser.getUserByName(winner)['user']
         receiver_email = receiver.email
-        print('Receiver Email : ' + receiver_email)
         payment_response = requests.post(
           'https://api.venmo.com/v1/payments',
           data={
@@ -420,7 +415,6 @@ class BeatMyGoalUser(AbstractUser):
 
     @classmethod
     def set_vm_key(self, username, vm_key, vm_refresh_key, vm_lifetime_seconds):
-        print 'in model, user :' + str(username)
         errors = []
         if not BeatMyGoalUser.objects.filter(username=username).exists():
             errors.append(CODE_BAD_USERID)
@@ -540,7 +534,6 @@ class BeatMyGoalUser(AbstractUser):
         if not goal in user.goals.all():
             errors.append(CODE_NOT_PARTICIPANT)
         if not errors:
-            print user.favorite_goals
             user.favorite_goals.add(goal)
             user.save()
 
