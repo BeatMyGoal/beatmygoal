@@ -6,7 +6,7 @@ $(document).ready(function() {
             e.stopPropagation();
 
 	    $('#register-form label[for="confirm-password"]').addClass('error');
-	    alert("here");
+	    // alert("here");
 	    return;
 	}
 	    
