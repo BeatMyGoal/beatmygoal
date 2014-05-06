@@ -103,7 +103,7 @@ dummy_goals = [
              "dollars",
              image="redcross.jpg"),
 
-    FakeGoal("Watch every episode of The Simpson in order", 
+    FakeGoal("Watch every episode of The Simpsons in order", 
              "'nuff said. Who wants in?" , 
              "popcorn & company",
              "548",

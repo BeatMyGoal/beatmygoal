@@ -108,7 +108,7 @@
   <dd style="border-style:solid; border-top-style:none; border-width:2px;" >
     <a href="#panel1" style="text-align:center">Prize: 
     {% if goal.is_pay_with_venmo %}
-        ${{ goal.prize }} (Through VENMO)
+        ${{ goal.prize|floatformat:2 }} (Through <img style="height:10px" src="http://brand.venmo.com/img/logoblue.png">)
     {% else %}
         {{ goal.prize }}
     {% endif %}

@@ -290,7 +290,7 @@ class GoalTestIteration2(unittest.TestCase):
         g.ending_date = datetime.strptime("4/29/2014",'%m/%d/%Y')
         g.save()
         g.checkDeadline()
-        self.assertTrue(g.winners.all())
+        self.assertFalse(g.winners.all(), "should be no winners if no progress logged")
         #self.assertEqual(g.winners.all()[0].username, 'test_user')
 
 
