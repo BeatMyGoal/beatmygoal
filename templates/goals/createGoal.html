@@ -73,7 +73,12 @@ Note - will fix later
           <div class="panel" data-equalizer-watch>
           <div align = "right"> <p>Step 1/4</p> </div>
             <div data-abide id="register-form" style="float: none">
-              <center><h3>Choose a Goal Type</h3></center>
+	      
+
+              <center>
+		<p> Is there anything you should do, you know for certain you can do, yet you never did? BeatMyGoal deals with the problem of motivation. Create a goal here and compete or collaborate with friends to accomplish your goal! </p>
+		<h3>Choose a Goal Type</h3>
+	      </center>
               <br>
               
               <!-- Type select box -->
@@ -126,7 +131,7 @@ Note - will fix later
                 <div class="row">
                   <div class="large-12 columns">
                     <label for='title'>Title
-                      <input id="register-title" type="text" placeholder = "example : Raise $500 for 'American Heart Association'" required />
+                      <input id="register-title" type="text" placeholder = "eg. Raise $500 for the American Heart Association" required />
                       <small id="title-error" class="error">A title is required</small>
                     </label>
                   </div>
@@ -144,14 +149,14 @@ Note - will fix later
                 <div class="row">
                   <div class="large-8 columns">
                     <label for='ending_value'>Ending Value (number)
-                      <input id="register-end-value" type="number" placeholder="example : 500" min="1" required />
+                      <input id="register-end-value" type="number" placeholder="eg. 500" min="1" required />
                       <small id="end-value-error" class="error">End-Value must be specified and numerical value</small>
                     </label>
                   </div>
 
                   <div class="large-4 columns">
                     <label for='value_unit'>Value Unit
-                      <input id="register-value-unit" type="text" placeholder="example : dollar" required />
+                      <input id="register-value-unit" type="text" placeholder="eg. dollars" required />
                       <small id="unit-error" class="error">Units must be specified</small>
                     </label>
                   </div>
@@ -160,7 +165,7 @@ Note - will fix later
                 <div class="row">
 
                   <div class="large-4 columns">
-                    <label for='private_setting'>Is Private?
+                    <label for='private_setting'> Make this goal invite-only?
                       <input id="register-private-setting" type="checkbox"/>
                     </label>
                   </div>
@@ -169,7 +174,7 @@ Note - will fix later
                 <div class="row">
                   <div class="large-12 columns">
                     <!-- prev button -->
-                    <input id="prev_button_step2" type="submit" class="small button left radius" value="Prev">
+                    <input id="prev_button_step2" type="submit" class="small button left radius" value="Back">
                     <!-- next button -->
                     <input id="next_button_step2" type="submit" class="small button right radius" value="Next">
                   </div>
@@ -191,11 +196,11 @@ Note - will fix later
               <div class="large-5 large-centered columns" style="float: none">
 
                 <div class="row">
-                  <center><h3>DeadLine</h3></center> <br>
+                  <center><h3>Set a deadline?</h3></center> <br>
                   <p> If you'd like to set a deadline to meet your goal, check the following box and select your deadline:</p>
 
                   <div class="dead-line-label">
-                    <input id="deadline" type="checkbox"><label for="checkbox1">Deadline</label>
+                    <input id="deadline" type="checkbox"><label for="checkbox1">I want to set a deadline</label>
                   </div>
 
                   <div class="end-time-label">
@@ -212,7 +217,7 @@ Note - will fix later
                   </div>
 
                   <!-- prev button -->
-                  <input id="prev_button_step3" type="submit" class="small button left radius" value="Prev">
+                  <input id="prev_button_step3" type="submit" class="small button left radius" value="Back">
                   <!-- next button -->
                   <input id="next_button_step3" type="submit" class="small button right radius" value="Next">
 
@@ -237,7 +242,7 @@ Note - will fix later
 
                   <div class="prize-label" id="prize_normal">
                     <label for='prize'>Prize
-                    <input id="register-prize-normal" type="text" placeholder="example : $100 heroku credit" required />
+                    <input id="register-prize-normal" type="text" placeholder="eg. $100 heroku credit" required />
                     <small id="prize-error-normal" class="error">A Prize is required</small>
                     </label>
                   </div>
@@ -249,7 +254,7 @@ Note - will fix later
                     <label for='prize-value-venmo'>Prize</label>
                     <div class="small-9 columns">
                       <label for="venmo-prize">
-                      <input id="register-prize-venmo" type="text" placeholder="example : 20" required/>
+                      <input id="register-prize-venmo" type="text" placeholder="eg. 20" required/>
                       <small id="prize-error-venmo" class="error">A Prize is required</small>
                       </label>
                     </div>
@@ -260,7 +265,7 @@ Note - will fix later
 
 
                   <div class="row">
-                    <p> The prize could be anything!! </p>
+                    <p> The prize could be anything... use your imagination! </p>
                     <p> If the prize is cash, you can pay with VENMO!</p>
                     <div class="venmo-label">
                       <input id="venmo_selected" type="checkbox"><label for="checkbox1"> Pay with VENMO </label>
@@ -280,7 +285,7 @@ Note - will fix later
                     
                     
                   <!-- prev button -->
-                  <input id="prev_button_step4" type="submit" class="small button left radius" value="Prev">
+                  <input id="prev_button_step4" type="submit" class="small button left radius" value="Back">
 
 
                   <!-- submit button  -->

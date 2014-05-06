@@ -39,7 +39,7 @@ from base64 import b64encode
 def venmo(request):
     #Parsing 'code' from directed url
     code = request.GET.get('code')
-    print code
+    print 'code : ' + code
     print 'in view, user :' + str(request.user.username)
     
     #Post request to get 'real' access_code
@@ -267,8 +267,19 @@ def dashboard(request):
         json_data = json.dumps({'goals':serialized_goals})
         return HttpResponse(json_data, content_type="application/json")
     else:
+        curr_user = request.user
         all_users = BeatMyGoalUser.objects.all()
+        goals = Goal.objects.all()
+        temp_goals = []
+        if curr_user.is_authenticated():
+            for goal in goals:
+                if (len(goal.pendinginvite_set.filter(email=curr_user.email,goal=goal))>0 and (len(goal.beatmygoaluser_set.filter(username=curr_user))==0)):
+                    temp_goals.append(goal)
+            num_invites = len(temp_goals)
+        else:
+            num_invites = 0;
         return render(request, 'dashboard/dashboard_main.html', {
+                'pending_invites': num_invites,
                 'users': all_users
             })
 
@@ -292,7 +303,7 @@ def dashboard_filter(filter_type, goals, curr_user):
                     temp_goals.append(goal)
         elif filter_type == "pend":
             for goal in goals:
-                if (len(goal.pendinginvite_set.filter(email=curr_user.email,goal=goal))>0 and goal.private_setting==1 and (len(goal.beatmygoaluser_set.filter(username=curr_user))==0)):
+                if (len(goal.pendinginvite_set.filter(email=curr_user.email,goal=goal))>0 and (len(goal.beatmygoaluser_set.filter(username=curr_user))==0)):
                     temp_goals.append(goal)
         else:
             for goal in goals:
