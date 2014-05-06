@@ -31,3 +31,8 @@ local-db:
 	python manage.py createsuperuser --username=admin --email=admin@example.com --noinput
 	python scripts/populate_db.py
 
+demo: 
+	make unit
+	make func
+	python manage.py test tests/SeleniumTests/{testCreateAccount.py:EditUserTest.test_create_account,testInvite.py:FavoriteTest.testEmailPreviewExists,testEditGoal.py:EditGoalTest.testEditGoal} -v2
+

@@ -51,12 +51,13 @@ class EditGoalTest(LiveServerTestCase):
         driver.find_element_by_id("ending_value").send_keys("200")
         driver.find_element_by_id("unit").clear()
         driver.find_element_by_id("unit").send_keys("new unit")
-        driver.find_element_by_link_text("Save").click()
+        driver.find_element_by_id("save").click()
+        #driver.find_element_by_link_text("Save").click()
         time.sleep(1)
-        driver.find_element_by_css_selector("#reveal_save > label > #password").clear()
-        driver.find_element_by_css_selector("#reveal_save > label > #password").send_keys("guitester")
-        driver.find_element_by_id("Confirm_button").click()
-        time.sleep(1)
+        # driver.find_element_by_css_selector("#reveal_save > label > #password").clear()
+        # driver.find_element_by_css_selector("#reveal_save > label > #password").send_keys("guitester")
+        # driver.find_element_by_id("Confirm_button").click()
+        # time.sleep(1)
         self.assertIn("New Title | BeatMyGoal", self.driver.title)
 
     def testEditGoalWithInvalidInput(self):
