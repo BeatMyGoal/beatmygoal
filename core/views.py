@@ -38,11 +38,12 @@ def send_email(request):
     data = json.loads(request.body)
     to = data["to"].split(",")
     goal_id = data["goal_id"]
+    goal = Goal.objects.get(id=int(goal_id))
     errors = []
     if data["to"]:
         # try:
             html_content = loader.get_template('email.html')
-            html_content = html_content.render(Context({'from' : request.user.username, 'goal_id' : goal_id }))
+            html_content = html_content.render(Context({'from' : request.user.username, 'goal_id' : goal_id, 'goal' : goal }))
             email = EmailMessage(subject, html_content, to=to)
             email.content_subtype = "html"
             for email_address in to:
