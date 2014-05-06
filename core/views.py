@@ -232,12 +232,7 @@ def user_login_twitter(request, mock=None):
                 user.social = result.user.id
                 user.save()
 
-                if not mock:
-                    url = 'http://graph.facebook.com/{}/picture?width=200&height=200'.format(result.user.id)
-                    temp=NamedTemporaryFile(delete=True)
-                    temp.write(requests.get(url).content)
-                    temp.flush()
-                    user.image.save("faceimage" + str(result.user.id) + ".jpg",File(temp), save = True)               
+                if not mock:             
                     login(request, user)
                 response['Location'] = '/users/%s/?tutorial=true' % (user.id)
 
