@@ -70,7 +70,7 @@
             <dd class="active"><a href="#panel2-1">Goals</a></dd>
             <dd><a href="#panel2-2">Favorites</a></dd>
             <dd><a href="#panel2-3">History</a></dd>
-            <dd><a href="#panel2-4">Comments</a></dd>
+            <!-- <dd><a href="#panel2-4">Comments</a></dd> -->
         </dl>
 
         <div class="tabs-content tab-content-holder">
@@ -120,14 +120,29 @@
                 {% else %}
                     {% if viewedUser.id == user.id and viewedUser.username == user.username %}
                         <a href="/dashboard/">You haven't added any goals to your favorites.</a>
-                    {% endif %}
+		    {% else %}
+			{{ viewedUser.username }} hasn't added any goals to their favorites yet.
+		   {% endif %}
+
                 {% endif %}
             </div>
             <div class="content" id="panel2-3">
-                <ul>
+                <ul class="fa-ul" style="margin-left:0 !important;">
                     {% if viewedUser.logentries.all %}
                         {% for entry in viewedUser.logentries.all %}
-                            <li><a href="/goals/{{ entry.log.goal.id }}">{{ entry.log.goal.title }}: {{ entry.entry_amount }}, {{ entry.comment }}</a></li>
+                            <li>
+                            {% if entry.entry_amount  %}
+                            <i class="fa fa-tasks"></i>
+                            {% else %}
+                            <i class="fa fa-comment"></i>
+			    {% endif %}
+			    <a href="/goals/{{ entry.log.goal.id }}">
+			      {{ entry.log.goal.title }}</a>
+			      {% if entry.entry_amount  %}
+			       (logged {{ entry.entry_amount }} {{ entry.log.goal.unit }})
+			      {% endif %}
+				{{ entry.comment|truncatewords_html:5 |safe }}
+			    </li>
                         {% endfor %}
                     {% else %}
                         <li>You don't have anything in your goal history. Try participating in one of your goals!</li>

@@ -41,8 +41,8 @@ $(document).ready(function() {
 				if (data.errors.length > 0) {
 					var errors = data.errors;
 					if (errors.indexOf(ERRCODES.CODE_DUPLICATE_USERNAME) >= 0) {
-						$('#register-form #username-error').text("Sorry, that username has already been used");
-						$('#register-form label[for="username"]').addClass('error');
+						$('#register-form #register-username-error').text("Sorry, that username has already been used");
+						$('#register-form label[for="register-username"]').addClass('error');
 
 					}
 					if (errors.indexOf(ERRCODES.CODE_DUPLICATE_EMAIL) >= 0) {
@@ -51,8 +51,8 @@ $(document).ready(function() {
 
 					}
 					if (errors.indexOf(ERRCODES.CODE_BAD_PASSWORD) >= 0) {
-						$('#register-form #password-error').text("Invalid password");
-						$('#register-form label[for="email"]').addClass('error');
+						$('#register-form #register-password-error').text("Invalid password");
+						$('#register-form label[for="register-password"]').addClass('error');
 					}
 				}
 			}

@@ -65,7 +65,8 @@ class Log(models.Model):
     def getGoalTotal(self):
         total = 0
         for entry in self.logentry_set.all():
-            total += entry.entry_amount
+            if entry.entry_amount:
+                total += entry.entry_amount
         return total
 
 
@@ -272,14 +273,14 @@ class Goal(models.Model):
 
 
     def checkLeaders(self):
-        maxAmount = -1
+        maxAmount = 0
         leaders = []
         for user in self.beatmygoaluser_set.all():
             userAmount = self.log.getUserTotal(user.username)
             if userAmount > maxAmount:
                 maxAmount = userAmount
                 leaders = [user]
-            elif userAmount == maxAmount:
+            elif (userAmount == maxAmount) and (maxAmount != 0):
                 leaders.append(user)
         return leaders
 
