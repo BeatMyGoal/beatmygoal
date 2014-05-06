@@ -39,7 +39,7 @@ from base64 import b64encode
 def venmo(request):
     #Parsing 'code' from directed url
     code = request.GET.get('code')
-    print code
+    print 'code : ' + code
     print 'in view, user :' + str(request.user.username)
     
     #Post request to get 'real' access_code
