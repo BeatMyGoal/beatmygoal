@@ -265,41 +265,5 @@ Note - will fix later
     </div>
   </div>
 </div>
-  
-<!--Tutorial-->
-
-<script>
-
-function getQueryVariable(variable) {
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for (var i=0;i<vars.length;i++) {
-    var pair = vars[i].split("=");
-    if (pair[0] == variable) {
-      return pair[1];
-    }
-  } 
-}
-</script>
-
-<ol id = "joyride_tour" class="joyride-list" data-joyride>
-  <li data-button="End Tour" >
-    <h3>Create Goal</h3><hr />
-    <p> Is there anything you should do, you know for certain you can do, yet you never did? BeatMyGoal deals with the problem of motivation. Create goal here and compete/collaborate with friends to accomplish your goal! </p>
-  </li>
-</ol>
-
-<script>
-
-if (getQueryVariable("tutorial")){
-$(function(){  
-    $(document).foundation();
-});
-
-$(document).ready(function(){
-   $(document).foundation('joyride', 'start');
-});
-}
-</script>
 
 {% endblock %}
