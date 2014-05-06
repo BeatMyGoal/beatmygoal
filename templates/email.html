@@ -24,9 +24,9 @@
    <td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
     <p>{{ from }} challenged you to beat his goal!</p>
     {% if goal_id %}
-    <a href="http://beatmygoal.herokuapp.com/goals/{{ goal_id }}">Accept the challenge Now</a>
+    <a href="http://beatmygoal.herokuapp.com/goals/{{ goal_id }}">{{goal.title}}</a>
     {% else %}
-    <a href="#">Accept the challenge Now</a>
+    <a href="#">{{goal.title}} Accept the challenge Now</a>
     {% endif %}
    </td>
   </tr>

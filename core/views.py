@@ -38,11 +38,12 @@ def send_email(request):
     data = json.loads(request.body)
     to = data["to"].split(",")
     goal_id = data["goal_id"]
+    goal = Goal.objects.get(id=int(goal_id))
     errors = []
     if data["to"]:
         # try:
             html_content = loader.get_template('email.html')
-            html_content = html_content.render(Context({'from' : request.user.username, 'goal_id' : goal_id }))
+            html_content = html_content.render(Context({'from' : request.user.username, 'goal_id' : goal_id, 'goal' : goal }))
             email = EmailMessage(subject, html_content, to=to)
             email.content_subtype = "html"
             for email_address in to:
@@ -231,9 +232,9 @@ def goal_create_goal(request):
             iscompetitive = int(data['iscompetitive']) if "iscompetitive" in data else 1
 
             if private_setting:
-                response = Goal.create(title, description, creator, prize, 1, goal_type, ending_value, unit, ending_date)
+                response = Goal.create(title, description, creator, prize, 1, goal_type, ending_value, unit, ending_date, iscompetitive)
             else:
-                response = Goal.create(title, description, creator, prize, 0, goal_type, ending_value, unit, ending_date)
+                response = Goal.create(title, description, creator, prize, 0, goal_type, ending_value, unit, ending_date, iscompetitive)
 
             if response['errors']:
                 return HttpResponse(json.dumps(response), content_type = "application/json")
