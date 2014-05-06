@@ -9,6 +9,9 @@
 .log_entry_list li {
     margin: 5px;
 }
+.trophy-img{
+  margin-left: 10%; 
+}
 
 .goal-buttons {
     position: absolute;
@@ -19,6 +22,7 @@
 
 .goal-picture-container {
     background-color: #777;
+    /*background-image: url('../../img/trophy.gif')*/
 }
 
 .goal-image {

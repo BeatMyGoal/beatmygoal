@@ -86,12 +86,9 @@ function getQueryVariable(variable) {
     <h3>Browse Goal</h3><hr />
     <p>All public goals are displayed here. You can either join or view the goal on this page.</p>
   </li>
-  <li data-id="createGoal" data-text="Create my own goal" data-options="tip_location: top;">
+  <li data-id="createGoal" data-text="End Tutorial" data-options="tip_location: top;">
     <h3>Create Goal</h3><hr />
     <p>You can also create your own goal!</p>
-  </li>
-  <li data-button="End">
-    <h4>The End</h4><hr />
   </li>
 </ol>
 
@@ -100,8 +97,7 @@ function getQueryVariable(variable) {
 if (getQueryVariable("tutorial")){
 $(function(){  
     $(document).foundation({joyride: {post_step_callback: function(index){
-        if (index == 1){
-            window.location= "/goals/create?tutorial=true"};} 
+        if (index == 1){};} 
     }});
 });
 
