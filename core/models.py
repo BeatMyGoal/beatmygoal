@@ -312,12 +312,12 @@ class Goal(models.Model):
                 print 'amount per each winner : ' + str(amount)
                 creator = self.creator
                 for winner in winnersList:
-                    response_vm_payment = Goal.venmo_make_payment(creator, winner, amount)
+                    response_vm_payment = Goal.venmo_make_payment(creator, winner, amount, self.title)
                     errors = dict(errors.items() + response_vm_payment.items())
                 print("errors : " + str(errors))
 
     @classmethod
-    def venmo_make_payment(self, giver, winner, amount):
+    def venmo_make_payment(self, giver, winner, amount, title):
         errors={}
         giver_vm_key = BeatMyGoalUser.get_vm_key(giver)['vm_key']
         receiver = BeatMyGoalUser.getUserByName(winner)['user']
@@ -329,7 +329,7 @@ class Goal(models.Model):
             'client_secret' : CONFIG['vm']['client_secret'],
             'access_token' : giver_vm_key,
             'email' : receiver_email,
-            'note' : 'BeatMyGoal!',
+            'note' : 'BeatMyGoal : This is goal prize of "' +  title + '"',
             'amount' : amount,
           },
           headers={
