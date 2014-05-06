@@ -13,7 +13,6 @@ $(document).ready(function() {
 		if (invalid_fields.length > 0) {
 			return;
 		}
-
 		var fname = $fname.val();
 		var lname = $lname.val();
 		var username = $username.val();

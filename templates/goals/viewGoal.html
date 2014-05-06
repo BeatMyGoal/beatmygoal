@@ -106,7 +106,13 @@
 
         <dl class="accordion" data-accordion>
   <dd style="border-style:solid; border-top-style:none; border-width:2px;" >
-    <a href="#panel1" style="text-align:center">Prize: {{ goal.prize }}</a>
+    <a href="#panel1" style="text-align:center">Prize: 
+    {% if goal.is_pay_with_venmo %}
+        ${{ goal.prize }} (Through VENMO)
+    {% else %}
+        {{ goal.prize }}
+    {% endif %}
+    </a>
   </dd>
   <dd style="border-style:solid; border-top-style:none; border-width:2px;">
     <a style="text-align:center" href="#panel2"><strong>{% if goal.iscompetitive %}Competitive {% else %}Collaborative {% endif %}</strong>Goal: {{ goal.ending_value }} {{ goal.unit }} </a>

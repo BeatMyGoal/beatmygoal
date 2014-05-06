@@ -35,8 +35,17 @@
 			</label>
 		</div>
 	</div>
-
-
+	<div class="row">
+		<div class="large-6 columns username-fields"> 
+			
+			{% if user.is_authentificated_venmo %}
+				<font color="green">Your account is connected with </font>
+			{% else %}
+				<font color="red">Your account is not connected with </font>
+			{% endif %}
+			<img style="margin-top: 0rem; margin-bottom: 0rem;" height="60" width="90" src="http://brand.venmo.com/img/logoblue.png" />
+		</div>
+	</div>
 	<div class="row ">
 		<ul class="button-group right">
 			<div class="larger-12 columns">

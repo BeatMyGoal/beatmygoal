@@ -23,6 +23,11 @@ CONFIG = {
          'consumer_key': 'HHtzVZhu3XDhadA3qRih1MJJz',
          'consumer_secret': '8h2oitbipCrncqa6Y3rNbPq2SBgAfiDs3sndvCQMoUflpTSDvn',
      },
+
+     'vm': {
+          'client_key' : 1700,
+          'client_secret' : 'yEneXJT8DHUckDZ3BdmeJ75Urkys37Xq',
+     }
     
     
    #  'oi': {

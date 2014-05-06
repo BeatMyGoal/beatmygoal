@@ -39,9 +39,6 @@ urlpatterns = patterns('',
 
 	url(r'^users/logout', core.views.user_logout, name='user_logout'),
 	
-	#url(r'^users/test/$', core.views.test_user),
-	#url(r'^users/test/view', core.views.view_user2),
-	#url(r'^users/test/edit', core.views.edit_user2),                       
 
 	url(r'^goals/(\d+)/imageload/$', core.views.goal_image_upload, name ='goal_image_upload'),
 	url(r'^users/(\d+)/imageload/$', core.views.user_image_upload, name ='user_image_upload'),
@@ -53,7 +50,15 @@ urlpatterns = patterns('',
     url(r'^confirm', core.views.confirm, name='confirm'),
     url(r'^email/$', core.views.send_email, name='email'),
     url(r'^email/preview', core.views.email_preview, name='email_preview'),
-    
+
+
+    #venmo - to handle user who is redicted from venmo site.
+    url(r'^vm', core.views.venmo, name='venmo'),
+    #venmo - to make a payment
+    url(r'^payment', core.views.venmo_make_payment, name='venmo_make_payment'),
+    #venmo - to assist user to authenticate with venmo
+    url(r'^venmo_login', core.views.venmo_login, name='venmo_login'),
+    url(r'^venmo_logout', core.views.venmo_logout, name='venmo_logout'),
 
 )
 #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

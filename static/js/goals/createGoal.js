@@ -1,6 +1,9 @@
 $(document).ready(function() {
 	$('#hidden_tabs').hide();
 
+	//venmo
+	document.getElementById('step1').click();
+
 	$("#register-submit").click(function(e) {
 		$('#step4_check').fadeIn();
 		$("label[for='prize']").removeClass("error");
@@ -12,6 +15,8 @@ $(document).ready(function() {
 
 		var goal_type;
 		var ending_date;
+		var is_pay_with_venmo
+		var prize
 
 		if ($('#deadline').is(":checked")) {
 			goal_type = "Time-based";
@@ -20,21 +25,27 @@ $(document).ready(function() {
 			goal_type = "Value-based";
 			ending_date = null;
 		}
-
+		if ($('#venmo_selected').is(":checked")){
+			is_pay_with_venmo  = true;
+			prize = $("#register-prize-venmo").val();
+		} else {
+			is_pay_with_venmo = false;
+			prize = $("#register-prize-normal").val();
+		}
+		
 		var data = {
 			title: $("#register-title").val(),
 			description: $("#register-description").val(),
 			creator: "come back to this",
-			prize: $("#register-prize").val(),
+			prize: prize,
 			private_setting: $("#register-private-setting").is(":checked"),
 			goal_type: goal_type,
 			ending_value: $("#register-end-value").val(),
 			unit: $("#register-value-unit").val(),
 			ending_date : ending_date,
             iscompetitive : $('#goal_type').val() == "Collaborative" ? 0 : 1,
+            is_pay_with_venmo : is_pay_with_venmo,
 		};
-
-
 
 		$.ajax({
 			type: "POST",
@@ -81,6 +92,18 @@ $(document).ready(function() {
 						$('#step2_check').hide();
 						document.getElementById('step2').click();
 					}
+					if (errors.indexOf(ERRCODES.CODE_BAD_PRIZE_WITH_VENMO) >= 0) {
+						$('#prize-error-venmo').text("Prize must be positive value and less than 300");
+                        $("label[for='venmo-prize']").addClass("error");
+						$('#step4_check').hide();
+						document.getElementById('step4').click();
+					}
+					if (errors.indexOf(ERRCODES.CODE_NOT_AUTHORIZED_WITH_VENMO) >= 0) {
+						$('#step4_check').hide();
+						document.getElementById('step4').click();
+						alert("You should be authorized with Venmo if you want to pay pirze with Venmo")
+					}
+
 				}
 			}
 
@@ -175,6 +198,38 @@ $(document).ready(function() {
 	});
 
 
+	//venmo
+	$('#venmoWindow').hide();
+	$('#prize_venmo').hide();
+	$('#venmo_selected').change(function() {
+		$('#venmoWindow').hide();
+        if($(this).is(":checked")) {
+        	$('#venmoWindow').fadeIn();
+        	$('#prize_normal').hide();
+        	$('#prize_venmo').show();
+        	autoResize('venmoWindow')
+        } else {
+        	$('#prize_venmo').hide();
+        	$('#prize_normal').show();
+        }
+    });
+
+	$('#resize').click(function(e){
+		autoResize('venmoWindow')
+	});
+
+
 });
 
+function autoResize(id){
+		var newheight;
+		var newwidth;
 
+		if(document.getElementById){
+		newheight=document.getElementById(id).contentWindow.document.body.scrollHeight;
+		newwidth=document.getElementById(id).contentWindow.document.body.scrollWidth+5;
+		}
+
+		document.getElementById(id).height = (newheight) + "px";
+		document.getElementById(id).width = (newwidth) + "px";
+}

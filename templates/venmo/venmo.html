@@ -1,0 +1,12 @@
+{% load staticfiles %}
+
+
+<script>
+window.opener.parent.document.getElementById('venmoWindow').contentDocument.location.reload(true);
+setTimeout(function(){resize();},1000);
+function resize() {
+	window.opener.parent.document.getElementById('resize').click();
+	window.close();
+}
+
+</script>

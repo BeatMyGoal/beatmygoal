@@ -7,6 +7,11 @@ from constants import *
 from datetime import *
 from sys import maxint
 
+import requests
+import json
+from config import CONFIG
+from base64 import b64encode
+
 class Log(models.Model):
     goal = models.OneToOneField('Goal')
 
@@ -140,17 +145,16 @@ class Goal(models.Model):
     winners = models.ManyToManyField('BeatMyGoalUser', blank=True, null=True, related_name='goalsWon')
     ended = models.PositiveSmallIntegerField(default=0, blank=True, null=True)
     iscompetitive = models.PositiveSmallIntegerField(default=1, blank=True)
+    is_pay_with_venmo = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.title)
 
-
     @classmethod
-    def create(self, title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date, iscompetitive=1):
+    def create(self, title, description, creator, prize, private_setting, goal_type, ending_value, unit, ending_date, iscompetitive=1, is_pay_with_venmo=False):
         errors = []
         goal = None
 
-        
         if not title or len(title)>self.MAX_LEN_TITLE:
             errors.append(CODE_BAD_TITLE)
         if not description or len(description)>self.MAX_LEN_DESC:
@@ -169,6 +173,7 @@ class Goal(models.Model):
                 ending_value = float(ending_value)
             except:
                 errors.append(CODE_BAD_ENDING_VALUE)
+
             if ending_value > maxint or ending_value <= 0:
                 errors.append(CODE_BAD_ENDING_VALUE)
         if ending_date:
@@ -178,19 +183,28 @@ class Goal(models.Model):
                 errors.append(CODE_BAD_DEADLINE)
             if type(ending_date) != datetime or ending_date < datetime.now():
                 errors.append(CODE_BAD_DEADLINE)
+        if is_pay_with_venmo:
+            try:
+                prize = float(prize)
+                if prize > 300.00 or prize <= 0:
+                    errors.append(CODE_BAD_PRIZE_WITH_VENMO)
+            except:
+                errors.append(CODE_BAD_PRIZE_WITH_VENMO)
+
+        if is_pay_with_venmo and not creator_user['user'].is_authentificated_venmo:
+            errors.append(CODE_NOT_AUTHORIZED_WITH_VENMO)
 
 
         if not errors:
             goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), 
                 prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0, ending_value=ending_value, 
-                unit=unit, ending_date=ending_date, iscompetitive=int(iscompetitive))
+                unit=unit, ending_date=ending_date, is_pay_with_venmo=is_pay_with_venmo, iscompetitive=int(iscompetitive))
             goal.save()
             BeatMyGoalUser.joinGoal(goal.creator.username, goal.id)
             newLog = Log(goal=goal)
             newLog.save()
             
         return {"errors" : errors, "goal" : goal }
-
 
     @classmethod
     def remove(self, goal_id, user):
@@ -210,9 +224,6 @@ class Goal(models.Model):
             goal.delete()
         return { "errors" : errors }
 
-
-
-
     @classmethod
     def edit(self, goal, edits = {}):
         if 'title' in edits:
@@ -229,8 +240,6 @@ class Goal(models.Model):
 
         if 'unit' in edits:
             goal.unit = edits['unit']
-
-
 
         errors = []
         if not goal.title or len(goal.title)>self.MAX_LEN_TITLE:
@@ -260,6 +269,7 @@ class Goal(models.Model):
             goalTotal = self.log.getGoalTotal()
             if goalTotal >= int(self.ending_value):
                 self.endGoal([user.username for user in self.beatmygoaluser_set.all()])
+
 
     def checkLeaders(self):
         maxAmount = -1
@@ -291,6 +301,47 @@ class Goal(models.Model):
             self.ended = len(winner) if winner else 1 #set the ended value to be the amount of winners
             self.winning_date = datetime.now()
             super(Goal, self).save() #regular save method won't work now
+            
+            venmo_payment_error = {}
+            if (self.is_pay_with_venmo):
+                errors={}
+                numWinner = len(self.winners.all())
+                winnersList = self.winners.all()
+                print 'winnersList : ' + str(winnersList)
+                amount = round( (float(self.prize) / numWinner) , 2)
+                print 'amount per each winner : ' + str(amount)
+                creator = self.creator
+                for winner in winnersList:
+                    response_vm_payment = Goal.venmo_make_payment(creator, winner, amount, self.title)
+                    errors = dict(errors.items() + response_vm_payment.items())
+                print("errors : " + str(errors))
+
+    @classmethod
+    def venmo_make_payment(self, giver, winner, amount, title):
+        errors={}
+        giver_vm_key = BeatMyGoalUser.get_vm_key(giver)['vm_key']
+        receiver = BeatMyGoalUser.getUserByName(winner)['user']
+        receiver_email = receiver.email
+        payment_response = requests.post(
+          'https://api.venmo.com/v1/payments',
+          data={
+            'client_id': CONFIG['vm']['client_key'],
+            'client_secret' : CONFIG['vm']['client_secret'],
+            'access_token' : giver_vm_key,
+            'email' : receiver_email,
+            'note' : 'BeatMyGoal : This is goal prize of "' +  title + '"',
+            'amount' : amount,
+          },
+          headers={
+            'Authorization': 'Basic {}'.format(
+                b64encode('{}:{}'.format(CONFIG['vm']['client_key'], CONFIG['vm']['client_secret']))),
+          })
+        response = json.loads(payment_response.content)
+        if 'error' in response:
+            errors[receiver] = response['error']['message']
+        return errors
+        
+
 
     def isEnded(self):
         return self.ended
@@ -325,9 +376,6 @@ class Goal(models.Model):
                 best = self.getProgressRatio(user)
         return best
 
-
-
-
     
 class BeatMyGoalUser(AbstractUser):
     """
@@ -345,10 +393,6 @@ class BeatMyGoalUser(AbstractUser):
     is_superuser,
     last_login,
     date_joined
-
-
-    << User method >>
-
     """
 
     MAX_LEN_USERNAME = 30
@@ -362,6 +406,38 @@ class BeatMyGoalUser(AbstractUser):
     image = models.FileField(upload_to='userimage/')
     social = models.CharField(null=True, blank=True, max_length=20)
     
+    #VENMO
+    vm_key = models.CharField(null=True, blank=True, max_length=20)
+    vm_refresh_key = models.CharField(null=True, blank=True, max_length=20)
+    vm_expire_date = models.DateTimeField(blank=True, null=True);
+    is_authentificated_venmo = models.BooleanField(default=False)
+
+
+    @classmethod
+    def set_vm_key(self, username, vm_key, vm_refresh_key, vm_lifetime_seconds):
+        errors = []
+        if not BeatMyGoalUser.objects.filter(username=username).exists():
+            errors.append(CODE_BAD_USERID)
+        user = BeatMyGoalUser.objects.get(username=username)
+        user.vm_key = vm_key
+        user.vm_refresh_key = vm_refresh_key
+        user.vm_expire_date = datetime.now() + timedelta(seconds=vm_lifetime_seconds)
+        user.is_authentificated_venmo = True
+        user.save()
+        return { 'user' : user, 'errors' : errors }
+
+    @classmethod
+    def get_vm_key(self, username):
+        errors = []
+        if not BeatMyGoalUser.objects.filter(username=username).exists():
+            errors.append(CODE_BAD_USERID)
+        user = BeatMyGoalUser.objects.get(username=username)
+        vm_key = user.vm_key
+        if vm_key == None:
+            errors.append(CODE_NOT_VMCODE)
+        return { 'user' : user, 'errors' : errors , 'vm_key' : vm_key }
+
+
     @classmethod
     def valid_email(self, e):
         return 0 < len(e)
@@ -458,7 +534,6 @@ class BeatMyGoalUser(AbstractUser):
         if not goal in user.goals.all():
             errors.append(CODE_NOT_PARTICIPANT)
         if not errors:
-            print user.favorite_goals
             user.favorite_goals.add(goal)
             user.save()
 

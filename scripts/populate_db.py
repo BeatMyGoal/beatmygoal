@@ -204,7 +204,7 @@ for g in dummy_goals:
     private_setting = 0
 
     result = Goal.create(g.title, g.description, creator, g.prize, private_setting, 
-                    goal_type, g.ending_value, g.unit, ending_date)
+                    goal_type, g.ending_value, g.unit, ending_date, False)
 
     if result['errors']:
         print "errors", result, x.title
