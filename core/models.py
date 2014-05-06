@@ -444,14 +444,18 @@ class BeatMyGoalUser(AbstractUser):
     @classmethod
     def set_vm_key(self, username, vm_key, vm_refresh_key, vm_lifetime_seconds):
         errors = []
+        print '***************step1'
         if not BeatMyGoalUser.objects.filter(username=username).exists():
             errors.append(CODE_BAD_USERID)
         user = BeatMyGoalUser.objects.get(username=username)
+        print '***************step2'
         user.vm_key = vm_key
         user.vm_refresh_key = vm_refresh_key
         user.vm_expire_date = datetime.now() + timedelta(seconds=vm_lifetime_seconds)
+        print '***************step3'
         user.is_authentificated_venmo = True
         user.save()
+        print '***************step4'
         return { 'user' : user, 'errors' : errors }
 
     @classmethod
