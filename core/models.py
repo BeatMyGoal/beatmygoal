@@ -195,7 +195,6 @@ class Goal(models.Model):
         if is_pay_with_venmo and not creator_user['user'].is_authentificated_venmo:
             errors.append(CODE_NOT_AUTHORIZED_WITH_VENMO)
 
-
         if not errors:
             goal = Goal.objects.create(title=title, description=description, creator=BeatMyGoalUser.objects.get(username=creator), 
                 prize=prize, private_setting=private_setting, goal_type=goal_type, progress_value=0.0, ending_value=ending_value, 
@@ -307,28 +306,22 @@ class Goal(models.Model):
             if (self.is_pay_with_venmo):
                 
                 #refresh token when expired
+                print "Expired date: " + str(BeatMyGoalUser.getUserByName(self.creator)['user'].vm_expire_date) + '   now : ' + str(datetime.now())
                 if BeatMyGoalUser.getUserByName(self.creator)['user'].vm_expire_date < datetime.now():
-                    venmo_refresh_token(self.creator)
+                    BeatMyGoalUser.venmo_refresh_token(self.creator)
 
                 #make a payment
                 errors={}
                 numWinner = len(self.winners.all())
                 winnersList = self.winners.all()
-                print 'winnersList : ' + str(winnersList)
+                print 'WinnersList : ' + str(winnersList)
                 amount = round( (float(self.prize) / numWinner) , 2)
-                print 'amount per each winner : ' + str(amount)
+                print 'Prize amount per each winner : ' + str(amount)
                 creator = self.creator
                 for winner in winnersList:
                     response_vm_payment = Goal.venmo_make_payment(creator, winner, amount, self.title)
                     errors = dict(errors.items() + response_vm_payment.items())
-                print("errors : " + str(errors))
-
-
-
-
-vm_refresh_key = models.CharField(null=True, blank=True, max_length=20)
-    vm_expire_date
-
+                print("Errors in Payments: " + str(errors))
 
 
     @classmethod
@@ -356,33 +349,6 @@ vm_refresh_key = models.CharField(null=True, blank=True, max_length=20)
             errors[receiver] = response['error']['message']
         return errors
         
-    @classmethod
-    def venmo_refresh_token(self, giver):
-
-        refresh_token = BeatMyGoalUser.get_vm_key(giver)['vm_refresh_key']
-
-        payment_response = requests.post(
-          'https://api.venmo.com/v1/access_token',
-          data={
-            'client_id': CONFIG['vm']['client_key'],
-            'client_secret' : CONFIG['vm']['client_secret'],
-            'refresh_token': refresh_token,
-          },
-          headers={
-            'Authorization': 'Basic {}'.format(
-                b64encode('{}:{}'.format(CONFIG['vm']['client_key'], CONFIG['vm']['client_secret']))),
-        })
-        response = requests.post(url, data)
-        response_dict = response.json()
-        access_token = response_dict['access_token']
-        refresh_token = response_dict['refresh_token']
-        expires_in = response_dict['expires_in']
-
-        BeatMyGoal.set_vm_key(giver, access_token, refresh_token, expires_in)
-
-
-
-
 
 
     def isEnded(self):
@@ -454,6 +420,27 @@ class BeatMyGoalUser(AbstractUser):
     vm_expire_date = models.DateTimeField(blank=True, null=True);
     is_authentificated_venmo = models.BooleanField(default=False)
 
+    @classmethod
+    def venmo_refresh_token(self, username):
+        refresh_token = BeatMyGoalUser.getUserByName(username)['user'].vm_refresh_key
+        refresh_response = requests.post(
+          'https://api.venmo.com/v1/access_token',
+          data={
+            'client_id': CONFIG['vm']['client_key'],
+            'client_secret' : CONFIG['vm']['client_secret'],
+            'refresh_token': refresh_token,
+          },
+          headers={
+            'Authorization': 'Basic {}'.format(
+                b64encode('{}:{}'.format(CONFIG['vm']['client_key'], CONFIG['vm']['client_secret']))),
+        })
+        print json.loads(refresh_response.content)
+        assert refresh_response.status_code == 200
+        response_data = json.loads(refresh_response.content)
+        access_token = response_data['access_token']
+        refresh_token = response_data['refresh_token']
+        expires_in = response_data['expires_in']
+        BeatMyGoal.set_vm_key(giver, access_token, refresh_token, expires_in)
 
     @classmethod
     def set_vm_key(self, username, vm_key, vm_refresh_key, vm_lifetime_seconds):
