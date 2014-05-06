@@ -61,6 +61,8 @@ $(document).ready(function() {
         page = 0;
         $(".dashcard-container").empty();
         get_goals_ajax();
+        $(".current").removeClass('current');
+        $(this).addClass('current');
     });
 
     $(".dashcard-container").on({
