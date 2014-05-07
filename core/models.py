@@ -692,7 +692,7 @@ class BeatMyGoalUserAdmin(admin.ModelAdmin):
 # Pending Invited User 
 class PendingInvite(models.Model):
     goal = models.ForeignKey('Goal')
-    email = models.EmailField(null=True, max_length=20)
+    email = models.EmailField(null=True)
     @classmethod
     def create(self, email, goal_id):
         errors = []
